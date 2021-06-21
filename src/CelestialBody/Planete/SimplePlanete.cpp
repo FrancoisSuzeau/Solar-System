@@ -35,7 +35,7 @@ Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Sh
     m_initial_pos = initial_pos;
     m_rotation_angle = 0.0;
     m_inclinaison_angle = inclinaison_angle;
-    m_speed_rotation = 0.3;
+    m_speed_rotation = 0.1;
 
     
 }
@@ -53,7 +53,7 @@ SimplePlanete::~SimplePlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src)
+void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
 {
     
     //Activate the shader
@@ -82,6 +82,8 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
         //texture variable to shader
         // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
         m_shader.setTexture("texture0", 0);
+
+        m_shader.setVec3("viewPos", camPos);
         
         //active and lock cloudy texture
         glActiveTexture(GL_TEXTURE0);
@@ -122,7 +124,7 @@ void SimplePlanete::updatePosition(glm::mat4 &projection, glm::mat4 &modelview)
     translateCelestialBody(modelview, m_current_position);
 
     //displaying name of the planete
-    displayName(projection, modelview);
+    //displayName(projection, modelview);
 
     //making the planete inclinaison
     inclineCelestialBody(modelview, m_inclinaison_angle);

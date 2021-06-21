@@ -43,7 +43,7 @@ PlaneteRing::~PlaneteRing()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayCrate **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src)
+void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
 {
     //Activate the shader
     glUseProgram(m_shader.getProgramID());
@@ -67,6 +67,8 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
         
         // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
         m_shader.setTexture("texture0", 0);
+
+        m_shader.setVec3("viewPos", camPos);
         
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
@@ -75,7 +77,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        m_ring.display(projection, modelview, light_src);
+        m_ring.display(projection, modelview, light_src, camPos);
 
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);

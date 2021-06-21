@@ -37,7 +37,7 @@ PURPOSE : header of the AtmoPlanete class
                 AtmoPlanete(std::string const texture_surf, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos);
                 AtmoPlanete();
                 ~AtmoPlanete();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos);
 
         };
 

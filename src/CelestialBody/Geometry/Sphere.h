@@ -55,7 +55,7 @@ PURPOSE : header of the Sphere class
 
                 Sphere();
                 ~Sphere();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos);
                 
                 
                 

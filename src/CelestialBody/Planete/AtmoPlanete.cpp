@@ -29,7 +29,7 @@ AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, floa
 
     Shader s("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag");
     m_shader = s;
-
+    
     /************************************************* add atmosphere texture ********************************************************/
     std::string tmp;
     if(m_name == "Mars")
@@ -66,7 +66,7 @@ AtmoPlanete::~AtmoPlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src)
+void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
 {
     
     //Activate the shader
@@ -96,7 +96,14 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
         // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture1"), 1);
         m_shader.setTexture("texture0", 0);
         m_shader.setTexture("texture1", 1);
-        glUniform1f(glGetUniformLocation(m_shader.getProgramID(), "oppacity"), m_oppacity);
+
+        //glUniform1f(glGetUniformLocation(m_shader.getProgramID(), "oppacity"), m_oppacity);
+        m_shader.setFloat("oppacity", m_oppacity);
+
+        m_shader.setVec3("viewPos", camPos);
+
+        //send camera position
+        //m_shader.setVec3()
         
         //active and lock unit texture 1: surface
         glActiveTexture(GL_TEXTURE1);

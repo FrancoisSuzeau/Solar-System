@@ -41,7 +41,7 @@ PURPOSE : Interface CelestialBody
 
             public:
 
-                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src) = 0;
+                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos) = 0;
                 
 
                 void rotateCelestialBody(glm::mat4 &modelview, float angle)

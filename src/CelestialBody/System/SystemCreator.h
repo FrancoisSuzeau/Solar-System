@@ -49,9 +49,9 @@ PURPOSE : header of the virtual SystemCreator class
                    m_system->loadSystem();
                 }
 
-                void drawSystem(glm::mat4 &projection, glm::mat4 &modelview)
+                void drawSystem(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
                 {
-                        m_system->display(projection, modelview);
+                        m_system->display(projection, modelview, camPos);
                 }
 
 

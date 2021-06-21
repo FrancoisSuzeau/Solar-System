@@ -182,21 +182,13 @@ void OpenGlSketch::mainLoop()
     //initialize modelview and projection matrix
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
     model_view = mat4(1.0);
-    
-
-    camera.lookAt(model_view);
-
-    save_model_view = model_view;
 
     //loading system
     solar_system->MakingSystem("Solar System", 8);
 
-    model_view = save_model_view;
     //load and play the music
     aud.loadMusic();
     aud.playMusic();
-
-    
 
     while(!m_input.getTerminate())
     {   
@@ -236,6 +228,8 @@ void OpenGlSketch::mainLoop()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         camera.lookAt(model_view);
+        
+        glm::vec3 camPos = camera.getPosition();
 
         //save the modelview matrix
         save_model_view = model_view;
@@ -248,7 +242,7 @@ void OpenGlSketch::mainLoop()
 
         /************************************************* SOLAR SYSTEM RENDER ********************************************************/
         
-            solar_system->drawSystem(projection, model_view);
+            solar_system->drawSystem(projection, model_view, camPos);
 
         //restaure the modelview matrix
         model_view = save_model_view;

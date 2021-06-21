@@ -87,7 +87,7 @@ void SolarSystem::loadSystem()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview)
+void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
 {
     glm::mat4 save = modelview;
 
@@ -106,7 +106,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview)
 
         m_simple_planete[0]->updatePosition(projection, modelview);
         m_simple_planete[0]->updatePositionLight(projection, light_src);
-        m_simple_planete[0]->display(projection, modelview, light_src);
+        m_simple_planete[0]->display(projection, modelview, light_src, camPos);
 
     /************************************************* VENUS RENDER ********************************************************/
     //restaure the modelview matrix
@@ -115,14 +115,14 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview)
 
         m_simple_planete[1]->updatePosition(projection, modelview);
         m_simple_planete[1]->updatePositionLight(projection, light_src);
-        m_simple_planete[1]->display(projection, modelview, light_src);
+        m_simple_planete[1]->display(projection, modelview, light_src, camPos);
 
     /************************************************* EARTH RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[0]->drawSystem(projection, modelview);
+        m_planetary_system[0]->drawSystem(projection, modelview, camPos);
         
 
     /************************************************* MARS RENDER ********************************************************/
@@ -132,21 +132,21 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview)
 
         m_simple_planete[2]->updatePosition(projection, modelview);
         m_simple_planete[2]->updatePositionLight(projection, light_src);
-        m_simple_planete[2]->display(projection, modelview, light_src);
+        m_simple_planete[2]->display(projection, modelview, light_src, camPos);
 
     /************************************************* JUPITER RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[1]->drawSystem(projection, modelview);
+        m_planetary_system[1]->drawSystem(projection, modelview, camPos);
         
     /************************************************* SATURN RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[2]->drawSystem(projection, modelview);
+        m_planetary_system[2]->drawSystem(projection, modelview, camPos);
 
     /************************************************* URANUS RENDER ********************************************************/
     //restaure the modelview matrix
@@ -155,7 +155,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview)
 
         m_simple_planete[3]->updatePosition(projection, modelview);
         m_simple_planete[3]->updatePositionLight(projection, light_src);
-        m_simple_planete[3]->display(projection, modelview, light_src);
+        m_simple_planete[3]->display(projection, modelview, light_src, camPos);
 
     /************************************************* NEPTUNE RENDER ********************************************************/
     //restaure the modelview matrix
@@ -164,7 +164,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview)
 
         m_simple_planete[4]->updatePosition(projection, modelview);
         m_simple_planete[4]->updatePositionLight(projection, light_src);
-        m_simple_planete[4]->display(projection, modelview, light_src);
+        m_simple_planete[4]->display(projection, modelview, light_src, camPos);
 
     //restaure the modelview matrix
     modelview = save;

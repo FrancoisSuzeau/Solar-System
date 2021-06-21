@@ -88,7 +88,7 @@ void PlanetarySystem::loadSystem()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview)
+void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
 {
     glm::mat4 save = modelview;
     glm::vec3 m_position(0.1, 0.0, 0.0);
@@ -99,7 +99,7 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview)
         
     m_host->updatePosition(projection, modelview);
     m_host->updatePositionLight(projection, light_src);
-    m_host->display(projection, modelview, light_src);
+    m_host->display(projection, modelview, light_src, camPos);
 
     //restaure the modelview matrix
     modelview = save;
@@ -109,7 +109,7 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview)
     {
         m_moons[i]->updatePosition(projection, modelview);
         m_moons[i]->updatePositionLight(projection, light_src);
-        m_moons[i]->display(projection, modelview, light_src); 
+        m_moons[i]->display(projection, modelview, light_src, camPos); 
 
         modelview = save;
         light_src = save_light_src;

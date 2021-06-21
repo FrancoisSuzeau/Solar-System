@@ -42,7 +42,7 @@ PURPOSE : header of the virtual PlanetarySystem class
 
 
                 void loadSystem() override;
-                void display(glm::mat4 &projection, glm::mat4 &modelview) override;
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
 
         };
 

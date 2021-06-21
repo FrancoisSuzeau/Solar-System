@@ -41,7 +41,7 @@ PURPOSE : header of the virtual System class
                 
                 virtual ~System() {};
                 virtual void loadSystem() = 0;
-                virtual void display(glm::mat4 &projection, glm::mat4 &modelview) = 0;
+                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) = 0;
 
         };
 
