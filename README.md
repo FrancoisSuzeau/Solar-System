@@ -35,6 +35,9 @@ For the moment I am working on this following aspect :
 + Implements atmosphere effects (like red shadowing on the frontier of the dark side of a planets)
 + Implements distance light interaction (the more an object is distant of the sun, the less it receive light)
 
+With this feature, I will follow with distant objects behaviour. OpenGL let you to have the possibility to fixe perspective aspect. When you move backward, after a while, the object will disappear and his name will appear. With that I will make sur that his name is always orientate according to the camera.
+
+
 After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
 
 Many of these ideas came to me while I was coding, so I hope more come too.
