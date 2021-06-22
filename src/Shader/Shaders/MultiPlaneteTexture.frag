@@ -3,6 +3,7 @@ varying vec4 texCoords;
 uniform sampler2D texture0;
 uniform sampler2D texture1;
 uniform float oppacity;
+uniform vec3 viewPos;
 in vec3 Normal;
 in vec3 FragPos;
 
