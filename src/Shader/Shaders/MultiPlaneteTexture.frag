@@ -20,10 +20,16 @@ void main(void) {
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
     vec3 lightColor = {1.0, 1.0, 1.0};
-
-    //diffuse light
     vec3 lightPos = {1.0f, 0.0f, 0.0f};
     
+    //mitigation
+    float lightConst = 1.0f;
+    float lightLin = 0.35f;
+    float lightQuad = 0.44f;
+    float distance = length(lightPos - FragPos);
+    float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
+
+    //diffuse light
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
@@ -40,6 +46,10 @@ void main(void) {
     vec3 ambiant = ambiantStrength * lightColor;
     vec4 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity);
     vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+
+    ambiant *= mitigation;
+    diffuse *= mitigation;
+    specular *= mitigation;
     
     gl_FragColor = vec4(result, 1.0);
 }
