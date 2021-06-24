@@ -8,6 +8,9 @@ varying vec2 UV;
 
 uniform mat4 projection;
 uniform mat4 modelview;
+uniform mat4 light_src;
+
+uniform vec3 viewPos;
 
 void main()
 {

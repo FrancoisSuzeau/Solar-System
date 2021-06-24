@@ -40,13 +40,19 @@ PURPOSE : header of the virtual SystemCreator class
 
                 virtual System* FactoryMethod(std::string name_system, int companion_count) = 0;
 
-                void MakingSystem(std::string name_system, int companion_count) 
+                bool MakingSystem(std::string name_system, int companion_count) 
                 {
-                   m_system = this->FactoryMethod(name_system, companion_count);
-                   puts("");
-                   puts("");
-                   std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << name_system << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                   m_system->loadSystem();
+                        m_system = this->FactoryMethod(name_system, companion_count);
+                        puts("");
+                        puts("");
+                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << name_system << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
+                        m_system->loadSystem();
+                        return true;
+                }
+
+                void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview)
+                {
+                        m_system->displaySkybox(projection, modelview);
                 }
 
                 void drawSystem(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)

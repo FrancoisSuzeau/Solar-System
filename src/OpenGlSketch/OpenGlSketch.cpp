@@ -161,19 +161,24 @@ bool OpenGlSketch::initGL()
 void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
-    Skybox skybox;
+    StartScreen *startScreen = new StartScreen();
+    Camera      *startScreen_cam = new Camera(vec3(0, 1, 0), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
+    bool        load_complete(false);
 
     SystemCreator *solar_system = new SolarSystemCreator();
+    
 
-    Audio aud("../assets/audio/mass_effect.mp3");
-    Camera	camera(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
-    int change(0);
+    // Audio aud("../assets/audio/mass_effect.mp3");
+    // bool pause(false); 
+    // int change(0);
+
     unsigned int frame_rate(1000 / 50);
     Uint32 start_loop(0), end_loop(0), time_past(0);
+
+    Camera	camera(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
     mat4 projection;
     mat4 model_view;
-    mat4 save_model_view;  
-    bool pause(false);   
+    mat4 save_model_view;     
     //===================================================================================================================
 
     m_input.displayPointer(false);
@@ -183,13 +188,35 @@ void OpenGlSketch::mainLoop()
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
     model_view = mat4(1.0);
 
-    //loading system
-    solar_system->MakingSystem("Solar System", 8);
+    // //load and play the music
+    // aud.loadMusic();
+    // aud.playMusic();
 
-    //load and play the music
-    aud.loadMusic();
-    aud.playMusic();
+    //loading system and making start screen
+    while(!load_complete)
+    {
+        //cleaning the screen
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        startScreen_cam->lookAt(model_view);
+
+        //save the modelview matrix
+        save_model_view = model_view;
+
+            startScreen->drawStartScreen(projection, model_view);
+
+        //restaure the modelview matrix
+        model_view = save_model_view;
+
+        //actualising the window
+        SDL_GL_SwapWindow(m_window);
+
+        load_complete = solar_system->MakingSystem("Solar System", 8);
+    }
+
+    delete startScreen;
+    delete startScreen_cam;
+    
     while(!m_input.getTerminate())
     {   
         start_loop = SDL_GetTicks();
@@ -202,25 +229,25 @@ void OpenGlSketch::mainLoop()
             break;
         }
 
-        if(m_input.getKey(SDL_SCANCODE_DOWN))
-        {
-            change = -1;
-        }
-        if(m_input.getKey(SDL_SCANCODE_UP))
-        {
-            change = 1;
-        }
+        // if(m_input.getKey(SDL_SCANCODE_DOWN))
+        // {
+        //     change = -1;
+        // }
+        // if(m_input.getKey(SDL_SCANCODE_UP))
+        // {
+        //     change = 1;
+        // }
 
-        if(m_input.getKey(SDL_SCANCODE_SPACE))
-        {
-            pause = true;
-        }
+        // if(m_input.getKey(SDL_SCANCODE_SPACE))
+        // {
+        //     pause = true;
+        // }
         //===================================================================================================================
 
-        aud.volume(change);
-        aud.pause(pause);
-        pause = false;
-        change = 0;
+        // aud.volume(change);
+        // aud.pause(pause);
+        // pause = false;
+        // change = 0;
 
         camera.move(m_input);
 
@@ -233,9 +260,10 @@ void OpenGlSketch::mainLoop()
 
         //save the modelview matrix
         save_model_view = model_view;
+
         /************************************************* SKYBOX RENDER ********************************************************/
 
-            skybox.display(projection, model_view);
+            solar_system->drawSkybox(projection, model_view);
 
         //restaure the modelview matrix
         model_view = save_model_view;
@@ -260,4 +288,6 @@ void OpenGlSketch::mainLoop()
         }
         //===================================================================================================================
     }
+
+    delete solar_system;
 }

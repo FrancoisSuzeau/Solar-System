@@ -17,7 +17,7 @@ CC=g++
 # SRC contient liste des fichier sources du projet 
 # on pourrait utiliser une construction automatique a l'aide du joker *.c et la commande wildcard mais il faudra gerer les dépendances vis a vis des .h
 # SRC=$(wildcard *.c)
-SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp
+SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp
 
 OBJET=$(SRC:.cpp=.o)
 
@@ -29,7 +29,7 @@ ${EXEC}: ${OBJET}
 # au cas ou .h est modifié
 
 main.o: OpenGlSketch/OpenGlSketch.h 
-OpenGlSketch.o: OpenGlSketch/OpenGlSketch.h Input/Input.h Audio/Audio.h Camera/Camera.h CelestialBody/Skybox/Skybox.h CelestialBody/System/SystemCreator.h CelestialBody/System/SolarSystemCreator.h
+OpenGlSketch.o: OpenGlSketch/OpenGlSketch.h Input/Input.h Audio/Audio.h Camera/Camera.h CelestialBody/System/SystemCreator.h CelestialBody/System/SolarSystemCreator.h StartScreen/StartScreen.h
 Shader.o: Shader/Shader.h
 Input.o: Input/Input.h
 Texture.o: Texture/Texture.h
@@ -45,11 +45,12 @@ Text.o: Text/Text.h Texture/Texture.h Shader/Shader.h
 Skybox.o: CelestialBody/Skybox/Skybox.h Shader/Shader.h
 Star.o: CelestialBody/Star/Star.h CelestialBody/Geometry/Sphere.h Texture/Texture.h Text/Text.h
 PlanetarySystem.o: CelestialBody/System/PlanetarySystem.h CelestialBody/Planete/AtmoPlanete.h CelestialBody/Planete/PlaneteRing.h CelestialBody/Planete/SimplePlanete.h CelestialBody/System/System.h
-SolarSystem.o: CelestialBody/System/SolarSystem/h CelestialBody/System/PlanetarySystem.h CelestialBody/Planete/AtmoPlanete.h CelestialBody/Planete/PlaneteRing.h CelestialBody/Planete/SimplePlanete.h CelestialBody/System/System.h CelestialBody/Star/Star.h
+SolarSystem.o: CelestialBody/System/SolarSystem/h CelestialBody/System/PlanetarySystem.h CelestialBody/Planete/AtmoPlanete.h CelestialBody/Planete/PlaneteRing.h CelestialBody/Planete/SimplePlanete.h CelestialBody/System/System.h CelestialBody/Star/Star.h CelestialBody/Skybox/Skybox.h
 SystemCreator.h: CelestialBody/System/System.h
 PlanetarySystemCreator.h: CelestialBody/System/SystemCreator.h CelestialBody/System/PlanetarySystem.h
 SolarSystemCreator.h: CelestialBody/System/SystemCreator.h CelestialBody/System/SolarSystem.h
 CelestialBody.h: Shader/Shader.h
+StartScreen/StartScreen.o: StartScreen/StartScreen.h Text/Text.h
 
 %.o:%.cpp
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${CFLAGS}

@@ -24,8 +24,8 @@ void main(void) {
     
     //mitigation
     float lightConst = 1.0f;
-    float lightLin = 0.35f;
-    float lightQuad = 0.44f;
+    float lightLin = 0.22f;
+    float lightQuad = 0.20f;
     float distance = length(lightPos - FragPos);
     float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
 

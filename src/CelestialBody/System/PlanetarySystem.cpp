@@ -121,3 +121,8 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
 
 }
+
+void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview)
+{
+    //do nothing and doesn't have
+}

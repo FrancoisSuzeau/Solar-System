@@ -23,6 +23,7 @@ PURPOSE : header of the virtual SolarSystem class
         #include "../Planete/SimplePlanete.h"
         #include "../Planete/PlaneteRing.h"
         #include "../Star/Star.h"
+        #include "../Skybox/Skybox.h"
 
 
        
@@ -38,6 +39,7 @@ PURPOSE : header of the virtual SolarSystem class
                 std::vector<SystemCreator*>     m_planetary_system;
                 std::vector<SimplePlanete*>     m_simple_planete;
                 Star                            sun;
+                Skybox                          skybox;
                 
                 
                 
@@ -50,6 +52,7 @@ PURPOSE : header of the virtual SolarSystem class
 
                 void loadSystem() override;
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
+                void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview) override;
 
         };
 

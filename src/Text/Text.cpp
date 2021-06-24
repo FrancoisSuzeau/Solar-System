@@ -201,3 +201,40 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z
 	modelview = save;
 
 }
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************************ renderTextStartScreen ************************************************************/
+/***********************************************************************************************************************************************************************/
+void Text::renderTextStartScreen(glm::mat4 &projection, glm::mat4 &modelview)
+{
+	//activate shader program
+	glUseProgram(m_shader.getProgramID());
+
+	//send vertices coordinates
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
+	glEnableVertexAttribArray(0);
+
+	//send texture coordinates
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
+	glEnableVertexAttribArray(2);
+
+	//send matrices
+	glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+	glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+
+	//lock texture
+	glBindTexture(GL_TEXTURE_2D, m_id);
+
+	//render
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	//unlock texture
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//deactivate array
+	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(0);
+
+	//deactivate shader program
+	glUseProgram(0);
+}
