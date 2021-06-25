@@ -18,6 +18,7 @@ PURPOSE : header of the Audio class
         
         #include <iostream>
         #include <string>
+        #include <vector>
 
         #include <SDL2/SDL_mixer.h>
 
@@ -29,14 +30,14 @@ PURPOSE : header of the Audio class
             
             private:
 
-                std::string m_file_music;
+                std::vector<std::string> m_file_music;
                 Mix_Music *m_music;
                 int m_volume;
                 
                 
             public:
 
-                Audio(std::string file_music);
+                Audio();
                 ~Audio();
 
 

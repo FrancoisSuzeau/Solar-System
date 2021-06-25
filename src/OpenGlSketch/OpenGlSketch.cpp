@@ -168,9 +168,9 @@ void OpenGlSketch::mainLoop()
     SystemCreator *solar_system = new SolarSystemCreator();
     
 
-    // Audio aud("../assets/audio/mass_effect.mp3");
-    // bool pause(false); 
-    // int change(0);
+    Audio aud;
+    bool pause(false); 
+    int change(0);
 
     unsigned int frame_rate(1000 / 50);
     Uint32 start_loop(0), end_loop(0), time_past(0);
@@ -188,9 +188,9 @@ void OpenGlSketch::mainLoop()
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
     model_view = mat4(1.0);
 
-    // //load and play the music
-    // aud.loadMusic();
-    // aud.playMusic();
+    //load and play the music
+    aud.loadMusic();
+    aud.playMusic();
 
     //loading system and making start screen
     while(!load_complete)
@@ -229,25 +229,25 @@ void OpenGlSketch::mainLoop()
             break;
         }
 
-        // if(m_input.getKey(SDL_SCANCODE_DOWN))
-        // {
-        //     change = -1;
-        // }
-        // if(m_input.getKey(SDL_SCANCODE_UP))
-        // {
-        //     change = 1;
-        // }
+        if(m_input.getKey(SDL_SCANCODE_DOWN))
+        {
+            change = -1;
+        }
+        if(m_input.getKey(SDL_SCANCODE_UP))
+        {
+            change = 1;
+        }
 
-        // if(m_input.getKey(SDL_SCANCODE_SPACE))
-        // {
-        //     pause = true;
-        // }
+        if(m_input.getKey(SDL_SCANCODE_SPACE))
+        {
+            pause = true;
+        }
         //===================================================================================================================
 
-        // aud.volume(change);
-        // aud.pause(pause);
-        // pause = false;
-        // change = 0;
+        aud.volume(change);
+        aud.pause(pause);
+        pause = false;
+        change = 0;
 
         camera.move(m_input);
 
