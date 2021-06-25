@@ -27,17 +27,17 @@ PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count)
 
 PlanetarySystem::PlanetarySystem()
 {
+    
+}
+
+PlanetarySystem::~PlanetarySystem()
+{
     for (int i(0); i < m_companion_count; i++)
     {
         delete m_moons[i];
     }
 
     delete m_host;
-}
-
-PlanetarySystem::~PlanetarySystem()
-{
-
 }
 
 /***********************************************************************************************************************************************************************/

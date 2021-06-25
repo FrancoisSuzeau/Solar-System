@@ -38,8 +38,8 @@ PURPOSE : header of the virtual SolarSystem class
                 int                             m_simple_planete_count;
                 std::vector<SystemCreator*>     m_planetary_system;
                 std::vector<SimplePlanete*>     m_simple_planete;
-                Star                            sun;
-                Skybox                          skybox;
+                Star                            *sun;
+                Skybox                          *skybox;
                 
                 
                 

@@ -17,13 +17,14 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SolarSystem::SolarSystem(std::string name, int celestial_object_count) : sun(1, 50, 50, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 20.0)
-//skybox()
+SolarSystem::SolarSystem(std::string name, int celestial_object_count)
 {
     m_system_name = name;
     m_companion_count = celestial_object_count;
     m_planetarySYS_count = 3;
     m_simple_planete_count = 5;
+    sun = new Star(1, 50, 50, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 20.0);
+    skybox = new Skybox();
 }
 
 SolarSystem::SolarSystem() : sun()
@@ -43,7 +44,7 @@ SolarSystem::~SolarSystem()
         delete m_simple_planete[i];
     }
     
-    
+    delete sun;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -92,7 +93,7 @@ void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview)
 {
     glm::mat4 save = modelview;
 
-        skybox.display(projection, modelview);
+        skybox->display(projection, modelview);
 
     modelview = save;
 }
@@ -105,12 +106,12 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
     glm::mat4 save = modelview;
 
     /************************************************* SUN RENDER ********************************************************/
-        glm::vec3 m_position = sun.getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
+        glm::vec3 m_position = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
         glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
         glm::mat4 save_light_src = light_src;
 
-        sun.updatePosition(projection, modelview, 0.0);
-        sun.display(projection, modelview);
+        sun->updatePosition(projection, modelview, 0.0);
+        sun->display(projection, modelview);
         
 
     /************************************************* MERCURY RENDER ********************************************************/

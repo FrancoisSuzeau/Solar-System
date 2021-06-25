@@ -144,7 +144,7 @@ bool OpenGlSketch::initGL()
         SDL_GL_DeleteContext(m_openGL_context);
         SDL_DestroyWindow(m_window);
         Mix_CloseAudio();
-        //TTF_Quit();
+        TTF_Quit();
         SDL_Quit();
         return false;
     }
