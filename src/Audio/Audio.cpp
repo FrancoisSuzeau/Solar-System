@@ -25,7 +25,10 @@ Audio::Audio(): m_volume(MIX_MAX_VOLUME / 2)
 
         "../assets/audio/mass_effect.mp3",
         "../assets/audio/ArCorp_Theme.mp3",
-        "../assets/audio/Space_Suit_generic3.mp3"
+        "../assets/audio/Space_Suit_generic3.mp3",
+        "../assets/audio/The_darkness_SC.mp3",
+        "../assets/audio/Into_the_void_SC.mp3",
+        "../assets/audio/natural_splender.mp3"
     };
 }
 
@@ -40,13 +43,13 @@ Audio::~Audio()
 bool Audio::loadMusic()
 {
     /************************************************* load the file ********************************************************/
-    m_music = Mix_LoadMUS(m_file_music[1].c_str());
+    m_music = Mix_LoadMUS(m_file_music[5].c_str());
     if(m_music == NULL)
     {
         std::cout << ">> Loading file music : ERROR : " << Mix_GetError() << std::endl;
         return false;
     }
-    std::cout << ">> Loading file music : SUCCESS : " << m_file_music[1] << std::endl;
+    std::cout << ">> Loading file music : SUCCESS : " << m_file_music[5] << std::endl;
     //===================================================================================================================
 
     return true;

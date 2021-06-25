@@ -30,7 +30,6 @@ void main(void) {
     float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
 
     //diffuse light
-    
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
@@ -47,14 +46,13 @@ void main(void) {
     float ambiantStrength = 0.1;
     vec3 ambiant = ambiantStrength * lightColor;
 
+    vec4 objectColor = texture(texture0, longitudeLatitude);
+    vec3 result = ( ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    
     ambiant *= mitigation;
     diffuse *= mitigation;
     specular *= mitigation;
 
-    vec4 objectColor = texture(texture0, longitudeLatitude);
-    vec3 result = ( ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
-    
-    
     gl_FragColor = vec4(result, 1.0);
     
     
