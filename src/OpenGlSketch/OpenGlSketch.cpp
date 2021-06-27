@@ -175,7 +175,7 @@ void OpenGlSketch::mainLoop()
     unsigned int frame_rate(1000 / 50);
     Uint32 start_loop(0), end_loop(0), time_past(0);
 
-    Camera	camera(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
+    Camera	*camera = new Camera(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
     mat4 projection;
     mat4 model_view;
     mat4 save_model_view;     
@@ -249,14 +249,14 @@ void OpenGlSketch::mainLoop()
         pause = false;
         change = 0;
 
-        camera.move(m_input);
+        camera->move(m_input);
 
         //cleaning the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        camera.lookAt(model_view);
+        camera->lookAt(model_view);
         
-        glm::vec3 camPos = camera.getPosition();
+        glm::vec3 camPos = camera->getPosition();
 
         //save the modelview matrix
         save_model_view = model_view;
@@ -290,4 +290,5 @@ void OpenGlSketch::mainLoop()
     }
 
     delete solar_system;
+    delete camera;
 }
