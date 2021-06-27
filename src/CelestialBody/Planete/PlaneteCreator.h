@@ -1,7 +1,7 @@
 /*
 AUTHOR : SUZEAU François
 
-DATE : 17/06/2021
+DATE : 27/06/2021
 
 MODULE : CelestialBody.Planete
 
@@ -62,6 +62,11 @@ PURPOSE : header of the virtual PlaneteCreator class
                 void UpdatePositionPlan(glm::mat4 &projection, glm::mat4 &modelview)
                 {
                         m_planete->updatePosition(projection, modelview);
+                }
+
+                void updatePosLight(glm::mat4 &projection, glm::mat4 &modelview)
+                {
+                        m_planete->updatePositionLight(projection, modelview);
                 }
 
 

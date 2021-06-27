@@ -24,10 +24,20 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlaneteRing::PlaneteRing(std::string const texture, std::string const ring_texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos),
-m_ring(4, ring_texture)
+PlaneteRing::PlaneteRing(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos)
 {
-    
+    if(name == "Saturn")
+    {
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png");
+    }
+    else if(name == "Uranus")
+    {
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png");
+    }
+    else if(name == "Neptune")
+    {
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png");
+    }
 }
 
 PlaneteRing::PlaneteRing() : SimplePlanete(), m_ring()
@@ -37,7 +47,7 @@ PlaneteRing::PlaneteRing() : SimplePlanete(), m_ring()
 
 PlaneteRing::~PlaneteRing()
 {
-   
+   delete m_ring;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -77,7 +87,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        m_ring.display(projection, modelview, light_src, camPos);
+        m_ring->display(projection, modelview, light_src, camPos);
 
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);

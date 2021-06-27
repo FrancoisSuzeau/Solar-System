@@ -29,11 +29,11 @@ PURPOSE : header of the PlaneteRing class
             
             private:
    
-                Ring            m_ring;
+                Ring            *m_ring;
            
             public:
 
-                PlaneteRing(std::string const texture_surf, std::string const ring_texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos);
+                PlaneteRing(std::string const texture_surf, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos);
                 PlaneteRing();
                 ~PlaneteRing();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos);

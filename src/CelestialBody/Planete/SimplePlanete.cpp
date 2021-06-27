@@ -144,17 +144,17 @@ void SimplePlanete::updatePosition(glm::mat4 &projection, glm::mat4 &modelview)
 /***********************************************************************************************************************************************************************/
 /************************************************************************* updatePositionLight *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &modelview)
+void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src)
 {
     m_current_position = m_initial_pos;
     //postionning body
-    translateCelestialBody(modelview, m_current_position);
+    translateCelestialBody(light_src, m_current_position);
 
     //displaying name of the planete
-    //displayName(projection, modelview);
+    //displayName(projection, light_src);
 
     //making the planete inclinaison
-    inclineCelestialBody(modelview, m_inclinaison_angle);
+    inclineCelestialBody(light_src, m_inclinaison_angle);
 
     //making the planete rotation
     m_rotation_angle += m_speed_rotation;
@@ -162,8 +162,8 @@ void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &modelv
     {
         m_rotation_angle -= 360;
     }
-    rotateCelestialBody(modelview, m_rotation_angle);
+    rotateCelestialBody(light_src, m_rotation_angle);
 
     //scaling on his real size
-    scaleCelestialBody(modelview, m_real_size);
+    scaleCelestialBody(light_src, m_real_size);
 }

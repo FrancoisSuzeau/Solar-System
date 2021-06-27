@@ -75,8 +75,8 @@ void SolarSystem::loadSystem()
     SimplePlanete *mercury = new SimplePlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(50.0, 0.0, 0.0));
     SimplePlanete *venus = new AtmoPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, 0.0, 0.0));
     SimplePlanete *mars = new AtmoPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 4.5, 25.19, glm::vec3(-140, 0, 0));
-    SimplePlanete *uranus = new PlaneteRing("../assets/textures/CelestialBody/UranusCloud.jpg", "../assets/textures/CelestialBody/UranusRing.png", "Uranus", 7.0, 97.77, glm::vec3(-300.0, 0.0, 0.0));
-    SimplePlanete *neptune = new PlaneteRing("../assets/textures/CelestialBody/NeptuneCloud.jpg", "../assets/textures/CelestialBody/NeptuneRing.png", "Nepture", 7.0, 26.32, glm::vec3(-350.0, 0.0, 0.0));
+    SimplePlanete *uranus = new PlaneteRing("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 7.0, 97.77, glm::vec3(-300.0, 0.0, 0.0));
+    SimplePlanete *neptune = new PlaneteRing("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Nepture", 7.0, 26.32, glm::vec3(-350.0, 0.0, 0.0));
 
     m_simple_planete.push_back(mercury);
     m_simple_planete.push_back(venus);
