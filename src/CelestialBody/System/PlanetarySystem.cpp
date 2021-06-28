@@ -32,20 +32,12 @@ PlanetarySystem::PlanetarySystem()
 
 PlanetarySystem::~PlanetarySystem()
 {
-    if(m_system_name == "Earth System")
+    for (int i(0); i < m_companion_count; i++)
     {
-        delete m_moons_creator[0];
-        delete m_host_creator;
+        delete m_moons_creator[i];
     }
-    else
-    {
-        for (int i(0); i < m_companion_count; i++)
-        {
-            delete m_moons[i];
-        }
 
-        delete m_host;
-    }
+    delete m_host_creator;
     
 }
 
@@ -74,11 +66,26 @@ void PlanetarySystem::loadSystem()
         m_companion_name.push_back("Io");
         m_companion_name.push_back("Callisto");
 
-        m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 2.0, 0.469, glm::vec3(-195, 20, 0)));
-        m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 2.0, 0.170, glm::vec3(-195, 40, 0)));
-        m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 2.0, 0.036, glm::vec3(-195, 60, 0)));
-        m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 2.0, 0.187, glm::vec3(-195, 80, 0)));
-        m_host = new SimplePlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 14.0, 3.13, glm::vec3(-195, 0, 0));
+        m_moons_creator.push_back(new SimplePlaneteCreator());
+        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 2.0, 0.469, glm::vec3(-195, 20, 0));
+
+        m_moons_creator.push_back(new SimplePlaneteCreator());
+        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 2.0, 0.170, glm::vec3(-195, 40, 0));
+
+        m_moons_creator.push_back(new SimplePlaneteCreator());
+        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 2.0, 0.036, glm::vec3(-195, 60, 0));
+
+        m_moons_creator.push_back(new SimplePlaneteCreator());
+        m_moons_creator[3]->MakingPlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 2.0, 0.187, glm::vec3(-195, 80, 0));
+
+        m_host_creator = new SimplePlaneteCreator();
+        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 14.0, 3.13, glm::vec3(-195, 0, 0));
+
+        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 2.0, 0.469, glm::vec3(-195, 20, 0)));
+        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 2.0, 0.170, glm::vec3(-195, 40, 0)));
+        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 2.0, 0.036, glm::vec3(-195, 60, 0)));
+        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 2.0, 0.187, glm::vec3(-195, 80, 0)));
+        // m_host = new SimplePlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 14.0, 3.13, glm::vec3(-195, 0, 0));
         
     }
     else if(m_system_name == "Saturnian System")
@@ -87,10 +94,22 @@ void PlanetarySystem::loadSystem()
         m_companion_name.push_back("Enceladus");
         m_companion_name.push_back("Mimas");
 
-        m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 2.0, 1.53, glm::vec3(-250, 40, 0)));
-        m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(-250, 60, 0)));
-        m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 2.0, 0.33, glm::vec3(-250, 80, 0)));
-        m_host = new PlaneteRing("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(-250, 0, 0));
+        m_moons_creator.push_back(new SimplePlaneteCreator());
+        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 2.0, 1.53, glm::vec3(-250, 40, 0));
+
+        m_moons_creator.push_back(new SimplePlaneteCreator());
+        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(-250, 60, 0));
+
+        m_moons_creator.push_back(new SimplePlaneteCreator());
+        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 2.0, 0.33, glm::vec3(-250, 80, 0));
+
+        m_host_creator = new PlaneteRingCreator();
+        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(-250, 0, 0));
+
+        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 2.0, 1.53, glm::vec3(-250, 40, 0)));
+        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(-250, 60, 0)));
+        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 2.0, 0.33, glm::vec3(-250, 80, 0)));
+        // m_host = new PlaneteRing("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(-250, 0, 0));
     }
     else
     {
@@ -111,57 +130,26 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
     glm::mat4 light_src = glm::lookAt(m_position, m_target_point, m_vertical_axe);
     glm::mat4 save_light_src = light_src;
 
-    if(m_system_name == "Earth System")
+    m_host_creator->UpdatePositionPlan(projection, modelview);
+    m_host_creator->updatePosLight(projection, light_src);
+    m_host_creator->drawPlanete(projection, modelview, light_src, camPos);
+
+    modelview = save;
+    light_src = save_light_src;
+
+    for (int i(0); i < m_companion_count; i++)
     {
-        m_host_creator->UpdatePositionPlan(projection, modelview);
-        m_host_creator->updatePosLight(projection, light_src);
-        m_host_creator->drawPlanete(projection, modelview, light_src, camPos);
+        m_moons_creator[i]->UpdatePositionPlan(projection, modelview);
+        m_moons_creator[i]->updatePosLight(projection, light_src);
+        m_moons_creator[i]->drawPlanete(projection, modelview, light_src, camPos); 
 
-        modelview = save;
-        light_src = save_light_src;
-
-        for (int i(0); i < m_companion_count; i++)
-        {
-            m_moons_creator[i]->UpdatePositionPlan(projection, modelview);
-            m_moons_creator[i]->updatePosLight(projection, light_src);
-            m_moons_creator[i]->drawPlanete(projection, modelview, light_src, camPos); 
-
-            modelview = save;
-            light_src = save_light_src;
-
-        }
-        
         modelview = save;
         light_src = save_light_src;
 
     }
-    else
-    {
-        m_host->updatePosition(projection, modelview);
-        m_host->updatePositionLight(projection, light_src);
-        m_host->display(projection, modelview, light_src, camPos);
-
-        //restaure the modelview matrix
-        modelview = save;
-        light_src = save_light_src;
-
-        for (int i(0); i < m_companion_count; i++)
-        {
-            m_moons[i]->updatePosition(projection, modelview);
-            m_moons[i]->updatePositionLight(projection, light_src);
-            m_moons[i]->display(projection, modelview, light_src, camPos); 
-
-            modelview = save;
-            light_src = save_light_src;
-
-        }
         
-        modelview = save;
-        light_src = save_light_src;
-    }
-        
-    
-
+    modelview = save;
+    light_src = save_light_src;
 
 }
 

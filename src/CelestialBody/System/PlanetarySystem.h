@@ -23,9 +23,9 @@ PURPOSE : header of the virtual PlanetarySystem class
         #include "../Planete/SimplePlaneteCreator.h"
         #include "../Planete/PlaneteRingCreator.h"
 
-        #include "../Planete/AtmoPlanete.h"
-        #include "../Planete/SimplePlanete.h"
-        #include "../Planete/PlaneteRing.h"
+        // #include "../Planete/AtmoPlanete.h"
+        // #include "../Planete/SimplePlanete.h"
+        // #include "../Planete/PlaneteRing.h"
 
 
        
