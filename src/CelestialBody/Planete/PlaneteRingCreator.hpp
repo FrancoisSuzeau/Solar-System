@@ -23,8 +23,8 @@ PURPOSE : header of the virtual PlaneteRingCreator class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        #include "PlaneteCreator.h"
-        #include "PlaneteRing.h"
+        #include "PlaneteCreator.hpp"
+        #include "PlaneteRing.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -40,7 +40,10 @@ PURPOSE : header of the virtual PlaneteRingCreator class
 
                 SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) override
                 {
-                    return new PlaneteRing(texture, name, real_size, inclinaison_angle, initial_pos);
+                        puts("");
+                        puts("");
+                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Planete Creator : " << name << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
+                        return new PlaneteRing(texture, name, real_size, inclinaison_angle, initial_pos);
                 }
 
 

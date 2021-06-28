@@ -15,7 +15,7 @@ PURPOSE : class Skybox
 #define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
 #endif
 
-#include "Skybox.h"
+#include "Skybox.hpp"
 
 using namespace glm;
 

@@ -10,7 +10,7 @@ NAMEFILE : Camera.h
 PURPOSE : class Camera
 */
 
-#include "Camera.h"
+#include "Camera.hpp"
 
 using namespace glm;
 

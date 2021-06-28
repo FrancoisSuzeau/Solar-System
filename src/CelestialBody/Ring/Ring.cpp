@@ -15,7 +15,7 @@ PURPOSE : class Ring
 #define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
 #endif
 
-#include "Ring.h"
+#include "Ring.hpp"
 
 using namespace glm;
 

@@ -12,7 +12,7 @@ PURPOSE : class StartScreen
 
 
 
-#include "StartScreen.h"
+#include "StartScreen.hpp"
 
 using namespace glm;
 

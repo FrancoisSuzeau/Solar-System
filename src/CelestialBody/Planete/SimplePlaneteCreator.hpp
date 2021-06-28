@@ -5,13 +5,13 @@ DATE : 27/06/2021
 
 MODULE : CelestialBody.Planete
 
-NAMEFILE : AtmoPlaneteCreator.h
+NAMEFILE : SimplePlaneteCreator.h
 
-PURPOSE : header of the virtual AtmoPlaneteCreator class
+PURPOSE : header of the virtual SimplePlaneteCreator class
 */
 
-#ifndef ATMOPLANCREATOR_H
-#define ATMOPLANCREATOR_H
+#ifndef SIMPLEPLANCREATOR_H
+#define SIMPLEPLANCREATOR_H
 
 
 /********************************************************************* includes *********************************************************************/
@@ -23,12 +23,11 @@ PURPOSE : header of the virtual AtmoPlaneteCreator class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        #include "PlaneteCreator.h"
-        #include "AtmoPlanete.h"
+        #include "PlaneteCreator.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
-        class AtmoPlaneteCreator : public PlaneteCreator 
+        class SimplePlaneteCreator : public PlaneteCreator 
         {
             
             private:
@@ -40,7 +39,10 @@ PURPOSE : header of the virtual AtmoPlaneteCreator class
 
                 SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) override
                 {
-                    return new AtmoPlanete(texture, name, real_size, inclinaison_angle, initial_pos);
+                        puts("");
+                        puts("");
+                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Planete Creator : " << name << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
+                        return new SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos);
                 }
 
 

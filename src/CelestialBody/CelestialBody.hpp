@@ -16,7 +16,7 @@ PURPOSE : Interface CelestialBody
 
 /********************************************************************* includes *********************************************************************/
 
-        #include "../Shader/Shader.h"
+        #include "../Shader/Shader.hpp"
 
         #include <string>
         #include <glm/glm.hpp>

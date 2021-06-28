@@ -17,7 +17,7 @@ PURPOSE : class PlaneteRing
 #define VERT_NUM_FLOATS 8
 
 
-#include "PlaneteRing.h"
+#include "PlaneteRing.hpp"
 
 using namespace glm;
 

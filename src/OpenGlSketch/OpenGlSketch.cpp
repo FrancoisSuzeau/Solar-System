@@ -17,7 +17,7 @@ PURPOSE :   - creating OpenGL Context
 #define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
 #endif
 
-#include "OpenGlSketch.h"
+#include "OpenGlSketch.hpp"
 
 using namespace glm;
 

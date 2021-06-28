@@ -12,7 +12,7 @@ PURPOSE : class PlanetarySystem
 
 
 
-#include "PlanetarySystem.h"
+#include "PlanetarySystem.hpp"
 
 using namespace glm;
 

@@ -16,7 +16,7 @@ PURPOSE : header of the Camera class
 
 /********************************************************************* includes *********************************************************************/
 
-        #include "../Input/Input.h"
+        #include "../Input/Input.hpp"
 
         #include <string>
         #include <glm/glm.hpp>

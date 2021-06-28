@@ -17,7 +17,7 @@ PURPOSE : class SimplePlanete
 #define VERT_NUM_FLOATS 8
 
 
-#include "SimplePlanete.h"
+#include "SimplePlanete.hpp"
 
 using namespace glm;
 

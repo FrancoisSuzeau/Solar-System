@@ -26,7 +26,7 @@ PURPOSE : header of the Disk class
         #include <string>
         #include <cstring>
 
-        #include "../CelestialBody.h"
+        #include "../CelestialBody.hpp"
 
         
 

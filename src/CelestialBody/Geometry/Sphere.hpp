@@ -30,7 +30,7 @@ PURPOSE : header of the Sphere class
         #include <vector>
         #include <cmath>
 
-        #include "../CelestialBody.h"
+        #include "../CelestialBody.hpp"
 
         
 

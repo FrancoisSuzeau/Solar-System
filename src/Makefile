@@ -28,29 +28,29 @@ ${EXEC}: ${OBJET}
 
 # au cas ou .h est modifié
 
-main.o: OpenGlSketch/OpenGlSketch.h 
-OpenGlSketch.o: OpenGlSketch/OpenGlSketch.h Input/Input.h Audio/Audio.h Camera/Camera.h CelestialBody/System/SystemCreator.h CelestialBody/System/SolarSystemCreator.h StartScreen/StartScreen.h
-Shader.o: Shader/Shader.h
-Input.o: Input/Input.h
-Texture.o: Texture/Texture.h
-Audio.o: Audio/Audio.h
-Sphere.o: CelestialBody/Geometry/Sphere.h CelestialBody/CelestialBody.h
-AtmoPlanete.o: CelestialBody/Planete/AtmoPlanete.h CelestialBody/Planete/SimplePlanete.h
-SimplePlanete.o: CelestialBody/Planete/SimplePlanete.h CelestialBody/Geometry/Sphere.h Texture/Texture.h Text/Text.h
-Camera.o: Camera/Camera.h
-Disk.o: CelestialBody/Geometry/Disk.h CelestialBody/CelestialBody.h
-Ring.o: CelestialBody/Ring/Ring.h CelestialBody/Geometry/Disk.h Texture/Texture.h
-PlaneteRing.o: CelestialBody/Planete/PlaneteRing.h CelestialBody/Planete/SimplePlanete.h CelestialBody/Ring/Ring.h
-Text.o: Text/Text.h Texture/Texture.h Shader/Shader.h
-Skybox.o: CelestialBody/Skybox/Skybox.h Shader/Shader.h
-Star.o: CelestialBody/Star/Star.h CelestialBody/Geometry/Sphere.h Texture/Texture.h Text/Text.h
-PlanetarySystem.o: CelestialBody/System/PlanetarySystem.h CelestialBody/Planete/AtmoPlanete.h CelestialBody/Planete/PlaneteRing.h CelestialBody/Planete/SimplePlanete.h CelestialBody/System/System.h
-SolarSystem.o: CelestialBody/System/SolarSystem/h CelestialBody/System/PlanetarySystem.h CelestialBody/Planete/AtmoPlanete.h CelestialBody/Planete/PlaneteRing.h CelestialBody/Planete/SimplePlanete.h CelestialBody/System/System.h CelestialBody/Star/Star.h CelestialBody/Skybox/Skybox.h
-SystemCreator.h: CelestialBody/System/System.h
-PlanetarySystemCreator.h: CelestialBody/System/SystemCreator.h CelestialBody/System/PlanetarySystem.h
-SolarSystemCreator.h: CelestialBody/System/SystemCreator.h CelestialBody/System/SolarSystem.h
-CelestialBody.h: Shader/Shader.h
-StartScreen/StartScreen.o: StartScreen/StartScreen.h Text/Text.h
+main.o: OpenGlSketch/OpenGlSketch.hpp 
+OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp
+Shader.o: Shader/Shader.hpp
+Input.o: Input/Input.hpp
+Texture.o: Texture/Texture.hpp
+Audio.o: Audio/Audio.hpp
+Sphere.o: CelestialBody/Geometry/Sphere.hpp CelestialBody/CelestialBody.hpp
+AtmoPlanete.o: CelestialBody/Planete/AtmoPlanete.hpp CelestialBody/Planete/SimplePlanete.hpp
+SimplePlanete.o: CelestialBody/Planete/SimplePlanete.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp
+Camera.o: Camera/Camera.hpp
+Disk.o: CelestialBody/Geometry/Disk.hpp CelestialBody/CelestialBody.hpp
+Ring.o: CelestialBody/Ring/Ring.hpp CelestialBody/Geometry/Disk.hpp Texture/Texture.hpp
+PlaneteRing.o: CelestialBody/Planete/PlaneteRing.hpp CelestialBody/Planete/SimplePlanete.hpp CelestialBody/Ring/Ring.hpp
+Text.o: Text/Text.hpp Texture/Texture.hpp Shader/Shader.hpp
+Skybox.o: CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp
+Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp
+PlanetarySystem.o: CelestialBody/System/PlanetarySystem.hpp CelestialBody/System/System.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp
+SolarSystem.o: CelestialBody/System/SolarSystem/hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp
+#SystemCreator.hpp: CelestialBody/System/System.hpp
+#PlanetarySystemCreator.hpp: CelestialBody/System/SystemCreator.hpp CelestialBody/System/PlanetarySystem.hpp
+#SolarSystemCreator.hpp: CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystem.hpp
+#CelestialBody.hpp: Shader/Shader.hpp
+StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp
 
 %.o:%.cpp
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${CFLAGS}

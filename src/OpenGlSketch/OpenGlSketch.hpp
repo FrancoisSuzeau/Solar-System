@@ -29,13 +29,13 @@ PURPOSE : header of the OpenGlSketch class
 
         
         
-        #include "../CelestialBody/System/SystemCreator.h"
-        #include "../CelestialBody/System/SolarSystemCreator.h"
+        #include "../CelestialBody/System/SystemCreator.hpp"
+        #include "../CelestialBody/System/SolarSystemCreator.hpp"
         
-        #include "../Input/Input.h"
-        #include "../Audio/Audio.h"
-        #include "../Camera/Camera.h"
-        #include "../StartScreen/StartScreen.h"
+        #include "../Input/Input.hpp"
+        #include "../Audio/Audio.hpp"
+        #include "../Camera/Camera.hpp"
+        #include "../StartScreen/StartScreen.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/

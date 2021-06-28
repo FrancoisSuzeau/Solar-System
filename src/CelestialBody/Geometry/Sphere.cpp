@@ -17,7 +17,7 @@ PURPOSE : class Sphere
 #define VERT_NUM_FLOATS 8
 
 
-#include "Sphere.h"
+#include "Sphere.hpp"
 
 using namespace glm;
 

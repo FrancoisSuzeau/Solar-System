@@ -15,7 +15,7 @@ PURPOSE : class Disk
 #define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
 #endif
 
-#include "Disk.h"
+#include "Disk.hpp"
 
 using namespace glm;
 

@@ -16,19 +16,21 @@ PURPOSE : header of the virtual SolarSystem class
 
 /********************************************************************* includes *********************************************************************/
 
-        #include "System.h"
-        #include "SystemCreator.h"
-        #include "PlanetarySystemCreator.h"
-        #include "../Planete/AtmoPlanete.h"
-        #include "../Planete/SimplePlanete.h"
-        #include "../Planete/PlaneteRing.h"
-        #include "../Star/Star.h"
-        #include "../Skybox/Skybox.h"
+        #include "System.hpp"
+        #include "SystemCreator.hpp"
+        #include "PlanetarySystemCreator.hpp"
+        
+        #include "../Star/Star.hpp"
+        #include "../Skybox/Skybox.hpp"
 
-        #include "../Planete/PlaneteCreator.h"
-        #include "../Planete/AtmoPlaneteCreator.h"
-        #include "../Planete/SimplePlaneteCreator.h"
-        #include "../Planete/PlaneteRingCreator.h"
+        #include "../Planete/PlaneteCreator.hpp"
+        #include "../Planete/AtmoPlaneteCreator.hpp"
+        #include "../Planete/SimplePlaneteCreator.hpp"
+        #include "../Planete/PlaneteRingCreator.hpp"
+
+        // #include "../Planete/AtmoPlanete.h"
+        // #include "../Planete/SimplePlanete.h"
+        // #include "../Planete/PlaneteRing.h"
 
 
        
@@ -42,7 +44,7 @@ PURPOSE : header of the virtual SolarSystem class
                 int                             m_planetarySYS_count;
                 int                             m_simple_planete_count;
                 std::vector<SystemCreator*>     m_planetary_system;
-                std::vector<SimplePlanete*>     m_simple_planete;
+                // std::vector<SimplePlanete*>     m_simple_planete;
                 Star                            *sun;
                 Skybox                          *skybox;
 

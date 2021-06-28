@@ -17,7 +17,7 @@ PURPOSE : class Star
 #define VERT_NUM_FLOATS 8
 
 
-#include "Star.h"
+#include "Star.hpp"
 
 using namespace glm;
 

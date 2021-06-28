@@ -23,7 +23,7 @@ PURPOSE : header of the virtual PlaneteCreator class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        #include "SimplePlanete.h"
+        #include "SimplePlanete.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -43,9 +43,6 @@ PURPOSE : header of the virtual PlaneteCreator class
                 bool MakingPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) 
                 {
                         m_planete = this->FactoryMethod(texture, name, real_size, inclinaison_angle, initial_pos);
-                        puts("");
-                        puts("");
-                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Planete Creator : " << name << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
                         return true;
                 }
 

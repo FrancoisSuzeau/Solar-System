@@ -23,7 +23,7 @@ PURPOSE : header of the virtual SystemCreator class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        #include "System.h"
+        #include "System.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -43,9 +43,6 @@ PURPOSE : header of the virtual SystemCreator class
                 bool MakingSystem(std::string name_system, int companion_count) 
                 {
                         m_system = this->FactoryMethod(name_system, companion_count);
-                        puts("");
-                        puts("");
-                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << name_system << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
                         m_system->loadSystem();
                         return true;
                 }

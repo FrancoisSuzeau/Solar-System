@@ -16,8 +16,8 @@ PURPOSE : header of the PlaneteRing class
 
 /********************************************************************* includes *********************************************************************/
 
-        #include "SimplePlanete.h"
-        #include "../Ring/Ring.h"
+        #include "SimplePlanete.hpp"
+        #include "../Ring/Ring.hpp"
        
 
         

@@ -8,7 +8,7 @@ NAMEFILE : Main.cpp
 PURPOSE : main loop of the executable
 */
 
-#include "OpenGlSketch/OpenGlSketch.h"
+#include "OpenGlSketch/OpenGlSketch.hpp"
 
 
 int main(int argc, char **argv)

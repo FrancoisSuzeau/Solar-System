@@ -17,7 +17,7 @@ PURPOSE : class AtmoPlanete
 #define VERT_NUM_FLOATS 8
 
 
-#include "AtmoPlanete.h"
+#include "AtmoPlanete.hpp"
 
 using namespace glm;
 

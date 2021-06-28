@@ -10,7 +10,7 @@ NAMEFILE : SolarSystem.cpp
 PURPOSE : class SolarSystem
 */
 
-#include "SolarSystem.h"
+#include "SolarSystem.hpp"
 
 using namespace glm;
 

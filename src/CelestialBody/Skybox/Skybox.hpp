@@ -28,7 +28,7 @@ PURPOSE : header of the Skybox class
         #include <cstring>
         #include <vector>
 
-        #include "../../Shader/Shader.h"
+        #include "../../Shader/Shader.hpp"
 
         
 

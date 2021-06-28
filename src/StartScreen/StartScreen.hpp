@@ -1,17 +1,17 @@
 /*
 AUTHOR : SUZEAU François
 
-DATE : 17/06/2021
+DATE : 23/06/2021
 
-MODULE : CelestialBody.System
+MODULE : StartScreen
 
-NAMEFILE : PlanetarySystemCreator.h
+NAMEFILE : StartScreen.h
 
-PURPOSE : header of the virtual PlanetarySystemCreator class
+PURPOSE : header of the virtual StartScreen class
 */
 
-#ifndef PLSYSTEMCREATOR_H
-#define PLSYSTEMCREATOR_H
+#ifndef STARTSCREEN_H
+#define STARTSCREEN_H
 
 
 /********************************************************************* includes *********************************************************************/
@@ -23,26 +23,26 @@ PURPOSE : header of the virtual PlanetarySystemCreator class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        #include "SystemCreator.h"
-        #include "PlanetarySystem.h"
+        #include "../Text/Text.hpp"
+
+        
        
 /********************************************************************* class definition *********************************************************************/
 
-        class PlanetarySystemCreator : public SystemCreator 
+        class StartScreen
         {
             
             private:
-
+            
+                Text        m_text_loadScreen;
                 
                 
             public:
+                
+                StartScreen();
+                ~StartScreen();
 
-
-                System* FactoryMethod(std::string name_system, int companion_count) override
-                {
-                    return new PlanetarySystem(name_system, companion_count);
-                }
-
+                void drawStartScreen(glm::mat4 &projection, glm::mat4 &modelview);
 
         };
 

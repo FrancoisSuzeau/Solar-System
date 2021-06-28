@@ -11,7 +11,7 @@ PURPOSE :   - Load and lock text surface
             - transform an SDL surface to a texture usable by OpenGL
 */
 
-#include "Text.h"
+#include "Text.hpp"
 
 using namespace glm;
 

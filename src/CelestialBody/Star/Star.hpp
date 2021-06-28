@@ -16,9 +16,9 @@ PURPOSE : header of the Star class
 
 /********************************************************************* includes *********************************************************************/
 
-        #include "../Geometry/Sphere.h"
-        #include "../../Texture/Texture.h"
-        #include "../../Text/Text.h"
+        #include "../Geometry/Sphere.hpp"
+        #include "../../Texture/Texture.hpp"
+        #include "../../Text/Text.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
