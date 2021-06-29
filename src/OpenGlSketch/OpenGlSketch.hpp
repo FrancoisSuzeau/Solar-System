@@ -36,6 +36,8 @@ PURPOSE : header of the OpenGlSketch class
         #include "../Audio/Audio.hpp"
         #include "../Camera/Camera.hpp"
         #include "../StartScreen/StartScreen.hpp"
+
+        #include "../CelestialBody/Geometry/Square.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/

@@ -24,6 +24,7 @@ PURPOSE : header of the virtual StartScreen class
         #include <glm/gtc/type_ptr.hpp>
 
         #include "../Text/Text.hpp"
+        #include "../CelestialBody/Geometry/Square.hpp"
 
         
        

@@ -43,8 +43,14 @@ PURPOSE : header of the virtual SystemCreator class
                 bool MakingSystem(std::string name_system, int companion_count) 
                 {
                         m_system = this->FactoryMethod(name_system, companion_count);
-                        m_system->loadSystem();
+                        //m_system->loadSystem();
                         return true;
+                }
+
+                int loadSystem(int count)
+                {
+                        m_system->loadSystem(count);
+                        return 1;
                 }
 
                 void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview)

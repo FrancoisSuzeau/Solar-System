@@ -162,11 +162,14 @@ void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
     StartScreen *startScreen = new StartScreen();
-    Camera      *startScreen_cam = new Camera(vec3(0, 1, 0), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
-    bool        load_complete(false);
+    Camera      *startScreen_cam = new Camera(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0), 0.5, 0.9);
+    //bool        load_complete(false);
 
     SystemCreator *solar_system = new SolarSystemCreator();
-    
+
+    Square      *square = new Square(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag");
+
+    int nb_loaded(0);
 
     Audio aud;
     bool pause(false); 
@@ -193,8 +196,9 @@ void OpenGlSketch::mainLoop()
     aud.playMusic();
 
     //loading system and making start screen
-    while(!load_complete)
+    while(nb_loaded < 9)
     {
+
         //cleaning the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -203,7 +207,13 @@ void OpenGlSketch::mainLoop()
         //save the modelview matrix
         save_model_view = model_view;
 
+            model_view = translate(model_view, vec3(0.0, 0.5, 2.6));
             startScreen->drawStartScreen(projection, model_view);
+
+        //restaure the modelview matrix
+        model_view = save_model_view;
+        
+            square->drawLoad(nb_loaded, projection, model_view);
 
         //restaure the modelview matrix
         model_view = save_model_view;
@@ -211,12 +221,25 @@ void OpenGlSketch::mainLoop()
         //actualising the window
         SDL_GL_SwapWindow(m_window);
 
-        load_complete = solar_system->MakingSystem("Solar System", 8);
+        if(nb_loaded == 0)
+        {
+            solar_system->MakingSystem("Solar System", 8);
+            nb_loaded++;
+        }
+        if(nb_loaded < 9)
+        {
+            nb_loaded += solar_system->loadSystem(nb_loaded);
+            std::cout << ">> Loaded : " << nb_loaded << std::endl;
+        }
+        
     }
+
+    SDL_Delay(1000);
 
     delete startScreen;
     delete startScreen_cam;
-    
+    delete square;
+
     while(!m_input.getTerminate())
     {   
         start_loop = SDL_GetTicks();

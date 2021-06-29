@@ -44,7 +44,7 @@ PlanetarySystem::~PlanetarySystem()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** loadSystem ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::loadSystem()
+void PlanetarySystem::loadSystem(int count)
 {
     /************************************************* loading companion ********************************************************/
     if(m_system_name == "Earth System")
@@ -110,6 +110,7 @@ void PlanetarySystem::loadSystem()
         // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(-250, 60, 0)));
         // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 2.0, 0.33, glm::vec3(-250, 80, 0)));
         // m_host = new PlaneteRing("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(-250, 0, 0));
+
     }
     else
     {
@@ -152,7 +153,9 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
     light_src = save_light_src;
 
 }
-
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** NOT CONCERN **************************************************************************/
+/***********************************************************************************************************************************************************************/
 void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview)
 {
     //do nothing and doesn't have
