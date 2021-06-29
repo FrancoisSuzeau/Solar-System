@@ -156,29 +156,23 @@ bool OpenGlSketch::initGL()
 }
 
 /***********************************************************************************************************************************************************************/
-/*************************************************************************************** mainLoop **********************************************************************/
+/*************************************************************************************** startLoop *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void OpenGlSketch::mainLoop()
+void OpenGlSketch::startLoop()
 {
     /************************************************* Variables ********************************************************/
     StartScreen *startScreen = new StartScreen();
     Camera      *startScreen_cam = new Camera(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0), 0.5, 0.9);
     //bool        load_complete(false);
 
-    SystemCreator *solar_system = new SolarSystemCreator();
+    aud = new Audio();
+
+    solar_system = new SolarSystemCreator();
 
     Square      *square = new Square(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag");
 
     int nb_loaded(0);
 
-    Audio aud;
-    bool pause(false); 
-    int change(0);
-
-    unsigned int frame_rate(1000 / 50);
-    Uint32 start_loop(0), end_loop(0), time_past(0);
-
-    Camera	*camera = new Camera(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
     mat4 projection;
     mat4 model_view;
     mat4 save_model_view;     
@@ -186,14 +180,10 @@ void OpenGlSketch::mainLoop()
 
     m_input.displayPointer(false);
     m_input.capturePointer(true);
-    
+
     //initialize modelview and projection matrix
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
     model_view = mat4(1.0);
-
-    //load and play the music
-    aud.loadMusic();
-    aud.playMusic();
 
     //loading system and making start screen
     while(nb_loaded < 9)
@@ -240,6 +230,35 @@ void OpenGlSketch::mainLoop()
     delete startScreen_cam;
     delete square;
 
+}
+
+/***********************************************************************************************************************************************************************/
+/*************************************************************************************** mainLoop **********************************************************************/
+/***********************************************************************************************************************************************************************/
+void OpenGlSketch::mainLoop()
+{
+    /************************************************* Variables ********************************************************/
+    //Audio aud;
+    bool pause(false); 
+    int change(0);
+
+    unsigned int frame_rate(1000 / 50);
+    Uint32 start_loop(0), end_loop(0), time_past(0);
+
+    Camera	*camera = new Camera(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
+    mat4 projection;
+    mat4 model_view;
+    mat4 save_model_view;     
+    //===================================================================================================================
+    
+    //initialize modelview and projection matrix
+    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
+    model_view = mat4(1.0);
+
+    //load and play the music
+    aud->loadMusic();
+    aud->playMusic();
+
     while(!m_input.getTerminate())
     {   
         start_loop = SDL_GetTicks();
@@ -267,8 +286,8 @@ void OpenGlSketch::mainLoop()
         }
         //===================================================================================================================
 
-        aud.volume(change);
-        aud.pause(pause);
+        aud->volume(change);
+        aud->pause(pause);
         pause = false;
         change = 0;
 
@@ -314,4 +333,5 @@ void OpenGlSketch::mainLoop()
 
     delete solar_system;
     delete camera;
+    delete aud;
 }

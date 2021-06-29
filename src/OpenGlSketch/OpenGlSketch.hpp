@@ -51,11 +51,14 @@ PURPOSE : header of the OpenGlSketch class
                 int             m_window_width;
                 int             m_window_height;
 
-                Input m_input;
+                Input           m_input;
+                Audio           *aud;
                 
                 SDL_Window      *m_window;
                 SDL_GLContext   m_openGL_context;
                 GLenum          m_initiGLEW;
+
+                SystemCreator *solar_system;
 
                 
 
@@ -69,6 +72,7 @@ PURPOSE : header of the OpenGlSketch class
                 bool    initWindow();
                 bool    initGL();
                 void    mainLoop();
+                void    startLoop();
 
         };
 
