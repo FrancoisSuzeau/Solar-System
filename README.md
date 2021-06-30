@@ -27,13 +27,23 @@ The initial position of the view matrix (camera) is on the ````150, 150, 150````
 
 Make sure that the executable file is in the ````bin```` directory.
 
+## ====================== Added features ======================
+
+### 29/06/2021
+
++ Distance light interaction (the more an object is distant of the sun, the less it receive light) : for now set to 0.35 for linear therm and 0.44 for quadratic therm
++ Add a factory method for system (planetary system and solar system) and another factory method for planetes. This update comes with the following features
++ Add a load screen with title and a loading bar which fills up when an object is loaded
++ Fix some bugs and memory leaks
++ Now linkable object files (*.o) will be ignored by git
+
+
 ## More in coming ...
 
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
 For the moment I am working on this following aspect :
 + Implements atmosphere effects (like red shadowing on the frontier of the dark side of a planets)
-+ Implements distance light interaction (the more an object is distant of the sun, the less it receive light)
 
 With this feature, I will follow with distant objects behaviour. OpenGL let you to have the possibility to fixe perspective aspect. When you move backward, after a while, the object will disappear and his name will appear. With that I will make sur that his name is always orientate according to the camera.
 
