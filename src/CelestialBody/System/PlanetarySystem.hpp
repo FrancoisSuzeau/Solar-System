@@ -39,6 +39,9 @@ PURPOSE : header of the virtual PlanetarySystem class
                 std::vector<PlaneteCreator*>            m_moons_creator;
                 PlaneteCreator                          *m_host_creator;
 
+                Text            m_name_renderer;
+
+
                 // std::vector<SimplePlanete*>      m_moons;
                 // SimplePlanete                   *m_host;
                 
@@ -54,6 +57,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 void loadSystem(int count) override;
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
                 void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview) override;
+                void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
 
         };
 

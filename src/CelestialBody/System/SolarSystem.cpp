@@ -231,3 +231,44 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
     modelview = save;
 
 }
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** displayName **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+{
+    glm::mat4 save = modelview;
+
+    for (int i(0); i < m_planetarySYS_count; i++)
+    {
+        m_planetary_system[i]->displayName(projection, modelview, camPos);
+
+        modelview = save;
+    }
+
+    modelview = save;
+
+    
+
+    for (int i(0); i < m_simple_planete_count; i++)
+    {
+
+        glm::vec3 abs_cam  = glm::vec3(abs(camPos[0]), abs(camPos[1]), abs(camPos[2]));
+        glm::vec3 pos_host = m_planete_creator[i]->getPostion();
+        glm::vec3 abs_pos = glm::vec3(abs(pos_host[0]), abs(pos_host[1]), abs(pos_host[2]));
+
+        glm::vec3 dist = abs_cam - abs_pos;
+        glm::vec3 abs_dist = glm::vec3(abs(dist[0]), abs(dist[1]), abs(dist[2]));
+
+        if( (abs_dist[0] >= 10) && (abs_dist[1] >= 10) && (abs_dist[2] >= 10) )
+        {
+            m_planete_creator[i]->displayName(projection, modelview);
+        }
+        
+
+        modelview = save;
+    }
+
+    modelview = save;
+
+}

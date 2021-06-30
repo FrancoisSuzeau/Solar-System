@@ -26,7 +26,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) :
 Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"), m_texture_surface(texture),
- m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/font.TTF", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
+ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 {
     m_texture_surface.loadTexture();
     m_name_renderer.loadTTF(m_name);
@@ -107,10 +107,11 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************************* display *******************************************************************************/
+/******************************************************************************* displayName ***************************************************************************/
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview)
 {
+    translateCelestialBody(modelview, m_current_position);
     m_name_renderer.renderText(projection, modelview, m_real_size);
 }
 
@@ -122,9 +123,6 @@ void SimplePlanete::updatePosition(glm::mat4 &projection, glm::mat4 &modelview)
     m_current_position = m_initial_pos;
     //postionning body
     translateCelestialBody(modelview, m_current_position);
-
-    //displaying name of the planete
-    //displayName(projection, modelview);
 
     //making the planete inclinaison
     inclineCelestialBody(modelview, m_inclinaison_angle);
@@ -149,9 +147,6 @@ void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_
     m_current_position = m_initial_pos;
     //postionning body
     translateCelestialBody(light_src, m_current_position);
-
-    //displaying name of the planete
-    //displayName(projection, light_src);
 
     //making the planete inclinaison
     inclineCelestialBody(light_src, m_inclinaison_angle);

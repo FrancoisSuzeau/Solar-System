@@ -317,7 +317,15 @@ void OpenGlSketch::mainLoop()
         //restaure the modelview matrix
         model_view = save_model_view;
 
+        /************************************************* NAME BODY RENDER ********************************************************/
+
+            solar_system->displayName(projection, model_view, camPos);
+
+        //restaure the modelview matrix
+        model_view = save_model_view;
+
         /************************************************* swapping windows ********************************************************/
+        
         //actualising the window
         SDL_GL_SwapWindow(m_window);
 

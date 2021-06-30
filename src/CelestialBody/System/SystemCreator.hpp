@@ -53,6 +53,11 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
+                void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+                {
+                        m_system->displayName(projection, modelview, camPos);
+                }
+
                 void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview)
                 {
                         m_system->displaySkybox(projection, modelview);

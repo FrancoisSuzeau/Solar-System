@@ -19,10 +19,12 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count)
+PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count) : m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 {
     m_system_name = name_system;
     m_companion_count = companion_count;
+
+    m_name_renderer.loadTTF(m_system_name);
 }
 
 PlanetarySystem::PlanetarySystem()
@@ -153,6 +155,44 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
     light_src = save_light_src;
 
 }
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** displayName **************************************************************************/
+/***********************************************************************************************************************************************************************/
+
+void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+{
+    glm::vec3 abs_cam  = glm::vec3(abs(camPos[0]), abs(camPos[1]), abs(camPos[2]));
+    glm::vec3 pos_host = m_host_creator->getPostion();
+    glm::vec3 abs_pos = glm::vec3(abs(pos_host[0]), abs(pos_host[1]), abs(pos_host[2]));
+
+    glm::vec3 dist = abs_cam - abs_pos;
+    glm::vec3 abs_dist = glm::vec3(abs(dist[0]), abs(dist[1]), abs(dist[2]));
+
+    glm::mat4 save = modelview;
+
+    if( (abs_dist[0] >= 10) && (abs_dist[1] >= 10) && (abs_dist[2] >= 10) )
+    {
+        modelview = translate(modelview, pos_host);
+        m_name_renderer.renderText(projection, modelview, 10);
+    }
+
+    
+    //     m_host_creator->displayName(projection, modelview);
+
+    // modelview = save;
+
+    // for (int i(0); i < m_companion_count; i++)
+    // {
+    //     m_moons_creator[i]->displayName(projection, modelview);
+
+    //     modelview = save;
+    // }
+
+    modelview = save;
+
+}
+
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** NOT CONCERN **************************************************************************/
 /***********************************************************************************************************************************************************************/
@@ -160,3 +200,4 @@ void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview)
 {
     //do nothing and doesn't have
 }
+

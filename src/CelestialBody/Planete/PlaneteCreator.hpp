@@ -46,6 +46,11 @@ PURPOSE : header of the virtual PlaneteCreator class
                         return true;
                 }
 
+                void displayName(glm::mat4 &projection, glm::mat4 &modelview)
+                {
+                        m_planete->displayName(projection, modelview);
+                }
+
                 void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
                 {
                         m_planete->display(projection, modelview, light_src, camPos);
@@ -64,6 +69,11 @@ PURPOSE : header of the virtual PlaneteCreator class
                 void updatePosLight(glm::mat4 &projection, glm::mat4 &modelview)
                 {
                         m_planete->updatePositionLight(projection, modelview);
+                }
+
+                vec3 getPostion() const
+                {
+                       return m_planete->getCurrentPos();
                 }
 
 
