@@ -42,7 +42,7 @@ PURPOSE : header of the SimplePlanete class
                 SimplePlanete();
                 ~SimplePlanete();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos);
-                void displayName(glm::mat4 &projection, glm::mat4 &modelview);
+                void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y);
                 void updatePosition(glm::mat4 &projection, glm::mat4 &modelview);
                 void updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src);
                 

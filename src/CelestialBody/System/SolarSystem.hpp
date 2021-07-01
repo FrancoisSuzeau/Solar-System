@@ -27,12 +27,6 @@ PURPOSE : header of the virtual SolarSystem class
         #include "../Planete/AtmoPlaneteCreator.hpp"
         #include "../Planete/SimplePlaneteCreator.hpp"
         #include "../Planete/PlaneteRingCreator.hpp"
-
-        // #include "../Planete/AtmoPlanete.h"
-        // #include "../Planete/SimplePlanete.h"
-        // #include "../Planete/PlaneteRing.h"
-
-
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -44,7 +38,6 @@ PURPOSE : header of the virtual SolarSystem class
                 int                             m_planetarySYS_count;
                 int                             m_simple_planete_count;
                 std::vector<SystemCreator*>     m_planetary_system;
-                // std::vector<SimplePlanete*>     m_simple_planete;
                 Star                            *sun;
                 Skybox                          *skybox;
 

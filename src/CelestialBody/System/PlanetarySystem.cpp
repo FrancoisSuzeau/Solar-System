@@ -57,9 +57,6 @@ void PlanetarySystem::loadSystem(int count)
         m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 2.0, 5.145, glm::vec3(-110, 20, 0));
         m_host_creator = new AtmoPlaneteCreator();
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 5.0, 23.26, glm::vec3(-110, 0, 0));
-
-        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 2.0, 5.145, glm::vec3(-110, 20, 0)));
-        // m_host = new AtmoPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 5.0, 23.26, glm::vec3(-110, 0, 0));
     }
     else if(m_system_name == "Jovian System")
     {
@@ -82,12 +79,6 @@ void PlanetarySystem::loadSystem(int count)
 
         m_host_creator = new SimplePlaneteCreator();
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 14.0, 3.13, glm::vec3(-195, 0, 0));
-
-        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 2.0, 0.469, glm::vec3(-195, 20, 0)));
-        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 2.0, 0.170, glm::vec3(-195, 40, 0)));
-        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 2.0, 0.036, glm::vec3(-195, 60, 0)));
-        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 2.0, 0.187, glm::vec3(-195, 80, 0)));
-        // m_host = new SimplePlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 14.0, 3.13, glm::vec3(-195, 0, 0));
         
     }
     else if(m_system_name == "Saturnian System")
@@ -107,11 +98,6 @@ void PlanetarySystem::loadSystem(int count)
 
         m_host_creator = new PlaneteRingCreator();
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(-250, 0, 0));
-
-        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 2.0, 1.53, glm::vec3(-250, 40, 0)));
-        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(-250, 60, 0)));
-        // m_moons.push_back(new SimplePlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 2.0, 0.33, glm::vec3(-250, 80, 0)));
-        // m_host = new PlaneteRing("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(-250, 0, 0));
 
     }
     else
@@ -162,19 +148,34 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
 void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
 {
-    glm::vec3 abs_cam  = glm::vec3(abs(camPos[0]), abs(camPos[1]), abs(camPos[2]));
+    
     glm::vec3 pos_host = m_host_creator->getPostion();
-    glm::vec3 abs_pos = glm::vec3(abs(pos_host[0]), abs(pos_host[1]), abs(pos_host[2]));
-
-    glm::vec3 dist = abs_cam - abs_pos;
-    glm::vec3 abs_dist = glm::vec3(abs(dist[0]), abs(dist[1]), abs(dist[2]));
-
     glm::mat4 save = modelview;
 
-    if( (abs_dist[0] >= 10) && (abs_dist[1] >= 10) && (abs_dist[2] >= 10) )
+    /*
+        CamPos is the M point in spherical coordinate, so we already have his x, y, z coordinate
+        but this coordinate are relative to the world reference
+        so we add the planete position to the cam position to have the coordinate reference opposite to the planete
+        we only use the parametrical coordinate to find the r radius
+    */
+
+    glm::vec3 host_pos = m_host_creator->getPostion();
+    float size_plan = m_host_creator->getSizePlan();
+
+    double x = camPos[0] - host_pos[0]; //doesn't know why I have to use the reverse value
+    double y = camPos[1] - host_pos[1];
+    double z = camPos[2] - host_pos[2];
+    double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+        
+    double r = std::sqrt(r_squarre);
+
+    float phi = atan(y/x);
+    float theta = acos(z/r);
+
+    if( r >= 100 )
     {
         modelview = translate(modelview, pos_host);
-        m_name_renderer.renderText(projection, modelview, 10);
+        m_name_renderer.renderText(projection, modelview, size_plan, r, phi, theta, y);
     }
 
     

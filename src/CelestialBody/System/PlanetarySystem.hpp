@@ -22,12 +22,6 @@ PURPOSE : header of the virtual PlanetarySystem class
         #include "../Planete/AtmoPlaneteCreator.hpp"
         #include "../Planete/SimplePlaneteCreator.hpp"
         #include "../Planete/PlaneteRingCreator.hpp"
-
-        // #include "../Planete/AtmoPlanete.h"
-        // #include "../Planete/SimplePlanete.h"
-        // #include "../Planete/PlaneteRing.h"
-
-
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -40,10 +34,6 @@ PURPOSE : header of the virtual PlanetarySystem class
                 PlaneteCreator                          *m_host_creator;
 
                 Text            m_name_renderer;
-
-
-                // std::vector<SimplePlanete*>      m_moons;
-                // SimplePlanete                   *m_host;
                 
                 
                 

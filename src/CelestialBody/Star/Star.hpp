@@ -42,7 +42,7 @@ PURPOSE : header of the Star class
                 Star();
                 ~Star();
                 void display(glm::mat4 &projection, glm::mat4 &modelview);
-                void displayName(glm::mat4 &projection, glm::mat4 &modelview);
+                //void displayName(glm::mat4 &projection, glm::mat4 &modelview);
                 void updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation);
                 
                 

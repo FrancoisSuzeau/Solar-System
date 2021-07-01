@@ -39,11 +39,6 @@ SolarSystem::~SolarSystem()
         delete m_planetary_system[i];
     }
 
-    // for (int i(0); i < m_simple_planete_count; i++)
-    // {
-    //     delete m_simple_planete[i];
-    // }
-
     for (int i(0); i < m_simple_planete_count; i++)
     {
         delete m_planete_creator[i];
@@ -118,18 +113,6 @@ void SolarSystem::loadSystem(int count)
         m_planete_creator.push_back(new PlaneteRingCreator());
         m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 7.0, 26.32, glm::vec3(-350.0, 0.0, 0.0));
     }
-
-    // SimplePlanete *mercury = new SimplePlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(50.0, 0.0, 0.0));
-    // SimplePlanete *venus = new AtmoPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, 0.0, 0.0));
-    // SimplePlanete *mars = new AtmoPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 4.5, 25.19, glm::vec3(-140, 0, 0));
-    // SimplePlanete *uranus = new PlaneteRing("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 7.0, 97.77, glm::vec3(-300.0, 0.0, 0.0));
-    // SimplePlanete *neptune = new PlaneteRing("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 7.0, 26.32, glm::vec3(-350.0, 0.0, 0.0));
-
-    // m_simple_planete.push_back(mercury);
-    // m_simple_planete.push_back(venus);
-    // m_simple_planete.push_back(mars);
-    // m_simple_planete.push_back(uranus);
-    // m_simple_planete.push_back(neptune);
     //===================================================================================================================
 
 }
@@ -249,20 +232,36 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
     modelview = save;
 
     
+    
 
     for (int i(0); i < m_simple_planete_count; i++)
     {
 
-        glm::vec3 abs_cam  = glm::vec3(abs(camPos[0]), abs(camPos[1]), abs(camPos[2]));
-        glm::vec3 pos_host = m_planete_creator[i]->getPostion();
-        glm::vec3 abs_pos = glm::vec3(abs(pos_host[0]), abs(pos_host[1]), abs(pos_host[2]));
+      /*
+            CamPos is the M point in spherical coordinate, so we already have his x, y, z coordinate
+            but this coordinate are relative to the world reference
+            so we add the planete position to the cam position to have the coordinate reference opposite to the planete
+            we only use the parametrical coordinate to find the r radius
+        */
 
-        glm::vec3 dist = abs_cam - abs_pos;
-        glm::vec3 abs_dist = glm::vec3(abs(dist[0]), abs(dist[1]), abs(dist[2]));
+        glm::vec3 planete_pos = m_planete_creator[i]->getPostion();
+    
 
-        if( (abs_dist[0] >= 10) && (abs_dist[1] >= 10) && (abs_dist[2] >= 10) )
+        float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
+        float y = camPos[1] - planete_pos[1];
+        float z = camPos[2] - planete_pos[2];
+	    
+        
+        float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+        
+        float r = std::sqrt(r_squarre);
+
+        float phi = atan(y/x);
+        float theta = acos(z/r);
+
+        if(r >= 100)
         {
-            m_planete_creator[i]->displayName(projection, modelview);
+            m_planete_creator[i]->displayName(projection, modelview, r, phi, theta, y);
         }
         
 

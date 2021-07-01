@@ -123,10 +123,10 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::displayName(glm::mat4 &projection, glm::mat4 &modelview)
-{
-    m_name_renderer.renderText(projection, modelview, m_real_size);
-}
+// void Star::displayName(glm::mat4 &projection, glm::mat4 &modelview)
+// {
+//     m_name_renderer.renderText(projection, modelview, m_real_size);
+// }
 
 /***********************************************************************************************************************************************************************/
 /**************************************************************************** updatePosition ***************************************************************************/
@@ -135,9 +135,6 @@ void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float con
 {
     //postionning body
     translateCelestialBody(modelview, m_current_position);
-
-    //displaying name of the planete
-    //displayName(projection, modelview);
 
     //making the planete rotation
     rotateCelestialBody(modelview, rotation);

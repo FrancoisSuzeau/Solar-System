@@ -74,6 +74,11 @@ PURPOSE : Interface CelestialBody
                     return m_current_position;
                 }
 
+                float getRealSize() const
+                {
+                    return m_real_size;
+                }
+
                 virtual ~CelestialBody() {}
                 
             

@@ -182,7 +182,7 @@ void OpenGlSketch::startLoop()
     m_input.capturePointer(true);
 
     //initialize modelview and projection matrix
-    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
+    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 100.0);
     model_view = mat4(1.0);
 
     //loading system and making start screen
@@ -219,7 +219,6 @@ void OpenGlSketch::startLoop()
         if(nb_loaded < 9)
         {
             nb_loaded += solar_system->loadSystem(nb_loaded);
-            std::cout << ">> Loaded : " << nb_loaded << std::endl;
         }
         
     }

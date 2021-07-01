@@ -109,10 +109,10 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayName ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview)
+void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y)
 {
     translateCelestialBody(modelview, m_current_position);
-    m_name_renderer.renderText(projection, modelview, m_real_size);
+    m_name_renderer.renderText(projection, modelview, m_real_size, ratio, phi, theta, y);
 }
 
 /***********************************************************************************************************************************************************************/

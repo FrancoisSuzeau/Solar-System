@@ -238,3 +238,18 @@ glm::vec3 Camera::getPosition() const
 {
     return m_position;
 }
+
+glm::vec3 Camera::getOrientation() const
+{
+    return m_orientation;
+}
+
+float Camera::getPhi() const
+{
+    return m_phi;
+}
+
+float Camera::getTheta() const
+{
+    return m_theta;
+}

@@ -154,17 +154,39 @@ SDL_Surface *Text::reversePixels(SDL_Surface *src) const
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ renderText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z)
+void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y)
 {
 	// projection = perspective(70.0, (double)width / height, 1.0, 100.0);
 	// modelview = mat4(1.0);
 
 	/************************************************* positionning text **************************************************************/
-	float size = 4.0;
+	float sizet = 4.0;
+	phi = phi * 180 / M_PI;
+	theta = theta * 180 / M_PI;
+	
 	glm::mat4 save = modelview;
-	modelview = translate(modelview, vec3(0.0, size - 4.0, z + 4.0));
-	modelview = rotate(modelview, 180.0f, vec3(0.0, 1.0, 1.0));
-	modelview = scale(modelview, vec3(size, size+10, 0));
+	modelview = translate(modelview, vec3(0.0, sizet - 4.0, z + 4.0));
+	if((phi < 0) && (y > 0))
+	{
+		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+	}
+	else if( (phi > 0) && (y < 0) )
+	{
+		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+	}
+	else if( (phi > 0) && (y > 0) )
+	{
+		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+	}
+	else if( (phi < 0) && (y < 0) )
+	{
+		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+
+	}
+
+	modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
+	
+	modelview = scale(modelview, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
     //==============================================================================================================================
 
 	//activate shader program

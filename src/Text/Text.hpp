@@ -54,7 +54,7 @@ PURPOSE : header of the Text class
 
                 bool loadTTF(std::string const text);
                 SDL_Surface *reversePixels(SDL_Surface *src) const;
-                void            renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z);
+                void            renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double size, float phi, float theta, float y);
                 void            renderTextStartScreen(glm::mat4 &projection, glm::mat4 &modelview);
                 
         };
