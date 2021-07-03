@@ -50,7 +50,7 @@ AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, floa
     Texture t(tmp);
     m_cloud_texture = t; //no need to load texture because of the overloaded = operator constructor
 
-    m_atmosphere = new Atmosphere(2.2, "../assets/textures/sun_brightness1.png");
+    m_atmosphere = new Atmosphere(2.2, "../assets/textures/sun_flare.png");
     //===================================================================================================================================
     
 }

@@ -141,12 +141,15 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
         glm::mat4 save_light_src = light_src;
 
         sun->updatePosition(projection, modelview, 0.0);
-        sun->display(projection, modelview);
+        sun->updatePositionLight(projection, light_src);
+        sun->display(projection, modelview, light_src, camPos);
         
 
     /************************************************* MERCURY RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
+    light_src = save_light_src;
+
 
         m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[0]->updatePosLight(projection, light_src);

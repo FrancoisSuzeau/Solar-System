@@ -16,4 +16,5 @@ void main(void) {
         // look up the color of the texture image specified by the uniform "texture0"
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
+
 }

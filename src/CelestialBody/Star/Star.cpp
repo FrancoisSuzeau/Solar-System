@@ -74,7 +74,7 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::display(glm::mat4 &projection, glm::mat4 &modelview)
+void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
 {
     //Activate the shader
     glUseProgram(m_shader.getProgramID());
@@ -94,10 +94,13 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview)
         // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
         m_shader.setMat4("modelview", modelview);
         m_shader.setMat4("projection", projection);
+        m_shader.setMat4("light_src", light_src);
         
         //texture variable to shader
         //glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
         m_shader.setTexture("texture0", 0);
+
+        m_shader.setVec3("camPos", camPos);
         
         //active and lock cloudy texture
         glActiveTexture(GL_TEXTURE0);
@@ -141,4 +144,28 @@ void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float con
 
     //scaling on his real size
     scaleCelestialBody(modelview, m_real_size);
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************* updatePositionLight *************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Star::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src)
+{
+    m_current_position = m_initial_pos;
+    //postionning body
+    translateCelestialBody(light_src, m_current_position);
+
+    //making the planete inclinaison
+    inclineCelestialBody(light_src, m_inclinaison_angle);
+
+    //making the planete rotation
+    m_rotation_angle += m_speed_rotation;
+    if(m_rotation_angle >= 360)
+    {
+        m_rotation_angle -= 360;
+    }
+    rotateCelestialBody(light_src, m_rotation_angle);
+
+    //scaling on his real size
+    scaleCelestialBody(light_src, m_real_size);
 }

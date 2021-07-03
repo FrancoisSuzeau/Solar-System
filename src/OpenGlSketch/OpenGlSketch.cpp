@@ -247,7 +247,7 @@ void OpenGlSketch::mainLoop()
     Camera	*camera = new Camera(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
     mat4 projection;
     mat4 model_view;
-    mat4 save_model_view;     
+    mat4 save_model_view; 
     //===================================================================================================================
     
     //initialize modelview and projection matrix
@@ -294,6 +294,7 @@ void OpenGlSketch::mainLoop()
 
         //cleaning the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         
         camera->lookAt(model_view);
         

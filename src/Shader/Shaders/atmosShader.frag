@@ -55,7 +55,7 @@ void main()
     float ambiantStrength = 0.1;
     vec3 ambiant = ambiantStrength * lightColor;
     vec4 objectColor = texture(texture, coordTexture);
-    vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    vec3 result = (diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
 
     ambiant *= mitigation;
     diffuse *= mitigation;
