@@ -121,7 +121,7 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
         
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        m_atmosphere->display(projection, modelview, light_src, camPos);
+        //m_atmosphere->display(projection, modelview, light_src, camPos);
 
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);
