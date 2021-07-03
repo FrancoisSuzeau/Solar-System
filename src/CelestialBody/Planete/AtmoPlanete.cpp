@@ -49,6 +49,8 @@ AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, floa
     }
     Texture t(tmp);
     m_cloud_texture = t; //no need to load texture because of the overloaded = operator constructor
+
+    m_atmosphere = new Atmosphere(2.2, "../assets/textures/sun_brightness1.png");
     //===================================================================================================================================
     
 }
@@ -60,7 +62,7 @@ AtmoPlanete::AtmoPlanete() : SimplePlanete(), m_cloud_texture(), m_oppacity(0)
 
 AtmoPlanete::~AtmoPlanete()
 {
-    
+    delete m_atmosphere;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -118,6 +120,8 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
         
         glBindTexture(GL_TEXTURE_2D, 0);
+
+        m_atmosphere->display(projection, modelview, light_src, camPos);
 
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);
