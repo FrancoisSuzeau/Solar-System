@@ -17,7 +17,6 @@ PURPOSE : header of the AtmoPlanete class
 /********************************************************************* includes *********************************************************************/
 
         #include "SimplePlanete.hpp"
-        #include "../Atmosphere/Atmosphere.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -29,11 +28,6 @@ PURPOSE : header of the AtmoPlanete class
                 
                 Texture         m_cloud_texture;
                 float           m_oppacity;
-
-                Atmosphere      *m_atmosphere;
-        
-
- 
                 
             public:
 

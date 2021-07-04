@@ -33,15 +33,24 @@ PURPOSE : header of the Texture class
                 GLuint          m_id;
                 std::string     m_file_picture;
 
+                //for Color buffer
+                int             m_width;
+                int             m_height;
+                GLenum          m_format;
+                GLenum          m_internal_format;
+                bool            m_empty_texture;
+
                 
             public:
 
                 Texture();
                 Texture& operator=(Texture const &texture_to_copy);
                 Texture(std::string file_image);
+                Texture(int width, int height, GLenum format, GLenum internal_format, bool empty_texture);
                 ~Texture();
 
                 bool loadTexture();
+                void loadEmptyTexture();
                 GLuint getID() const;
                 void setFilePicture(const std::string &file_image);
                 SDL_Surface *pixelsInverter(SDL_Surface *src_img) const;

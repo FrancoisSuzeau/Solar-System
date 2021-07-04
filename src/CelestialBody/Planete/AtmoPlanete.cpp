@@ -49,8 +49,6 @@ AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, floa
     }
     Texture t(tmp);
     m_cloud_texture = t; //no need to load texture because of the overloaded = operator constructor
-
-    m_atmosphere = new Atmosphere(2.2, "../assets/textures/sun_flare.png");
     //===================================================================================================================================
     
 }
@@ -62,7 +60,7 @@ AtmoPlanete::AtmoPlanete() : SimplePlanete(), m_cloud_texture(), m_oppacity(0)
 
 AtmoPlanete::~AtmoPlanete()
 {
-    delete m_atmosphere;
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -102,10 +100,8 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
         //glUniform1f(glGetUniformLocation(m_shader.getProgramID(), "oppacity"), m_oppacity);
         m_shader.setFloat("oppacity", m_oppacity);
 
-        m_shader.setVec3("viewPos", camPos);
-
         //send camera position
-        //m_shader.setVec3()
+        m_shader.setVec3("viewPos", camPos);
         
         //active and lock unit texture 1: surface
         glActiveTexture(GL_TEXTURE1);
@@ -120,8 +116,6 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
         
         glBindTexture(GL_TEXTURE_2D, 0);
-
-        //m_atmosphere->display(projection, modelview, light_src, camPos);
 
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);

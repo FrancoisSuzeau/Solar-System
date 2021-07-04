@@ -163,7 +163,6 @@ void OpenGlSketch::startLoop()
     /************************************************* Variables ********************************************************/
     StartScreen *startScreen = new StartScreen();
     Camera      *startScreen_cam = new Camera(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0), 0.5, 0.9);
-    //bool        load_complete(false);
 
     aud = new Audio();
 
@@ -247,8 +246,13 @@ void OpenGlSketch::mainLoop()
     Camera	*camera = new Camera(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
     mat4 projection;
     mat4 model_view;
-    mat4 save_model_view; 
+    mat4 save_model_view;
+    aud = new Audio();
+    solar_system = new SolarSystemCreator();
     //===================================================================================================================
+    
+    m_input.displayPointer(false);
+    m_input.capturePointer(true);
     
     //initialize modelview and projection matrix
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
@@ -257,6 +261,9 @@ void OpenGlSketch::mainLoop()
     //load and play the music
     aud->loadMusic();
     aud->playMusic();
+
+    solar_system->MakingSystem("Solar System", 8);
+    solar_system->loadSystem(1);
 
     while(!m_input.getTerminate())
     {   
@@ -319,7 +326,7 @@ void OpenGlSketch::mainLoop()
 
         /************************************************* NAME BODY RENDER ********************************************************/
 
-            solar_system->displayName(projection, model_view, camPos);
+            //solar_system->displayName(projection, model_view, camPos);
 
         //restaure the modelview matrix
         model_view = save_model_view;

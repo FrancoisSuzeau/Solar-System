@@ -34,15 +34,17 @@ SolarSystem::SolarSystem() : sun()
 
 SolarSystem::~SolarSystem()
 {
-    for (int i(0); i < m_planetarySYS_count; i++)
-    {
-        delete m_planetary_system[i];
-    }
+    // for (int i(0); i < m_planetarySYS_count; i++)
+    // {
+    //     delete m_planetary_system[i];
+    // }
 
-    for (int i(0); i < m_simple_planete_count; i++)
-    {
-        delete m_planete_creator[i];
-    }
+    // for (int i(0); i < m_simple_planete_count; i++)
+    // {
+    //     delete m_planete_creator[i];
+    // }
+
+    delete m_planetary_system[0];
     
     delete skybox;
     delete sun;
@@ -145,24 +147,24 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
         sun->display(projection, modelview, light_src, camPos);
         
 
-    /************************************************* MERCURY RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    // /************************************************* MERCURY RENDER ********************************************************/
+    // //restaure the modelview matrix
+    // modelview = save;
+    // light_src = save_light_src;
 
 
-        m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
-        m_planete_creator[0]->updatePosLight(projection, light_src);
-        m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos);
+    //     m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
+    //     m_planete_creator[0]->updatePosLight(projection, light_src);
+    //     m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos);
 
-    /************************************************* VENUS RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    // /************************************************* VENUS RENDER ********************************************************/
+    // //restaure the modelview matrix
+    // modelview = save;
+    // light_src = save_light_src;
 
-        m_planete_creator[1]->UpdatePositionPlan(projection, modelview);
-        m_planete_creator[1]->updatePosLight(projection, light_src);
-        m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos);
+    //     m_planete_creator[1]->UpdatePositionPlan(projection, modelview);
+    //     m_planete_creator[1]->updatePosLight(projection, light_src);
+    //     m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos);
 
     /************************************************* EARTH RENDER ********************************************************/
     //restaure the modelview matrix
@@ -172,46 +174,46 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
         m_planetary_system[0]->drawSystem(projection, modelview, camPos);
         
 
-    /************************************************* MARS RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    // /************************************************* MARS RENDER ********************************************************/
+    // //restaure the modelview matrix
+    // modelview = save;
+    // light_src = save_light_src;
 
-        m_planete_creator[2]->UpdatePositionPlan(projection, modelview);
-        m_planete_creator[2]->updatePosLight(projection, light_src);
-        m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos);
+    //     m_planete_creator[2]->UpdatePositionPlan(projection, modelview);
+    //     m_planete_creator[2]->updatePosLight(projection, light_src);
+    //     m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos);
 
-    /************************************************* JUPITER RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    // /************************************************* JUPITER RENDER ********************************************************/
+    // //restaure the modelview matrix
+    // modelview = save;
+    // light_src = save_light_src;
 
-        m_planetary_system[1]->drawSystem(projection, modelview, camPos);
+    //     m_planetary_system[1]->drawSystem(projection, modelview, camPos);
         
-    /************************************************* SATURN RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    // /************************************************* SATURN RENDER ********************************************************/
+    // //restaure the modelview matrix
+    // modelview = save;
+    // light_src = save_light_src;
 
-        m_planetary_system[2]->drawSystem(projection, modelview, camPos);
+    //     m_planetary_system[2]->drawSystem(projection, modelview, camPos);
 
-    /************************************************* URANUS RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    // /************************************************* URANUS RENDER ********************************************************/
+    // //restaure the modelview matrix
+    // modelview = save;
+    // light_src = save_light_src;
 
-        m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
-        m_planete_creator[3]->updatePosLight(projection, light_src);
-        m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos);
+    //     m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
+    //     m_planete_creator[3]->updatePosLight(projection, light_src);
+    //     m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos);
 
-    /************************************************* NEPTUNE RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    // /************************************************* NEPTUNE RENDER ********************************************************/
+    // //restaure the modelview matrix
+    // modelview = save;
+    // light_src = save_light_src;
 
-        m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
-        m_planete_creator[4]->updatePosLight(projection, light_src);
-        m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos);
+    //     m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
+    //     m_planete_creator[4]->updatePosLight(projection, light_src);
+    //     m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos);
 
     //restaure the modelview matrix
     modelview = save;

@@ -20,7 +20,7 @@ PURPOSE :   - load an image with SDL2_image
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Texture::Texture(): m_id(0), m_file_picture("")
+Texture::Texture(): m_id(0), m_file_picture(""), m_width(0), m_height(0), m_internal_format(0), m_format(0), m_empty_texture(false)
 {
 
 }
@@ -28,12 +28,35 @@ Texture::Texture(): m_id(0), m_file_picture("")
 Texture& Texture::operator=(Texture const &texture_to_copy)
 {
     m_file_picture = texture_to_copy.m_file_picture;
-    loadTexture();
+
+    m_width = texture_to_copy.m_width;
+    m_height = texture_to_copy.m_height;
+    m_format = texture_to_copy.m_format;
+    m_internal_format = texture_to_copy.m_internal_format;
+    m_empty_texture = texture_to_copy.m_empty_texture;
+
+    if(m_empty_texture && glIsTexture(texture_to_copy.m_id) == GL_TRUE)
+    {
+        loadEmptyTexture();
+    }
+    else //if (glIsTexture(texture_to_copy.m_id) == GL_TRUE)
+    {
+        loadTexture();
+    }
+
+    //loadTexture();
+    
 
     return *this;
 }
 
-Texture::Texture(std::string file_image) : m_id(0), m_file_picture(file_image)
+Texture::Texture(std::string file_image) : m_id(0), m_file_picture(file_image), m_width(0), m_height(0), m_format(0), m_internal_format(0), m_empty_texture(false)
+{
+
+}
+
+Texture::Texture(int width, int height, GLenum format, GLenum internal_format, bool empty_texture):
+m_id(0), m_file_picture(""), m_width(width), m_height(height), m_format(format), m_internal_format(internal_format), m_empty_texture(empty_texture)
 {
 
 }
@@ -43,7 +66,36 @@ Texture::~Texture()
     glDeleteTextures(1, &m_id);
 }
 
+/***********************************************************************************************************************************************************************/
+/***************************************************************************** loadEmptyTexture ************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Texture::loadEmptyTexture()
+{
+    /************************************************* destroying potential ancient texture ********************************************************/
+    if(glIsTexture(m_id) == GL_TRUE)
+    {
+        glDeleteTextures(1, &m_id);
+    }
+    //===================================================================================================================
 
+    /************************************************* generate id ********************************************************/
+    glGenTextures(1, &m_id);
+    //===================================================================================================================
+
+    // lock texture
+    glBindTexture(GL_TEXTURE_2D, m_id);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, GL_UNSIGNED_BYTE, 0);
+
+        /************************************************* applying layer ********************************************************/
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        //=====================================================================================================================
+
+    //unlock texture
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+}
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* loadTexture *************************************************************************/
