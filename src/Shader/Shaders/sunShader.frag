@@ -2,6 +2,8 @@
 varying vec4 texCoords;
 
 uniform sampler2D texture0;
+uniform int Width;
+uniform float odw;
 
 void main(void) {
     vec2 longitudeLatitude = vec2((atan(texCoords.y, texCoords.x) / 3.1415926 + 1.0) * 0.5,
