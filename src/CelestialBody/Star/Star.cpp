@@ -26,7 +26,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Star::Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture, std::string const name, float const real_size) :
 Sphere(radius, longSegs, latSegs, "../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag"), m_cloud_texture(texture),
- m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/font.TTF", "../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag"), m_light_vao(0)
+m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"), m_light_vao(0)
 {
     m_cloud_texture.loadTexture();
     m_name_renderer.loadTTF(m_name);
@@ -59,6 +59,7 @@ Sphere(radius, longSegs, latSegs, "../src/Shader/Shaders/sunShader.vert", "../sr
     //unlock VAO
     glBindVertexArray(0);
     //===================================================================================================================
+
 }
 
 Star::Star()
