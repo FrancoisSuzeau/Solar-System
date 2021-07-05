@@ -28,6 +28,7 @@ PURPOSE : header of the AtmoPlanete class
                 
                 Texture         m_cloud_texture;
                 float           m_oppacity;
+                Sphere          m_atmosphere;
                 
             public:
 

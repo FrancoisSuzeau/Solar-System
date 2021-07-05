@@ -9,6 +9,7 @@ in vec2 coordTexture;
 in vec3 Normal;
 in vec3 FragPos;
 uniform vec3 viewPos;
+uniform vec3 atmoColor;
 
 
 // Uniform
@@ -55,7 +56,7 @@ void main()
     float ambiantStrength = 0.1;
     vec3 ambiant = ambiantStrength * lightColor;
     vec4 objectColor = texture(texture, coordTexture);
-    vec3 result = (diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    vec3 result = (diffuse) * atmoColor;
 
     ambiant *= mitigation;
     diffuse *= mitigation;

@@ -46,7 +46,7 @@ void main(void) {
     vec3 ambiant = ambiantStrength * lightColor;
 
     vec4 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity);
-    vec3 result = (ambiant + diffuse) * vec3(119.0/255.0, 181.0/255.0, 254.0/255.0);
+    vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
 
     ambiant *= mitigation;
     diffuse *= mitigation;

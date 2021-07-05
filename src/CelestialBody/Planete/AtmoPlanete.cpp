@@ -24,7 +24,8 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos)
+AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos),
+m_atmosphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/atmosShader.frag")
 {
 
     Shader s("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag");
@@ -36,16 +37,20 @@ AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, floa
     {
         tmp = "../assets/textures/CelestialBody/MarsCloud.png";
         m_oppacity = 0.3;
+        m_shader.setVec3("atmoColor", vec3(255.0/255.0, 127.0/255.0, 0.0));
     }
     else if(m_name == "Earth")
     {
         tmp = "../assets/textures/CelestialBody/CloudMap.jpg";
         m_oppacity = 0.3;
+        m_shader.setVec3("atmoColor", vec3(119.0/255.0, 181.0/255.0, 254.0/255.0));
     }
     else if(m_name == "Venus")
     {
         tmp = "../assets/textures/CelestialBody/VenusCloud.jpg";
         m_oppacity = 0.115;
+        m_shader.setVec3("atmoColor", vec3(255.0/255.0, 255.0/255.0, 224.0/255.0));
+
     }
     Texture t(tmp);
     m_cloud_texture = t; //no need to load texture because of the overloaded = operator constructor
@@ -116,6 +121,8 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
         
         glBindTexture(GL_TEXTURE_2D, 0);
+
+        //m_atmosphere.display(projection, modelview, light_src, camPos);
 
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);
