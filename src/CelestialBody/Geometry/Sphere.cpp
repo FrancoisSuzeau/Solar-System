@@ -211,3 +211,8 @@ void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &lig
 
     glUseProgram(0);
 }
+
+void Sphere::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
+{
+    //do nothing only for child  class
+}

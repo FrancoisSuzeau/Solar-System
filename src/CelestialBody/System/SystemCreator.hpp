@@ -43,7 +43,6 @@ PURPOSE : header of the virtual SystemCreator class
                 bool MakingSystem(std::string name_system, int companion_count) 
                 {
                         m_system = this->FactoryMethod(name_system, companion_count);
-                        //m_system->loadSystem();
                         return true;
                 }
 
@@ -53,9 +52,14 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
-                void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+                void drawName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
                 {
                         m_system->displayName(projection, modelview, camPos);
+                }
+
+                void drawAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+                {
+                        m_system->displayAtmo(projection, modelview, camPos);
                 }
 
                 void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview)

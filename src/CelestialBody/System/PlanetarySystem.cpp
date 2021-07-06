@@ -19,7 +19,8 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count) : m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
+PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count) : m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_atmosphere(4, "Earth", "../assets/textures/atmosphere.png")
 {
     m_system_name = name_system;
     m_companion_count = companion_count;
@@ -113,10 +114,10 @@ void PlanetarySystem::loadSystem(int count)
 void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
 {
     glm::mat4 save = modelview;
-    glm::vec3 m_position(0.1, 0.0, 0.0);
-    glm::vec3 m_target_point(0.0, 0.0, 0.0);
-    glm::vec3 m_vertical_axe(0.0, 0.0, 1.0);
-    glm::mat4 light_src = glm::lookAt(m_position, m_target_point, m_vertical_axe);
+    glm::vec3 position(0.1, 0.0, 0.0);
+    glm::vec3 target_point(0.0, 0.0, 0.0);
+    glm::vec3 vertical_axe(0.0, 0.0, 1.0);
+    glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
     glm::mat4 save_light_src = light_src;
 
     m_host_creator->UpdatePositionPlan(projection, modelview);
@@ -148,8 +149,6 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
 void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
 {
-    
-    glm::vec3 pos_host = m_host_creator->getPostion();
     glm::mat4 save = modelview;
 
     /*
@@ -174,7 +173,7 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 
     if( r >= 100 )
     {
-        modelview = translate(modelview, pos_host);
+        modelview = translate(modelview, host_pos);
         m_name_renderer.renderText(projection, modelview, size_plan, r, phi, theta, y);
     }
 
@@ -192,6 +191,26 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 
     modelview = save;
 
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** displayAtmo **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+{
+    glm::mat4 save = modelview;
+    glm::vec3 position(0.1, 0.0, 0.0);
+    glm::vec3 target_point(0.0, 0.0, 0.0);
+    glm::vec3 vertical_axe(0.0, 0.0, 1.0);
+    glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
+    glm::mat4 save_light_src = light_src;
+
+    glm::vec3 host_pos = m_host_creator->getPostion();
+
+    m_host_creator->drawAtmoPlanete(projection, modelview, 0, 0, 0, light_src, camPos);
+
+    modelview = save;
+    light_src = save_light_src;
 }
 
 /***********************************************************************************************************************************************************************/

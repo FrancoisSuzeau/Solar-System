@@ -46,6 +46,8 @@ PURPOSE : header of the virtual System class
                 virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) = 0;
                 virtual void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview) = 0;
                 virtual void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) = 0;
+                virtual void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) = 0;
+                
         };
 
 

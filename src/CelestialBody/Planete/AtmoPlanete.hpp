@@ -17,6 +17,8 @@ PURPOSE : header of the AtmoPlanete class
 /********************************************************************* includes *********************************************************************/
 
         #include "SimplePlanete.hpp"
+        
+        
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -28,7 +30,8 @@ PURPOSE : header of the AtmoPlanete class
                 
                 Texture         m_cloud_texture;
                 float           m_oppacity;
-                Sphere          m_atmosphere;
+                
+                
                 
             public:
 
@@ -36,6 +39,7 @@ PURPOSE : header of the AtmoPlanete class
                 AtmoPlanete();
                 ~AtmoPlanete();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos);
+                void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos);
 
         };
 

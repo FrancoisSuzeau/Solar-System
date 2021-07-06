@@ -19,6 +19,7 @@ PURPOSE : header of the SimplePlanete class
         #include "../Geometry/Sphere.hpp"
         #include "../../Texture/Texture.hpp"
         #include "../../Text/Text.hpp"
+        #include "../../Atmosphere/Atmosphere.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -32,7 +33,7 @@ PURPOSE : header of the SimplePlanete class
                 std::string     m_name;
                 Text            m_name_renderer;
                 int             nb_moon;
-        
+                Atmosphere      m_atmosphere;
 
  
                 
@@ -45,6 +46,8 @@ PURPOSE : header of the SimplePlanete class
                 void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y);
                 void updatePosition(glm::mat4 &projection, glm::mat4 &modelview);
                 void updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src);
+                void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos);
+                std::string getName() const;
                 
         };
 

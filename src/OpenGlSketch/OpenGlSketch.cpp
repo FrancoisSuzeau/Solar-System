@@ -264,6 +264,7 @@ void OpenGlSketch::mainLoop()
 
     solar_system->MakingSystem("Solar System", 8);
     solar_system->loadSystem(1);
+    solar_system->loadSystem(5);
 
     while(!m_input.getTerminate())
     {   
@@ -326,7 +327,14 @@ void OpenGlSketch::mainLoop()
 
         /************************************************* NAME BODY RENDER ********************************************************/
 
-            //solar_system->displayName(projection, model_view, camPos);
+            solar_system->drawName(projection, model_view, camPos);
+
+        //restaure the modelview matrix
+        model_view = save_model_view;
+
+        /************************************************* ATMOSPHERE RENDER ********************************************************/
+
+            solar_system->drawAtmo(projection, model_view, camPos);
 
         //restaure the modelview matrix
         model_view = save_model_view;

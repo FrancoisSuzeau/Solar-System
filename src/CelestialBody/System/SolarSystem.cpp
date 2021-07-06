@@ -45,6 +45,8 @@ SolarSystem::~SolarSystem()
     // }
 
     delete m_planetary_system[0];
+
+    delete m_planete_creator[0];
     
     delete skybox;
     delete sun;
@@ -96,7 +98,7 @@ void SolarSystem::loadSystem(int count)
     if(count == 5)
     {
         m_planete_creator.push_back(new AtmoPlaneteCreator());
-        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, 0.0, 0.0));
+        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, 0.0, 0.0));
     }
 
     if(count == 6)
@@ -157,14 +159,14 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
     //     m_planete_creator[0]->updatePosLight(projection, light_src);
     //     m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos);
 
-    // /************************************************* VENUS RENDER ********************************************************/
-    // //restaure the modelview matrix
-    // modelview = save;
-    // light_src = save_light_src;
+    /************************************************* VENUS RENDER ********************************************************/
+    //restaure the modelview matrix
+    modelview = save;
+    light_src = save_light_src;
 
-    //     m_planete_creator[1]->UpdatePositionPlan(projection, modelview);
-    //     m_planete_creator[1]->updatePosLight(projection, light_src);
-    //     m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
+        m_planete_creator[0]->updatePosLight(projection, light_src);
+        m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos);
 
     /************************************************* EARTH RENDER ********************************************************/
     //restaure the modelview matrix
@@ -227,17 +229,17 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
 {
     glm::mat4 save = modelview;
 
-    for (int i(0); i < m_planetarySYS_count; i++)
-    {
-        m_planetary_system[i]->displayName(projection, modelview, camPos);
+    // for (int i(0); i < m_planetarySYS_count; i++)
+    // {
+    //     m_planetary_system[i]->displayName(projection, modelview, camPos);
 
-        modelview = save;
-    }
+    //     modelview = save;
+    // }
 
+    
+    m_planetary_system[0]->drawName(projection, modelview, camPos);
     modelview = save;
 
-    
-    
 
     for (int i(0); i < m_simple_planete_count; i++)
     {
@@ -249,7 +251,7 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
             we only use the parametrical coordinate to find the r radius
         */
 
-        glm::vec3 planete_pos = m_planete_creator[i]->getPostion();
+        glm::vec3 planete_pos = m_planete_creator[0]->getPostion();
     
 
         float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
@@ -266,7 +268,7 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
         if(r >= 100)
         {
-            m_planete_creator[i]->displayName(projection, modelview, r, phi, theta, y);
+            m_planete_creator[0]->displayName(projection, modelview, r, phi, theta, y);
         }
         
 
@@ -275,4 +277,22 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     modelview = save;
 
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** displayAtmo **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+{
+    glm::mat4 save = modelview;
+
+    glm::vec3 m_position = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
+    glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
+    glm::mat4 save_light_src = light_src;
+
+    m_planetary_system[0]->drawAtmo(projection, modelview, camPos);
+    m_planete_creator[0]->drawAtmoPlanete(projection, modelview, 0, 0, 0, light_src, camPos);
+
+    modelview = save;
+    light_src = save_light_src;
 }

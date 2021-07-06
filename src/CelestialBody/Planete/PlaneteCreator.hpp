@@ -24,6 +24,7 @@ PURPOSE : header of the virtual PlaneteCreator class
         #include <glm/gtc/type_ptr.hpp>
 
         #include "SimplePlanete.hpp"
+        #include "AtmoPlanete.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -51,15 +52,15 @@ PURPOSE : header of the virtual PlaneteCreator class
                         m_planete->displayName(projection, modelview, ratio, phi, theta, y);
                 }
 
+                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
+                {
+                       m_planete->displayAtmo(projection, modelview, 0, 0, 0, light_src, camPos);
+                }
+
                 void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
                 {
                         m_planete->display(projection, modelview, light_src, camPos);
                 }
-
-                // void drawNamePlan(glm::mat4 &projection, glm::mat4 &modelview)
-                // {
-                //         m_planete->displayName(projection, modelview);
-                // }
 
                 void UpdatePositionPlan(glm::mat4 &projection, glm::mat4 &modelview)
                 {

@@ -26,18 +26,31 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) :
 Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"), m_texture_surface(texture),
- m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
+ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+ m_atmosphere(4, name, "../assets/textures/atmosphere.png")
 {
     m_texture_surface.loadTexture();
     m_name_renderer.loadTTF(m_name);
     m_inclinaison_angle = inclinaison_angle;
     m_real_size = real_size;
     m_initial_pos = initial_pos;
+    m_current_position = m_initial_pos;
     m_rotation_angle = 0.0;
     m_inclinaison_angle = inclinaison_angle;
     m_speed_rotation = 0.1;
 
-    
+    // if(m_name == "Mars")
+    // {
+        
+    // }
+    // else if(m_name == "Earth")
+    // {
+    //     m_atmosphere = new Atmosphere(4, "Earth", "../assets/textures/atmosphere.png");
+    // }
+    // else if(m_name == "Venus")
+    // {
+    //     m_atmosphere = new Atmosphere(4, "Venus", "../assets/textures/atmosphere.png");
+    // }
 }
 
 SimplePlanete::SimplePlanete(): Sphere()
@@ -47,7 +60,7 @@ SimplePlanete::SimplePlanete(): Sphere()
 
 SimplePlanete::~SimplePlanete()
 {
-    
+   
 }
 
 /***********************************************************************************************************************************************************************/
@@ -84,8 +97,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
         m_shader.setTexture("texture0", 0);
 
         m_shader.setVec3("viewPos", camPos);
-        
-        //active and lock cloudy texture
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
         
@@ -94,7 +106,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
 
         
         glBindTexture(GL_TEXTURE_2D, 0);
-
+        std::cout << ">> display for " << m_name << std::endl;
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -161,4 +173,20 @@ void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_
 
     //scaling on his real size
     scaleCelestialBody(light_src, m_real_size);
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************* displayAtmo ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
+{
+    std::cout << "atmo in simple planete for " << m_name << std::endl;
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************** getName ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+std::string SimplePlanete::getName() const
+{
+    return m_name;
 }

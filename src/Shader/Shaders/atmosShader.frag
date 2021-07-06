@@ -53,10 +53,10 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
     vec3 specular = specularStrength * spec * lightColor;
 
-    float ambiantStrength = 0.1;
+    float ambiantStrength = 0.05;
     vec3 ambiant = ambiantStrength * lightColor;
     vec4 objectColor = texture(texture, coordTexture);
-    vec3 result = (diffuse) * atmoColor;
+    vec3 result = (ambiant + diffuse) * atmoColor;
 
     ambiant *= mitigation;
     diffuse *= mitigation;
