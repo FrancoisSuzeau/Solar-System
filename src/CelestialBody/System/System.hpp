@@ -25,7 +25,7 @@ PURPOSE : header of the virtual System class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        
+        #include "../../FrameBuffer/FrameBuffer.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 

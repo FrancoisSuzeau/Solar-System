@@ -19,13 +19,13 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count) : m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_atmosphere(4, "Earth", "../assets/textures/atmosphere.png")
+PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count) : m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 {
     m_system_name = name_system;
     m_companion_count = companion_count;
 
     m_name_renderer.loadTTF(m_system_name);
+
 }
 
 PlanetarySystem::PlanetarySystem()
@@ -41,6 +41,11 @@ PlanetarySystem::~PlanetarySystem()
     }
 
     delete m_host_creator;
+
+    if(m_system_name == "Earth System")
+    {
+        delete m_atmosphere;
+    }
     
 }
 
@@ -58,6 +63,8 @@ void PlanetarySystem::loadSystem(int count)
         m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 2.0, 5.145, glm::vec3(-110, 20, 0));
         m_host_creator = new AtmoPlaneteCreator();
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 5.0, 23.26, glm::vec3(-110, 0, 0));
+
+        m_atmosphere = new Atmosphere(10.7, "Earth", "../assets/textures/atmosphere.png");
     }
     else if(m_system_name == "Jovian System")
     {
@@ -203,11 +210,25 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
     glm::vec3 target_point(0.0, 0.0, 0.0);
     glm::vec3 vertical_axe(0.0, 0.0, 1.0);
     glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
+    m_host_creator->updateAtmoInter(projection, light_src);
     glm::mat4 save_light_src = light_src;
 
     glm::vec3 host_pos = m_host_creator->getPostion();
 
-    m_host_creator->drawAtmoPlanete(projection, modelview, 0, 0, 0, light_src, camPos);
+    double x = camPos[0] - host_pos[0]; //doesn't know why I have to use the reverse value
+    double y = camPos[1] - host_pos[1];
+    double z = camPos[2] - host_pos[2];
+    double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+        
+    double r = std::sqrt(r_squarre);
+
+    float phi = atan(y/x);
+    float theta = acos(z/r);
+
+    glm::vec3 cameraPos = vec3(x, y, z);
+
+    modelview = translate(modelview, host_pos);
+    m_atmosphere->display(projection, modelview, phi, theta, cameraPos, light_src, camPos);
 
     modelview = save;
     light_src = save_light_src;

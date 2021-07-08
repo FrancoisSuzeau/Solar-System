@@ -20,7 +20,7 @@ void main(void) {
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
     vec3 lightColor = {1.0, 1.0, 1.0};
-    vec3 lightPos = {1.0f, 0.0f, 0.0f};
+    vec3 lightPos = {0.1f, 0.0f, 0.0f};
     
     //mitigation
     float lightConst = 1.0f;

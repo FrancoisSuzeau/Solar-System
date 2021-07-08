@@ -26,7 +26,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) :
 Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"), m_texture_surface(texture),
- m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
+m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 {
     m_texture_surface.loadTexture();
     m_name_renderer.loadTTF(m_name);
@@ -40,7 +40,7 @@ Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Sh
 
     if( (m_name == "Earth") || (m_name == "Mars") || (m_name == "Venus") )
     {
-        m_atmosphere = new Atmosphere(2.2, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(10.7, m_name, "../assets/textures/atmosphere.png");
     }
 }
 
@@ -167,11 +167,28 @@ void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_
 }
 
 /***********************************************************************************************************************************************************************/
+/*************************************************************************** updateAtmoInter ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SimplePlanete::updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
+{
+    m_current_position = m_initial_pos;
+    //postionning body
+    translateCelestialBody(light_src, m_current_position);
+
+    //making the planete inclinaison
+    //inclineCelestialBody(light_src, m_inclinaison_angle);
+
+    //scaling on his real size
+    scaleCelestialBody(light_src, m_real_size-6);
+}
+
+/***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
+void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos)
 {
-    std::cout << "atmo in simple planete for " << m_name << std::endl;
+    translateCelestialBody(modelview, m_current_position);
+    m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos);
 }
 
 /***********************************************************************************************************************************************************************/

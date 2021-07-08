@@ -36,7 +36,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 PlaneteCreator                          *m_host_creator;
 
                 Text            m_name_renderer;
-                Atmosphere      m_atmosphere;
+                Atmosphere      *m_atmosphere;
 
                 
                 

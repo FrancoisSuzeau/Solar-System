@@ -1,4 +1,4 @@
-#version 150 core
+#version 330 core
 
 attribute vec3 in_Vertex;
 varying vec4 texCoords;

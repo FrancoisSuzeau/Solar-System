@@ -1,7 +1,10 @@
-#version 150 core
+#version 330 core
 varying vec4 texCoords;
 
 uniform sampler2D texture0;
+
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 Bright_color;
 
 void main(void) {
     vec2 longitudeLatitude = vec2((atan(texCoords.y, texCoords.x) / 3.1415926 + 1.0) * 0.5,
@@ -11,7 +14,7 @@ void main(void) {
 
     //gl_FragColor = texture(texture0, longitudeLatitude);
     
-    gl_FragColor = vec4(1.0);
+    FragColor = vec4(1.0);
     
         // look up the color of the texture image specified by the uniform "texture0"
         // at the position specified by "longitudeLatitude.x" and

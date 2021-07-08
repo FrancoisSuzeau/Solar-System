@@ -137,30 +137,36 @@ void Atmosphere::load()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayCrate **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
+void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos)
 {
     /************************************************* positionning atmosphere **************************************************************/
 	phi = phi * 180 / M_PI;
 	theta = theta * 180 / M_PI;
-	glm::mat4 save = modelview;
-	// if((phi < 0) && (y > 0))
-	// {
-	// 	modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	// }
-	// else if( (phi > 0) && (y < 0) )
-	// {
-	// 	modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	// }
-	// else if( (phi > 0) && (y > 0) )
-	// {
-	// 	modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	// }
-	// else if( (phi < 0) && (y < 0) )
-	// {
-	// 	modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	// }
 
-	// modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
+    // std::cout << ">> y = " << camPosUpd[1] << std::endl;
+    // std::cout << ">> phi = " << phi << std::endl;
+    // std::cout << ">> theta = " << theta << std::endl;
+
+	glm::mat4 save = modelview;
+	if((phi < 0) && (camPosUpd[1] > 0))
+	{
+		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+	}
+	else if( (phi > 0) && (camPosUpd[1] < 0) )
+	{
+		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+	}
+	else if( (phi > 0) && (camPosUpd[1] > 0) )
+	{
+		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+	}
+	else if( (phi < 0) && (camPosUpd[1] < 0) )
+	{
+		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+	}
+
+    modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
+	
     //==============================================================================================================================
     //Activate the shader
     glUseProgram(m_shader.getProgramID());
@@ -178,6 +184,11 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi,
 
         m_shader.setVec3("viewPos", camPos);
         m_shader.setVec3("atmoColor", m_color_atmo);
+
+        m_shader.setVec3("camPosUpd", camPosUpd);
+
+        m_shader.setFloat("phi", phi);
+        m_shader.setFloat("theta", theta);
 
         //lock texture
         glBindTexture(GL_TEXTURE_2D, m_texture.getID());

@@ -29,6 +29,8 @@ PURPOSE : header of the Skybox class
         #include <vector>
 
         #include "../../Shader/Shader.hpp"
+        #include "../../FrameBuffer/FrameBuffer.hpp"
+
 
         
 

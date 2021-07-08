@@ -52,9 +52,9 @@ PURPOSE : header of the virtual PlaneteCreator class
                         m_planete->displayName(projection, modelview, ratio, phi, theta, y);
                 }
 
-                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
+                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos)
                 {
-                       m_planete->displayAtmo(projection, modelview, 0, 0, 0, light_src, camPos);
+                       m_planete->displayAtmo(projection, modelview, phi, theta, camPosUpd, light_src, camPos);
                 }
 
                 void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
@@ -70,6 +70,11 @@ PURPOSE : header of the virtual PlaneteCreator class
                 void updatePosLight(glm::mat4 &projection, glm::mat4 &modelview)
                 {
                         m_planete->updatePositionLight(projection, modelview);
+                }
+
+                void updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
+                {
+                        m_planete->updateAtmoInter(projection, light_src);
                 }
 
                 vec3 getPostion() const

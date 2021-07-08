@@ -36,8 +36,11 @@ PURPOSE : header of the OpenGlSketch class
         #include "../Audio/Audio.hpp"
         #include "../Camera/Camera.hpp"
         #include "../StartScreen/StartScreen.hpp"
+        #include "../FrameBuffer/FrameBuffer.hpp"
 
         #include "../CelestialBody/Geometry/Square.hpp"
+
+        #include "../CelestialBody/Star/Star.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -58,7 +61,13 @@ PURPOSE : header of the OpenGlSketch class
                 SDL_GLContext   m_openGL_context;
                 GLenum          m_initiGLEW;
 
-                SystemCreator *solar_system;
+                SystemCreator   *solar_system;
+
+                FrameBuffer     *m_framebuffer;
+                Shader          *m_screenShader;
+
+                float           *m_screen_vertices;
+                unsigned int quadVAO, quadVBO;
 
                 
 
@@ -73,6 +82,8 @@ PURPOSE : header of the OpenGlSketch class
                 bool    initGL();
                 void    mainLoop();
                 void    startLoop();
+
+                void loadScreenVert();
 
         };
 

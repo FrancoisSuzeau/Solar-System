@@ -77,6 +77,7 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
 {
+    
     //Activate the shader
     glUseProgram(m_shader.getProgramID());
 

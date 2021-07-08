@@ -288,11 +288,34 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     glm::vec3 m_position = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
     glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
+    
+
     glm::mat4 save_light_src = light_src;
 
     
-    m_planetary_system[0]->drawAtmo(projection, modelview, camPos);
-    m_planete_creator[0]->drawAtmoPlanete(projection, modelview, 0, 0, 0, light_src, camPos);
+    //m_planetary_system[0]->drawAtmo(projection, modelview, camPos);
+    modelview = save;
+
+    glm::vec3 planete_pos = m_planete_creator[0]->getPostion();
+    
+
+    float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
+    float y = camPos[1] - planete_pos[1];
+    float z = camPos[2] - planete_pos[2];
+	    
+        
+    float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+        
+    float r = std::sqrt(r_squarre);
+
+    float phi = atan(y/x);
+    float theta = acos(z/r);
+
+    glm::vec3 cameraPos = vec3(x, y, z);
+
+    m_planete_creator[0]->updateAtmoInter(projection, light_src);
+
+    m_planete_creator[0]->drawAtmoPlanete(projection, modelview, phi, theta, cameraPos, light_src, camPos);
 
     modelview = save;
     light_src = save_light_src;

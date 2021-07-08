@@ -46,7 +46,8 @@ PURPOSE : header of the SimplePlanete class
                 void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y);
                 void updatePosition(glm::mat4 &projection, glm::mat4 &modelview);
                 void updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src);
-                void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos);
+                void updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src);
+                void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos);
                 std::string getName() const;
                 
         };

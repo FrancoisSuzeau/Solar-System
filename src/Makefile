@@ -29,7 +29,7 @@ ${EXEC}: ${OBJET}
 # au cas ou .h est modifié
 
 main.o: OpenGlSketch/OpenGlSketch.hpp 
-OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.cpp CelestialBody/Geometry/Square.hpp
+OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.cpp CelestialBody/Geometry/Square.hpp FrameBuffer/FrameBuffer.hpp
 Shader.o: Shader/Shader.hpp
 Input.o: Input/Input.hpp
 Texture.o: Texture/Texture.hpp
@@ -45,7 +45,7 @@ PlaneteRing.o: CelestialBody/Planete/PlaneteRing.hpp CelestialBody/Planete/Simpl
 Text.o: Text/Text.hpp Texture/Texture.hpp Shader/Shader.hpp
 Skybox.o: CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp
 Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp
-PlanetarySystem.o: CelestialBody/System/PlanetarySystem.hpp CelestialBody/System/System.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp
+PlanetarySystem.o: CelestialBody/System/PlanetarySystem.hpp CelestialBody/System/System.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp Atmosphere/Atmosphere.hpp
 SolarSystem.o: CelestialBody/System/SolarSystem/hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp
 #SystemCreator.hpp: CelestialBody/System/System.hpp
 #PlanetarySystemCreator.hpp: CelestialBody/System/SystemCreator.hpp CelestialBody/System/PlanetarySystem.hpp

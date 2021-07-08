@@ -10,9 +10,9 @@ in vec3 Normal;
 in vec3 FragPos;
 uniform vec3 viewPos;
 uniform vec3 atmoColor;
-
-
-// Uniform
+uniform vec3 camPosUpd;
+uniform float phi;
+uniform float theta;
 
 uniform sampler2D texture;
 
@@ -31,7 +31,7 @@ void main()
     //gl_FragColor = texture(texture, coordTexture);
 
     vec3 lightColor = {1.0, 1.0, 1.0};
-    vec3 lightPos = {1.0f, 0.0f, 0.0f};
+    vec3 lightPos = {0.1f, 0.0f, 0.0f};
     
     //mitigation
     float lightConst = 1.0f;
@@ -43,7 +43,17 @@ void main()
     //diffuse light
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
-    float diff = max(dot(norm, lightDir), 0.0);
+
+    float diff;
+    if(camPosUpd[1] < 0)
+    {
+        diff = max(dot(norm, -lightDir), 0.0);
+    }
+    else
+    {
+        diff = max(dot(norm, lightDir), 0.0);
+    }
+
     vec3 diffuse = diff * lightColor;
 
     //specular light
@@ -53,10 +63,30 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
     vec3 specular = specularStrength * spec * lightColor;
 
-    float ambiantStrength = 0.05;
+    //float ambiantStrength = 0.05;
+    float ambiantStrength;
+    if(camPosUpd[1] < 2 && camPosUpd[1] > -2)
+    {
+        ambiantStrength = 0.05 - phi;
+    }
+    else
+    {
+        ambiantStrength = 0.05;
+    }
+
     vec3 ambiant = ambiantStrength * lightColor;
-    vec4 objectColor = texture(texture, coordTexture);
-    vec3 result = (ambiant + diffuse) * atmoColor;
+    //vec4 objectColor = texture(texture, coordTexture);
+    //vec3 result = (ambiant + diffuse) * atmoColor;
+    vec3 result ;
+
+    if(camPosUpd[1] < 3 && camPosUpd[1] > -3)
+    {
+        result = atmoColor;
+    }
+    else
+    {
+        result = (ambiant + diffuse) * atmoColor;
+    }
 
     ambiant *= mitigation;
     diffuse *= mitigation;
