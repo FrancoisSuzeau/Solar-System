@@ -26,8 +26,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) :
 Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"), m_texture_surface(texture),
- m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
- m_atmosphere(4, name, "../assets/textures/atmosphere.png")
+ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 {
     m_texture_surface.loadTexture();
     m_name_renderer.loadTTF(m_name);
@@ -39,18 +38,10 @@ Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Sh
     m_inclinaison_angle = inclinaison_angle;
     m_speed_rotation = 0.1;
 
-    // if(m_name == "Mars")
-    // {
-        
-    // }
-    // else if(m_name == "Earth")
-    // {
-    //     m_atmosphere = new Atmosphere(4, "Earth", "../assets/textures/atmosphere.png");
-    // }
-    // else if(m_name == "Venus")
-    // {
-    //     m_atmosphere = new Atmosphere(4, "Venus", "../assets/textures/atmosphere.png");
-    // }
+    if( (m_name == "Earth") || (m_name == "Mars") || (m_name == "Venus") )
+    {
+        m_atmosphere = new Atmosphere(2.2, m_name, "../assets/textures/atmosphere.png");
+    }
 }
 
 SimplePlanete::SimplePlanete(): Sphere()
@@ -106,7 +97,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
 
         
         glBindTexture(GL_TEXTURE_2D, 0);
-        std::cout << ">> display for " << m_name << std::endl;
+        
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

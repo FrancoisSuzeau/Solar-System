@@ -290,6 +290,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
     glm::mat4 save_light_src = light_src;
 
+    
     m_planetary_system[0]->drawAtmo(projection, modelview, camPos);
     m_planete_creator[0]->drawAtmoPlanete(projection, modelview, 0, 0, 0, light_src, camPos);
 

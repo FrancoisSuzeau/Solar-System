@@ -33,7 +33,7 @@ PURPOSE : header of the SimplePlanete class
                 std::string     m_name;
                 Text            m_name_renderer;
                 int             nb_moon;
-                Atmosphere      m_atmosphere;
+                Atmosphere      *m_atmosphere;
 
  
                 

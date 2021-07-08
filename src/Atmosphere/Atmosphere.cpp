@@ -137,14 +137,12 @@ void Atmosphere::load()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayCrate **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float const z, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
+void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
 {
-    /************************************************* positionning text **************************************************************/
-	// float sizet = 4.0;
-	// phi = phi * 180 / M_PI;
-	// theta = theta * 180 / M_PI;
+    /************************************************* positionning atmosphere **************************************************************/
+	phi = phi * 180 / M_PI;
+	theta = theta * 180 / M_PI;
 	glm::mat4 save = modelview;
-	// modelview = translate(modelview, vec3(0.0, sizet - 4.0, z + 4.0));
 	// if((phi < 0) && (y > 0))
 	// {
 	// 	modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));

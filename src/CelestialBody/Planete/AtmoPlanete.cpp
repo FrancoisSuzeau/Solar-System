@@ -62,7 +62,10 @@ AtmoPlanete::AtmoPlanete() : SimplePlanete(), m_cloud_texture(), m_oppacity(0)
 
 AtmoPlanete::~AtmoPlanete()
 {
-
+    if( (m_name == "Earth") || (m_name == "Mars") || (m_name == "Venus") )
+    {
+        delete m_atmosphere;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -118,7 +121,6 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
         glBindTexture(GL_TEXTURE_2D, 0);
         
-
     /************************************************* unbind VBO and IBO ********************************************************/
     glBindBuffer(GL_ARRAY_BUFFER,         0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -128,13 +130,42 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
     //===================================================================================================================================
 
     glUseProgram(0);
+
+    // /************************************************* display atmosphere ********************************************************/
+    // glm::mat4 save = modelview;
+    // glm::mat4 save_light = light_src;
+
+    // /*
+    //     CamPos is the M point in spherical coordinate, so we already have his x, y, z coordinate
+    //     but this coordinate are relative to the world reference
+    //     so we add the planete position to the cam position to have the coordinate reference opposite to the planete
+    //     we only use the parametrical coordinate to find the r radius
+    // */
+
+    // double x = camPos[0] - m_current_position[0]; //doesn't know why I have to use the reverse value
+    // double y = camPos[1] - m_current_position[1];
+    // double z = camPos[2] - m_current_position[2];
+    // double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+        
+    // double r = std::sqrt(r_squarre);
+
+    // float phi = atan(y/x);
+    // float theta = acos(z/r);
+
+    // m_atmosphere->display(projection, modelview, phi, theta, y, light_src, camPos);
+
+    // modelview = save;
+    // light_src = save;
+    // //===================================================================================================================================
+
+
 }
 
-/***********************************************************************************************************************************************************************/
-/******************************************************************************* displayAtmo ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void AtmoPlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
-{
-    std::cout << "atmo in atmo planete for " << m_name << std::endl;
-    m_atmosphere.display(projection, modelview, 0, 0, 0, 0, light_src, camPos);
-}
+// /***********************************************************************************************************************************************************************/
+// /******************************************************************************* displayAtmo ***************************************************************************/
+// /***********************************************************************************************************************************************************************/
+// void AtmoPlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos)
+// {
+//     std::cout << "atmo in atmo planete for " << m_name << std::endl;
+//     m_atmosphere.display(projection, modelview, 0, 0, 0, 0, light_src, camPos);
+// }
