@@ -75,17 +75,17 @@ void main()
     }
 
     vec3 ambiant = ambiantStrength * lightColor;
-    //vec4 objectColor = texture(texture, coordTexture);
+    vec4 objectColor = texture(texture, coordTexture);
     //vec3 result = (ambiant + diffuse) * atmoColor;
     vec3 result ;
 
     if(camPosUpd[1] < 3 && camPosUpd[1] > -3)
     {
-        result = atmoColor;
+        result = vec3(objectColor.x, objectColor.y, objectColor.z) * atmoColor;
     }
     else
     {
-        result = (ambiant + diffuse) * atmoColor;
+        result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z) * atmoColor;
     }
 
     ambiant *= mitigation;

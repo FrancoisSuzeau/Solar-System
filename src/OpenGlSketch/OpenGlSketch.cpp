@@ -183,6 +183,10 @@ void OpenGlSketch::loadScreenVert()
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(quadVAO);
+
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -267,8 +271,9 @@ void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
     //Audio aud;
-    bool pause(false); 
-    int change(0);
+    // bool pause(false); 
+    // int change(0);
+    // aud = new Audio();
 
     unsigned int frame_rate(1000 / 50);
     Uint32 start_loop(0), end_loop(0), time_past(0);
@@ -278,29 +283,20 @@ void OpenGlSketch::mainLoop()
     mat4 projection;
     mat4 model_view;
     mat4 save_model_view;
-
-    aud = new Audio();
-
+    
     solar_system = new SolarSystemCreator();
-
-    m_framebuffer = new FrameBuffer(m_window_width, m_window_height);
-
-    m_screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
     //==================================================================================================================
     
     m_input.displayPointer(false);
     m_input.capturePointer(true);
-
-    m_framebuffer->loadFrameBuffer();
-    m_screenShader->loadShader();
     
     //initialize modelview and projection matrix
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
     model_view = mat4(1.0);
 
     //load and play the music
-    aud->loadMusic();
-    aud->playMusic();
+    // aud->loadMusic();
+    // aud->playMusic();
 
     solar_system->MakingSystem("Solar System", 8);
     solar_system->loadSystem(1);
@@ -319,45 +315,34 @@ void OpenGlSketch::mainLoop()
             break;
         }
 
-        if(m_input.getKey(SDL_SCANCODE_DOWN))
-        {
-            change = -1;
-        }
-        if(m_input.getKey(SDL_SCANCODE_UP))
-        {
-            change = 1;
-        }
+        // if(m_input.getKey(SDL_SCANCODE_DOWN))
+        // {
+        //     change = -1;
+        // }
+        // if(m_input.getKey(SDL_SCANCODE_UP))
+        // {
+        //     change = 1;
+        // }
 
-        if(m_input.getKey(SDL_SCANCODE_SPACE))
-        {
-            pause = true;
-        }
+        // if(m_input.getKey(SDL_SCANCODE_SPACE))
+        // {
+        //     pause = true;
+        // }
         //===================================================================================================================
 
-        aud->volume(change);
-        aud->pause(pause);
-        pause = false;
-        change = 0;
+        // aud->volume(change);
+        // aud->pause(pause);
+        // pause = false;
+        // change = 0;
 
         camera->move(m_input);
 
-        
-
-        //camera->lookAt(model_view);
+        camera->lookAt(model_view);
         
         glm::vec3 camPos = camera->getPosition();
 
-        //first pass
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_framebuffer->getId());
-        glEnable(GL_DEPTH_TEST);
-
         //cleaning the screen
-        glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glViewport(0, 0, m_framebuffer->getWidth(), m_framebuffer->getWidth());
-
-        model_view = lookAt(vec3(150, 150, 150), vec3(0, 0, 0), vec3(0, 0, 1));
 
         //save the modelview matrix
         save_model_view = model_view;
@@ -369,44 +354,26 @@ void OpenGlSketch::mainLoop()
         //restaure the modelview matrix
         model_view = save_model_view;
 
-        // /************************************************* SOLAR SYSTEM RENDER ********************************************************/
+        /************************************************* SOLAR SYSTEM RENDER ********************************************************/
         
-        //     solar_system->drawSystem(projection, model_view, camPos);
+            solar_system->drawSystem(projection, model_view, camPos);
 
-        // //restaure the modelview matrix
-        // model_view = save_model_view;
+        //restaure the modelview matrix
+        model_view = save_model_view;
 
-        // /************************************************* NAME BODY RENDER ********************************************************/
+        /************************************************* NAME BODY RENDER ********************************************************/
 
-        //     solar_system->drawName(projection, model_view, camPos);
+            solar_system->drawName(projection, model_view, camPos);
 
-        // //restaure the modelview matrix
-        // model_view = save_model_view;
+        //restaure the modelview matrix
+        model_view = save_model_view;
 
-        // /************************************************* ATMOSPHERE RENDER ********************************************************/
+        /************************************************* ATMOSPHERE RENDER ********************************************************/
 
-        //     solar_system->drawAtmo(projection, model_view, camPos);
+            solar_system->drawAtmo(projection, model_view, camPos);
 
-        // //restaure the modelview matrix
-        // model_view = save_model_view;
-
-        std::cout << ">> frame buffer ID : " << m_framebuffer->getId() << std::endl;
-
-        //Second pass
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        glDisable(GL_DEPTH_TEST);
-
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glViewport(0, 0, m_window_width, m_window_height);
-        camera->lookAt(model_view);
-
-        glUseProgram(m_screenShader->getProgramID());
-        m_screenShader->setInt("screenTexture", 0);
-        glBindVertexArray(quadVAO);
-        glBindTexture(GL_TEXTURE_2D, m_framebuffer->getColorBufferId(0));
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        //restaure the modelview matrix
+        model_view = save_model_view;
 
         /************************************************* swapping windows ********************************************************/
         
@@ -425,6 +392,5 @@ void OpenGlSketch::mainLoop()
 
     delete solar_system;
     delete camera;
-    delete aud;
-    delete m_framebuffer;
+    //delete aud;
 }

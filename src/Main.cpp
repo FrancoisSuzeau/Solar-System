@@ -26,6 +26,7 @@ int main(int argc, char **argv)
     }
 
     //sketch.startLoop();
+
     sketch.mainLoop();
     
     return EXIT_SUCCESS;
