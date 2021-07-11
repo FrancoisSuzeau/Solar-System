@@ -1,27 +1,27 @@
 /*
 AUTHOR : SUZEAU François
 
-DATE : 05/07/2021
+DATE : 11/07/2021
 
-MODULE : Atmosphere
+MODULE : StarAtmosphere
 
-NAMEFILE : Atmosphere.cpp
+NAMEFILE : StarAtmosphere.cpp
 
-PURPOSE : class Atmosphere
+PURPOSE : class StarAtmosphere
 */
 
 #ifndef BUFFER_OFFSET
 #define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
 #endif
 
-#include "Atmosphere.hpp"
+#include "StarAtmosphere.hpp"
 
 using namespace glm;
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Atmosphere::Atmosphere(float size, std::string const name, std::string const texture): Disk2(size, "../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag"),
+StarAtmosphere::StarAtmosphere(float size, std::string const name, std::string const texture): Disk(size, "../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag"),
 m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
 {
 
@@ -29,24 +29,11 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     // this->setShader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
     // m_shader.loader();
 
-    if(name == "Earth")
-    {
-        //m_color_atmo = vec3(119/255.0, 181.0/255.0, 254.0/255.0); //bleu clair
-        //m_color_atmo = vec3(146.0/255.0, 214.0/255.0, 255.0/255.0); //autre bleu clair
-        m_color_atmo = vec3(101.0/255.0, 197.0/255.0, 255.0/255.0); //autre bleu clair
-    }
-    else if(name == "Venus")
-    {
-        m_color_atmo = vec3(1.0, 1.0, 224.0/255.0);
-    }
-    else if (name == "Mars")
-    {
-        m_color_atmo = vec3(1.0, 178.0/255.0, 86.0/255.0);
-    }
-    else if(name == "Jupiter")
-    {
-        m_color_atmo = vec3(1.0, 213.0/255.0, 163.0/255.0);
-    }
+    
+    m_color_atmo = vec3(255.0/255.0, 255.0/255.0, 255.0/255.0);
+    std::cout << ">>>>>>>>>>> " << name << std::endl;
+    m_shader_sun = new Shader("../src/Shader/Shaders/sunAtmo.vert", "../src/Shader/Shaders/sunAtmo.frag");
+    m_shader_sun->loadShader();
     
     m_texture.loadTexture();
 
@@ -64,12 +51,12 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     
 }
 
-Atmosphere::Atmosphere() : Disk2()
+StarAtmosphere::StarAtmosphere() : Disk()
 {
 
 }
 
-Atmosphere::~Atmosphere()
+StarAtmosphere::~StarAtmosphere()
 {
     if(m_color_atmo == vec3(255.0/255.0, 255.0/255.0, 0.0/255.0)) //color for sun
     {
@@ -80,7 +67,7 @@ Atmosphere::~Atmosphere()
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ load *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::load()
+void StarAtmosphere::load()
 {
     /************************************************* VBO management ********************************************************/
     //destroy an possible ancient VBO
@@ -148,7 +135,7 @@ void Atmosphere::load()
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos)
+void StarAtmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos)
 {
     /************************************************* positionning atmosphere **************************************************************/
 	phi = phi * 180 / M_PI;
@@ -157,25 +144,22 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi,
 	glm::mat4 save = modelview;
 	if((phi < 0) && (camPosUpd[1] > 0))
 	{
-		modelview = rotate(modelview, -90.0f + theta, vec3(0.0, 1.0, 0.0));
+		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
 	}
-	else if( (theta > 0) && (camPosUpd[1] < 0) )
+	else if( (phi > 0) && (camPosUpd[1] < 0) )
 	{
-		modelview = rotate(modelview, -90.0f + theta, vec3(0.0, 1.0, 0.0));
+		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
 	}
-	else if( (theta > 0) && (camPosUpd[1] > 0) )
+	else if( (phi > 0) && (camPosUpd[1] > 0) )
 	{
-		modelview = rotate(modelview, 90.0f + theta, vec3(0.0, 1.0, 0.0));
+		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
 	}
-	else if( (theta < 0) && (camPosUpd[1] < 0) )
+	else if( (phi < 0) && (camPosUpd[1] < 0) )
 	{
-		modelview = rotate(modelview, 90.0f + theta, vec3(0.0, 1.0, 0.0));
+		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
 	}
 
-    // modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
-
-
-    
+    modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0)); 
 	
     //==============================================================================================================================
     //Activate the shader
@@ -224,7 +208,7 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi,
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** displaySunAtmo *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd)
+void StarAtmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd)
 {
     /************************************************* positionning atmosphere **************************************************************/
 	phi = phi * 180 / M_PI;

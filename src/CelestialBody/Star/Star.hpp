@@ -20,7 +20,7 @@ PURPOSE : header of the Star class
         #include "../../Texture/Texture.hpp"
         #include "../../Text/Text.hpp"
 
-        #include "../../Atmosphere/Atmosphere.hpp"
+        #include "../../Atmosphere/StarAtmosphere.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -35,7 +35,7 @@ PURPOSE : header of the Star class
                 Text            m_name_renderer;
                 GLuint          m_light_vao;
 
-                Atmosphere      *m_atmosphere;
+                StarAtmosphere      *m_atmosphere;
         
 
  

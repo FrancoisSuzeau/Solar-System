@@ -1,17 +1,17 @@
 /*
 AUTHOR : SUZEAU François
 
-DATE : 05/07/2021
+DATE : 11/07/2021
 
 MODULE : Atmosphere
 
-NAMEFILE : Atmosphere.h
+NAMEFILE : StarAtmosphere.h
 
-PURPOSE : header of the Atmosphere class
+PURPOSE : header of the StarAtmosphere class
 */
 
-#ifndef ATMOSPHERE_H
-#define ATMOSPHERE_H
+#ifndef SUNATMO_H
+#define SUNATMO_H
 
 
 /********************************************************************* includes *********************************************************************/
@@ -32,12 +32,12 @@ PURPOSE : header of the Atmosphere class
 
         
         #include "../Texture/Texture.hpp"
-        #include "../CelestialBody/Geometry/Disk2.hpp"
+        #include "../CelestialBody/Geometry/Disk.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
 
-        class Atmosphere: public Disk2
+        class StarAtmosphere: public Disk
         {
             
             private:
@@ -51,9 +51,9 @@ PURPOSE : header of the Atmosphere class
 
             public:
             
-                Atmosphere(float size, std::string const name, std::string const texture);
-                Atmosphere();
-                ~Atmosphere();
+                StarAtmosphere(float size, std::string const name, std::string const texture);
+                StarAtmosphere();
+                ~StarAtmosphere();
 
                 void display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos);
                 void displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd);

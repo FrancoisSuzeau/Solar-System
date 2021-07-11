@@ -99,7 +99,7 @@ void PlanetarySystem::loadSystem(int count)
         m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 2.0, 1.53, glm::vec3(40, -250, 0));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(60, -250, 0));
+        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(-60, -250, 0));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
         m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 2.0, 0.33, glm::vec3(0, -170, 0));

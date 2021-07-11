@@ -94,7 +94,7 @@ void SolarSystem::loadSystem(int count)
     if(count == 5)
     {
         m_planete_creator.push_back(new AtmoPlaneteCreator());
-        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(0.0, -80.0, 0.0));
+        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, -80.0, 0.0));
     }
 
     if(count == 6)
@@ -331,7 +331,6 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         glm::vec3 cameraPos = vec3(x, y, z);
 
         m_planete_creator[i]->updateAtmoInter(projection, light_src);
-
         m_planete_creator[i]->drawAtmoPlanete(projection, modelview, phi, theta, cameraPos, light_src, camPos);
 
         modelview = save;

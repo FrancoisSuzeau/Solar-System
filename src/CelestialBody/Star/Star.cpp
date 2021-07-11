@@ -35,7 +35,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", ".
     m_initial_pos = vec3(0.1, 0.0, 0.0);
     m_current_position = m_initial_pos;
 
-    m_atmosphere = new Atmosphere(45.0, m_name, "../assets/textures/atmosphere.png");
+    m_atmosphere = new StarAtmosphere(45.0, m_name, "../assets/textures/atmosphere.png");
 
     /************************************************* VAO management ********************************************************/
     if(glIsVertexArray(m_light_vao) == GL_TRUE)

@@ -42,15 +42,7 @@ void main()
     vec3 lightDir = normalize(lightPos - FragPos);
 
     float diff;
-    if(camPosUpd[1] < 0)
-    {
-        diff = max(dot(norm, -lightDir), 0.0);
-    }
-    else
-    {
-        diff = max(dot(norm, lightDir), 0.0);
-    }
-
+    diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
     // *********************************************** specular light ***************************************************
@@ -61,50 +53,10 @@ void main()
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.8;
-    //float ambiantStrength;
-    //if(camPosUpd[1] < 2 && camPosUpd[1] > -2)
-    //{
-        //ambiantStrength = 0.05;
-    //}
-    //else
-    //{
-        //ambiantStrength = 0.05;
-    //}
+    float ambiantStrength = 0.08;
     vec3 ambiant = ambiantStrength * lightColor;
 
-    // *********************************************** calculate gaussian blur ***************************************************
-    //float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
-    //bool horizontal = true;
-
-    //vec2 tex_offset = 1.0 / textureSize(texture, 0); // gets size of single texel
-    //vec3 result1 = texture(texture, coordTexture).rgb * weight[0]; // current fragment's contribution
-    //if(horizontal)
-    //{
-        //for(int i = 1; i < 5; ++i)
-        //{
-            //result1 += texture(texture, coordTexture + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-            //result1 += texture(texture, coordTexture - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-        //}
-    //}
-    //else
-    //{
-        //for(int i = 1; i < 5; ++i)
-        //{
-            //result1 += texture(texture, coordTexture + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
-            //result1 += texture(texture, coordTexture - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
-        //}
-    //}
-
-    //if(camPosUpd[1] < 3 && camPosUpd[1] > -3)
-    //{
-        //result1 = result1 * atmoColor;
-    //}
-    //else
-    //{
-        //result1 = ( diffuse + ambiant) * result1 * atmoColor;
-    //}
-
+    
     // *********************************************** add mitigation effect ***************************************************
     //ambiant *= mitigation;
     //diffuse *= mitigation;
@@ -117,21 +69,24 @@ void main()
     vec4 objectColor = texture(texture, coordTexture) * vec4(atmoColor, 1.0);
     vec3 result;
 
-    float min_Transparency;
-    if(camPosUpd[1] < 3 && camPosUpd[1] > -3)
-    {
-        result = vec3(objectColor.x, objectColor.y, objectColor.z);
-        min_Transparency = 0.6;
-    }
-    else
-    {
-        result = (ambiant +  diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
-        min_Transparency = 0.715;
-    }
+    //float min_Transparency;
+    //if(camPosUpd[1] < 3 && camPosUpd[1] > -3)
+    //{
+        //result = vec3(objectColor.x, objectColor.y, objectColor.z);
+        //min_Transparency = 0.6;
+    //}
+    //else
+    //{
+        //result = (ambiant +  diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+        //result = vec3(objectColor.x, objectColor.y, objectColor.z);
+        //min_Transparency = 0.715;
+        //min_Transparency = 0.6;
+    //}
 
-    vec4 trans = max(vec4(0.0), ((vec4(result, 1.0)) - min_Transparency));
+    result = (ambiant +  diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    //vec4 trans = max(vec4(0.0), ((vec4(result, 1.0)) - min_Transparency));
 
-    gl_FragColor = trans;
+    gl_FragColor = vec4(result, 1.0);
 
     // *********************************************** only bind texture with color unit to fragment coordinate ***************************************************
     //vec4 objectColor = texture(texture, coordTexture);

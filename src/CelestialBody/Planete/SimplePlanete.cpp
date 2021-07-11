@@ -184,7 +184,7 @@ void SimplePlanete::updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
     //inclineCelestialBody(light_src, m_inclinaison_angle);
 
     //scaling on his real size
-    scaleCelestialBody(light_src, m_real_size-6);
+    scaleCelestialBody(light_src, m_real_size);
 }
 
 /***********************************************************************************************************************************************************************/
