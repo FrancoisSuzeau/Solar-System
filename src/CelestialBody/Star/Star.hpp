@@ -19,6 +19,8 @@ PURPOSE : header of the Star class
         #include "../Geometry/Sphere.hpp"
         #include "../../Texture/Texture.hpp"
         #include "../../Text/Text.hpp"
+
+        #include "../../Atmosphere/Atmosphere.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -32,6 +34,8 @@ PURPOSE : header of the Star class
                 std::string     m_name;
                 Text            m_name_renderer;
                 GLuint          m_light_vao;
+
+                Atmosphere      *m_atmosphere;
         
 
  
@@ -45,6 +49,7 @@ PURPOSE : header of the Star class
                 //void displayName(glm::mat4 &projection, glm::mat4 &modelview);
                 void updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation);
                 void updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src);
+                void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd);
                 
                 
         };

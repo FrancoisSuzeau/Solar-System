@@ -20,7 +20,7 @@ uniform sampler2D texture;
 
 void main()
 {
-    // Couleur du pixel
+    // *********************************************** calculate png transparency ***************************************************
     vec4 alpha_color = texture2D(texture, coordTexture);
     if(alpha_color.r < 0.1)
     {
@@ -32,34 +32,37 @@ void main()
     vec3 lightColor = {1.0, 1.0, 1.0};
     vec3 lightPos = {1.0f, 0.0f, 0.0f};
     
-    //mitigation
+    // *********************************************** light mitigation ***************************************************
     float lightConst = 1.0f;
     float lightLin = 0.22f;
     float lightQuad = 0.20f;
     float distance = length(lightPos - FragPos);
     float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
 
-    //diffuse light
+    // *********************************************** diffuse light ***************************************************
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
-    //specular light
+    // *********************************************** specular light ***************************************************
     float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
     vec3 specular = specularStrength * spec * lightColor;
 
+    // *********************************************** ambiant light ***************************************************
     float ambiantStrength = 0.1;
     vec3 ambiant = ambiantStrength * lightColor;
+
+    // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     vec4 objectColor = texture(texture, coordTexture);
     vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
 
-    ambiant *= mitigation;
-    diffuse *= mitigation;
-    specular *= mitigation;
+    //ambiant *= mitigation;
+    //diffuse *= mitigation;
+    //specular *= mitigation;
     
     gl_FragColor = vec4(result, 1.0);
     

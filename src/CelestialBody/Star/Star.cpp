@@ -35,6 +35,8 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", ".
     m_initial_pos = vec3(0.1, 0.0, 0.0);
     m_current_position = m_initial_pos;
 
+    m_atmosphere = new Atmosphere(45.0, m_name, "../assets/textures/atmosphere.png");
+
     /************************************************* VAO management ********************************************************/
     if(glIsVertexArray(m_light_vao) == GL_TRUE)
     {
@@ -69,7 +71,7 @@ Star::Star()
 
 Star::~Star()
 {
-    
+    delete m_atmosphere;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -170,4 +172,13 @@ void Star::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src)
 
     //scaling on his real size
     scaleCelestialBody(light_src, m_real_size);
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************* displayAtmo ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd)
+{
+    translateCelestialBody(modelview, m_current_position);
+    m_atmosphere->displaySunAtmo(projection, modelview, phi, theta, camPosUpd);
 }

@@ -38,9 +38,14 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", ".
     m_inclinaison_angle = inclinaison_angle;
     m_speed_rotation = 0.1;
 
-    if( (m_name == "Earth") || (m_name == "Mars") || (m_name == "Venus") )
+    if(m_name == "Mars")
     {
-        m_atmosphere = new Atmosphere(10.7, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(9.7, m_name, "../assets/textures/atmosphere.png");
+
+    }
+    else if(m_name == "Venus")
+    {
+        m_atmosphere = new Atmosphere(10.4, m_name, "../assets/textures/atmosphere.png");
     }
 }
 
@@ -187,8 +192,12 @@ void SimplePlanete::updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos)
 {
-    translateCelestialBody(modelview, m_current_position);
-    m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos);
+    if( (m_name == "Mars") || (m_name == "Venus") )
+    {
+        translateCelestialBody(modelview, m_current_position);
+        m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos);
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/

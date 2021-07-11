@@ -1,11 +1,9 @@
 // Version du GLSL
 
-#version 150 compatibility
-#extension GL_ARB_explicit_attrib_location : require
-#extension GL_ARB_explicit_uniform_location : require
+#version 150 core
 
 
-// Entrï¿½e
+// Entrée
 
 in vec3 color;
 

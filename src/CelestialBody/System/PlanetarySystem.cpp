@@ -64,7 +64,7 @@ void PlanetarySystem::loadSystem(int count)
         m_host_creator = new AtmoPlaneteCreator();
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 5.0, 23.26, glm::vec3(-110, 0, 0));
 
-        m_atmosphere = new Atmosphere(10.7, "Earth", "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(10.8, "Earth", "../assets/textures/atmosphere.png");
     }
     else if(m_system_name == "Jovian System")
     {
@@ -74,20 +74,20 @@ void PlanetarySystem::loadSystem(int count)
         m_companion_name.push_back("Callisto");
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 2.0, 0.469, glm::vec3(-195, 20, 0));
+        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 2.0, 0.469, glm::vec3(175, 0, 0));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 2.0, 0.170, glm::vec3(-195, 40, 0));
+        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 2.0, 0.170, glm::vec3(195, -40, 0));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 2.0, 0.036, glm::vec3(-195, 60, 0));
+        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 2.0, 0.036, glm::vec3(195, 60, 0));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        m_moons_creator[3]->MakingPlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 2.0, 0.187, glm::vec3(-195, 80, 0));
+        m_moons_creator[3]->MakingPlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 2.0, 0.187, glm::vec3(265, 80, 0));
 
         m_host_creator = new SimplePlaneteCreator();
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 14.0, 3.13, glm::vec3(-195, 0, 0));
-        
+        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 14.0, 3.13, glm::vec3(195, 0, 0));
+
     }
     else if(m_system_name == "Saturnian System")
     {
@@ -96,16 +96,16 @@ void PlanetarySystem::loadSystem(int count)
         m_companion_name.push_back("Mimas");
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 2.0, 1.53, glm::vec3(-250, 40, 0));
+        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 2.0, 1.53, glm::vec3(40, -250, 0));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(-250, 60, 0));
+        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 2.0, 0.0, glm::vec3(60, -250, 0));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 2.0, 0.33, glm::vec3(-250, 80, 0));
+        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 2.0, 0.33, glm::vec3(0, -170, 0));
 
         m_host_creator = new PlaneteRingCreator();
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(-250, 0, 0));
+        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(0.0, -250, 0));
 
     }
     else
@@ -205,33 +205,37 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
 {
-    glm::mat4 save = modelview;
-    glm::vec3 position(0.1, 0.0, 0.0);
-    glm::vec3 target_point(0.0, 0.0, 0.0);
-    glm::vec3 vertical_axe(0.0, 0.0, 1.0);
-    glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
-    m_host_creator->updateAtmoInter(projection, light_src);
-    glm::mat4 save_light_src = light_src;
+    if(m_system_name == "Earth System")
+    {
+        glm::mat4 save = modelview;
+        glm::vec3 position(0.1, 0.0, 0.0);
+        glm::vec3 target_point(0.0, 0.0, 0.0);
+        glm::vec3 vertical_axe(0.0, 0.0, 1.0);
+        glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
+        m_host_creator->updateAtmoInter(projection, light_src);
+        glm::mat4 save_light_src = light_src;
 
-    glm::vec3 host_pos = m_host_creator->getPostion();
+        glm::vec3 host_pos = m_host_creator->getPostion();
 
-    double x = camPos[0] - host_pos[0]; //doesn't know why I have to use the reverse value
-    double y = camPos[1] - host_pos[1];
-    double z = camPos[2] - host_pos[2];
-    double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-        
-    double r = std::sqrt(r_squarre);
+        double x = camPos[0] - host_pos[0]; //doesn't know why I have to use the reverse value
+        double y = camPos[1] - host_pos[1];
+        double z = camPos[2] - host_pos[2];
+        double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+            
+        double r = std::sqrt(r_squarre);
 
-    float phi = atan(y/x);
-    float theta = acos(z/r);
+        float phi = atan(y/x);
+        float theta = acos(z/r);
 
-    glm::vec3 cameraPos = vec3(x, y, z);
+        glm::vec3 cameraPos = vec3(x, y, z);
 
-    modelview = translate(modelview, host_pos);
-    m_atmosphere->display(projection, modelview, phi, theta, cameraPos, light_src, camPos);
+        modelview = translate(modelview, host_pos);
+        m_atmosphere->display(projection, modelview, phi, theta, cameraPos, light_src, camPos);
 
-    modelview = save;
-    light_src = save_light_src;
+        modelview = save;
+        light_src = save_light_src;
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/

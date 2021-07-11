@@ -35,8 +35,8 @@ Input.o: Input/Input.hpp
 Texture.o: Texture/Texture.hpp
 Audio.o: Audio/Audio.hpp
 Sphere.o: CelestialBody/Geometry/Sphere.hpp CelestialBody/CelestialBody.hpp
-AtmoPlanete.o: CelestialBody/Planete/SimplePlanete.hpp Atmosphere/Atmosphere.hpp
-SimplePlanete.o: CelestialBody/Planete/SimplePlanete.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp
+AtmoPlanete.o: CelestialBody/Planete/SimplePlanete.hpp
+SimplePlanete.o: CelestialBody/Planete/SimplePlanete.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp Atmosphere/Atmosphere.hpp
 Camera.o: Camera/Camera.hpp
 Disk.o: CelestialBody/Geometry/Disk.hpp CelestialBody/CelestialBody.hpp
 Square.o: CelestialBody/Geometry/Square.hpp Shader/Shader.hpp
@@ -44,7 +44,7 @@ Ring.o: CelestialBody/Ring/Ring.hpp CelestialBody/Geometry/Disk.hpp Texture/Text
 PlaneteRing.o: CelestialBody/Planete/PlaneteRing.hpp CelestialBody/Planete/SimplePlanete.hpp CelestialBody/Ring/Ring.hpp
 Text.o: Text/Text.hpp Texture/Texture.hpp Shader/Shader.hpp
 Skybox.o: CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp
-Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp
+Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp Atmosphere/Atmosphere.hpp
 PlanetarySystem.o: CelestialBody/System/PlanetarySystem.hpp CelestialBody/System/System.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp Atmosphere/Atmosphere.hpp
 SolarSystem.o: CelestialBody/System/SolarSystem/hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp
 #SystemCreator.hpp: CelestialBody/System/System.hpp

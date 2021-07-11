@@ -34,19 +34,15 @@ SolarSystem::SolarSystem() : sun()
 
 SolarSystem::~SolarSystem()
 {
-    // for (int i(0); i < m_planetarySYS_count; i++)
-    // {
-    //     delete m_planetary_system[i];
-    // }
+    for (int i(0); i < m_planetarySYS_count; i++)
+    {
+        delete m_planetary_system[i];
+    }
 
-    // for (int i(0); i < m_simple_planete_count; i++)
-    // {
-    //     delete m_planete_creator[i];
-    // }
-
-    delete m_planetary_system[0];
-
-    delete m_planete_creator[0];
+    for (int i(0); i < m_simple_planete_count; i++)
+    {
+        delete m_planete_creator[i];
+    }
     
     delete skybox;
     delete sun;
@@ -98,13 +94,13 @@ void SolarSystem::loadSystem(int count)
     if(count == 5)
     {
         m_planete_creator.push_back(new AtmoPlaneteCreator());
-        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, 0.0, 0.0));
+        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(0.0, -80.0, 0.0));
     }
 
     if(count == 6)
     {
         m_planete_creator.push_back(new AtmoPlaneteCreator());
-        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 4.5, 25.19, glm::vec3(-140, 0, 0));
+        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 4.5, 25.19, glm::vec3(0, 140, 0));
     }
 
     if(count == 7)
@@ -115,7 +111,7 @@ void SolarSystem::loadSystem(int count)
     if(count == 8)
     {
         m_planete_creator.push_back(new PlaneteRingCreator());
-        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 7.0, 26.32, glm::vec3(-350.0, 0.0, 0.0));
+        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 7.0, 26.32, glm::vec3(0.0, 350.0, 0.0));
     }
     //===================================================================================================================
 
@@ -149,24 +145,24 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
         sun->display(projection, modelview, light_src, camPos);
         
 
-    // /************************************************* MERCURY RENDER ********************************************************/
-    // //restaure the modelview matrix
-    // modelview = save;
-    // light_src = save_light_src;
+    /************************************************* MERCURY RENDER ********************************************************/
+    //restaure the modelview matrix
+    modelview = save;
+    light_src = save_light_src;
 
 
-    //     m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
-    //     m_planete_creator[0]->updatePosLight(projection, light_src);
-    //     m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
+        m_planete_creator[0]->updatePosLight(projection, light_src);
+        m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos);
 
     /************************************************* VENUS RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
-        m_planete_creator[0]->updatePosLight(projection, light_src);
-        m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[1]->UpdatePositionPlan(projection, modelview);
+        m_planete_creator[1]->updatePosLight(projection, light_src);
+        m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos);
 
     /************************************************* EARTH RENDER ********************************************************/
     //restaure the modelview matrix
@@ -176,46 +172,46 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
         m_planetary_system[0]->drawSystem(projection, modelview, camPos);
         
 
-    // /************************************************* MARS RENDER ********************************************************/
-    // //restaure the modelview matrix
-    // modelview = save;
-    // light_src = save_light_src;
+    /************************************************* MARS RENDER ********************************************************/
+    //restaure the modelview matrix
+    modelview = save;
+    light_src = save_light_src;
 
-    //     m_planete_creator[2]->UpdatePositionPlan(projection, modelview);
-    //     m_planete_creator[2]->updatePosLight(projection, light_src);
-    //     m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[2]->UpdatePositionPlan(projection, modelview);
+        m_planete_creator[2]->updatePosLight(projection, light_src);
+        m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos);
 
-    // /************************************************* JUPITER RENDER ********************************************************/
-    // //restaure the modelview matrix
-    // modelview = save;
-    // light_src = save_light_src;
+    /************************************************* JUPITER RENDER ********************************************************/
+    //restaure the modelview matrix
+    modelview = save;
+    light_src = save_light_src;
 
-    //     m_planetary_system[1]->drawSystem(projection, modelview, camPos);
+        m_planetary_system[1]->drawSystem(projection, modelview, camPos);
         
-    // /************************************************* SATURN RENDER ********************************************************/
-    // //restaure the modelview matrix
-    // modelview = save;
-    // light_src = save_light_src;
+    /************************************************* SATURN RENDER ********************************************************/
+    //restaure the modelview matrix
+    modelview = save;
+    light_src = save_light_src;
 
-    //     m_planetary_system[2]->drawSystem(projection, modelview, camPos);
+        m_planetary_system[2]->drawSystem(projection, modelview, camPos);
 
-    // /************************************************* URANUS RENDER ********************************************************/
-    // //restaure the modelview matrix
-    // modelview = save;
-    // light_src = save_light_src;
+    /************************************************* URANUS RENDER ********************************************************/
+    //restaure the modelview matrix
+    modelview = save;
+    light_src = save_light_src;
 
-    //     m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
-    //     m_planete_creator[3]->updatePosLight(projection, light_src);
-    //     m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
+        m_planete_creator[3]->updatePosLight(projection, light_src);
+        m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos);
 
-    // /************************************************* NEPTUNE RENDER ********************************************************/
-    // //restaure the modelview matrix
-    // modelview = save;
-    // light_src = save_light_src;
+    /************************************************* NEPTUNE RENDER ********************************************************/
+    //restaure the modelview matrix
+    modelview = save;
+    light_src = save_light_src;
 
-    //     m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
-    //     m_planete_creator[4]->updatePosLight(projection, light_src);
-    //     m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
+        m_planete_creator[4]->updatePosLight(projection, light_src);
+        m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos);
 
     //restaure the modelview matrix
     modelview = save;
@@ -229,15 +225,13 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
 {
     glm::mat4 save = modelview;
 
-    // for (int i(0); i < m_planetarySYS_count; i++)
-    // {
-    //     m_planetary_system[i]->displayName(projection, modelview, camPos);
+    for (int i(0); i < m_planetarySYS_count; i++)
+    {
+        m_planetary_system[i]->drawName(projection, modelview, camPos);
 
-    //     modelview = save;
-    // }
+        modelview = save;
+    }
 
-    
-    m_planetary_system[0]->drawName(projection, modelview, camPos);
     modelview = save;
 
 
@@ -251,7 +245,7 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
             we only use the parametrical coordinate to find the r radius
         */
 
-        glm::vec3 planete_pos = m_planete_creator[0]->getPostion();
+        glm::vec3 planete_pos = m_planete_creator[i]->getPostion();
     
 
         float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
@@ -268,7 +262,7 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
         if(r >= 100)
         {
-            m_planete_creator[0]->displayName(projection, modelview, r, phi, theta, y);
+            m_planete_creator[i]->displayName(projection, modelview, r, phi, theta, y);
         }
         
 
@@ -286,37 +280,66 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 {
     glm::mat4 save = modelview;
 
-    glm::vec3 m_position = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
-    glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
-    
+    /************************************************* SUN ATMO RENDER ********************************************************/
 
+        glm::vec3 position_sun = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
+        glm::mat4 light_src = glm::lookAt(position_sun, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
+        float x_sun = camPos[0] - position_sun[0]; //doesn't know why I have to use the reverse value
+        float y_sun = camPos[1] - position_sun[1];
+        float z_sun = camPos[2] - position_sun[2];
+            
+        float r_square_sun = std::pow(x_sun, 2) + std::pow(y_sun, 2) + std::pow(z_sun, 2);
+            
+        float r_sun = std::sqrt(r_square_sun);
+
+        float phi_sun = atan(y_sun/x_sun);
+        float theta_sun = acos(z_sun/r_sun);
+
+        glm::vec3 cameraPos_sun = vec3(x_sun, y_sun, z_sun);
+        sun->displayAtmo(projection, modelview, phi_sun, theta_sun, cameraPos_sun);
+
+    modelview = save;
     glm::mat4 save_light_src = light_src;
 
-    
-    //m_planetary_system[0]->drawAtmo(projection, modelview, camPos);
+    /************************************************* OTHER ATMO RENDER ********************************************************/
+
+    for(int i(0); i < m_planetarySYS_count; i++)
+    {
+        m_planetary_system[i]->drawAtmo(projection, modelview, camPos);
+        modelview = save;
+    }
+
     modelview = save;
 
-    glm::vec3 planete_pos = m_planete_creator[0]->getPostion();
+    for(int i(0); i < m_simple_planete_count; i++)
+    {
+        glm::vec3 planete_pos = m_planete_creator[i]->getPostion();
     
 
-    float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
-    float y = camPos[1] - planete_pos[1];
-    float z = camPos[2] - planete_pos[2];
-	    
-        
-    float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-        
-    float r = std::sqrt(r_squarre);
+        float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
+        float y = camPos[1] - planete_pos[1];
+        float z = camPos[2] - planete_pos[2];
+            
+            
+        float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+            
+        float r = std::sqrt(r_squarre);
 
-    float phi = atan(y/x);
-    float theta = acos(z/r);
+        float phi = atan(y/x);
+        float theta = acos(z/r);
 
-    glm::vec3 cameraPos = vec3(x, y, z);
+        glm::vec3 cameraPos = vec3(x, y, z);
 
-    m_planete_creator[0]->updateAtmoInter(projection, light_src);
+        m_planete_creator[i]->updateAtmoInter(projection, light_src);
 
-    m_planete_creator[0]->drawAtmoPlanete(projection, modelview, phi, theta, cameraPos, light_src, camPos);
+        m_planete_creator[i]->drawAtmoPlanete(projection, modelview, phi, theta, cameraPos, light_src, camPos);
+
+        modelview = save;
+        light_src = save_light_src;
+    }
 
     modelview = save;
     light_src = save_light_src;
+
+    
 }

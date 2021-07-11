@@ -8,12 +8,12 @@ in vec3 Normal;
 in vec3 FragPos;
 
 void main(void) {
+
+    // *********************************************** calculate spherical fragment coordonate ***************************************************
     vec2 longitudeLatitude = vec2((atan(texCoords.y, texCoords.x) / 3.1415926 + 1.0) * 0.5,
                                   (asin(texCoords.z) / 3.1415926 + 0.5));
         // processing of the texture coordinates;
         // this is unnecessary if correct texture coordinates are specified by the application
-        
-    //gl_FragColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity);
     
         // look up the color of the texture image specified by the uniform "texture0"
         // at the position specified by "longitudeLatitude.x" and
@@ -21,7 +21,8 @@ void main(void) {
 
     vec3 lightColor = {1.0, 1.0, 1.0};
     vec3 lightPos = {0.1f, 0.0f, 0.0f};
-    
+
+    // *********************************************** mitigation ***************************************************
     //mitigation
     float lightConst = 1.0f;
     float lightLin = 0.35f;
@@ -29,28 +30,30 @@ void main(void) {
     float distance = length(lightPos - FragPos);
     float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
 
-    //diffuse light
+    // *********************************************** diffuse light ***************************************************
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
-    //specular light
+    // *********************************************** specular light ***************************************************
     float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
     vec3 specular = specularStrength * spec * lightColor;
 
+    // *********************************************** ambiant light ***************************************************
     float ambiantStrength = 0.1;
     vec3 ambiant = ambiantStrength * lightColor;
 
+    // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     vec4 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity);
     vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
 
-    ambiant *= mitigation;
-    diffuse *= mitigation;
-    specular *= mitigation;
+    //ambiant *= mitigation;
+    //diffuse *= mitigation;
+    //specular *= mitigation;
     
     gl_FragColor = vec4(result, 1.0);
 }

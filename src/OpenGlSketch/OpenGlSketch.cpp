@@ -270,10 +270,8 @@ void OpenGlSketch::startLoop()
 void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
-    //Audio aud;
-    // bool pause(false); 
-    // int change(0);
-    // aud = new Audio();
+    bool pause(false); 
+    int change(0);
 
     unsigned int frame_rate(1000 / 50);
     Uint32 start_loop(0), end_loop(0), time_past(0);
@@ -284,24 +282,18 @@ void OpenGlSketch::mainLoop()
     mat4 model_view;
     mat4 save_model_view;
     
-    solar_system = new SolarSystemCreator();
     //==================================================================================================================
     
     m_input.displayPointer(false);
     m_input.capturePointer(true);
     
     //initialize modelview and projection matrix
-    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 500.0);
+    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 1000.0);
     model_view = mat4(1.0);
 
     //load and play the music
-    // aud->loadMusic();
-    // aud->playMusic();
-
-    solar_system->MakingSystem("Solar System", 8);
-    solar_system->loadSystem(1);
-    solar_system->loadSystem(5);
-    
+    aud->loadMusic();
+    aud->playMusic();
 
     while(!m_input.getTerminate())
     {   
@@ -315,25 +307,25 @@ void OpenGlSketch::mainLoop()
             break;
         }
 
-        // if(m_input.getKey(SDL_SCANCODE_DOWN))
-        // {
-        //     change = -1;
-        // }
-        // if(m_input.getKey(SDL_SCANCODE_UP))
-        // {
-        //     change = 1;
-        // }
+        if(m_input.getKey(SDL_SCANCODE_DOWN))
+        {
+            change = -1;
+        }
+        if(m_input.getKey(SDL_SCANCODE_UP))
+        {
+            change = 1;
+        }
 
-        // if(m_input.getKey(SDL_SCANCODE_SPACE))
-        // {
-        //     pause = true;
-        // }
+        if(m_input.getKey(SDL_SCANCODE_SPACE))
+        {
+            pause = true;
+        }
         //===================================================================================================================
 
-        // aud->volume(change);
-        // aud->pause(pause);
-        // pause = false;
-        // change = 0;
+        aud->volume(change);
+        aud->pause(pause);
+        pause = false;
+        change = 0;
 
         camera->move(m_input);
 
@@ -361,12 +353,12 @@ void OpenGlSketch::mainLoop()
         //restaure the modelview matrix
         model_view = save_model_view;
 
-        /************************************************* NAME BODY RENDER ********************************************************/
+        // /************************************************* NAME BODY RENDER ********************************************************/
 
-            solar_system->drawName(projection, model_view, camPos);
+        //     solar_system->drawName(projection, model_view, camPos);
 
-        //restaure the modelview matrix
-        model_view = save_model_view;
+        // //restaure the modelview matrix
+        // model_view = save_model_view;
 
         /************************************************* ATMOSPHERE RENDER ********************************************************/
 
@@ -392,5 +384,5 @@ void OpenGlSketch::mainLoop()
 
     delete solar_system;
     delete camera;
-    //delete aud;
+    delete aud;
 }

@@ -47,6 +47,8 @@ PURPOSE : header of the Atmosphere class
                 int             m_bytes_coord_size;
                 glm::vec3       m_color_atmo;
 
+                Shader          *m_shader_sun;
+
             public:
             
                 Atmosphere(float size, std::string const name, std::string const texture);
@@ -54,6 +56,7 @@ PURPOSE : header of the Atmosphere class
                 ~Atmosphere();
 
                 void display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos);
+                void displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd);
                 void load();
         };
 
