@@ -21,7 +21,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Atmosphere::Atmosphere(float size, std::string const name, std::string const texture): Disk2(size, "../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag"),
+Atmosphere::Atmosphere(float size, std::string const name, std::string const texture): Disk(size, "../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag"),
 m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
 {
 
@@ -43,10 +43,6 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     {
         m_color_atmo = vec3(1.0, 178.0/255.0, 86.0/255.0);
     }
-    else if(name == "Jupiter")
-    {
-        m_color_atmo = vec3(1.0, 213.0/255.0, 163.0/255.0);
-    }
     
     m_texture.loadTexture();
 
@@ -64,17 +60,14 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     
 }
 
-Atmosphere::Atmosphere() : Disk2()
+Atmosphere::Atmosphere() : Disk()
 {
 
 }
 
 Atmosphere::~Atmosphere()
 {
-    if(m_color_atmo == vec3(255.0/255.0, 255.0/255.0, 0.0/255.0)) //color for sun
-    {
-        delete m_shader_sun;
-    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -155,28 +148,27 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi,
 	theta = theta * 180 / M_PI;
 
 	glm::mat4 save = modelview;
+
 	if((phi < 0) && (camPosUpd[1] > 0))
 	{
-		modelview = rotate(modelview, -90.0f + theta, vec3(0.0, 1.0, 0.0));
+		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
 	}
-	else if( (theta > 0) && (camPosUpd[1] < 0) )
+	else if( (phi > 0) && (camPosUpd[1] < 0) )
 	{
-		modelview = rotate(modelview, -90.0f + theta, vec3(0.0, 1.0, 0.0));
+		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
 	}
-	else if( (theta > 0) && (camPosUpd[1] > 0) )
+	else if( (phi > 0) && (camPosUpd[1] > 0) )
 	{
-		modelview = rotate(modelview, 90.0f + theta, vec3(0.0, 1.0, 0.0));
+		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
 	}
-	else if( (theta < 0) && (camPosUpd[1] < 0) )
+	else if( (phi < 0) && (camPosUpd[1] < 0) )
 	{
-		modelview = rotate(modelview, 90.0f + theta, vec3(0.0, 1.0, 0.0));
+		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
 	}
 
-    // modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
-
+    modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
 
     
-	
     //==============================================================================================================================
     //Activate the shader
     glUseProgram(m_shader.getProgramID());

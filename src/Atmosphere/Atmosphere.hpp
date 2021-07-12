@@ -32,12 +32,12 @@ PURPOSE : header of the Atmosphere class
 
         
         #include "../Texture/Texture.hpp"
-        #include "../CelestialBody/Geometry/Disk2.hpp"
+        #include "../CelestialBody/Geometry/Disk.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
 
-        class Atmosphere: public Disk2
+        class Atmosphere: public Disk
         {
             
             private:

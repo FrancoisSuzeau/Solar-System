@@ -69,7 +69,7 @@ void main()
     vec4 objectColor = texture(texture, coordTexture) * vec4(atmoColor, 1.0);
     vec3 result;
 
-    //float min_Transparency;
+    float min_Transparency = 0.6;
     //if(camPosUpd[1] < 3 && camPosUpd[1] > -3)
     //{
         //result = vec3(objectColor.x, objectColor.y, objectColor.z);
@@ -83,10 +83,11 @@ void main()
         //min_Transparency = 0.6;
     //}
 
-    result = (ambiant +  diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
-    //vec4 trans = max(vec4(0.0), ((vec4(result, 1.0)) - min_Transparency));
+    //result = (ambiant +  diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    result = vec3(objectColor.x, objectColor.y, objectColor.z);
+    vec4 trans = max(vec4(0.0), ((vec4(result, 1.0)) - min_Transparency));
 
-    gl_FragColor = vec4(result, 1.0);
+    gl_FragColor = trans;
 
     // *********************************************** only bind texture with color unit to fragment coordinate ***************************************************
     //vec4 objectColor = texture(texture, coordTexture);
