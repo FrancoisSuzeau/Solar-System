@@ -32,8 +32,7 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     if(name == "Earth")
     {
         //m_color_atmo = vec3(119/255.0, 181.0/255.0, 254.0/255.0); //bleu clair
-        //m_color_atmo = vec3(146.0/255.0, 214.0/255.0, 255.0/255.0); //autre bleu clair
-        m_color_atmo = vec3(101.0/255.0, 197.0/255.0, 255.0/255.0); //autre bleu clair
+        m_color_atmo = vec3(147.0/255.0, 188.0/255.0, 231.0/255.0); //autre bleu clair
     }
     else if(name == "Venus")
     {
@@ -43,7 +42,23 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     {
         m_color_atmo = vec3(1.0, 178.0/255.0, 86.0/255.0);
     }
-    
+    else if (name == "Jupiter")
+    {
+        m_color_atmo = vec3(215.0/255.0, 184.0/255.0, 148.0/255.0);
+    }
+    else if (name == "Saturn")
+    {
+        m_color_atmo = vec3(233.0/255.0, 219.0/255.0, 171.0/255.0);
+    }
+    else if (name == "Uranus")
+    {
+        m_color_atmo = vec3(142.0/255.0, 230.0/255.0, 207.0/255.0);
+    }
+    else if (name == "Neptune")
+    {
+        m_color_atmo = vec3(101.0/255.0, 197.0/255.0, 255.0/255.0);
+    }
+
     m_texture.loadTexture();
 
     float temp_coord[] = {0, 0,   1, 0,   1, 1,
@@ -191,71 +206,6 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi,
 
         m_shader.setFloat("phi", phi);
         m_shader.setFloat("theta", theta);
-
-        //lock texture
-        glBindTexture(GL_TEXTURE_2D, m_texture.getID());
-
-        //display the form
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        //unlock texture
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-
-        // glDisableVertexAttribArray(2);
-        // glDisableVertexAttribArray(0);
-
-    //unlock VAO
-    glBindVertexArray(0);
-
-    glUseProgram(0);
-
-    modelview = save;
-}
-
-/***********************************************************************************************************************************************************************/
-/****************************************************************************** displaySunAtmo *************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Atmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd)
-{
-    /************************************************* positionning atmosphere **************************************************************/
-	phi = phi * 180 / M_PI;
-	theta = theta * 180 / M_PI;
-
-	glm::mat4 save = modelview;
-	if((phi < 0) && (camPosUpd[1] > 0))
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (camPosUpd[1] < 0) )
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (camPosUpd[1] > 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi < 0) && (camPosUpd[1] < 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-
-    modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
-	
-    //==============================================================================================================================
-    //Activate the shader
-    glUseProgram(m_shader_sun->getProgramID());
-
-    //lock VAO
-    glBindVertexArray(m_vaoID);
-
-        //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader_sun->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader_sun->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        m_shader_sun->setMat4("modelview", modelview);
-        m_shader_sun->setMat4("projection", projection);
-
-        m_shader_sun->setVec3("atmoColor", m_color_atmo);
 
         //lock texture
         glBindTexture(GL_TEXTURE_2D, m_texture.getID());

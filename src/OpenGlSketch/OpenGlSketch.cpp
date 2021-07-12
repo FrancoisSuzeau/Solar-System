@@ -353,12 +353,12 @@ void OpenGlSketch::mainLoop()
         //restaure the modelview matrix
         model_view = save_model_view;
 
-        // /************************************************* NAME BODY RENDER ********************************************************/
+        /************************************************* NAME BODY RENDER ********************************************************/
 
-        //     solar_system->drawName(projection, model_view, camPos);
+            solar_system->drawName(projection, model_view, camPos);
 
-        // //restaure the modelview matrix
-        // model_view = save_model_view;
+        //restaure the modelview matrix
+        model_view = save_model_view;
 
         /************************************************* ATMOSPHERE RENDER ********************************************************/
 

@@ -62,7 +62,7 @@ AtmoPlanete::AtmoPlanete() : SimplePlanete(), m_cloud_texture(), m_oppacity(0)
 
 AtmoPlanete::~AtmoPlanete()
 {
-    if( (m_name == "Mars") || (m_name == "Venus") )
+    if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune") )
     {
         delete m_atmosphere;
     }

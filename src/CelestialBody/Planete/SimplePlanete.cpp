@@ -47,6 +47,14 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", ".
     {
         m_atmosphere = new Atmosphere(10.4, m_name, "../assets/textures/atmosphere.png");
     }
+    else if(m_name == "Uranus")
+    {
+        m_atmosphere = new Atmosphere(15.2, m_name, "../assets/textures/atmosphere.png");
+    }
+    else if(m_name == "Neptune")
+    {
+        m_atmosphere = new Atmosphere(15.2, m_name, "../assets/textures/atmosphere.png");
+    }
 }
 
 SimplePlanete::SimplePlanete(): Sphere()
@@ -192,7 +200,7 @@ void SimplePlanete::updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos)
 {
-    if( (m_name == "Mars") || (m_name == "Venus") )
+    if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune") )
     {
         translateCelestialBody(modelview, m_current_position);
         m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos);

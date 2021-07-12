@@ -42,7 +42,7 @@ PlanetarySystem::~PlanetarySystem()
 
     delete m_host_creator;
 
-    if(m_system_name == "Earth System")
+    if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
         delete m_atmosphere;
     }
@@ -88,6 +88,8 @@ void PlanetarySystem::loadSystem(int count)
         m_host_creator = new SimplePlaneteCreator();
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 14.0, 3.13, glm::vec3(195, 0, 0));
 
+        m_atmosphere = new Atmosphere(30.3, "Jupiter", "../assets/textures/atmosphere.png");
+
     }
     else if(m_system_name == "Saturnian System")
     {
@@ -106,6 +108,8 @@ void PlanetarySystem::loadSystem(int count)
 
         m_host_creator = new PlaneteRingCreator();
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 13.0, 26.73, glm::vec3(0.0, -250, 0));
+
+        m_atmosphere = new Atmosphere(28, "Saturn", "../assets/textures/atmosphere.png");
 
     }
     else
@@ -205,7 +209,7 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
 {
-    if(m_system_name == "Earth System")
+    if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
         glm::mat4 save = modelview;
         glm::vec3 position(0.1, 0.0, 0.0);
