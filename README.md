@@ -15,7 +15,7 @@ At the launch, all the textures, audio, font files are loaded. You can follow th
 After a while the Solar System appears with all planets and moons (note that Mercury is on the other side of the Sun to test lights effects)
 For now, planets and moons are only rotating, I haven't merge the celestial mechanics on the main branch yet.
 
-The initial position of the view matrix (camera) is on the ````150, 150, 150```` coordinates. You can move your sight with your keyboord and your mouse. Here is the list of all the move command following this shem : QWERTY/AZERTY.
+The initial position of the view matrix (camera) is on the ````100, 100, 100```` coordinates. You can move your sight with your keyboord and your mouse. Here is the list of all the move command following this shem : QWERTY/AZERTY.
 + Q/Z : move forward
 + S : 	move backward
 + A/Q : move to the left
@@ -37,17 +37,25 @@ Make sure that the executable file is in the ````bin```` directory.
 + Fix some bugs and memory leaks
 + Now linkable object files (*.o) will be ignored by git
 
+### 20/07/2021
++ Distant objects behaviour : OpenGL let you to have the possibility to fixe perspective aspect. When you move backward, after a while, the object disappear and his name appear. Also, these name are oriented with the camera position
+
++ Atmosphere effect : Venus, Earth, Mars, Jupiter and Saturn have transparent and colored atmosphere all arround their surface. It is simply a disk moving in relation with the camera position. These atmosphere are not shadowed because of the impossibility to make the framebuffer work.
+
 
 ## More in coming ...
 
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
 For the moment I am working on this following aspect :
-+ Implements atmosphere effects (like red shadowing on the frontier of the dark side of a planets)
++ Implements atmosphere effects (like red shadowing on the frontier of the dark side of a planets) : impossible due to a not working framebuffer
 
-With this feature, I will follow with distant objects behaviour. OpenGL let you to have the possibility to fixe perspective aspect. When you move backward, after a while, the object will disappear and his name will appear. With that I will make sur that his name is always orientate according to the camera.
++ After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
 
++ With the celestial mechanics build I will change the apparent size of the planet scaling them with the distance to the sun.
 
-After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
++ By clicking on the planet, we will have the possibility to read information of this body
 
-Many of these ideas came to me while I was coding, so I hope more come too.
++ Add a setting configuration
+
+Many of these ideas came to me while I am coding, so I hope more come too.

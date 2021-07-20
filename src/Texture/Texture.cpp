@@ -20,7 +20,9 @@ PURPOSE :   - load an image with SDL2_image
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Texture::Texture(): m_id(0), m_file_picture(""), m_width(0), m_height(0), m_internal_format(0), m_format(0), m_empty_texture(false)
+Texture::Texture(): m_id(0), m_file_picture(""), m_width(0), m_height(0), 
+//m_internal_format(0), m_format(0), 
+m_empty_texture(false)
 {
 
 }
@@ -50,7 +52,9 @@ Texture& Texture::operator=(Texture const &texture_to_copy)
     return *this;
 }
 
-Texture::Texture(std::string file_image) : m_id(0), m_file_picture(file_image), m_width(0), m_height(0), m_format(0), m_internal_format(0), m_empty_texture(false)
+Texture::Texture(std::string file_image) : m_id(0), m_file_picture(file_image), m_width(0), m_height(0), 
+//m_format(0), m_internal_format(0), 
+m_empty_texture(false)
 {
 
 }
