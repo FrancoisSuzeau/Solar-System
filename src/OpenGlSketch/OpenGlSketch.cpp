@@ -316,16 +316,19 @@ void OpenGlSketch::mainLoop()
             change = 1;
         }
 
-        if(m_input.getKey(SDL_SCANCODE_SPACE))
-        {
-            pause = true;
-        }
+        // if(m_input.getKey(SDL_SCANCODE_SPACE))
+        // {
+        //     pause = true;
+        // }
         //===================================================================================================================
 
+        /************************************************* MANAGING MUSIC ********************************************************/
         aud->volume(change);
-        aud->pause(pause);
-        pause = false;
+        //aud->pause(pause);
+        //pause = false;
         change = 0;
+        aud->updateTrack();
+        //===================================================================================================================
 
         camera->move(m_input);
 
