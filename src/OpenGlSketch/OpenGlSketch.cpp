@@ -247,6 +247,8 @@ void OpenGlSketch::mainLoop()
     mat4 projection;
     mat4 model_view;
     mat4 save_model_view;
+
+    MusicOverlay overlay();
     
     //==================================================================================================================
     
