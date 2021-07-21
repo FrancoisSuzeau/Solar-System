@@ -21,7 +21,7 @@ PURPOSE :   - load music file
 /***********************************************************************************************************************************************************************/
 Audio::Audio(): m_volume(MIX_MAX_VOLUME / 2), 
 m_music(0), //create a warning but needed after
-m_track(5)
+m_track(5), m_in_pause(false)
 {
     m_file_music = {
 
@@ -90,17 +90,20 @@ void Audio::playMusic() const
     //===================================================================================================================
 }
 
-void Audio::pause(bool pause) const
+void Audio::pause(bool pause)
 {
     if(pause)
     {
         if(Mix_PausedMusic() == 1)
         {
             Mix_ResumeMusic();
+            m_in_pause = false;
+
         }
         else
         {
             Mix_PauseMusic();
+            m_in_pause = true;
         }
     }
     
@@ -122,9 +125,9 @@ void Audio::updateTrack()
 {
     if(Mix_PlayingMusic() == 1)
     {
-        std::cout << "Playing ...." << std::endl;
+        //std::cout << "Playing ...." << std::endl;
     }
-    else
+    else if( (Mix_PlayingMusic() != 1) && (m_in_pause == false) )
     {
         m_track++;
         if( m_track >= m_file_music.size() )
@@ -132,7 +135,7 @@ void Audio::updateTrack()
             m_track = 0;
         }
 
-        std::cout << "Not playing and track is now == " << m_track << std::endl;
+        //std::cout << "Not playing and track is now == " << m_track << std::endl;
 
         loadMusic();
         playMusic();
