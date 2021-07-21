@@ -55,7 +55,6 @@ bool Audio::loadMusic()
         if(m_music != NULL)
         {
             Mix_FreeMusic(m_music);
-            std::cout << "pointer : " << m_music << std::endl;
         }
         //std::cout << "pointer : " << m_music << std::endl;
         /************************************************* load the file ********************************************************/
