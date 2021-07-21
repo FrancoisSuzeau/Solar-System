@@ -40,7 +40,11 @@ Make sure that the executable file is in the ````bin```` directory.
 ### 20/07/2021
 + Distant objects behaviour : OpenGL let you to have the possibility to fixe perspective aspect. When you move backward, after a while, the object disappear and his name appear. Also, these name are oriented with the camera position
 
-+ Atmosphere effect : Venus, Earth, Mars, Jupiter and Saturn have transparent and colored atmosphere all arround their surface. It is simply a disk moving in relation with the camera position. These atmosphere are not shadowed because of the impossibility to make the framebuffer work.
++ Atmosphere effect : Venus, Earth, Mars, Jupiter and Saturn have transparent and colored atmosphere all arround their surface. It is simply a disk moving in relation with the camera position. These atmosphere are not shadowed because of the impossibility to make a framebuffer work.
+
+
+### 21/07/2021
++ Sound : Add a playist feature, now six track are playing one after the other. (Had to initialize pointer to struct Mix_music to NULL -> drop a warning)
 
 
 ## More in coming ...
