@@ -56,7 +56,6 @@ bool Audio::loadMusic()
         {
             Mix_FreeMusic(m_music);
         }
-        //std::cout << "pointer : " << m_music << std::endl;
         /************************************************* load the file ********************************************************/
         m_music = Mix_LoadMUS(m_file_music[m_track].c_str());
         if(m_music == NULL)
@@ -124,7 +123,7 @@ void Audio::updateTrack()
 {
     if(Mix_PlayingMusic() == 1)
     {
-        //std::cout << "Playing ...." << std::endl;
+        //do nothing
     }
     else if( (Mix_PlayingMusic() != 1) && (m_in_pause == false) )
     {
@@ -133,8 +132,6 @@ void Audio::updateTrack()
         {
             m_track = 0;
         }
-
-        //std::cout << "Not playing and track is now == " << m_track << std::endl;
 
         loadMusic();
         playMusic();
