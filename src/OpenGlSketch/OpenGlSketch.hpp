@@ -38,7 +38,6 @@ PURPOSE : header of the OpenGlSketch class
         #include "../StartScreen/StartScreen.hpp"
 
         #include "../CelestialBody/Geometry/Square.hpp"
-        #include "../MusicOverlay/MusicOverlay.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
