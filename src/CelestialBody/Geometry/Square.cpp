@@ -22,7 +22,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Square::Square(float size, std::string const vertex_shader, std::string const frag_shader) : m_vboID(0), m_bytes_colors_size(18 * sizeof(float))
+Square::Square(float size, std::string const vertex_shader, std::string const frag_shader, float const color) : m_vboID(0), m_bytes_colors_size(18 * sizeof(float))
 {
     //Shader color_shader("Shader/Shaders/couleur3D.vert", "Shader/Shaders/couleur3D.frag"); //the path is in fonction of the level of the executable
     // float colors[] = {240.0/255.0, 210.0/255.0, 23.0/255.0,
@@ -43,8 +43,8 @@ Square::Square(float size, std::string const vertex_shader, std::string const fr
                         };
 
 
-    float colorsTmp[] = {0.750, 0.750, 0.750,   0.750, 0.750, 0.750,   0.750, 0.750, 0.750,
-                        0.750, 0.750, 0.750,   0.750, 0.750, 0.750,   0.750, 0.750, 0.750,
+    float colorsTmp[] = {color, color, color,   color, color, color,   color, color, color,
+                        color, color, color,   color, color, color,   color, color, color,
                         
                         };
 

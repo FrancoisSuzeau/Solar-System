@@ -168,7 +168,7 @@ void OpenGlSketch::startLoop()
 
     solar_system = new SolarSystemCreator();
 
-    Square      *square = new Square(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag");
+    Square      *square = new Square(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.500);
 
     int nb_loaded(0);
 
@@ -248,7 +248,7 @@ void OpenGlSketch::mainLoop()
     mat4 model_view;
     mat4 save_model_view;
 
-    MusicOverlay overlay();
+    MusicOverlay overlay;
     
     //==================================================================================================================
     
@@ -303,6 +303,7 @@ void OpenGlSketch::mainLoop()
         camera->lookAt(model_view);
         
         glm::vec3 camPos = camera->getPosition();
+        glm::vec3 targetPoint = camera->getTargetPoint();
 
         //cleaning the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -339,6 +340,8 @@ void OpenGlSketch::mainLoop()
         model_view = save_model_view;
 
         /************************************************* swapping windows ********************************************************/
+
+        overlay.display(projection, model_view, camPos, targetPoint);
         
         //actualising the window
         SDL_GL_SwapWindow(m_window);

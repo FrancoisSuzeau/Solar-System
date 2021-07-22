@@ -50,7 +50,7 @@ PURPOSE : header of the Square class
                 
             public:
 
-                Square(float size, std::string const vertex_shader, std::string const frag_shader);
+                Square(float size, std::string const vertex_shader, std::string const frag_shader, float const color);
                 Square();
                 ~Square();
 

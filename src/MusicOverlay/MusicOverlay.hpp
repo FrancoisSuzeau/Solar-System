@@ -32,7 +32,7 @@ PURPOSE : header of the MusicOverlay class
 
         
         #include "../Texture/Texture.hpp"
-        #include "../CelestialBody/Geometry/Disk.hpp"
+        #include "../CelestialBody/Geometry/Square.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -42,14 +42,15 @@ PURPOSE : header of the MusicOverlay class
             
             private:
 
-                
+                Square          *m_grey_rect;
+                Square          *m_black_rect;
 
             public:
             
                 MusicOverlay();
                 ~MusicOverlay();
 
-                void display(glm::mat4 &projection, glm::mat4 &modelview);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 &target);
         };
 
 

@@ -253,3 +253,8 @@ float Camera::getTheta() const
 {
     return m_theta;
 }
+
+glm::vec3 Camera::getTargetPoint() const
+{
+    return m_target_point;
+}
