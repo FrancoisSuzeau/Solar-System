@@ -39,6 +39,8 @@ PURPOSE : header of the OpenGlSketch class
 
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../MusicOverlay/MusicOverlay.hpp"
+
+        #include "../Shader/Shader.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -61,6 +63,9 @@ PURPOSE : header of the OpenGlSketch class
 
                 SystemCreator   *solar_system;
 
+                unsigned int quadVAO, quadVBO;
+                float *screen_vert;
+
             public:
 
                 OpenGlSketch();
@@ -71,6 +76,8 @@ PURPOSE : header of the OpenGlSketch class
                 bool    initGL();
                 void    mainLoop();
                 void    startLoop();
+
+                void loadScreenOverlay();
 
         };
 

@@ -230,6 +230,32 @@ void OpenGlSketch::startLoop()
 
 }
 
+void OpenGlSketch::loadScreenOverlay()
+{
+    float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+        // positions   // texCoords
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+
+        -1.0f,  1.0f,  0.0f, 1.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f
+    };
+
+    screen_vert = quadVertices;
+    // screen quad VAO
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1, &quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(screen_vert), &screen_vert, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+}
+
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** mainLoop **********************************************************************/
 /***********************************************************************************************************************************************************************/
@@ -248,7 +274,13 @@ void OpenGlSketch::mainLoop()
     mat4 model_view;
     mat4 save_model_view;
 
-    MusicOverlay overlay;
+    //MusicOverlay overlay;
+
+    // unsigned int overlay_tex;
+    // unsigned int fb;
+    // unsigned int depth_rb;
+
+    //Shader *screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
     
     //==================================================================================================================
     
@@ -262,6 +294,31 @@ void OpenGlSketch::mainLoop()
     //load and play the music
     aud->loadMusic();
     aud->playMusic();
+
+    // screenShader->loadShader();
+
+    // // Create a texture to render to
+    // glGenTextures(1, &overlay_tex);
+    // glBindTexture(GL_TEXTURE_2D, overlay_tex);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // // NULL means reserve texture memory
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 512, 512, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
+
+    // glGenFramebuffers(1, &fb);
+    // glBindFramebuffer(GL_FRAMEBUFFER, fb);
+    // // Attach the texture to the framebuffer
+    // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, overlay_tex, 0);
+
+    // glGenRenderbuffers(1, &depth_rb);
+    // glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
+    // glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 512, 512);
+    // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+    // if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    //     std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    // glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     while(!m_input.getTerminate())
     {   
@@ -303,10 +360,12 @@ void OpenGlSketch::mainLoop()
         camera->lookAt(model_view);
         
         glm::vec3 camPos = camera->getPosition();
-        glm::vec3 targetPoint = camera->getTargetPoint();
+        // glm::vec3 targetPoint = camera->getTargetPoint();
+        // glm::vec3 orientation = camera->getOrientation();
 
         //cleaning the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
         //save the modelview matrix
         save_model_view = model_view;
@@ -340,9 +399,19 @@ void OpenGlSketch::mainLoop()
         model_view = save_model_view;
 
         /************************************************* swapping windows ********************************************************/
-
-        overlay.display(projection, model_view, camPos, targetPoint);
         
+        // glBindFramebuffer(GL_FRAMEBUFFER, fb);
+        //     overlay.display(projection, model_view, camPos, targetPoint, orientation);
+        // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        // glUseProgram(screenShader->getProgramID());
+        // screenShader->setTexture("screenTexture", overlay_tex);
+        // glBindVertexArray(quadVAO);
+        // glBindTexture(GL_TEXTURE_2D, overlay_tex);	// use the color attachment texture as the texture of the quad plane
+        // glDrawArrays(GL_TRIANGLES, 0, 6);
+        // glUseProgram(0);
+
+
         //actualising the window
         SDL_GL_SwapWindow(m_window);
 

@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     }
 
     sketch.startLoop();
-
+    sketch.loadScreenOverlay();
     sketch.mainLoop();
     
     return EXIT_SUCCESS;

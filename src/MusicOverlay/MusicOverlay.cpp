@@ -37,7 +37,7 @@ MusicOverlay::~MusicOverlay()
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void MusicOverlay::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 &target)
+void MusicOverlay::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 &target, glm::vec3 &orientation)
 {   
     //********************************************** calculate rectangle orientation and position ************************************************************
     float x = target[0];
@@ -48,8 +48,8 @@ void MusicOverlay::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec
 
     glm::mat4 save = modelview;
 
-        modelview = translate(modelview, vec3(x, y, z));
-        modelview = rotate(modelview, 90.0f, vec3(1, 0, 0));
+        //modelview = translate(modelview, vec3(x, y, z));
+        //modelview = rotate(modelview, 90.0f, vec3(1, 0, 0));
         m_grey_rect->drawLoad(4, projection, modelview);
 
     modelview = save;
