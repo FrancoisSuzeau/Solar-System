@@ -40,7 +40,7 @@ m_bytes_colors_size(18 * sizeof(float))
     m_size = size;
     m_size /= 2;
     float verticesTmp[] = {-m_size, -m_size, -m_size,   m_size, -m_size, -m_size,   m_size, m_size, -m_size,   
-                        -m_size, -m_size, -m_size,   -m_size, m_size, -m_size,   m_size, m_size, -m_size,   
+                        -m_size, -m_size, -m_size,   -m_size, m_size, -m_size,   m_size, m_size, -m_size  
 
                         };
 

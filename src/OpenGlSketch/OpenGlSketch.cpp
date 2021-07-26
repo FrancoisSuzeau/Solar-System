@@ -156,6 +156,118 @@ bool OpenGlSketch::initGL()
 }
 
 /***********************************************************************************************************************************************************************/
+/********************************************************************************* initFrameBuffer *********************************************************************/
+/***********************************************************************************************************************************************************************/
+void OpenGlSketch::initFrameBuffer()
+{
+    float quadVertices[] = {-1.0, -1.0, -1.0,   1.0, -1.0, -1.0,   1.0, 1.0, -1.0,   
+                        -1.0, -1.0, -1.0,   -1.0, 1.0, -1.0,   1.0, 1.0, -1.0   
+
+    };
+
+    float temp_coord[] = {0, 0,   1, 0,   1, 1,
+                          0, 0,   0, 1,   1, 1
+                          
+                          };
+
+    int m_bytes_vertices_size = 18 * sizeof(float);
+    int m_bytes_coord_size = 12 * sizeof(float);
+
+    /************************************************* VBO management ********************************************************/
+    //destroy a possible ancient VBO
+    if(glIsBuffer(quadVBO) == GL_TRUE)
+    {
+        glDeleteBuffers(1, &quadVBO);
+    }
+
+    //generate Vertex Buffer Object ID
+    glGenBuffers(1, &quadVBO);
+
+    //lock VBO
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+
+        //memory allocation
+        glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_coord_size, 0, GL_DYNAMIC_DRAW);
+        /*
+            - GL_STATIC_DRAW : data with few updating
+            - GL_DYNAMIC_DRAW : data with frequently updating (many times per second but not each frame
+            - GL_STREAM_DRAW : data with each frame updating
+        there is 6 other possible values
+        */
+
+       //vertices transfert$
+       glBufferSubData(GL_ARRAY_BUFFER, 0, m_bytes_vertices_size, quadVertices);
+       glBufferSubData(GL_ARRAY_BUFFER, m_bytes_vertices_size, m_bytes_coord_size, temp_coord);
+
+
+    //unlock VBO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //===================================================================================================================
+
+    /************************************************* VAO management ********************************************************/
+    //destroy a possible ancient VAO
+    if(glIsVertexArray(quadVAO) == GL_TRUE)
+    {
+        glDeleteVertexArrays(1, &quadVAO);
+    }
+    //generate Vertex Array Object ID
+    glGenVertexArrays(1, &quadVAO);
+
+    //lock VAO
+    glBindVertexArray(quadVAO);
+
+        //lock VBO
+        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+
+        //acces to the vertices in video memory
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+        glEnableVertexAttribArray(0);
+
+        //acces to the colors in video memory
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(m_bytes_vertices_size));
+        glEnableVertexAttribArray(2);
+
+        //unlock VBO
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    //unlock VAO
+    glBindVertexArray(0);
+    //===================================================================================================================
+
+    unsigned int depth_rb;
+    glGenFramebuffers(1, &fb);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb);
+
+    // Create a texture to render to
+    glGenTextures(1, &overlay_tex);
+    glBindTexture(GL_TEXTURE_2D, overlay_tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // NULL means reserve texture memory
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_window_width, m_window_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
+
+    
+    // Attach the texture to the framebuffer
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, overlay_tex, 0);
+
+    glGenRenderbuffers(1, &depth_rb);
+    glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_window_width, m_window_height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
+
+    screenShader->loadShader();
+}
+
+/***********************************************************************************************************************************************************************/
 /*************************************************************************************** startLoop *********************************************************************/
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::startLoop()
@@ -230,107 +342,6 @@ void OpenGlSketch::startLoop()
 
 }
 
-void OpenGlSketch::loadScreenOverlay()
-{
-    // float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-    //     // positions   // texCoords
-    //     -1.0f,  1.0f,  0.0f, 1.0f,
-    //     -1.0f, -1.0f,  0.0f, 0.0f,
-    //      1.0f, -1.0f,  1.0f, 0.0f,
-
-    //     -1.0f,  1.0f,  0.0f, 1.0f,
-    //      1.0f, -1.0f,  1.0f, 0.0f,
-    //      1.0f,  1.0f,  1.0f, 1.0f
-    // };
-
-    // screen quad VAO
-    // glGenVertexArrays(1, &quadVAO);
-    // glGenBuffers(1, &quadVBO);
-    // glBindVertexArray(quadVAO);
-    // glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-    // glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-    // glEnableVertexAttribArray(0);
-    // glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-    // glEnableVertexAttribArray(1);
-    // glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-    float quadVertices[] = {0, 0, 0,   4, 0.0, 0.0,   4, 4, 0,   
-                        0.0, 0.0, 0.0,   0.0, 4, 0.0,   4, 4, 0.0   
-
-    };
-
-    float temp_coord[] = {0, 0,   1, 0,   1, 1,
-                          0, 0,   0, 1,   1, 1
-                          
-                          };
-
-    int m_bytes_vertices_size = 12 * sizeof(float);
-    int m_bytes_coord_size = 12 * sizeof(float);
-
-    /************************************************* VBO management ********************************************************/
-    //destroy a possible ancient VBO
-    if(glIsBuffer(quadVBO) == GL_TRUE)
-    {
-        glDeleteBuffers(1, &quadVBO);
-    }
-
-    //generate Vertex Buffer Object ID
-    glGenBuffers(1, &quadVBO);
-
-    //lock VBO
-    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-
-        //memory allocation
-        glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_coord_size, 0, GL_DYNAMIC_DRAW);
-        /*
-            - GL_STATIC_DRAW : data with few updating
-            - GL_DYNAMIC_DRAW : data with frequently updating (many times per second but not each frame
-            - GL_STREAM_DRAW : data with each frame updating
-        there is 6 other possible values
-        */
-
-       //vertices transfert$
-       glBufferSubData(GL_ARRAY_BUFFER, 0, m_bytes_vertices_size, quadVertices);
-       glBufferSubData(GL_ARRAY_BUFFER, m_bytes_vertices_size, m_bytes_coord_size, temp_coord);
-
-
-    //unlock VBO
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //===================================================================================================================
-
-    /************************************************* VAO management ********************************************************/
-    //destroy a possible ancient VAO
-    if(glIsVertexArray(quadVAO) == GL_TRUE)
-    {
-        glDeleteVertexArrays(1, &quadVAO);
-    }
-    //generate Vertex Array Object ID
-    glGenVertexArrays(1, &quadVAO);
-
-    //lock VAO
-    glBindVertexArray(quadVAO);
-
-        //lock VBO
-        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-
-        //acces to the vertices in video memory
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-        glEnableVertexAttribArray(0);
-
-        //acces to the colors in video memory
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(m_bytes_vertices_size));
-        glEnableVertexAttribArray(2);
-
-        //unlock VBO
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    //unlock VAO
-    glBindVertexArray(0);
-    //===================================================================================================================
-
-    
-}
-
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** mainLoop **********************************************************************/
 /***********************************************************************************************************************************************************************/
@@ -349,17 +360,7 @@ void OpenGlSketch::mainLoop()
     mat4 model_view;
     mat4 save_model_view;
 
-    MusicOverlay overlay;
-
-    unsigned int overlay_tex;
-    unsigned int fb;
-    unsigned int depth_rb;
-
-    mat4 mdvwFBO;
-    mat4 projFBO;
-    mat4 saveFBO;
-
-    Shader *screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
+    //MusicOverlay overlay;
     
     //==================================================================================================================
     
@@ -370,41 +371,9 @@ void OpenGlSketch::mainLoop()
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 1000.0);
     model_view = mat4(1.0);
 
-    projFBO = perspective(70.0, (double)512 / 512, 1.0, 1000.0);
-    mdvwFBO = mat4(1.0);
-
     //load and play the music
     aud->loadMusic();
     aud->playMusic();
-
-    screenShader->loadShader();
-
-    glGenFramebuffers(1, &fb);
-    glBindFramebuffer(GL_FRAMEBUFFER, fb);
-
-    // Create a texture to render to
-    glGenTextures(1, &overlay_tex);
-    glBindTexture(GL_TEXTURE_2D, overlay_tex);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // NULL means reserve texture memory
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 512, 512, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
-
-    
-    // Attach the texture to the framebuffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, overlay_tex, 0);
-
-    glGenRenderbuffers(1, &depth_rb);
-    glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 512, 512);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-    // glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    // glBindTexture(GL_TEXTURE_2D, 0);    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     while(!m_input.getTerminate())
     {   
@@ -443,74 +412,69 @@ void OpenGlSketch::mainLoop()
 
         camera->move(m_input);
 
-        //camera->lookAt(model_view);
+        camera->lookAt(model_view);
         
         glm::vec3 camPos = camera->getPosition();
-        glm::vec3 targetPoint = camera->getTargetPoint();
-        glm::vec3 orientation = camera->getOrientation();
 
         glBindFramebuffer(GL_FRAMEBUFFER, fb);
 
+        glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
+
+        // make sure we clear the framebuffer's content
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
         //cleaning the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glViewport(0, 0, 512, 512);
-        mdvwFBO = lookAt(vec3(100, 100, 100), vec3(0, 0, 0), vec3(0, 0, 1));
-
         //save the modelview matrix
-        saveFBO = mdvwFBO;
+        save_model_view = model_view;
 
         /************************************************* SKYBOX RENDER ********************************************************/
 
-            solar_system->drawSkybox(projFBO, mdvwFBO);
+            solar_system->drawSkybox(projection, model_view);
 
         //restaure the modelview matrix
-        mdvwFBO = saveFBO;
+        model_view = save_model_view;
 
         /************************************************* SOLAR SYSTEM RENDER ********************************************************/
         
-            solar_system->drawSystem(projFBO, mdvwFBO, camPos);
+            solar_system->drawSystem(projection, model_view, camPos);
 
         //restaure the modelview matrix
-        mdvwFBO = saveFBO;
+        model_view = save_model_view;
 
         /************************************************* NAME BODY RENDER ********************************************************/
 
-            solar_system->drawName(projFBO, mdvwFBO, camPos);
+            solar_system->drawName(projection, model_view, camPos);
 
         //restaure the modelview matrix
-        mdvwFBO = saveFBO;
+        model_view = save_model_view;
 
         /************************************************* ATMOSPHERE RENDER ********************************************************/
 
-            solar_system->drawAtmo(projFBO, mdvwFBO, camPos);
+            solar_system->drawAtmo(projection, model_view, camPos);
 
         //restaure the modelview matrix
-        mdvwFBO = saveFBO;
+        model_view = save_model_view;
 
         /************************************************* swapping windows ********************************************************/
         
-        // glBindFramebuffer(GL_FRAMEBUFFER, fb);
-        //     //cleaning the screen
-        //     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        //     overlay.display(projection, model_view, camPos, targetPoint, orientation);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        //cleaning the screen
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, m_window_width, m_window_height);
-
-        camera->lookAt(model_view);
+        glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
+        // clear all relevant buffers
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
+        glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(screenShader->getProgramID());
-        glBindVertexArray(quadVAO);
-        screenShader->setTexture("screenTexture", overlay_tex);
-        screenShader->setMat4("modelview", model_view);
-        screenShader->setMat4("projection", projection);
-        glBindTexture(GL_TEXTURE_2D, overlay_tex);	// use the color attachment texture as the texture of the quad plane
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
+
+            glBindVertexArray(quadVAO);
+
+                screenShader->setTexture("screenTexture", 0);
+                glBindTexture(GL_TEXTURE_2D, overlay_tex);	// use the color attachment texture as the texture of the quad plane
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            glBindVertexArray(0);
         glUseProgram(0);
 
         //actualising the window
