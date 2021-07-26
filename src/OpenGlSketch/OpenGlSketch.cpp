@@ -234,6 +234,7 @@ void OpenGlSketch::initFrameBuffer()
     glBindVertexArray(0);
     //===================================================================================================================
 
+    /************************************************* Framebuffer management ********************************************************/
     unsigned int depth_rb;
     glGenFramebuffers(1, &fb);
     glBindFramebuffer(GL_FRAMEBUFFER, fb);
@@ -261,6 +262,8 @@ void OpenGlSketch::initFrameBuffer()
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);    
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //===================================================================================================================
+
 
     screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
 
@@ -359,8 +362,6 @@ void OpenGlSketch::mainLoop()
     mat4 projection;
     mat4 model_view;
     mat4 save_model_view;
-
-    //MusicOverlay overlay;
     
     //==================================================================================================================
     
@@ -379,7 +380,7 @@ void OpenGlSketch::mainLoop()
     {   
         start_loop = SDL_GetTicks();
         
-        /************************************************* managing events ********************************************************/
+    /********************************************************** MANAGING EVENTS *************************************************************/
         m_input.updateEvents();
 
         if(m_input.getKey(SDL_SCANCODE_ESCAPE))
@@ -400,15 +401,15 @@ void OpenGlSketch::mainLoop()
         {
             pause = true;
         }
-        //===================================================================================================================
+        //======================================================================================================================================
 
-        /************************************************* MANAGING MUSIC ********************************************************/
+    /******************************************************** MANAGING MUSIC *******************************************************************/
         aud->volume(change);
         aud->pause(pause);
         pause = false;
         change = 0;
         aud->updateTrack();
-        //===================================================================================================================
+    //===========================================================================================================================================
 
         camera->move(m_input);
 
@@ -416,48 +417,53 @@ void OpenGlSketch::mainLoop()
         
         glm::vec3 camPos = camera->getPosition();
 
-        glBindFramebuffer(GL_FRAMEBUFFER, fb);
+    /********************************************************************** Framebuffer activation ******************************************************************/
+            glBindFramebuffer(GL_FRAMEBUFFER, fb);
 
-        glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
+            glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 
-        // make sure we clear the framebuffer's content
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            // make sure we clear the framebuffer's content
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-        //cleaning the screen
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            //cleaning the screen
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //save the modelview matrix
-        save_model_view = model_view;
+    /**************************************** RENDER OF ALL THE SCENE **************************************************/
 
-        /************************************************* SKYBOX RENDER ********************************************************/
+            //save the modelview matrix
+            save_model_view = model_view;
 
-            solar_system->drawSkybox(projection, model_view);
+            /****************************************** skybox render **************************************************/
 
-        //restaure the modelview matrix
-        model_view = save_model_view;
+                solar_system->drawSkybox(projection, model_view);
 
-        /************************************************* SOLAR SYSTEM RENDER ********************************************************/
-        
-            solar_system->drawSystem(projection, model_view, camPos);
+            //restaure the modelview matrix
+            model_view = save_model_view;
 
-        //restaure the modelview matrix
-        model_view = save_model_view;
+            /****************************************** bodys render ****************************************************/
+            
+                solar_system->drawSystem(projection, model_view, camPos);
 
-        /************************************************* NAME BODY RENDER ********************************************************/
+            //restaure the modelview matrix
+            model_view = save_model_view;
 
-            solar_system->drawName(projection, model_view, camPos);
+            /****************************************** atmosphere render *************************************************/
 
-        //restaure the modelview matrix
-        model_view = save_model_view;
+                solar_system->drawAtmo(projection, model_view, camPos);
 
-        /************************************************* ATMOSPHERE RENDER ********************************************************/
+            //restaure the modelview matrix
+            model_view = save_model_view;
 
-            solar_system->drawAtmo(projection, model_view, camPos);
+            /******************************************* name render *****************************************************/
 
-        //restaure the modelview matrix
-        model_view = save_model_view;
+                solar_system->drawName(projection, model_view, camPos);
 
-        /************************************************* swapping windows ********************************************************/
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+        //=======================================================================================================================================================
+
+        /************************************************* SWAPPING FRAMEBUFFER ********************************************************/
         
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -476,6 +482,9 @@ void OpenGlSketch::mainLoop()
 
             glBindVertexArray(0);
         glUseProgram(0);
+    //===================================================================================================================
+
+    /************************************************* SWAPPING WINDOWS ********************************************************/
 
         //actualising the window
         SDL_GL_SwapWindow(m_window);
@@ -487,7 +496,7 @@ void OpenGlSketch::mainLoop()
         {
             SDL_Delay(frame_rate - time_past);
         }
-        //===================================================================================================================
+    //===================================================================================================================
     }
 
     delete solar_system;
