@@ -11,17 +11,13 @@ void main(void) {
         // processing of the texture coordinates;
         // this is unnecessary if correct texture coordinates are specified by the application
 
-    // *********************************************** bind texture unit to fragment coordinate with blur effect ***************************************************
-    //gl_FragColor = vec4(result, 1.0);
-
-    // *********************************************** only bind texture unit to fragment coordinate ***************************************************
-    gl_FragColor = texture(texture0, longitudeLatitude);
-
     // look up the color of the texture image specified by the uniform "texture0"
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
     
-
+    // *********************************************** only bind texture unit to fragment coordinate ***************************************************
+    gl_FragColor = texture(texture0, longitudeLatitude);
+    
     // *********************************************** or a white ball ***************************************************
     //gl_FragColor = vec4(1.0);
     

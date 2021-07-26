@@ -247,7 +247,7 @@ void OpenGlSketch::initFrameBuffer()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     // NULL means reserve texture memory
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_window_width, m_window_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_window_width, m_window_height, 0, GL_RGBA, GL_FLOAT, NULL);
 
     
     // Attach the texture to the framebuffer
@@ -362,6 +362,9 @@ void OpenGlSketch::mainLoop()
     mat4 projection;
     mat4 model_view;
     mat4 save_model_view;
+
+    float exposure = 1.0f;
+    bool hdr = true;
     
     //==================================================================================================================
     
@@ -477,6 +480,8 @@ void OpenGlSketch::mainLoop()
             glBindVertexArray(quadVAO);
 
                 screenShader->setTexture("screenTexture", 0);
+                screenShader->setFloat("exposure", exposure);
+                screenShader->setInt("hdr", hdr);
                 glBindTexture(GL_TEXTURE_2D, overlay_tex);	// use the color attachment texture as the texture of the quad plane
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
