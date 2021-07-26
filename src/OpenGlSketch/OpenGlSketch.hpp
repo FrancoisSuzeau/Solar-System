@@ -64,7 +64,6 @@ PURPOSE : header of the OpenGlSketch class
                 SystemCreator   *solar_system;
 
                 unsigned int quadVAO, quadVBO;
-                float *screen_vert;
 
             public:
 

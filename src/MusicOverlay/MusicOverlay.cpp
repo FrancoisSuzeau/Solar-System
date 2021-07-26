@@ -48,7 +48,7 @@ void MusicOverlay::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec
 
     glm::mat4 save = modelview;
 
-        //modelview = translate(modelview, vec3(x, y, z));
+        modelview = translate(modelview, vec3(x, y, z));
         //modelview = rotate(modelview, 90.0f, vec3(1, 0, 0));
         m_grey_rect->drawLoad(4, projection, modelview);
 
