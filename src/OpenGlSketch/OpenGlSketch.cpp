@@ -240,8 +240,8 @@ void OpenGlSketch::initFrameBuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, fb);
 
     // Create a texture to render to
-    glGenTextures(1, &overlay_tex);
-    glBindTexture(GL_TEXTURE_2D, overlay_tex);
+    glGenTextures(1, &fb_text);
+    glBindTexture(GL_TEXTURE_2D, fb_text);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -251,7 +251,7 @@ void OpenGlSketch::initFrameBuffer()
 
     
     // Attach the texture to the framebuffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, overlay_tex, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_text, 0);
 
     glGenRenderbuffers(1, &depth_rb);
     glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
@@ -482,7 +482,7 @@ void OpenGlSketch::mainLoop()
                 screenShader->setTexture("screenTexture", 0);
                 screenShader->setFloat("exposure", exposure);
                 screenShader->setInt("hdr", hdr);
-                glBindTexture(GL_TEXTURE_2D, overlay_tex);	// use the color attachment texture as the texture of the quad plane
+                glBindTexture(GL_TEXTURE_2D, fb_text);	// use the color attachment texture as the texture of the quad plane
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
             glBindVertexArray(0);

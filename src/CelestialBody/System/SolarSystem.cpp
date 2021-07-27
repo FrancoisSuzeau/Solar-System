@@ -88,7 +88,7 @@ void SolarSystem::loadSystem(int count)
     if(count == 4)
     {
         m_planete_creator.push_back(new SimplePlaneteCreator());
-        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(50.0, 0.0, 0.0));
+        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(30.0, 0.0, 0.0));
     }
     
     if(count == 5)
@@ -131,7 +131,7 @@ void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 sun_pos)
 {
     glm::mat4 save = modelview;
 
@@ -169,7 +169,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[0]->drawSystem(projection, modelview, camPos);
+        m_planetary_system[0]->drawSystem(projection, modelview, camPos, m_position);
         
 
     /************************************************* MARS RENDER ********************************************************/
@@ -186,14 +186,14 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[1]->drawSystem(projection, modelview, camPos);
+        m_planetary_system[1]->drawSystem(projection, modelview, camPos, m_position);
         
     /************************************************* SATURN RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[2]->drawSystem(projection, modelview, camPos);
+        m_planetary_system[2]->drawSystem(projection, modelview, camPos, m_position);
 
     /************************************************* URANUS RENDER ********************************************************/
     //restaure the modelview matrix

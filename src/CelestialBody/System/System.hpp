@@ -41,7 +41,7 @@ PURPOSE : header of the virtual System class
                 
                 virtual ~System() {};
                 virtual void loadSystem(int count) = 0;
-                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) = 0;
+                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 sun_pos = glm::vec3(0.0, 0.0, 0.0)) = 0;
                 virtual void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview) = 0;
                 virtual void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) = 0;
                 virtual void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) = 0;

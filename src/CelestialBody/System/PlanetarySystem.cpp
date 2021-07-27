@@ -122,13 +122,12 @@ void PlanetarySystem::loadSystem(int count)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 sun_pos)
 {
     glm::mat4 save = modelview;
-    glm::vec3 position(0.1, 0.0, 0.0);
     glm::vec3 target_point(0.0, 0.0, 0.0);
     glm::vec3 vertical_axe(0.0, 0.0, 1.0);
-    glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
+    glm::mat4 light_src = glm::lookAt(sun_pos, target_point, vertical_axe);
     glm::mat4 save_light_src = light_src;
 
     m_host_creator->UpdatePositionPlan(projection, modelview);

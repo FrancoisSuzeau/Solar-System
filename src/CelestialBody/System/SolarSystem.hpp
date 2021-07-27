@@ -53,7 +53,7 @@ PURPOSE : header of the virtual SolarSystem class
 
 
                 void loadSystem(int count) override;
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 sun_pos = glm::vec3(0.0, 0.0, 0.0)) override;
                 void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview) override;
                 void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
