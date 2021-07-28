@@ -88,7 +88,7 @@ void SolarSystem::loadSystem(int count)
     if(count == 4)
     {
         m_planete_creator.push_back(new SimplePlaneteCreator());
-        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(30.0, 0.0, 0.0));
+        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(50.0, 0.0, 0.0));
     }
     
     if(count == 5)

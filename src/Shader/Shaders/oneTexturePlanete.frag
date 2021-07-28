@@ -5,13 +5,6 @@ uniform vec3 viewPos;
 in vec3 Normal;
 in vec3 FragPos;
 
-struct Light {
-    vec3 Position;
-    vec3 Color;
-};
-
-uniform Light lights[16];
-
 out vec4 FragColor;
 
 void main(void) {
@@ -36,54 +29,34 @@ void main(void) {
     float lightConst = 1.0f;
     float lightLin = 0.35f;
     float lightQuad = 0.44f;
-    //float distance = length(lightPos - FragPos);
-    //float mitigation = 1.0 / (lightConst + lightLin * distance + lightQuad * (distance * distance));
+    float distance = length(lightPos - FragPos);
+    float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
 
     // *********************************************** diffuse light ***************************************************
-    //vec3 norm = normalize(Normal);
-    //vec3 lightDir = normalize(lightPos - FragPos);
-    //float diff = max(dot(norm, lightDir), 0.0);
-    //vec3 diffuse = diff * lightColor * objectColor;
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
 
     // *********************************************** specular light ***************************************************
-    //float specularStrength = 0.5;
-    //vec3 viewDir = normalize(viewPos - FragPos);
-    //vec3 reflectDir = reflect(-lightDir, norm);
-    //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
-    //vec3 specular = specularStrength * spec * lightColor;
+    float specularStrength = 0.5;
+    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
+    vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.01;
-    vec3 ambiant = ambiantStrength * objectColor;
+    float ambiantStrength = 0.008;
+    vec3 ambiant = ambiantStrength * lightColor;
 
-    // *********************************************** calculate diffuse + attenuation for hdr ***************************************************
-    vec3 lighting = vec3(0.0);
-    for(int i = 0; i < 16; i++)
-    {
-        vec3 norm = normalize(Normal);
-
-        // diffuse
-        vec3 lightDir = normalize(lights[i].Position - FragPos);
-        float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = lights[i].Color * diff * objectColor;      
-        vec3 result = diffuse;
-
-        // attenuation (use quadratic as we have gamma correction)
-        float distance = length(FragPos - lights[i].Position);
-        result *= 1.0 / (lightConst + lightLin * distance + lightQuad * (distance * distance));
-        lighting += result;
-                
-    }
+    // *********************************************** adding mitigation effect ***************************************************
+    ambiant *= mitigation;
+    diffuse *= mitigation;
+    specular *= mitigation;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    //vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
-    //vec3 result = ( ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
-
-    //ambiant *= mitigation;
-    //diffuse *= mitigation;
-    //specular *= mitigation;
-
-    FragColor = vec4(ambiant + lighting, 1.0);
+    vec3 result = (ambiant + diffuse) * objectColor;
+    FragColor = vec4(result, 1.0);
     
     
         

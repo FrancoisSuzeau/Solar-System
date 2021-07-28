@@ -26,7 +26,7 @@ void main()
     }
     else
     {
-        vec3 result = pow(hdrColor, vec3(1.0 / gamma));
-        FragColor = vec4(result, 1.0);
+        vec3 textureScreen = texture(screenTexture, TexCoords).rgb;
+        FragColor = vec4(textureScreen, 1.0);
     }
 }

@@ -53,12 +53,12 @@ void main()
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.1;
+    float ambiantStrength = 0.008;
     vec3 ambiant = ambiantStrength * lightColor;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    vec4 objectColor = texture(texture, coordTexture);
-    vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    vec3 objectColor = texture(texture, coordTexture).rgb;
+    vec3 result = (ambiant + diffuse) * objectColor;
 
     //ambiant *= mitigation;
     //diffuse *= mitigation;

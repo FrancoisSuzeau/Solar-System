@@ -201,11 +201,7 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi,
 
         m_shader.setVec3("viewPos", camPos);
         m_shader.setVec3("atmoColor", m_color_atmo);
-
-        m_shader.setVec3("camPosUpd", camPosUpd);
-
-        m_shader.setFloat("phi", phi);
-        m_shader.setFloat("theta", theta);
+        
 
         //lock texture
         glBindTexture(GL_TEXTURE_2D, m_texture.getID());

@@ -363,7 +363,7 @@ void OpenGlSketch::mainLoop()
     mat4 model_view;
     mat4 save_model_view;
 
-    float exposure = 1.0f;
+    float exposure = 0.8f;
     bool hdr = true;
     
     //==================================================================================================================
@@ -400,15 +400,28 @@ void OpenGlSketch::mainLoop()
             change = 1;
         }
 
+        // if (m_input.getKey(SDL_SCANCODE_H))
+        // {
+        //     if(hdr)
+        //     {
+        //         hdr = false;
+        //     }
+        //     else
+        //     {
+        //         hdr = true;
+        //     }
+        // }
+        
+
         if(m_input.getKey(SDL_SCANCODE_SPACE))
         {
-            pause = true;
+            //pause = true;
         }
         //======================================================================================================================================
 
     /******************************************************** MANAGING MUSIC *******************************************************************/
         aud->volume(change);
-        aud->pause(pause);
+        //aud->pause(pause);
         pause = false;
         change = 0;
         aud->updateTrack();

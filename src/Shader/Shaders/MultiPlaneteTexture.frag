@@ -44,16 +44,17 @@ void main(void) {
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.1;
+    float ambiantStrength = 0.008;
     vec3 ambiant = ambiantStrength * lightColor;
 
-    // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    vec4 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity);
-    vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    // *********************************************** adding mitigation effect ***************************************************
+    ambiant *= mitigation;
+    diffuse *= mitigation;
+    specular *= mitigation;
 
-    //ambiant *= mitigation;
-    //diffuse *= mitigation;
-    //specular *= mitigation;
+    // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
+    vec3 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity).rgb;
+    vec3 result = (ambiant + diffuse) * objectColor;
     
     gl_FragColor = vec4(result, 1.0);
 }

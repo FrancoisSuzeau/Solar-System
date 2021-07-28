@@ -95,27 +95,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
         m_shader.setMat4("modelview", modelview);
         m_shader.setMat4("projection", projection);
         m_shader.setMat4("light_src", light_src);
-
-        // positions
-        std::vector<glm::vec3> lightPositions;
-        lightPositions.push_back(glm::vec3( 0.1f,  0.0f, 0.0f)); // back light
-        lightPositions.push_back(glm::vec3(0.1f,  0.0f, 0.0f));
-        lightPositions.push_back(glm::vec3(0.1f,  0.0f, 0.0f));
-        lightPositions.push_back(glm::vec3(0.1f,  0.0f, 0.0f));
-        // colors
-        std::vector<glm::vec3> lightColors;
-        lightColors.push_back(glm::vec3(200.0f, 200.0f, 200.0f));
-        lightColors.push_back(glm::vec3(0.1f, 0.0f, 0.0f));
-        lightColors.push_back(glm::vec3(0.0f, 0.0f, 0.2f));
-        lightColors.push_back(glm::vec3(0.0f, 0.1f, 0.0f));
-
-        // set lighting uniforms
-        for (unsigned int i = 0; i < lightPositions.size(); i++)
-        {
-            m_shader.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
-            m_shader.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
-        }
-        
+       
         //texture variable to shader
         // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
         m_shader.setTexture("texture0", 0);
