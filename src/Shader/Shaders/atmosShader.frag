@@ -16,6 +16,7 @@ uniform sampler2D texture;
 
 // Fonction main
 
+
 void main()
 {
     // *********************************************** calculate png transparency ***************************************************

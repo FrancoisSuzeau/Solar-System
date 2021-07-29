@@ -7,6 +7,7 @@ uniform sampler2D screenTexture;
 uniform bool hdr;
 uniform float exposure;
 
+
 void main()
 {
     //vec3 textureScreen = texture(screenTexture, TexCoords).rgb;
