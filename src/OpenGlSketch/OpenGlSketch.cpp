@@ -240,23 +240,23 @@ void OpenGlSketch::initFrameBuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, fb);
 
     // Create a texture to render to
-    glGenTextures(1, &fb_text);
-    glBindTexture(GL_TEXTURE_2D, fb_text);
+    glGenTextures(1, &fb_texture);
+
+    glBindTexture(GL_TEXTURE_2D, fb_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     // NULL means reserve texture memory
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_window_width, m_window_height, 0, GL_RGBA, GL_FLOAT, NULL);
-
-    
     // Attach the texture to the framebuffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_text, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_texture, 0);
 
     glGenRenderbuffers(1, &depth_rb);
     glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_window_width, m_window_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+    // finally check if framebuffer is complete
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -351,7 +351,8 @@ void OpenGlSketch::startLoop()
 void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
-    bool pause(false); 
+    bool pause(false);
+    bool pause_key_pressed(false);
     int change(0);
 
     unsigned int frame_rate(1000 / 50);
@@ -363,8 +364,9 @@ void OpenGlSketch::mainLoop()
     mat4 model_view;
     mat4 save_model_view;
 
-    float exposure = 0.8f;
-    bool hdr = true;
+    float exposure(5.0f);
+    bool hdr(true);
+    bool hdr_key_pressed(false);
     
     //==================================================================================================================
     
@@ -400,28 +402,30 @@ void OpenGlSketch::mainLoop()
             change = 1;
         }
 
-        // if (m_input.getKey(SDL_SCANCODE_H))
-        // {
-        //     if(hdr)
-        //     {
-        //         hdr = false;
-        //     }
-        //     else
-        //     {
-        //         hdr = true;
-        //     }
-        // }
-        
-
-        if(m_input.getKey(SDL_SCANCODE_SPACE))
+        if ((m_input.getKey(SDL_SCANCODE_H)) && (!hdr_key_pressed))
         {
-            //pause = true;
+            hdr = !hdr;
+            hdr_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_H)) == false)
+        {
+            hdr_key_pressed = false;
+        }
+        
+        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_key_pressed))
+        {
+            pause = !pause;
+            pause_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
+        {
+            pause_key_pressed = false;
         }
         //======================================================================================================================================
 
     /******************************************************** MANAGING MUSIC *******************************************************************/
         aud->volume(change);
-        //aud->pause(pause);
+        aud->pause(pause);
         pause = false;
         change = 0;
         aud->updateTrack();
@@ -438,7 +442,7 @@ void OpenGlSketch::mainLoop()
 
             glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 
-            // make sure we clear the framebuffer's content
+            ///make sure we clear the framebuffer's content
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
             //cleaning the screen
@@ -451,21 +455,21 @@ void OpenGlSketch::mainLoop()
 
             /****************************************** skybox render **************************************************/
 
-                solar_system->drawSkybox(projection, model_view);
+                solar_system->drawSkybox(projection, model_view, hdr);
 
             //restaure the modelview matrix
             model_view = save_model_view;
 
             /****************************************** bodys render ****************************************************/
             
-                solar_system->drawSystem(projection, model_view, camPos);
+                solar_system->drawSystem(projection, model_view, camPos, hdr);
 
             //restaure the modelview matrix
             model_view = save_model_view;
 
             /****************************************** atmosphere render *************************************************/
 
-                solar_system->drawAtmo(projection, model_view, camPos);
+                solar_system->drawAtmo(projection, model_view, camPos, hdr);
 
             //restaure the modelview matrix
             model_view = save_model_view;
@@ -486,7 +490,7 @@ void OpenGlSketch::mainLoop()
         glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
         // clear all relevant buffers
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(screenShader->getProgramID());
 
@@ -495,12 +499,13 @@ void OpenGlSketch::mainLoop()
                 screenShader->setTexture("screenTexture", 0);
                 screenShader->setFloat("exposure", exposure);
                 screenShader->setInt("hdr", hdr);
-                glBindTexture(GL_TEXTURE_2D, fb_text);	// use the color attachment texture as the texture of the quad plane
+
+                
+                glBindTexture(GL_TEXTURE_2D, fb_texture);	// use the color attachment texture as the texture of the quad plane
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
             glBindVertexArray(0);
         glUseProgram(0);
-    //===================================================================================================================
 
     /************************************************* SWAPPING WINDOWS ********************************************************/
 

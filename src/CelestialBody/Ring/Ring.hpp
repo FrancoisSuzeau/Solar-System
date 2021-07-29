@@ -37,7 +37,7 @@ PURPOSE : header of the Ring class
                 Ring();
                 ~Ring();
 
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr);
                 void load();
                 
         };

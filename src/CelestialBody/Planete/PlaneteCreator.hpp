@@ -52,14 +52,14 @@ PURPOSE : header of the virtual PlaneteCreator class
                         m_planete->displayName(projection, modelview, ratio, phi, theta, y);
                 }
 
-                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos)
+                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
                 {
-                       m_planete->displayAtmo(projection, modelview, phi, theta, camPosUpd, light_src, camPos);
+                       m_planete->displayAtmo(projection, modelview, phi, theta, camPosUpd, light_src, camPos, hdr);
                 }
 
-                void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
+                void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
                 {
-                        m_planete->display(projection, modelview, light_src, camPos);
+                        m_planete->display(projection, modelview, light_src, camPos, hdr);
                 }
 
                 void UpdatePositionPlan(glm::mat4 &projection, glm::mat4 &modelview)

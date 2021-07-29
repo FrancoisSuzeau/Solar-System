@@ -25,9 +25,11 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    sketch.initFrameBuffer();
+    
     
     sketch.startLoop();
+
+    sketch.initFrameBuffer();
     
     sketch.mainLoop();
     

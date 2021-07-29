@@ -57,19 +57,19 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displayName(projection, modelview, camPos);
                 }
 
-                void drawAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+                void drawAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr)
                 {
-                        m_system->displayAtmo(projection, modelview, camPos);
+                        m_system->displayAtmo(projection, modelview, camPos, hdr);
                 }
 
-                void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview)
+                void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
                 {
-                        m_system->displaySkybox(projection, modelview);
+                        m_system->displaySkybox(projection, modelview, hdr);
                 }
 
-                void drawSystem(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 sun_pos = glm::vec3(0.0, 0.0, 0.0))
+                void drawSystem(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos = glm::vec3(0.0, 0.0, 0.0))
                 {
-                        m_system->display(projection, modelview, camPos, sun_pos);
+                        m_system->display(projection, modelview, camPos, hdr, sun_pos);
                 }
 
 

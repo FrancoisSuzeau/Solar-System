@@ -64,10 +64,11 @@ PURPOSE : header of the OpenGlSketch class
                 SystemCreator   *solar_system;
 
                 unsigned int quadVAO, quadVBO;
-                unsigned int fb_text;
+                unsigned int fb_texture;
                 unsigned int fb;
 
                 Shader *screenShader;
+                
 
             public:
 

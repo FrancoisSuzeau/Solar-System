@@ -125,7 +125,7 @@ void Ring::load()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayCrate **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
+void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
 {
     //Activate the shader
     glUseProgram(m_shader.getProgramID());
@@ -142,6 +142,7 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
         m_shader.setMat4("light_src", light_src);
 
         m_shader.setVec3("viewPos", camPos);
+        m_shader.setInt("hdr", hdr);
 
         //lock texture
         glBindTexture(GL_TEXTURE_2D, m_texture.getID());

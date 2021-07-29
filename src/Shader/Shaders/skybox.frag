@@ -5,20 +5,30 @@ in vec3 TexCoords;
 out vec4 FragColor;
 
 uniform samplerCube skybox;
+uniform bool hdr;
 
 void main()
 {
     vec3 lightColor = {1.0, 1.0, 1.0};
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.09;
+    float ambiantStrength = 0.3;
     vec3 ambiant = ambiantStrength * lightColor;
 
     vec3 objectColor = texture(skybox, TexCoords).rgb;
+    // vec3 objectColor = vec3(1.0);
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    vec3 result = (ambiant) * objectColor;
-    FragColor = vec4(result, 1.0);
+    if(hdr)
+    {
+        vec3 result = (ambiant) * objectColor;
+        FragColor = vec4(result, 1.0);
+    }
+    else
+    {
+        FragColor = vec4(objectColor, 1.0);
+    }
+    
 
-    //gl_FragColor = texture(skybox, TexCoords);
+    
 }

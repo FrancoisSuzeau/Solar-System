@@ -7,14 +7,7 @@ in vec3 Normal;
 in vec3 FragPos;
 uniform vec3 viewPos;
 
-struct Light {
-    vec3 Position;
-    vec3 Color;
-};
-
-uniform Light lights[16];
-
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
 
 void main(void) {
 
@@ -37,23 +30,7 @@ void main(void) {
     //float ambiantStrength = 0.1;
     //vec3 ambiant = ambiantStrength * objectColor;
 
-    // *********************************************** calculate HDR ***************************************************
-    //vec3 lighting = vec3(0.0);
-    //vec3 result =  diffuse;
-    //for(int i = 0; i < 16; i++)
-    //{
-        //vec3 norm = normalize(Normal);
-        //vec3 lightDir = normalize(lights[i].Position - FragPos);
-        //float diff = max(dot(norm, lightDir), 0.0);
-        //vec3 diffuse = diff * lights[i].Color * objectColor;
-        
-        //vec3 result =  diffuse;
-
-        //float distLight = length(FragPos - lights[i].Position);
-        //result *= 5.0 / (distLight * distLight);
-        //lighting += result;
-
-    //}
+    
     
     // *********************************************** only bind texture unit to fragment coordinate ***************************************************
     //FragColor = texture(texture0, longitudeLatitude);

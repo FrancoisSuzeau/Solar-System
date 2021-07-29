@@ -79,7 +79,7 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
+void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
 {
     
     //Activate the shader
@@ -205,8 +205,8 @@ void Star::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd)
+void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, bool hdr)
 {
     translateCelestialBody(modelview, m_current_position);
-    m_atmosphere->displaySunAtmo(projection, modelview, phi, theta, camPosUpd);
+    m_atmosphere->displaySunAtmo(projection, modelview, phi, theta, camPosUpd, hdr);
 }

@@ -119,11 +119,11 @@ void SolarSystem::loadSystem(int count)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** displaySkybox *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview)
+void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
 {
     glm::mat4 save = modelview;
 
-        skybox->display(projection, modelview);
+        skybox->display(projection, modelview, hdr);
 
     modelview = save;
 }
@@ -131,7 +131,7 @@ void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 sun_pos)
+void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos)
 {
     glm::mat4 save = modelview;
 
@@ -142,7 +142,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         sun->updatePosition(projection, modelview, 0.0);
         sun->updatePositionLight(projection, light_src);
-        sun->display(projection, modelview, light_src, camPos);
+        sun->display(projection, modelview, light_src, camPos, hdr);
         
 
     /************************************************* MERCURY RENDER ********************************************************/
@@ -153,7 +153,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[0]->updatePosLight(projection, light_src);
-        m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos, hdr);
 
     /************************************************* VENUS RENDER ********************************************************/
     //restaure the modelview matrix
@@ -162,14 +162,14 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[1]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[1]->updatePosLight(projection, light_src);
-        m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos, hdr);
 
     /************************************************* EARTH RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[0]->drawSystem(projection, modelview, camPos, m_position);
+        m_planetary_system[0]->drawSystem(projection, modelview, camPos, hdr, m_position);
         
 
     /************************************************* MARS RENDER ********************************************************/
@@ -179,21 +179,21 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[2]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[2]->updatePosLight(projection, light_src);
-        m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos, hdr);
 
     /************************************************* JUPITER RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[1]->drawSystem(projection, modelview, camPos, m_position);
+        m_planetary_system[1]->drawSystem(projection, modelview, camPos, hdr, m_position);
         
     /************************************************* SATURN RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[2]->drawSystem(projection, modelview, camPos, m_position);
+        m_planetary_system[2]->drawSystem(projection, modelview, camPos, hdr, m_position);
 
     /************************************************* URANUS RENDER ********************************************************/
     //restaure the modelview matrix
@@ -202,7 +202,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[3]->updatePosLight(projection, light_src);
-        m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos, hdr);
 
     /************************************************* NEPTUNE RENDER ********************************************************/
     //restaure the modelview matrix
@@ -211,7 +211,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[4]->updatePosLight(projection, light_src);
-        m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos);
+        m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos, hdr);
 
     //restaure the modelview matrix
     modelview = save;
@@ -276,7 +276,7 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr)
 {
     glm::mat4 save = modelview;
 
@@ -296,7 +296,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         float theta_sun = acos(z_sun/r_sun);
 
         glm::vec3 cameraPos_sun = vec3(x_sun, y_sun, z_sun);
-        sun->displayAtmo(projection, modelview, phi_sun, theta_sun, cameraPos_sun);
+        sun->displayAtmo(projection, modelview, phi_sun, theta_sun, cameraPos_sun, hdr);
 
     modelview = save;
     glm::mat4 save_light_src = light_src;
@@ -305,7 +305,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     for(int i(0); i < m_planetarySYS_count; i++)
     {
-        m_planetary_system[i]->drawAtmo(projection, modelview, camPos);
+        m_planetary_system[i]->drawAtmo(projection, modelview, camPos, hdr);
         modelview = save;
     }
 
@@ -331,7 +331,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         glm::vec3 cameraPos = vec3(x, y, z);
 
         m_planete_creator[i]->updateAtmoInter(projection, light_src);
-        m_planete_creator[i]->drawAtmoPlanete(projection, modelview, phi, theta, cameraPos, light_src, camPos);
+        m_planete_creator[i]->drawAtmoPlanete(projection, modelview, phi, theta, cameraPos, light_src, camPos, hdr);
 
         modelview = save;
         light_src = save_light_src;

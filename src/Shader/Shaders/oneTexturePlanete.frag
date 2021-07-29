@@ -5,7 +5,9 @@ uniform vec3 viewPos;
 in vec3 Normal;
 in vec3 FragPos;
 
-out vec4 FragColor;
+uniform bool hdr;
+
+layout (location = 0) out vec4 FragColor;
 
 void main(void) {
 
@@ -20,7 +22,16 @@ void main(void) {
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
 
-    vec3 lightColor = {1.0, 1.0, 1.0};
+    vec3 lightColor;
+    if(hdr)
+    {
+        lightColor = vec3(0.3, 0.3, 0.3);
+    }
+    else
+    {
+        lightColor = vec3(1.0, 1.0, 1.0);
+    }
+
     vec3 lightPos = {0.1f, 0.0f, 0.0f};
 
     vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
@@ -46,13 +57,24 @@ void main(void) {
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.008;
+    float ambiantStrength;
+    
+
+    if(hdr)
+    {
+        ambiantStrength = 0.008;
+    }
+    else
+    {
+        ambiantStrength = 0.1;
+    }
+
     vec3 ambiant = ambiantStrength * lightColor;
 
     // *********************************************** adding mitigation effect ***************************************************
-    ambiant *= mitigation;
-    diffuse *= mitigation;
-    specular *= mitigation;
+    //ambiant *= mitigation;
+    //diffuse *= mitigation;
+    //specular *= mitigation;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     vec3 result = (ambiant + diffuse) * objectColor;

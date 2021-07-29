@@ -9,6 +9,7 @@ in vec2 coordTexture;
 uniform vec3 atmoColor;
 
 uniform sampler2D texture;
+uniform bool hdr;
 
 // Fonction main
 
@@ -21,9 +22,17 @@ void main()
         discard;
     }
 
-    // *********************************************** bind texture with color unit to fragment coordinate WITH transparency ***************************************************
+   // *********************************************** bind texture with color unit to fragment coordinate WITH transparency ***************************************************
     vec3 objectColor = texture(texture, coordTexture).rgb * atmoColor;
-    float min_Transparency = 0.8;
+    float min_Transparency;
+    if(hdr)
+    {
+        min_Transparency = 0.8;
+    }
+    else
+    {
+        min_Transparency = 0.69;
+    }
 
     vec4 trans = max(vec4(0.0), ((vec4(objectColor, 1.0)) - min_Transparency));
     
