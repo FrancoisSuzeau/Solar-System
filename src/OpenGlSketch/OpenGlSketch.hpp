@@ -69,6 +69,12 @@ PURPOSE : header of the OpenGlSketch class
                 unsigned int depth_rb;
 
                 Shader *screenShader;
+
+                // unsigned int colorBuffers[2];
+                // unsigned int rboDepth;
+                // unsigned int pingpongFBO[2];
+                // unsigned int pingpongColorbuffers[2];
+                // Shader *shaderBlur;
                 
 
             public:

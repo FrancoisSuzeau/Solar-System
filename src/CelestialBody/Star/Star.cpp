@@ -172,7 +172,7 @@ void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float con
     {
         m_rotation_angle -= 360;
     }
-    rotateCelestialBody(modelview, m_rotation_angle);
+    //rotateCelestialBody(modelview, m_rotation_angle);
 
     //scaling on his real size
     scaleCelestialBody(modelview, m_real_size);

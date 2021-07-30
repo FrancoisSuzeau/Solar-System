@@ -1,4 +1,4 @@
-#version 150 core
+#version 330 core
 varying vec4 texCoords;
 uniform sampler2D texture0;
 uniform sampler2D texture1;
@@ -8,6 +8,9 @@ in vec3 Normal;
 in vec3 FragPos;
 
 uniform bool hdr;
+
+layout (location = 1) out vec4 BrightColor;
+layout (location = 0) out vec4 FragColor;
 
 void main(void) {
 
@@ -20,6 +23,8 @@ void main(void) {
         // look up the color of the texture image specified by the uniform "texture0"
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
+
+    vec3 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity).rgb;
 
     vec3 lightColor;
     if(hdr)
@@ -45,7 +50,7 @@ void main(void) {
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
+    vec3 diffuse = diff * lightColor * objectColor;
 
     // *********************************************** specular light ***************************************************
     float specularStrength = 0.5;
@@ -67,7 +72,7 @@ void main(void) {
         ambiantStrength = 0.1;
     }
 
-    vec3 ambiant = ambiantStrength * lightColor;
+    vec3 ambiant = ambiantStrength * lightColor * objectColor;
 
     // *********************************************** adding mitigation effect ***************************************************
     //ambiant *= mitigation;
@@ -75,8 +80,13 @@ void main(void) {
     //specular *= mitigation;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    vec3 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity).rgb;
-    vec3 result = (ambiant + diffuse) * objectColor;
     
-    gl_FragColor = vec4(result, 1.0);
+    vec3 result = (ambiant + diffuse);
+    float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0)
+        BrightColor = vec4(result, 1.0);
+    else
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    
+    FragColor = vec4(result, 1.0);
 }
