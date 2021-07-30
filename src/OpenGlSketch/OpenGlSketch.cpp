@@ -235,7 +235,7 @@ void OpenGlSketch::initFrameBuffer()
     //===================================================================================================================
 
     /************************************************* Framebuffer management ********************************************************/
-    unsigned int depth_rb;
+    
     glGenFramebuffers(1, &fb);
     glBindFramebuffer(GL_FRAMEBUFFER, fb);
 
@@ -528,4 +528,6 @@ void OpenGlSketch::mainLoop()
     delete screenShader;
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
+    glDeleteFramebuffers(1, &fb);
+    glDeleteRenderbuffers(1, &depth_rb);
 }

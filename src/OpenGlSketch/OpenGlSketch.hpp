@@ -66,6 +66,7 @@ PURPOSE : header of the OpenGlSketch class
                 unsigned int quadVAO, quadVBO;
                 unsigned int fb_texture;
                 unsigned int fb;
+                unsigned int depth_rb;
 
                 Shader *screenShader;
                 
