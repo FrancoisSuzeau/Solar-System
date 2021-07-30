@@ -405,11 +405,13 @@ void OpenGlSketch::mainLoop()
     unsigned int frame_rate(1000 / 50);
     Uint32 start_loop(0), end_loop(0), time_past(0);
 
-    Camera	*camera = new Camera(vec3(100, 100, 100), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
+    Camera	*camera = new Camera(vec3(1, 100, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
 
     mat4 projection;
     mat4 model_view;
     mat4 save_model_view;
+
+    MusicOverlay overlay;
 
     //hdr variables
     float exposure(5.0f);
@@ -539,6 +541,15 @@ void OpenGlSketch::mainLoop()
             //restaure the modelview matrix
             model_view = save_model_view;
 
+        //=======================================================================================================================================================
+
+        /********************************************************************** RENDER OVERLAY *****************************************************************/
+                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                
+                overlay.display(projection, model_view);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
         //=======================================================================================================================================================
 
         /************************************************* SWAPPING FRAMEBUFFER ********************************************************/

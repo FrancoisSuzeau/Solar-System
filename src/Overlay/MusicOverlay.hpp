@@ -3,7 +3,7 @@ AUTHOR : SUZEAU François
 
 DATE : 21/07/2021
 
-MODULE : MusicOverlay
+MODULE : Overlay
 
 NAMEFILE : MusicOverlay.hpp
 
@@ -50,7 +50,7 @@ PURPOSE : header of the MusicOverlay class
                 MusicOverlay();
                 ~MusicOverlay();
 
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 &target, glm::vec3 &orientation);
+                void display(glm::mat4 &projection, glm::mat4 &modelview);
         };
 
 

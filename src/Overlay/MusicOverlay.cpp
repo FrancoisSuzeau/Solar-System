@@ -3,7 +3,7 @@ AUTHOR : SUZEAU François
 
 DATE : 21/07/2021
 
-MODULE : MusicOverlay
+MODULE : Overlay
 
 NAMEFILE : MusicOverlay.cpp
 
@@ -37,20 +37,35 @@ MusicOverlay::~MusicOverlay()
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void MusicOverlay::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 &target, glm::vec3 &orientation)
+void MusicOverlay::display(glm::mat4 &projection, glm::mat4 &modelview)
 {   
-    //********************************************** calculate rectangle orientation and position ************************************************************
-    float x = target[0];
-    float y = target[1];
-    float z = target[2];
-
-    //========================================================================================================================================================
-
     glm::mat4 save = modelview;
 
-        modelview = translate(modelview, vec3(x, y, z));
-        //modelview = rotate(modelview, 90.0f, vec3(1, 0, 0));
-        m_grey_rect->drawLoad(4, projection, modelview);
+        // for (int i = 0; i < 4 * 3; i++)
+        // {
+        //         modelview = translate(modelview, vec3((i - 12.2) * 0.05, -0.3, 0.0));
+        //         m_black_rect->display(projection, modelview);
+
+        //     modelview = save;
+
+        //         modelview = translate(modelview, vec3((i - 11.2) * 0.05, -0.3, 0.0));
+        //         m_grey_rect->display(projection, modelview);
+
+        //     modelview = save;
+
+        //         modelview = translate(modelview, vec3((i - 10.2) * 0.05, -0.3, 0.0));
+        //         m_black_rect->display(projection, modelview);
+
+        //     modelview = save;
+        // }
+
+        modelview = translate(modelview, vec3(0.0, 0.0, 0.0));
+        m_black_rect->display(projection, modelview);
+
+    modelview = save;
+
+        modelview = translate(modelview, vec3(0.01, 0.0, 0.0));
+        m_grey_rect->display(projection, modelview);
 
     modelview = save;
 }
