@@ -1,4 +1,4 @@
-#version 150 core
+#version 330 core
 varying vec4 texCoords;
 uniform sampler2D texture0;
 uniform sampler2D texture1;
@@ -6,6 +6,11 @@ uniform float oppacity;
 uniform vec3 viewPos;
 in vec3 Normal;
 in vec3 FragPos;
+
+uniform bool hdr;
+
+layout (location = 1) out vec4 BrightColor;
+layout (location = 0) out vec4 FragColor;
 
 void main(void) {
 
@@ -19,7 +24,18 @@ void main(void) {
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
-    vec3 lightColor = {1.0, 1.0, 1.0};
+    vec3 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity).rgb;
+
+    vec3 lightColor;
+    if(hdr)
+    {
+        lightColor = vec3(0.3, 0.3, 0.3);
+    }
+    else
+    {
+        lightColor = vec3(1.0, 1.0, 1.0);
+    }
+
     vec3 lightPos = {0.1f, 0.0f, 0.0f};
 
     // *********************************************** mitigation ***************************************************
@@ -34,7 +50,7 @@ void main(void) {
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
+    vec3 diffuse = diff * lightColor * objectColor;
 
     // *********************************************** specular light ***************************************************
     float specularStrength = 0.5;
@@ -44,16 +60,33 @@ void main(void) {
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.1;
-    vec3 ambiant = ambiantStrength * lightColor;
+    float ambiantStrength;
+    
 
-    // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    vec4 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity);
-    vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    if(hdr)
+    {
+        ambiantStrength = 0.008;
+    }
+    else
+    {
+        ambiantStrength = 0.1;
+    }
 
+    vec3 ambiant = ambiantStrength * lightColor * objectColor;
+
+    // *********************************************** adding mitigation effect ***************************************************
     //ambiant *= mitigation;
     //diffuse *= mitigation;
     //specular *= mitigation;
+
+    // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     
-    gl_FragColor = vec4(result, 1.0);
+    vec3 result = (ambiant + diffuse);
+    float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0)
+        BrightColor = vec4(result, 1.0);
+    else
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    
+    FragColor = vec4(result, 1.0);
 }

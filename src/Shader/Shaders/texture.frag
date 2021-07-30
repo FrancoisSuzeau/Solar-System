@@ -10,6 +10,8 @@ in vec3 Normal;
 in vec3 FragPos;
 uniform vec3 viewPos;
 
+uniform bool hdr;
+
 
 // Uniform
 
@@ -29,7 +31,15 @@ void main()
     
     //gl_FragColor = texture(texture, coordTexture);
 
-    vec3 lightColor = {1.0, 1.0, 1.0};
+    vec3 lightColor;
+    if(hdr)
+    {
+        lightColor = vec3(0.3, 0.3, 0.3);
+    }
+    else
+    {
+        lightColor = vec3(1.0, 1.0, 1.0);
+    }
     vec3 lightPos = {1.0f, 0.0f, 0.0f};
     
     // *********************************************** light mitigation ***************************************************
@@ -53,12 +63,23 @@ void main()
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.1;
+    float ambiantStrength;
+    
+
+    if(hdr)
+    {
+        ambiantStrength = 0.008;
+    }
+    else
+    {
+        ambiantStrength = 0.1;
+    }
+
     vec3 ambiant = ambiantStrength * lightColor;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    vec4 objectColor = texture(texture, coordTexture);
-    vec3 result = (ambiant + diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
+    vec3 objectColor = texture(texture, coordTexture).rgb;
+    vec3 result = (ambiant + diffuse) * objectColor;
 
     //ambiant *= mitigation;
     //diffuse *= mitigation;

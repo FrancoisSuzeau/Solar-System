@@ -165,7 +165,7 @@ unsigned int Skybox::loadSybox()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Skybox::display(glm::mat4 &projection, glm::mat4 &modelview)
+void Skybox::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
 {   
     
     glDepthFunc(GL_LEQUAL);
@@ -187,6 +187,7 @@ void Skybox::display(glm::mat4 &projection, glm::mat4 &modelview)
         //Send texture unit to shader
         //glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "skybox"), 0);
         m_shader.setTexture("skybox", 0);
+        m_shader.setInt("hdr", hdr);
 
         //lock texture
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture_id);

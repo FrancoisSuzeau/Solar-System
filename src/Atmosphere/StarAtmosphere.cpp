@@ -179,11 +179,6 @@ void StarAtmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float 
         m_shader.setVec3("viewPos", camPos);
         m_shader.setVec3("atmoColor", m_color_atmo);
 
-        m_shader.setVec3("camPosUpd", camPosUpd);
-
-        m_shader.setFloat("phi", phi);
-        m_shader.setFloat("theta", theta);
-
         //lock texture
         glBindTexture(GL_TEXTURE_2D, m_texture.getID());
 
@@ -208,7 +203,7 @@ void StarAtmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float 
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** displaySunAtmo *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void StarAtmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd)
+void StarAtmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, bool hdr)
 {
     /************************************************* positionning atmosphere **************************************************************/
 	phi = phi * 180 / M_PI;
@@ -248,6 +243,7 @@ void StarAtmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview,
         m_shader_sun->setMat4("projection", projection);
 
         m_shader_sun->setVec3("atmoColor", m_color_atmo);
+        m_shader_sun->setInt("hdr", hdr);
 
         //lock texture
         glBindTexture(GL_TEXTURE_2D, m_texture.getID());

@@ -38,6 +38,9 @@ PURPOSE : header of the OpenGlSketch class
         #include "../StartScreen/StartScreen.hpp"
 
         #include "../CelestialBody/Geometry/Square.hpp"
+        //#include "../MusicOverlay/MusicOverlay.hpp"
+
+        #include "../Shader/Shader.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -60,6 +63,20 @@ PURPOSE : header of the OpenGlSketch class
 
                 SystemCreator   *solar_system;
 
+                unsigned int quadVAO, quadVBO;
+                unsigned int fb_texture;
+                unsigned int fb;
+                unsigned int depth_rb;
+
+                Shader *screenShader;
+
+                // unsigned int colorBuffers[2];
+                // unsigned int rboDepth;
+                // unsigned int pingpongFBO[2];
+                // unsigned int pingpongColorbuffers[2];
+                // Shader *shaderBlur;
+                
+
             public:
 
                 OpenGlSketch();
@@ -70,6 +87,8 @@ PURPOSE : header of the OpenGlSketch class
                 bool    initGL();
                 void    mainLoop();
                 void    startLoop();
+
+                void initFrameBuffer();
 
         };
 

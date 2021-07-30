@@ -122,18 +122,17 @@ void PlanetarySystem::loadSystem(int count)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos)
 {
     glm::mat4 save = modelview;
-    glm::vec3 position(0.1, 0.0, 0.0);
     glm::vec3 target_point(0.0, 0.0, 0.0);
     glm::vec3 vertical_axe(0.0, 0.0, 1.0);
-    glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
+    glm::mat4 light_src = glm::lookAt(sun_pos, target_point, vertical_axe);
     glm::mat4 save_light_src = light_src;
 
     m_host_creator->UpdatePositionPlan(projection, modelview);
     m_host_creator->updatePosLight(projection, light_src);
-    m_host_creator->drawPlanete(projection, modelview, light_src, camPos);
+    m_host_creator->drawPlanete(projection, modelview, light_src, camPos, hdr);
 
     modelview = save;
     light_src = save_light_src;
@@ -142,7 +141,7 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         m_moons_creator[i]->UpdatePositionPlan(projection, modelview);
         m_moons_creator[i]->updatePosLight(projection, light_src);
-        m_moons_creator[i]->drawPlanete(projection, modelview, light_src, camPos); 
+        m_moons_creator[i]->drawPlanete(projection, modelview, light_src, camPos, hdr); 
 
         modelview = save;
         light_src = save_light_src;
@@ -207,7 +206,7 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr)
 {
     if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
@@ -234,7 +233,7 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
         glm::vec3 cameraPos = vec3(x, y, z);
 
         modelview = translate(modelview, host_pos);
-        m_atmosphere->display(projection, modelview, phi, theta, cameraPos, light_src, camPos);
+        m_atmosphere->display(projection, modelview, phi, theta, cameraPos, light_src, camPos, hdr);
 
         modelview = save;
         light_src = save_light_src;
@@ -245,7 +244,7 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** NOT CONCERN **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview)
+void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
 {
     //do nothing and doesn't have
 }

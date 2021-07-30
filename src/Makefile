@@ -17,7 +17,7 @@ CC=g++
 # SRC contient liste des fichier sources du projet 
 # on pourrait utiliser une construction automatique a l'aide du joker *.c et la commande wildcard mais il faudra gerer les dépendances vis a vis des .h
 # SRC=$(wildcard *.c)
-SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp FrameBuffer/FrameBuffer.cpp Atmosphere/Atmosphere.cpp Atmosphere/StarAtmosphere.cpp #CelestialBody/Geometry/Disk2.cpp
+SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Atmosphere/StarAtmosphere.cpp #MusicOverlay/MusicOverlay.cpp CelestialBody/Geometry/Disk2.cpp
 
 OBJET=$(SRC:.cpp=.o)
 
@@ -29,7 +29,7 @@ ${EXEC}: ${OBJET}
 # au cas ou .h est modifié
 
 main.o: OpenGlSketch/OpenGlSketch.hpp 
-OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.cpp CelestialBody/Geometry/Square.hpp FrameBuffer/FrameBuffer.hpp MusicOverlay/MusicOverlay.hpp
+OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.cpp CelestialBody/Geometry/Square.hpp Shader/Shader.hpp #MusicOverlay/MusicOverlay.hpp
 Shader.o: Shader/Shader.hpp
 Input.o: Input/Input.hpp
 Texture.o: Texture/Texture.hpp
@@ -47,15 +47,11 @@ Skybox.o: CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp
 Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp Atmosphere/StarAtmosphere.hpp
 PlanetarySystem.o: CelestialBody/System/PlanetarySystem.hpp CelestialBody/System/System.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp Atmosphere/Atmosphere.hpp
 SolarSystem.o: CelestialBody/System/SolarSystem/hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp
-#SystemCreator.hpp: CelestialBody/System/System.hpp
-#PlanetarySystemCreator.hpp: CelestialBody/System/SystemCreator.hpp CelestialBody/System/PlanetarySystem.hpp
-#SolarSystemCreator.hpp: CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystem.hpp
-#CelestialBody.hpp: Shader/Shader.hpp
 StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp
-FrameBuffer.o: FrameBuffer/FrameBuffer.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
 StarAtmosphere.o: Atmosphere/StarAtmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
 #Disk2.o: CelestialBody/Geometry/Disk2.hpp CelestialBody/CelestialBody.hpp
+#MusicOverlay.o: MusicOverlay/MusicOverlay.hpp Texture/Texture.cpp CelestialBody/Geometry/Disk.cpp
 
 %.o:%.cpp
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${CFLAGS}

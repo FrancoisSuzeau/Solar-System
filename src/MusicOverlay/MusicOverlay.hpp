@@ -1,17 +1,17 @@
 /*
 AUTHOR : SUZEAU François
 
-DATE : 05/07/2021
+DATE : 21/07/2021
 
-MODULE : Atmosphere
+MODULE : MusicOverlay
 
-NAMEFILE : Atmosphere.h
+NAMEFILE : MusicOverlay.hpp
 
-PURPOSE : header of the Atmosphere class
+PURPOSE : header of the MusicOverlay class
 */
 
-#ifndef ATMOSPHERE_H
-#define ATMOSPHERE_H
+#ifndef MUSICOVERLAY_H
+#define MUSICOVERLAY_H
 
 
 /********************************************************************* includes *********************************************************************/
@@ -32,29 +32,25 @@ PURPOSE : header of the Atmosphere class
 
         
         #include "../Texture/Texture.hpp"
-        #include "../CelestialBody/Geometry/Disk.hpp"
+        #include "../CelestialBody/Geometry/Square.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
 
-        class Atmosphere: public Disk
+        class MusicOverlay
         {
             
             private:
 
-                Texture         m_texture;
-                float           m_coord[12];
-                int             m_bytes_coord_size;
-                glm::vec3       m_color_atmo;
+                Square          *m_grey_rect;
+                Square          *m_black_rect;
 
             public:
             
-                Atmosphere(float size, std::string const name, std::string const texture);
-                Atmosphere();
-                ~Atmosphere();
+                MusicOverlay();
+                ~MusicOverlay();
 
-                void display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr);
-                void load();
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, glm::vec3 &target, glm::vec3 &orientation);
         };
 
 

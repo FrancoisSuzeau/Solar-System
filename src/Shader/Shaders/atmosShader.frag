@@ -10,13 +10,12 @@ in vec3 Normal;
 in vec3 FragPos;
 uniform vec3 viewPos;
 uniform vec3 atmoColor;
-uniform vec3 camPosUpd;
-uniform float phi;
-uniform float theta;
+uniform bool hdr;
 
 uniform sampler2D texture;
 
 // Fonction main
+
 
 void main()
 {
@@ -27,8 +26,16 @@ void main()
         discard;
     }
     
-    vec3 lightColor = {1.0, 1.0, 1.0};
-    vec3 lightPos = {0.1f, 0.0f, 0.0f};
+    vec3 lightColor;
+    if(hdr)
+    {
+        lightColor = vec3(0.3, 0.3, 0.3);
+    }
+    else
+    {
+        lightColor = vec3(1.0, 1.0, 1.0);
+    }
+    vec3 lightPos = {1.0f, 0.0f, 0.0f};
 
     // *********************************************** light mitigation ***************************************************
     float lightConst = 1.0f;
@@ -53,7 +60,18 @@ void main()
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.08;
+    float ambiantStrength;
+    
+
+    if(hdr)
+    {
+        ambiantStrength = 0.008;
+    }
+    else
+    {
+        ambiantStrength = 0.1;
+    }
+
     vec3 ambiant = ambiantStrength * lightColor;
 
     
@@ -62,44 +80,19 @@ void main()
     //diffuse *= mitigation;
     //specular *= mitigation;
 
-    // *********************************************** bind texture unit to fragment coordinate with blur/bloom effect without transparency ***************************************************
-    //gl_FragColor = vec4(result1, 1.0);
-
     // *********************************************** bind texture with color unit to fragment coordinate WITH transparency ***************************************************
-    vec4 objectColor = texture(texture, coordTexture) * vec4(atmoColor, 1.0);
-    vec3 result;
+    vec3 objectColor = texture(texture, coordTexture).rgb * atmoColor;
+    float min_Transparency;
+    if(hdr)
+    {
+        min_Transparency = 0.8;
+    }
+    else
+    {
+        min_Transparency = 0.69;
+    }
 
-    float min_Transparency = 0.6;
-    //if(camPosUpd[1] < 3 && camPosUpd[1] > -3)
-    //{
-        //result = vec3(objectColor.x, objectColor.y, objectColor.z);
-        //min_Transparency = 0.6;
-    //}
-    //else
-    //{
-        //result = (ambiant +  diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
-        //result = vec3(objectColor.x, objectColor.y, objectColor.z);
-        //min_Transparency = 0.715;
-        //min_Transparency = 0.6;
-    //}
-
-    //result = (ambiant +  diffuse) * vec3(objectColor.x, objectColor.y, objectColor.z);
-    result = vec3(objectColor.x, objectColor.y, objectColor.z);
-    vec4 trans = max(vec4(0.0), ((vec4(result, 1.0)) - min_Transparency));
+    vec4 trans = max(vec4(0.0), ((vec4(objectColor, 1.0)) - min_Transparency));
 
     gl_FragColor = trans;
-
-    // *********************************************** only bind texture with color unit to fragment coordinate ***************************************************
-    //vec4 objectColor = texture(texture, coordTexture);
-    //vec3 result;
-    //if(camPosUpd[1] < 3 && camPosUpd[1] > -3)
-    //{
-        //result = vec3(objectColor.x, objectColor.y, objectColor.z) * atmoColor;
-    //}
-    //else
-    //{
-        //result = ( diffuse + ambiant) * vec3(objectColor.x, objectColor.y, objectColor.z) * atmoColor;
-    //}
-    //gl_FragColor = vec4(result, 1.0);
-    
 }

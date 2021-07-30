@@ -55,8 +55,9 @@ PURPOSE : header of the Camera class
                 void orientate(int x_rel, int y_rel);
                 void move(Input const &input);
                 void lookAt(glm::mat4 &model_view);
-                void setTargetPoint(glm::vec3 target_point);
+
                 void setPosition(glm::vec3 position);
+                glm::vec3 getPosition() const;
 
                 float getSensibility() const;
                 void setSensibility(float sensibility);
@@ -64,11 +65,13 @@ PURPOSE : header of the Camera class
                 float getSpeed() const;
                 void setSpeed(float speed);
 
-                glm::vec3 getPosition() const;
                 glm::vec3 getOrientation() const;
 
                 float getPhi() const;
                 float getTheta() const;
+
+                void setTargetPoint(glm::vec3 target_point);
+                glm::vec3 getTargetPoint() const;
 
                 
         };

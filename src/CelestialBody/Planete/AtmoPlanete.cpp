@@ -71,7 +71,7 @@ AtmoPlanete::~AtmoPlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
+void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
 {
     
     //Activate the shader
@@ -107,6 +107,9 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
         //send camera position
         m_shader.setVec3("viewPos", camPos);
+
+        m_shader.setInt("hdr", hdr);
+        
         
         //active and lock unit texture 1: surface
         glActiveTexture(GL_TEXTURE1);

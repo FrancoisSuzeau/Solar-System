@@ -70,7 +70,7 @@ SimplePlanete::~SimplePlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos)
+void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
 {
     
     //Activate the shader
@@ -95,12 +95,14 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
         m_shader.setMat4("modelview", modelview);
         m_shader.setMat4("projection", projection);
         m_shader.setMat4("light_src", light_src);
-        
+       
         //texture variable to shader
         // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
         m_shader.setTexture("texture0", 0);
 
         m_shader.setVec3("viewPos", camPos);
+
+        m_shader.setInt("hdr", hdr);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
@@ -198,12 +200,12 @@ void SimplePlanete::updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos)
+void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
 {
     if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune") )
     {
         translateCelestialBody(modelview, m_current_position);
-        m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos);
+        m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos, hdr);
     }
     
 }

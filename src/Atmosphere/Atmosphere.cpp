@@ -156,7 +156,7 @@ void Atmosphere::load()
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos)
+void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
 {
     /************************************************* positionning atmosphere **************************************************************/
 	phi = phi * 180 / M_PI;
@@ -201,11 +201,8 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi,
 
         m_shader.setVec3("viewPos", camPos);
         m_shader.setVec3("atmoColor", m_color_atmo);
-
-        m_shader.setVec3("camPosUpd", camPosUpd);
-
-        m_shader.setFloat("phi", phi);
-        m_shader.setFloat("theta", theta);
+        m_shader.setInt("hdr", hdr);
+        
 
         //lock texture
         glBindTexture(GL_TEXTURE_2D, m_texture.getID());
