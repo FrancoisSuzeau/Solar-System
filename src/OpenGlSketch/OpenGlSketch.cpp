@@ -416,6 +416,8 @@ void OpenGlSketch::mainLoop()
     bool hdr(true);
     bool hdr_key_pressed(false);
 
+    MusicOverlay overlay;
+
     //bloom effect variables
     // bool horizontal = true, first_iteration = true;
     // unsigned int amount = 10;
@@ -540,6 +542,15 @@ void OpenGlSketch::mainLoop()
             model_view = save_model_view;
 
         //=======================================================================================================================================================
+
+    /**************************************** RENDER OF ALL THE SCENE **************************************************/
+
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+    //=======================================================================================================================================================
+
 
         /************************************************* SWAPPING FRAMEBUFFER ********************************************************/
         
