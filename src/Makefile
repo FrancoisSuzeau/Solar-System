@@ -51,7 +51,7 @@ StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
 StarAtmosphere.o: Atmosphere/StarAtmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
 #Disk2.o: CelestialBody/Geometry/Disk2.hpp CelestialBody/CelestialBody.hpp
-Overlay.o: Overlay/MusicOverlay.hpp Texture/Texture.cpp CelestialBody/Geometry/Disk.cpp
+MusicOverlay.o: Overlay/MusicOverlay.hpp Texture/Texture.cpp CelestialBody/Geometry/Square.hpp
 
 %.o:%.cpp
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${CFLAGS}
