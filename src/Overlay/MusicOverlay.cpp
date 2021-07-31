@@ -3,7 +3,7 @@ AUTHOR : SUZEAU François
 
 DATE : 21/07/2021
 
-MODULE : MusicOverlay
+MODULE : Overlay
 
 NAMEFILE : MusicOverlay.cpp
 
@@ -41,7 +41,25 @@ MusicOverlay::~MusicOverlay()
 void MusicOverlay::display(glm::mat4 &projection, glm::mat4 &modelview)
 {   
     glm::mat4 save = modelview;
-        
+
+        // for (int i = 0; i < 4 * 3; i++)
+        // {
+        //         modelview = translate(modelview, vec3((i - 12.2) * 0.05, -0.3, 0.0));
+        //         m_black_rect->display(projection, modelview);
+
+        //     modelview = save;
+
+        //         modelview = translate(modelview, vec3((i - 11.2) * 0.05, -0.3, 0.0));
+        //         m_grey_rect->display(projection, modelview);
+
+        //     modelview = save;
+
+        //         modelview = translate(modelview, vec3((i - 10.2) * 0.05, -0.3, 0.0));
+        //         m_black_rect->display(projection, modelview);
+
+        //     modelview = save;
+        // }
+
         modelview = translate(modelview, vec3(0.0, 0.0, 0.0));
         m_black_rect.display(projection, modelview);
 

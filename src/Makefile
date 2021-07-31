@@ -17,7 +17,7 @@ CC=g++
 # SRC contient liste des fichier sources du projet 
 # on pourrait utiliser une construction automatique a l'aide du joker *.c et la commande wildcard mais il faudra gerer les dépendances vis a vis des .h
 # SRC=$(wildcard *.c)
-SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Atmosphere/StarAtmosphere.cpp Overlay/MusicOverlay.cpp
+SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Atmosphere/StarAtmosphere.cpp Overlay/MusicOverlay.cpp #CelestialBody/Geometry/Disk2.cpp
 
 OBJET=$(SRC:.cpp=.o)
 
@@ -50,6 +50,7 @@ SolarSystem.o: CelestialBody/System/SolarSystem/hpp CelestialBody/System/Planeta
 StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
 StarAtmosphere.o: Atmosphere/StarAtmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
+
 MusicOverlay.o: Overlay/MusicOverlay.hpp Texture/Texture.cpp CelestialBody/Geometry/Square.hpp
 
 %.o:%.cpp

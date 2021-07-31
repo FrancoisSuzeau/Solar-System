@@ -3,7 +3,7 @@ AUTHOR : SUZEAU François
 
 DATE : 21/07/2021
 
-MODULE : MusicOverlay
+MODULE : Overlay
 
 NAMEFILE : MusicOverlay.hpp
 
