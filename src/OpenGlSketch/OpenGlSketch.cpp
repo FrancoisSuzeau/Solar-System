@@ -411,6 +411,8 @@ void OpenGlSketch::mainLoop()
     mat4 model_view;
     mat4 save_model_view;
 
+    MusicOverlay overlay;
+
     //hdr variables
     float exposure(5.0f);
     bool hdr(true);
@@ -540,6 +542,16 @@ void OpenGlSketch::mainLoop()
             model_view = save_model_view;
 
         //=======================================================================================================================================================
+
+        /************************************************* OVERLAY RENDER ********************************************************/
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+                overlay.display(projection, model_view);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+        //=======================================================================================================================================================
+
 
         /************************************************* SWAPPING FRAMEBUFFER ********************************************************/
         
