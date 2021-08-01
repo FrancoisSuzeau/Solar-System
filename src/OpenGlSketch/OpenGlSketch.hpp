@@ -56,6 +56,12 @@ PURPOSE : header of the OpenGlSketch class
 
                 Input           m_input;
                 Audio           *aud;
+
+                Camera	*camera;
+
+                mat4 projection;
+                mat4 model_view;
+                mat4 save_model_view;
                 
                 SDL_Window      *m_window;
                 SDL_GLContext   m_openGL_context;
@@ -69,6 +75,13 @@ PURPOSE : header of the OpenGlSketch class
                 unsigned int depth_rb;
 
                 Shader *screenShader;
+
+                bool hdr;
+                bool hdr_key_pressed;
+
+                bool pause;
+                bool pause_key_pressed;
+                int change;
 
                 // unsigned int colorBuffers[2];
                 // unsigned int rboDepth;
@@ -89,6 +102,9 @@ PURPOSE : header of the OpenGlSketch class
                 bool    initGL();
                 void    mainLoop();
                 void    startLoop();
+                void    windowProcess();
+                void    renderScene();
+                void    renderOverlay();
 
                 void initFrameBuffer();
 

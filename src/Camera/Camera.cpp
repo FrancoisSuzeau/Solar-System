@@ -231,7 +231,7 @@ float Camera::getSpeed() const
 
 void Camera::setSpeed(float speed)
 {
-    m_speed = speed;
+    m_speed = m_speed + speed;
 }
 
 glm::vec3 Camera::getPosition() const

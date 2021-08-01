@@ -31,6 +31,7 @@ PURPOSE : header of the Audio class
             private:
 
                 std::vector<std::string>        m_file_music;
+                std::vector<std::string>        m_track_music;
                 Mix_Music                       *m_music;
                 int                             m_volume;
                 bool                            m_in_pause;
@@ -48,6 +49,7 @@ PURPOSE : header of the Audio class
                 void updateTrack();
                 void pause(bool pause); 
                 void volume(int change);
+                std::string getTrack() const;
 
                 
         };

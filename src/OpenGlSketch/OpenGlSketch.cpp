@@ -44,6 +44,7 @@ OpenGlSketch::~OpenGlSketch()
     Mix_CloseAudio();
     TTF_Quit();
     SDL_Quit();
+
     puts("");
     puts("");
     puts("");
@@ -400,23 +401,19 @@ void OpenGlSketch::startLoop()
 void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
-    bool pause(false);
-    bool pause_key_pressed(false);
-    int change(0);
+    pause = false;
+    pause_key_pressed = false;
+    change = 0;
 
     unsigned int frame_rate(1000 / 50);
     Uint32 start_loop(0), end_loop(0), time_past(0);
 
-    Camera	*camera = new Camera(vec3(1, 100, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
-
-    mat4 projection;
-    mat4 model_view;
-    mat4 save_model_view;
+    camera = new Camera(vec3(1, 100, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
 
     //hdr variables
     float exposure(5.0f);
-    bool hdr(true);
-    bool hdr_key_pressed(false);
+    hdr = true;
+    hdr_key_pressed = false;
 
     //bloom effect variables
     // bool horizontal = true, first_iteration = true;
@@ -447,35 +444,8 @@ void OpenGlSketch::mainLoop()
             break;
         }
 
-        if ((m_input.getKey(SDL_SCANCODE_H)) && (!hdr_key_pressed))
-        {
-            hdr = !hdr;
-            hdr_key_pressed = true;
-        }
-        if ((m_input.getKey(SDL_SCANCODE_H)) == false)
-        {
-            hdr_key_pressed = false;
-        }
-
-        if(m_input.getKey(SDL_SCANCODE_DOWN))
-        {
-            change = -1;
-        }
-        if(m_input.getKey(SDL_SCANCODE_UP))
-        {
-            change = 1;
-        }
-        
-        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_key_pressed))
-        {
-            pause = !pause;
-            pause_key_pressed = true;
-        }
-        if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
-        {
-            pause_key_pressed = false;
-        }
-        //======================================================================================================================================
+        windowProcess();
+    //======================================================================================================================================
 
     /******************************************************** MANAGING MUSIC *******************************************************************/
         aud->volume(change);
@@ -488,8 +458,6 @@ void OpenGlSketch::mainLoop()
         camera->move(m_input);
 
         camera->lookAt(model_view);
-        
-        glm::vec3 camPos = camera->getPosition();
 
         // ///make sure we clear the framebuffer's content
         // glClearColor(0.0, 0.0, 0.0, 1.0f);
@@ -508,74 +476,17 @@ void OpenGlSketch::mainLoop()
             //cleaning the screen
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    /**************************************** RENDER OF ALL THE SCENE **************************************************/
-
-            //save the modelview matrix
-            save_model_view = model_view;
-
-            /****************************************** skybox render **************************************************/
-
-                solar_system->drawSkybox(projection, model_view, hdr);
-
-            //restaure the modelview matrix
-            model_view = save_model_view;
-
-            /****************************************** bodys render ****************************************************/
-            
-                solar_system->drawSystem(projection, model_view, camPos, hdr);
-
-            //restaure the modelview matrix
-            model_view = save_model_view;
-
-            /****************************************** atmosphere render *************************************************/
-
-                solar_system->drawAtmo(projection, model_view, camPos, hdr);
-
-            //restaure the modelview matrix
-            model_view = save_model_view;
-
-            /******************************************* name render *****************************************************/
-
-                solar_system->drawName(projection, model_view, camPos);
-
-            //restaure the modelview matrix
-            model_view = save_model_view;
-
-        //=======================================================================================================================================================
-
-        /**************************************** RENDER OVERLAY **************************************************/
-
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-
-                m_overlay->displayGeneralOverlay(projection, model_view, hdr);
-
-            //restaure the modelview matrix
-            model_view = save_model_view;
-
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-
-                m_overlay->displayMusicOverlay(projection, model_view, hdr);
-
-            //restaure the modelview matrix
-            model_view = save_model_view;
-
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-
-                m_overlay->displayMoveInfoOverlay(projection, model_view, hdr);
-
-            //restaure the modelview matrix
-            model_view = save_model_view;
-
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-
-                m_overlay->displayTimeInfoOverlay(projection, model_view, hdr);
-
-            //restaure the modelview matrix
-            model_view = save_model_view;
-        //=======================================================================================================================================================
+    /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
+            renderScene();
+    //=======================================================================================================================================================
 
 
-        /************************************************* SWAPPING FRAMEBUFFER ********************************************************/
+    /******************************************************************* RENDER OVERLAY ********************************************************************/
+            renderOverlay();
+    //=======================================================================================================================================================
+
+
+    /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
         
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -662,4 +573,131 @@ void OpenGlSketch::mainLoop()
     glDeleteBuffers(1, &quadVBO);
     glDeleteFramebuffers(1, &fb);
     glDeleteRenderbuffers(1, &depth_rb);
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/*********************************************************************************** renderScene ***********************************************************************/
+/***********************************************************************************************************************************************************************/
+void OpenGlSketch::renderOverlay()
+{
+    std::string track = aud->getTrack();
+    glm::vec3 position = camera->getPosition();
+    float speed = camera->getSpeed();
+
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+                m_overlay->displayGeneralOverlay(projection, model_view, hdr);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+                m_overlay->displayMusicOverlay(projection, model_view, hdr, track);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+                m_overlay->displayMoveInfoOverlay(projection, model_view, hdr, position, speed);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+                m_overlay->displayTimeInfoOverlay(projection, model_view, hdr);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+}
+
+/***********************************************************************************************************************************************************************/
+/*********************************************************************************** renderScene ***********************************************************************/
+/***********************************************************************************************************************************************************************/
+void OpenGlSketch::renderScene()
+{
+    glm::vec3 camPos = camera->getPosition();
+
+            //save the modelview matrix
+            save_model_view = model_view;
+
+            /****************************************** skybox render **************************************************/
+
+                solar_system->drawSkybox(projection, model_view, hdr);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            /****************************************** bodys render ****************************************************/
+            
+                solar_system->drawSystem(projection, model_view, camPos, hdr);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            /****************************************** atmosphere render *************************************************/
+
+                solar_system->drawAtmo(projection, model_view, camPos, hdr);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            /******************************************* name render *****************************************************/
+
+                solar_system->drawName(projection, model_view, camPos);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+}
+
+/***********************************************************************************************************************************************************************/
+/*********************************************************************************** windowProcess *********************************************************************/
+/***********************************************************************************************************************************************************************/
+void OpenGlSketch::windowProcess()
+{
+        if ((m_input.getKey(SDL_SCANCODE_H)) && (!hdr_key_pressed))
+        {
+            hdr = !hdr;
+            hdr_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_H)) == false)
+        {
+            hdr_key_pressed = false;
+        }
+
+        if(m_input.getKey(SDL_SCANCODE_DOWN))
+        {
+            change = -1;
+        }
+        if(m_input.getKey(SDL_SCANCODE_UP))
+        {
+            change = 1;
+        }
+        if(m_input.getKey(SDL_SCANCODE_LEFT))
+        {
+            if(camera->getSpeed() >= 0.0)
+            {
+                camera->setSpeed(-0.1);
+            }
+        }
+        if(m_input.getKey(SDL_SCANCODE_RIGHT))
+        {
+            if(camera->getSpeed() <= 1.0)
+            {
+                camera->setSpeed(0.1);
+            }
+        }
+        
+        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_key_pressed))
+        {
+            pause = !pause;
+            pause_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
+        {
+            pause_key_pressed = false;
+        }
 }

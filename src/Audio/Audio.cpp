@@ -32,6 +32,16 @@ m_track(5), m_in_pause(false)
         "../assets/audio/Into_the_void_SC.mp3",
         "../assets/audio/natural_splender.mp3"
     };
+
+    m_track_music = {
+
+        "Mass Effect - Vigil",
+        "Star Citizen - ArcCorp Theme",
+        "Space Suite Generic 02",
+        "The Darkness",
+        "Into the Void",
+        "Natural Splendor"
+    };
 }
 
 Audio::~Audio()
@@ -136,4 +146,12 @@ void Audio::updateTrack()
         loadMusic();
         playMusic();
     }
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************** getTrack ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+std::string Audio::getTrack() const
+{
+    return m_track_music[m_track];
 }

@@ -24,13 +24,41 @@ using namespace glm;
 
 Overlay::Overlay() : m_black_rect(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.05),
 m_grey_rect(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.1),
-m_text_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_track_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_Author_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_studio_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
 m_move_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_position(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_position_info_x(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_position_info_y(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_position_info_z(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_speed_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
 m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 {
-    m_text_music.loadTTF("music");
+    m_track_music.loadTTF("None");
+    m_Author_music.loadTTF("None");
+    m_studio_music.loadTTF("None");
+
     m_move_info.loadTTF("Move Information");
-    m_time_info.loadTTF("Time Information");
+    m_position.loadTTF("Position :");
+    m_position_info_x.loadTTF("None");
+    m_position_info_y.loadTTF("None");
+    m_position_info_z.loadTTF("None");
+    m_speed_info.loadTTF("Speed :");
+    m_speed.loadTTF("None");
+
+
+    m_time_info.loadTTF("None");
+
+    m_ancient_track = "None";
+    m_ancient_radius = 0.0;
+    ancient_x = "None";
+    ancient_y = "None";
+    ancient_z = "None";
+    m_ancient_speed = 0.0;
+    m_ancient_time = "None";
+    m_sec = 0;
 }
 
 Overlay::~Overlay()
@@ -138,7 +166,7 @@ void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview,
 /***********************************************************************************************************************************************************************/
 /********************************************************************** displayMusicOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::string const track)
 {
     glm::mat4 save = modelview;
     float constance = 0.05;
@@ -182,9 +210,29 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, b
 
     modelview = save;
 
-        modelview = translate(modelview, vec3(0.85, -0.61, -0.0));
+        if(track != m_ancient_track)
+        {
+            //std::string tmp = "Music :\n" + track;
+            m_track_music.setText(track);
+            m_ancient_track = track;
+            setMusicInformation(track);
+        }
+
+        modelview = translate(modelview, vec3(0.91, -0.61, -0.0));
+        modelview = scale(modelview, vec3(0.04, 0.035, 0.0));
+        m_track_music.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+        modelview = translate(modelview, vec3(0.85, -0.64, -0.0));
         modelview = scale(modelview, vec3(0.02, 0.035, 0.0));
-        m_text_music.renderTextOverlay(projection, modelview);
+        m_Author_music.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+        modelview = translate(modelview, vec3(0.91, -0.67, -0.0));
+        modelview = scale(modelview, vec3(0.04, 0.035, 0.0));
+        m_studio_music.renderTextOverlay(projection, modelview);
 
     modelview = save;
 
@@ -194,7 +242,7 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, b
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayMoveInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, glm::vec3 &position, float const speed)
 {
     glm::mat4 save = modelview;
     float constance = 0.05;
@@ -271,9 +319,49 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
     modelview = save;
 
-        modelview = translate(modelview, vec3(-1.12, -0.515, -0.0));
-        modelview = scale(modelview, vec3(0.03, 0.045, 0.0));
+        modelview = translate(modelview, vec3(-1.03, -0.515, -0.0));
+        modelview = scale(modelview, vec3(0.05, 0.05, 0.0));
         m_move_info.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+    setPostionInformation(position, speed);
+
+        modelview = translate(modelview, vec3(-1.15, -0.564, -0.0));
+        modelview = scale(modelview, vec3(0.02, 0.045, 0.0));
+        m_position.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+        modelview = translate(modelview, vec3(-1.17, -0.594, -0.0));
+        modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
+        m_position_info_x.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+        modelview = translate(modelview, vec3(-1.17, -0.624, -0.0));
+        modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
+        m_position_info_y.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+        modelview = translate(modelview, vec3(-1.17, -0.654, -0.0));
+        modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
+        m_position_info_z.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+        modelview = translate(modelview, vec3(-0.92, -0.564, -0.0));
+        modelview = scale(modelview, vec3(0.02, 0.038, 0.0));
+        m_speed_info.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+    setSpeedInformation(speed);
+
+        modelview = translate(modelview, vec3(-0.92, -0.614, -0.0));
+        modelview = scale(modelview, vec3(0.04, 0.058, 0.0));
+        m_speed.renderTextOverlay(projection, modelview);
 
     modelview = save;
 }
@@ -336,9 +424,142 @@ void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
     
     modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, 0.668, -0.0));
-        modelview = scale(modelview, vec3(0.03, 0.045, 0.0));
+        setTimeInformation();
+
+        modelview = translate(modelview, vec3(0.0, 0.658, -0.0));
+        modelview = scale(modelview, vec3(0.039, 0.050, 0.0));
         m_time_info.renderTextOverlay(projection, modelview);
 
     modelview = save;
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************** setMusicInformation ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Overlay::setMusicInformation(std::string const track)
+{
+    if(track == "Mass Effect - Vigil")
+    {
+        m_Author_music.setText("Jack Wall");
+        m_studio_music.setText("EA Games Soundtrack");
+    }
+
+    if(track == "Star Citizen - ArcCorp Theme")
+    {
+        m_Author_music.setText("P. Macedo Camacho");
+        m_studio_music.setText("Star Citizen Soundtrack");
+    }
+    
+    if(track == "Space Suite Generic 02")
+    {
+        m_Author_music.setText("Darren Lambourne");
+        m_studio_music.setText("Star Citizen Soundtrack");
+    }
+
+    if(track == "The Darkness")
+    {
+        m_Author_music.setText("P. Macedo Camacho");
+        m_studio_music.setText("Star Citizen Soundtrack");
+    }
+    if(track == "Into the Void") 
+    {
+        m_Author_music.setText("P. Macedo Camacho");
+        m_studio_music.setText("Star Citizen Soundtrack");
+    }
+
+    if(track == "Natural Splendor") 
+    {
+        m_Author_music.setText("Gerald M. Dorai");
+        m_studio_music.setText("Le Phonarium - Nantes");
+    }
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************** setPostionInformation **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Overlay::setPostionInformation(glm::vec3 &position, float const speed)
+{
+    float x = position[0];
+    float y = position[1];
+    float z = position[2];
+    double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+    double r = std::sqrt(r_squarre);
+    
+    if( (r + (10.0 + speed * 10) <= m_ancient_radius) || (r - (10.0 + speed * 10) >= m_ancient_radius))
+    {
+        //recover the first two digits
+        std::ostringstream oss_x;
+        oss_x << std::setprecision(3) << x;
+        std::string tmp_x = "x : " + oss_x.str();
+
+        std::ostringstream oss_y;
+        oss_y << std::setprecision(3) << y;
+        std::string tmp_y = "y : " + oss_y.str();
+
+        std::ostringstream oss_z;
+        oss_z << std::setprecision(3) << z;
+        std::string tmp_z = "z : " + oss_z.str();
+
+        if(ancient_x != oss_x.str())
+        {
+            m_position_info_x.setText(tmp_x);
+            ancient_x = oss_x.str();
+        }
+        if(ancient_y != oss_y.str())
+        {
+            m_position_info_y.setText(tmp_y);
+            ancient_y = oss_y.str();
+        }
+        if(ancient_z != oss_z.str())
+        {
+            m_position_info_z.setText(tmp_z);
+            ancient_z = oss_z.str();
+        }
+
+        m_ancient_radius = r;
+    }
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************** setSpeedInformation **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Overlay::setSpeedInformation(float const speed)
+{
+    double light_speed = 299792458;
+    double new_light_speed = light_speed * speed;
+
+    if(m_ancient_speed != speed)
+    {
+        std::string tmp = std::to_string(new_light_speed) + "m/s";
+        m_speed.setText(tmp);
+        m_ancient_speed = speed;
+    }
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************** setTimeInformation ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Overlay::setTimeInformation()
+{
+    time_t local_time = time(0);
+    std::string time = ctime(&local_time);
+    tm *ltm = localtime(&local_time);
+
+    if(time != m_ancient_time)
+    {
+        
+        if(ltm->tm_sec >= m_sec + 8) //reduce updating refresh
+        {
+            m_time_info.setText(time);
+            m_ancient_time = time;
+            m_sec = ltm->tm_sec;
+        }
+        
+    }
+
+    if(ltm->tm_sec == 59)
+    {
+        m_sec = 0;
+    }
 }
