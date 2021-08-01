@@ -38,7 +38,7 @@ PURPOSE : header of the OpenGlSketch class
         #include "../StartScreen/StartScreen.hpp"
 
         #include "../CelestialBody/Geometry/Square.hpp"
-        #include "../Overlay/MusicOverlay.hpp"
+        #include "../Overlay/Overlay.hpp"
 
         #include "../Shader/Shader.hpp"
         
@@ -75,6 +75,8 @@ PURPOSE : header of the OpenGlSketch class
                 // unsigned int pingpongFBO[2];
                 // unsigned int pingpongColorbuffers[2];
                 // Shader *shaderBlur;
+
+                Overlay *m_overlay;
                 
 
             public:

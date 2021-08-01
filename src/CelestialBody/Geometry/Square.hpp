@@ -55,7 +55,7 @@ PURPOSE : header of the Square class
                 ~Square();
 
                 void load();
-                void display(glm::mat4 &projection, glm::mat4 &modelview);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr = false);
                 void drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview);
                 
                 void updateVBO(void *data, int size_bytes, int offset);

@@ -326,6 +326,8 @@ void OpenGlSketch::startLoop()
     StartScreen *startScreen = new StartScreen();
     Camera      *startScreen_cam = new Camera(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0), 0.5, 0.9);
 
+    m_overlay = new Overlay();
+
     aud = new Audio();
 
     solar_system = new SolarSystemCreator();
@@ -339,8 +341,8 @@ void OpenGlSketch::startLoop()
     mat4 save_model_view;     
     //===================================================================================================================
 
-    m_input.displayPointer(false);
     m_input.capturePointer(true);
+    m_input.displayPointer(false);
 
     //initialize modelview and projection matrix
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 100.0);
@@ -411,8 +413,6 @@ void OpenGlSketch::mainLoop()
     mat4 model_view;
     mat4 save_model_view;
 
-    MusicOverlay overlay;
-
     //hdr variables
     float exposure(5.0f);
     bool hdr(true);
@@ -424,8 +424,8 @@ void OpenGlSketch::mainLoop()
     
     //==================================================================================================================
     
-    m_input.displayPointer(false);
     m_input.capturePointer(true);
+    m_input.displayPointer(false);
     
     //initialize modelview and projection matrix
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 1000.0);
@@ -447,15 +447,6 @@ void OpenGlSketch::mainLoop()
             break;
         }
 
-        if(m_input.getKey(SDL_SCANCODE_DOWN))
-        {
-            change = -1;
-        }
-        if(m_input.getKey(SDL_SCANCODE_UP))
-        {
-            change = 1;
-        }
-
         if ((m_input.getKey(SDL_SCANCODE_H)) && (!hdr_key_pressed))
         {
             hdr = !hdr;
@@ -464,6 +455,15 @@ void OpenGlSketch::mainLoop()
         if ((m_input.getKey(SDL_SCANCODE_H)) == false)
         {
             hdr_key_pressed = false;
+        }
+
+        if(m_input.getKey(SDL_SCANCODE_DOWN))
+        {
+            change = -1;
+        }
+        if(m_input.getKey(SDL_SCANCODE_UP))
+        {
+            change = 1;
         }
         
         if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_key_pressed))
@@ -543,15 +543,36 @@ void OpenGlSketch::mainLoop()
 
         //=======================================================================================================================================================
 
-    /**************************************** RENDER OF ALL THE SCENE **************************************************/
+        /**************************************** RENDER OVERLAY **************************************************/
 
             model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-                overlay.display(projection, model_view);
+                m_overlay->displayGeneralOverlay(projection, model_view, hdr);
 
             //restaure the modelview matrix
             model_view = save_model_view;
-    //=======================================================================================================================================================
+
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+                m_overlay->displayMusicOverlay(projection, model_view, hdr);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+                m_overlay->displayMoveInfoOverlay(projection, model_view, hdr);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+                m_overlay->displayTimeInfoOverlay(projection, model_view, hdr);
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+        //=======================================================================================================================================================
 
 
         /************************************************* SWAPPING FRAMEBUFFER ********************************************************/
@@ -635,6 +656,8 @@ void OpenGlSketch::mainLoop()
     delete aud;
     delete screenShader;
     // delete shaderBlur;
+    delete m_overlay;
+
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
     glDeleteFramebuffers(1, &fb);

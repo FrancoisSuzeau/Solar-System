@@ -78,7 +78,7 @@ Square::~Square()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Square::display(glm::mat4 &projection, glm::mat4 &modelview)
+void Square::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
 {   
     //Activate the shader
     glUseProgram(m_shader.getProgramID());
@@ -89,6 +89,8 @@ void Square::display(glm::mat4 &projection, glm::mat4 &modelview)
         //send matrices to shader
         glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
         glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+
+        m_shader.setInt("hdr", hdr);
 
         //display the form
         glDrawArrays(GL_TRIANGLES, 0, 6);

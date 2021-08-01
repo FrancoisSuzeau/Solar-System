@@ -159,11 +159,17 @@ void Input::displayPointer(bool response) const
 {
     if(response)
     {
-        SDL_ShowCursor(SDL_ENABLE);
+        if(SDL_ShowCursor(SDL_ENABLE) < 0)
+        {
+            std::cout << ">> Showing cursor : ERROR !" << SDL_GetError() << std::endl;
+        }
     }
     else
     {
-        SDL_ShowCursor(SDL_DISABLE);
+        if(SDL_ShowCursor(SDL_DISABLE) < 0)
+        {
+            std::cout << ">> Not Showing cursor : ERROR !" << SDL_GetError() << std::endl;
+        }
     }
 }
 
