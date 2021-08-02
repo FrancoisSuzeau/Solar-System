@@ -592,26 +592,26 @@ void OpenGlSketch::renderOverlay()
             //restaure the modelview matrix
             model_view = save_model_view;
 
-            // model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-            //     m_overlay->displayMusicOverlay(projection, model_view, hdr, track);
+                m_overlay->displayMusicOverlay(projection, model_view, hdr, track);
 
-            // //restaure the modelview matrix
-            // model_view = save_model_view;
+            //restaure the modelview matrix
+            model_view = save_model_view;
 
-            // model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-            //     m_overlay->displayMoveInfoOverlay(projection, model_view, hdr, position, speed);
+                m_overlay->displayMoveInfoOverlay(projection, model_view, hdr, position, speed);
 
-            // //restaure the modelview matrix
-            // model_view = save_model_view;
+            //restaure the modelview matrix
+            model_view = save_model_view;
 
-            // model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-            //     m_overlay->displayTimeInfoOverlay(projection, model_view, hdr);
+                m_overlay->displayTimeInfoOverlay(projection, model_view, hdr);
 
-            // //restaure the modelview matrix
-            // model_view = save_model_view;
+            //restaure the modelview matrix
+            model_view = save_model_view;
 }
 
 /***********************************************************************************************************************************************************************/
