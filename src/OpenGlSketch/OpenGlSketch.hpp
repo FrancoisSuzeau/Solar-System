@@ -41,6 +41,8 @@ PURPOSE : header of the OpenGlSketch class
         #include "../Overlay/Overlay.hpp"
 
         #include "../Shader/Shader.hpp"
+
+        #include "../Settings/Settings.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -79,9 +81,18 @@ PURPOSE : header of the OpenGlSketch class
                 bool hdr;
                 bool hdr_key_pressed;
 
-                bool pause;
-                bool pause_key_pressed;
-                int change;
+                bool pause_music;
+                bool pause_music_key_pressed;
+                int volume;
+
+                Settings *m_settings;
+                bool menu;
+                bool menu_app_key_pressed;
+
+                unsigned int frame_rate;
+                Uint32 start_loop, end_loop, time_past;
+
+
 
                 // unsigned int colorBuffers[2];
                 // unsigned int rboDepth;
@@ -107,6 +118,7 @@ PURPOSE : header of the OpenGlSketch class
                 void    renderOverlay();
 
                 void initFrameBuffer();
+                void renderSettings();
 
         };
 

@@ -328,6 +328,7 @@ void OpenGlSketch::startLoop()
     Camera      *startScreen_cam = new Camera(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0), 0.5, 0.9);
 
     m_overlay = new Overlay();
+    m_settings = new Settings();
 
     aud = new Audio();
 
@@ -401,12 +402,14 @@ void OpenGlSketch::startLoop()
 void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
-    pause = false;
-    pause_key_pressed = false;
-    change = 0;
+    pause_music = false;
+    pause_music_key_pressed = false;
+    volume = 0;
 
-    unsigned int frame_rate(1000 / 50);
-    Uint32 start_loop(0), end_loop(0), time_past(0);
+    frame_rate = 1000 / 50;
+    start_loop = 0;
+    end_loop = 0;
+    time_past = 0;
 
     camera = new Camera(vec3(1, 100, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
 
@@ -414,6 +417,9 @@ void OpenGlSketch::mainLoop()
     float exposure(5.0f);
     hdr = true;
     hdr_key_pressed = false;
+
+    menu = false;
+    menu_app_key_pressed = false;
 
     //bloom effect variables
     // bool horizontal = true, first_iteration = true;
@@ -445,17 +451,17 @@ void OpenGlSketch::mainLoop()
         }
 
         windowProcess();
+
     //======================================================================================================================================
 
     /******************************************************** MANAGING MUSIC *******************************************************************/
-        aud->volume(change);
-        aud->pause(pause);
-        pause = false;
-        change = 0;
+        aud->volume(volume);
+        aud->pause(pause_music);
+        volume = 0;
         aud->updateTrack();
     //===========================================================================================================================================
 
-        camera->move(m_input);
+        camera->move(m_input, !menu);
 
         camera->lookAt(model_view);
 
@@ -483,6 +489,10 @@ void OpenGlSketch::mainLoop()
 
     /******************************************************************* RENDER OVERLAY ********************************************************************/
             renderOverlay();
+    //=======================================================================================================================================================
+
+    /******************************************************************* RENDER OVERLAY ********************************************************************/
+            renderSettings();
     //=======================================================================================================================================================
 
 
@@ -568,6 +578,7 @@ void OpenGlSketch::mainLoop()
     delete screenShader;
     // delete shaderBlur;
     delete m_overlay;
+    delete m_settings;
 
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
@@ -670,11 +681,11 @@ void OpenGlSketch::windowProcess()
 
         if(m_input.getKey(SDL_SCANCODE_DOWN))
         {
-            change = -1;
+            volume = -1;
         }
         if(m_input.getKey(SDL_SCANCODE_UP))
         {
-            change = 1;
+            volume = 1;
         }
         if(m_input.getKey(SDL_SCANCODE_LEFT))
         {
@@ -691,13 +702,50 @@ void OpenGlSketch::windowProcess()
             }
         }
         
-        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_key_pressed))
+        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_music_key_pressed))
         {
-            pause = !pause;
-            pause_key_pressed = true;
+            pause_music = !pause_music;
+            pause_music_key_pressed = true;
         }
         if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
         {
-            pause_key_pressed = false;
+            pause_music_key_pressed = false;
         }
+
+        if((m_input.getKey(SDL_SCANCODE_P)) && (!menu_app_key_pressed))
+        {
+            menu = !menu;
+            menu_app_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_P)) == false)
+        {
+            menu_app_key_pressed = false;
+        }
+
+        
+
+}
+
+/***********************************************************************************************************************************************************************/
+/*********************************************************************************** renderSetting *********************************************************************/
+/***********************************************************************************************************************************************************************/
+void OpenGlSketch::renderSettings()
+{
+    
+    if(menu)
+    {
+        m_input.capturePointer(false);
+        m_input.displayPointer(true);
+
+        model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+
+            m_settings->displayFrameSettings(projection, model_view, hdr);
+
+        model_view = save_model_view;
+    }
+    else
+    {
+        m_input.capturePointer(true);
+        m_input.displayPointer(false);
+    }
 }

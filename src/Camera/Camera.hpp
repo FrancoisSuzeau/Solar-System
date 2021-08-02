@@ -53,7 +53,7 @@ PURPOSE : header of the Camera class
 
 
                 void orientate(int x_rel, int y_rel);
-                void move(Input const &input);
+                void move(Input const &input, bool move);
                 void lookAt(glm::mat4 &model_view);
 
                 void setPosition(glm::vec3 position);

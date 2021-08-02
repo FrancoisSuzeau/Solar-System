@@ -93,50 +93,54 @@ void Camera::orientate(int x_rel, int y_rel)
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** move **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Camera::move(Input const &input)
+void Camera::move(Input const &input, bool move)
 {
-    /************************************************* orientation managing ********************************************************/
-    if(input.getMouseButton(SDL_MOUSEBUTTONDOWN))
+    if(move)
     {
-        this->orientate(input.getXRel(), input.getYRel());
-    }
-    //===================================================================================================================
+        /************************************************* orientation managing ********************************************************/
+        if(input.getMouseButton(SDL_MOUSEBUTTONDOWN))
+        {
+            this->orientate(input.getXRel(), input.getYRel());
+        }
+        //===================================================================================================================
 
-    /************************************************* moving camera ********************************************************/
-    if(input.getKey(SDL_SCANCODE_W))
-    {
-        m_position = m_position + m_orientation * m_speed;
-        m_target_point = m_position + m_orientation;
-    }
+        /************************************************* moving camera ********************************************************/
+        if(input.getKey(SDL_SCANCODE_W))
+        {
+            m_position = m_position + m_orientation * m_speed;
+            m_target_point = m_position + m_orientation;
+        }
 
-    if(input.getKey(SDL_SCANCODE_S))
-    {
-        m_position = m_position - m_orientation * m_speed;
-        m_target_point = m_position + m_orientation;
-    }
+        if(input.getKey(SDL_SCANCODE_S))
+        {
+            m_position = m_position - m_orientation * m_speed;
+            m_target_point = m_position + m_orientation;
+        }
 
-    if(input.getKey(SDL_SCANCODE_A))
-    {
-        m_position = m_position + m_lateral_move * m_speed;
-        m_target_point = m_position + m_orientation;
-    }
+        if(input.getKey(SDL_SCANCODE_A))
+        {
+            m_position = m_position + m_lateral_move * m_speed;
+            m_target_point = m_position + m_orientation;
+        }
 
-    if(input.getKey(SDL_SCANCODE_D))
-    {
-        m_position = m_position - m_lateral_move * m_speed;
-        m_target_point = m_position + m_orientation;
+        if(input.getKey(SDL_SCANCODE_D))
+        {
+            m_position = m_position - m_lateral_move * m_speed;
+            m_target_point = m_position + m_orientation;
+        }
+        if(input.getKey(SDL_SCANCODE_LCTRL))
+        {
+            m_position = m_position - m_vertical_axe * m_speed;
+            m_target_point = m_position + m_orientation;
+        }
+        if(input.getKey(SDL_SCANCODE_LSHIFT))
+        {
+            m_position = m_position + m_vertical_axe * m_speed;
+            m_target_point = m_position + m_orientation;
+        }
+        //===================================================================================================================
     }
-    if(input.getKey(SDL_SCANCODE_LCTRL))
-    {
-        m_position = m_position - m_vertical_axe * m_speed;
-        m_target_point = m_position + m_orientation;
-    }
-    if(input.getKey(SDL_SCANCODE_LSHIFT))
-    {
-        m_position = m_position + m_vertical_axe * m_speed;
-        m_target_point = m_position + m_orientation;
-    }
-    //===================================================================================================================
+    
 }
 
 /***********************************************************************************************************************************************************************/
