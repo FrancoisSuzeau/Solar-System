@@ -136,18 +136,41 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
 /***********************************************************************************************************************************************************************/
 bool Settings::quitSimulation(Input const &input)
 {
+    float ratio_x; 
+    float ratio_y; 
+    if(screen_width != 1920)
+    {
+        ratio_x = (float) 1920/screen_width;
+    }
+    else
+    {
+        ratio_x = 1.0;
+    }
+    if(screen_height != 1080)
+    {
+         ratio_y = (float) 1080/screen_height;
+    }
+    else
+    {
+        ratio_y = 1.0;
+    }
+
     if((input.getMouseButton(SDL_MOUSEBUTTONDOWN)) && (!m_quit_mouse_button_pressed))
     {
         m_quit_mouse_button_pressed = true;
-        std::cout << "xRel = " << input.getX() << std::endl;
-
-        if( (input.getX() >= (screen_width/2) - 115) && (input.getX() <= (screen_width/2) + 115) ) //not portable with other screen -> have to search relative
+        // std::cout << "xRel = " << input.getX() << std::endl;
+        // std::cout << "yRel = " << input.getY() << std::endl;
+        // std::cout << "ratio x = " << ratio_x << std::endl;
+        // std::cout << "width = " << screen_width << std::endl;
+        // std::cout << "height = " << screen_height << std::endl;
+        if( (input.getX() >= (screen_width/2) - (115/ratio_x)) && (input.getX() <= (screen_width/2) + (115/ratio_x)) ) //not portable with other screen -> have to search relative
         {
-            std::cout << "yRel = " << input.getY() << std::endl;
-            if((input.getY() >= (screen_height/2) + 256) && (input.getY() <= (screen_height/2) + 270))
+            //std::cout << "yRel = " << input.getY() << std::endl;
+            if((input.getY() >= (screen_height/2) + (257/ratio_y)) && (input.getY() <= (screen_height/2) + (270/ratio_y)))
             {
+               
                 //std::cout << "YES !" << std::endl;
-                //return true;
+                return true;
             }
         }
     }
