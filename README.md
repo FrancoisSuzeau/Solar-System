@@ -50,11 +50,11 @@ Make sure that the executable file is in the ````bin```` directory.
 ### 21/07/2021
 + Sound : Add a playist feature, now six track are playing one after the other. (Had to initialize pointer to struct Mix_music to NULL -> drop a warning)
 
-### 02/08/2021 (not stable)
+### 02/08/2021
 + Framebuffer : Use it to make an HDR mode (For now I cannot make a bloom effect on the light -> skybox not displaying and blur effect not working)
 + Overlay : a simple overlay displaying some information using the framebuffer API
     - Music : Name of the track, compositor and (the record studio or the orchestra)
-    - Navigation information : The x, y, z coordinates and the navigation speed based on the light speed multiply by the camera speed (from 0 to 1)
+    - Navigation information : The x, y, z coordinates and the navigation speed based on the light speed multiply by the camera speed (from 0 to 1). The coordinates are not refreshed all the frame due to a certain time calculation and impacting the fluidity, but they are refreshed when the radius length from the origin coordinates of the world to the camera is changing by 10 + (camera speed * 10)
     - Date : the day, the month and the hour recovered on the system running this application
 
 + Overlay : Now the application adapts with the screen size (recover the screen parameter with a system call function)

@@ -50,6 +50,7 @@ m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shade
 
 
     m_time_info.loadTTF("None");
+    setTimeInformation();
 
     m_ancient_track = "None";
     m_ancient_radius = 0.0;
