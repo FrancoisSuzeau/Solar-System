@@ -742,6 +742,8 @@ void OpenGlSketch::renderSettings()
             m_settings->displayFrameSettings(projection, model_view, hdr);
 
         model_view = save_model_view;
+
+            m_settings->quitSimulation(m_input);
     }
     else
     {

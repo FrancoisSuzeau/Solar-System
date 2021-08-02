@@ -37,6 +37,7 @@ PURPOSE : header of the Settings class
         #include "../Texture/Texture.hpp"
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
+        #include "../Input/Input.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -49,12 +50,18 @@ PURPOSE : header of the Settings class
                 Square          m_grey_rect;
                 Square          m_black_rect;
 
+                Text            m_titre;
+                Text            m_quit;
+
+                glm::vec3       m_quit_pos;
+
             public:
             
                 Settings();
                 ~Settings();
 
                 void displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
+                bool quitSimulation(Input const &intput);
         };
 
 

@@ -22,9 +22,12 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 Settings::Settings() : m_black_rect(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.1),
-m_grey_rect(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.7)
+m_grey_rect(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.7),
+m_titre(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_quit(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 {
-
+    m_titre.loadTTF("Settings");
+    m_quit.loadTTF("Quit Simulation");
 }
 
 Settings::~Settings()
@@ -106,5 +109,38 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
         m_grey_rect.display(projection, modelview, hdr);
             
     modelview = save;
+
+
+    //render titre settings
+
+        modelview = translate(modelview, vec3(0.0, 0.345, -0.0));
+        modelview = scale(modelview, vec3(0.03, 0.060, 0.0));
+        m_titre.renderTextOverlay(projection, modelview);
+
+    modelview = save;
+
+        modelview = translate(modelview, vec3(0.0, -0.345, -0.0));
+        modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
+        m_quit_pos = vec3(0.0, -0.345, -0.0);
+        m_quit.renderTextOverlay(projection, modelview);
+
+    modelview = save;
     
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************* quitSimulation ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+bool Settings::quitSimulation(Input const &input)
+{
+    if(input.getMouseButton(SDL_MOUSEBUTTONDOWN))
+    {
+        if( (input.getXRel() >= m_quit_pos[0] - 0.05) && (input.getXRel() <= m_quit_pos[0] + 0.05) )
+        {
+            std::cout << "X !" << std::endl;
+        }
+    }
+    
+
+    return false;
 }
