@@ -50,7 +50,7 @@ Make sure that the executable file is in the ````bin```` directory.
 ### 21/07/2021
 + Sound : Add a playist feature, now six track are playing one after the other. (Had to initialize pointer to struct Mix_music to NULL -> drop a warning)
 
-### 02/08/2021
+### 02/08/2021 (not stable)
 + Framebuffer : Use it to make an HDR mode (For now I cannot make a bloom effect on the light -> skybox not displaying and blur effect not working)
 + Overlay : a simple overlay displaying some information using the framebuffer API
     - Music : Name of the track, compositor and (the record studio or the orchestra)
