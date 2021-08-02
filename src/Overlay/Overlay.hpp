@@ -46,8 +46,6 @@ PURPOSE : header of the Overlay class
             
             private:
 
-                int             w_width;
-                int             w_height;
                 Square          m_grey_rect;
                 Square          m_black_rect;
 
@@ -78,7 +76,7 @@ PURPOSE : header of the Overlay class
 
             public:
             
-                Overlay(int const width, int const height);
+                Overlay();
                 ~Overlay();
 
                 void displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);

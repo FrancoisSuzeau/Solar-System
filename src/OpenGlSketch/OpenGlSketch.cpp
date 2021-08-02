@@ -327,7 +327,7 @@ void OpenGlSketch::startLoop()
     StartScreen *startScreen = new StartScreen();
     Camera      *startScreen_cam = new Camera(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0), 0.5, 0.9);
 
-    m_overlay = new Overlay(m_window_width, m_window_height);
+    m_overlay = new Overlay();
 
     aud = new Audio();
 
