@@ -7,7 +7,7 @@ NAMEFILE : Main.cpp
 
 PURPOSE : main loop of the executable
 */
-
+#include <Windows.h>
 #include "OpenGlSketch/OpenGlSketch.hpp"
 
 
@@ -16,9 +16,12 @@ int main(int argc, char **argv)
     (void)argc;
     (void)argv;
     
-    
+    int cx = GetSystemMetrics(SM_CXSCREEN);
+    int cy = GetSystemMetrics(SM_CYSCREEN);
 
-    OpenGlSketch sketch("Solar System", 1920, 1080);
+    //std::cout << "width : " << cx << " height : " << cy << std::endl;
+
+    OpenGlSketch sketch("Solar System", cx, cy);
 
     if((sketch.initWindow() == false) || (sketch.initGL() == false))
     {
