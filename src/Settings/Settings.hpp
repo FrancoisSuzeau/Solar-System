@@ -32,6 +32,8 @@ PURPOSE : header of the Settings class
         #include <vector>
         #include <cmath>
         #include <ctime>
+        #include <Windows.h>
+
 
         
         #include "../Texture/Texture.hpp"
@@ -53,7 +55,10 @@ PURPOSE : header of the Settings class
                 Text            m_titre;
                 Text            m_quit;
 
-                glm::vec3       m_quit_pos;
+                bool            m_quit_mouse_button_pressed;
+
+                int             screen_width;
+                int             screen_height;
 
             public:
             

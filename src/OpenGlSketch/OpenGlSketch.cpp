@@ -406,6 +406,8 @@ void OpenGlSketch::mainLoop()
     pause_music_key_pressed = false;
     volume = 0;
 
+    m_terminate = false;
+
     frame_rate = 1000 / 50;
     start_loop = 0;
     end_loop = 0;
@@ -438,10 +440,10 @@ void OpenGlSketch::mainLoop()
     aud->loadMusic();
     aud->playMusic();
 
-    while(!m_input.getTerminate())
+    while(!m_terminate)
     {   
         start_loop = SDL_GetTicks();
-        
+    
     /********************************************************** MANAGING EVENTS *************************************************************/
         m_input.updateEvents();
 
@@ -743,7 +745,7 @@ void OpenGlSketch::renderSettings()
 
         model_view = save_model_view;
 
-            m_settings->quitSimulation(m_input);
+            m_terminate = m_settings->quitSimulation(m_input);
     }
     else
     {

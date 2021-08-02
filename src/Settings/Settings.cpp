@@ -28,6 +28,10 @@ m_quit(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/te
 {
     m_titre.loadTTF("Settings");
     m_quit.loadTTF("Quit Simulation");
+    m_quit_mouse_button_pressed = false;
+
+    screen_width = GetSystemMetrics(SM_CXSCREEN);
+    screen_height = GetSystemMetrics(SM_CYSCREEN);
 }
 
 Settings::~Settings()
@@ -121,7 +125,6 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
 
         modelview = translate(modelview, vec3(0.0, -0.345, -0.0));
         modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-        m_quit_pos = vec3(0.0, -0.345, -0.0);
         m_quit.renderTextOverlay(projection, modelview);
 
     modelview = save;
@@ -133,12 +136,25 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
 /***********************************************************************************************************************************************************************/
 bool Settings::quitSimulation(Input const &input)
 {
-    if(input.getMouseButton(SDL_MOUSEBUTTONDOWN))
+    if((input.getMouseButton(SDL_MOUSEBUTTONDOWN)) && (!m_quit_mouse_button_pressed))
     {
-        if( (input.getXRel() >= m_quit_pos[0] - 0.05) && (input.getXRel() <= m_quit_pos[0] + 0.05) )
+        m_quit_mouse_button_pressed = true;
+        std::cout << "xRel = " << input.getX() << std::endl;
+
+        if( (input.getX() >= (screen_width/2) - 115) && (input.getX() <= (screen_width/2) + 115) ) //not portable with other screen -> have to search relative
         {
-            std::cout << "X !" << std::endl;
+            std::cout << "yRel = " << input.getY() << std::endl;
+            if((input.getY() >= (screen_height/2) + 256) && (input.getY() <= (screen_height/2) + 270))
+            {
+                //std::cout << "YES !" << std::endl;
+                //return true;
+            }
         }
+    }
+
+    if(input.getMouseButton(SDL_MOUSEBUTTONDOWN) == false)
+    {
+        m_quit_mouse_button_pressed = false;
     }
     
 

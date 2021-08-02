@@ -92,6 +92,8 @@ PURPOSE : header of the OpenGlSketch class
                 unsigned int frame_rate;
                 Uint32 start_loop, end_loop, time_past;
 
+                bool m_terminate;
+
 
 
                 // unsigned int colorBuffers[2];
