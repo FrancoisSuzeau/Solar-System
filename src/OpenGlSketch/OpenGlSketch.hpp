@@ -80,6 +80,7 @@ PURPOSE : header of the OpenGlSketch class
 
                 bool hdr;
                 bool hdr_key_pressed;
+                float exposure;
 
                 bool pause_music;
                 bool pause_music_key_pressed;
@@ -93,6 +94,8 @@ PURPOSE : header of the OpenGlSketch class
                 Uint32 start_loop, end_loop, time_past;
 
                 bool m_terminate;
+
+                bool m_overlay_display;
 
 
 

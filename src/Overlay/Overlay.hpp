@@ -33,8 +33,6 @@ PURPOSE : header of the Overlay class
         #include <cmath>
         #include <ctime>
 
-        
-        #include "../Texture/Texture.hpp"
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
         

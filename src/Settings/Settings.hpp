@@ -33,13 +33,32 @@ PURPOSE : header of the Settings class
         #include <cmath>
         #include <ctime>
         #include <Windows.h>
-
-
         
-        #include "../Texture/Texture.hpp"
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
         #include "../Input/Input.hpp"
+
+        namespace ButtonChoice
+        {
+                typedef enum
+                {
+                        NONE,
+                        QUIT,
+                        HDR_ON,
+                        HDR_OFF,
+                        EXPOSURE_DEC,
+                        EXPOSURE_INC,
+                        SPEED_DEC,
+                        SPEED_INC,
+                        MUSIC_ON,
+                        MUSIC_OFF,
+                        MUSIC_DEC,
+                        MUSIC_INC,
+                        OVERLAY_ON,
+                        OVERLAY_OFF
+
+                }Button;
+        }
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -54,8 +73,14 @@ PURPOSE : header of the Settings class
 
                 Text            m_titre;
                 Text            m_quit;
+                Text            m_hdr;
+                Text            m_exposure;
+                Text            m_speed;
+                Text            m_music_playing;
+                Text            m_music_volume;
+                Text            m_overlay_display;
 
-                bool            m_quit_mouse_button_pressed;
+                bool            m_mouse_button_pressed;
 
                 int             screen_width;
                 int             screen_height;
@@ -66,7 +91,7 @@ PURPOSE : header of the Settings class
                 ~Settings();
 
                 void displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
-                bool quitSimulation(Input const &intput);
+                int manageButton(Input const &intput);
         };
 
 

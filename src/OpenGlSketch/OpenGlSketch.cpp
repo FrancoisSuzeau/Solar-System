@@ -20,6 +20,7 @@ PURPOSE :   - creating OpenGL Context
 #include "OpenGlSketch.hpp"
 
 using namespace glm;
+using namespace ButtonChoice;
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
@@ -416,12 +417,14 @@ void OpenGlSketch::mainLoop()
     camera = new Camera(vec3(1, 100, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
 
     //hdr variables
-    float exposure(5.0f);
+    exposure = 5.0f;
     hdr = true;
     hdr_key_pressed = false;
 
     menu = false;
     menu_app_key_pressed = false;
+
+    m_overlay_display = true;
 
     //bloom effect variables
     // bool horizontal = true, first_iteration = true;
@@ -487,7 +490,6 @@ void OpenGlSketch::mainLoop()
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene();
     //=======================================================================================================================================================
-
 
     /******************************************************************* RENDER OVERLAY ********************************************************************/
             renderOverlay();
@@ -594,9 +596,11 @@ void OpenGlSketch::mainLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::renderOverlay()
 {
-    std::string track = aud->getTrack();
-    glm::vec3 position = camera->getPosition();
-    float speed = camera->getSpeed();
+    if(m_overlay_display)
+    {
+        std::string track = aud->getTrack();
+        glm::vec3 position = camera->getPosition();
+        float speed = camera->getSpeed();
 
             model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
@@ -625,6 +629,8 @@ void OpenGlSketch::renderOverlay()
 
             //restaure the modelview matrix
             model_view = save_model_view;
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -671,24 +677,25 @@ void OpenGlSketch::renderScene()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::windowProcess()
 {
-        if ((m_input.getKey(SDL_SCANCODE_H)) && (!hdr_key_pressed))
-        {
-            hdr = !hdr;
-            hdr_key_pressed = true;
-        }
-        if ((m_input.getKey(SDL_SCANCODE_H)) == false)
-        {
-            hdr_key_pressed = false;
-        }
+        // if ((m_input.getKey(SDL_SCANCODE_H)) && (!hdr_key_pressed))
+        // {
+        //     hdr = !hdr;
+        //     hdr_key_pressed = true;
+        // }
+        // if ((m_input.getKey(SDL_SCANCODE_H)) == false)
+        // {
+        //     hdr_key_pressed = false;
+        // }
 
-        if(m_input.getKey(SDL_SCANCODE_DOWN))
-        {
-            volume = -1;
-        }
-        if(m_input.getKey(SDL_SCANCODE_UP))
-        {
-            volume = 1;
-        }
+        // if(m_input.getKey(SDL_SCANCODE_DOWN))
+        // {
+        //     volume = -1;
+        // }
+        // if(m_input.getKey(SDL_SCANCODE_UP))
+        // {
+        //     volume = 1;
+        // }
+
         if(m_input.getKey(SDL_SCANCODE_LEFT))
         {
             if(camera->getSpeed() >= 0.0)
@@ -704,15 +711,15 @@ void OpenGlSketch::windowProcess()
             }
         }
         
-        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_music_key_pressed))
-        {
-            pause_music = !pause_music;
-            pause_music_key_pressed = true;
-        }
-        if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
-        {
-            pause_music_key_pressed = false;
-        }
+        // if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_music_key_pressed))
+        // {
+        //     pause_music = !pause_music;
+        //     pause_music_key_pressed = true;
+        // }
+        // if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
+        // {
+        //     pause_music_key_pressed = false;
+        // }
 
         if((m_input.getKey(SDL_SCANCODE_P)) && (!menu_app_key_pressed))
         {
@@ -745,7 +752,89 @@ void OpenGlSketch::renderSettings()
 
         model_view = save_model_view;
 
-            m_terminate = m_settings->quitSimulation(m_input);
+        int button_type = m_settings->manageButton(m_input);
+
+        switch (button_type)
+        {
+            case QUIT:
+                m_terminate = true;
+                break;
+
+            case HDR_ON:
+                hdr = true;
+                break;
+
+            case HDR_OFF:
+                hdr = false;
+                break;
+
+            case EXPOSURE_DEC:
+                if( (exposure >= 0.0) && (exposure <= 5.0))
+                {
+                    exposure = exposure - 1.0;
+                }
+                if(exposure == 0.0)
+                {
+                    hdr = false;
+                }
+                break;
+
+            case EXPOSURE_INC:
+                if( (exposure >= 0.0) && (exposure <= 5.0))
+                {
+                    exposure = exposure + 1.0;
+                }
+                if(exposure > 5.0)
+                {
+                    exposure = 5.0;
+                }
+                if(exposure == 1.0)
+                {
+                    hdr = true;
+                }
+                break;
+
+            case SPEED_DEC:
+                if((camera->getSpeed() >= 0.0))
+                {
+                    camera->setSpeed(-0.1);
+                }
+                break;
+
+            case SPEED_INC:
+                if(camera->getSpeed() <= 1.0)
+                {
+                    camera->setSpeed(0.1);
+                }
+                break;
+
+            case MUSIC_ON:
+                pause_music = false;
+                break;
+    
+            case MUSIC_OFF:
+                pause_music = true;
+                break;
+
+            case MUSIC_DEC:
+                volume = -2;
+                break;
+
+            case MUSIC_INC:
+                volume = 2;
+                break;
+
+            case OVERLAY_ON:
+                m_overlay_display = true;
+                break;
+
+            case OVERLAY_OFF:
+                m_overlay_display = false;
+                break;
+
+            default:
+                break;
+        }
     }
     else
     {

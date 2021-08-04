@@ -87,6 +87,10 @@ bool Text::loadTTF(std::string const text)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //creating ID for OpenGL Texture
+	if(glIsTexture(m_id) == GL_TRUE)
+	{
+		glDeleteTextures(1, &m_id);
+	}
 	glGenTextures(1, &m_id);
 
 	//lock OpenGL Texture
@@ -128,7 +132,7 @@ SDL_Surface *Text::reversePixels(SDL_Surface *src) const
         std::cout << ">> RGB surface : ERROR : " << SDL_GetError() << std::endl;
         return src;
     }
-    std::cout << ">> RGB surface : SUCCESS" << std::endl;
+    //std::cout << ">> RGB surface : SUCCESS" << std::endl;
     //==============================================================================================================================
 
     /************************************************* intermediate array  **************************************************************/
@@ -310,7 +314,7 @@ void Text::setText(std::string const text)
     {
         std::cout << ">> Creating blended surface : ERROR : " << TTF_GetError() << std::endl;
     }
-    std::cout << ">> Creating blended surface : SUCCESS" << std::endl;
+    //std::cout << ">> Creating blended surface : SUCCESS" << std::endl;
     SDL_Surface *surface = this->reversePixels(tmp);
     SDL_FreeSurface(tmp);
     //===================================================================================================================

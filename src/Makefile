@@ -50,8 +50,8 @@ SolarSystem.o: CelestialBody/System/SolarSystem/hpp CelestialBody/System/Planeta
 StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
 StarAtmosphere.o: Atmosphere/StarAtmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
-Overlay.o: Overlay/Overlay.hpp Texture/Texture.cpp CelestialBody/Geometry/Square.hpp Text/Text.hpp
-Settings.o: Settings/Settings.hpp Texture/Texture.cpp CelestialBody/Geometry/Square.hpp Text/Text.hpp
+Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp
+Settings.o: Settings/Settings.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp
 
 %.o:%.cpp
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${CFLAGS}

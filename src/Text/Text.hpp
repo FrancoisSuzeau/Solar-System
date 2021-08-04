@@ -50,6 +50,7 @@ PURPOSE : header of the Text class
 
                 Text(float x, float y, float z, std::string file_path, std::string const vertex_shader, std::string const fragment_shader);
                 Text();
+                Text& operator=(Text const &text_to_copy);
                 ~Text();
 
                 bool loadTTF(std::string const text);

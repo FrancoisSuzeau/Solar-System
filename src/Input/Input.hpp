@@ -49,7 +49,7 @@ PURPOSE : header of the Input class
                 bool getTerminate();
 
                 bool getKey(const SDL_Scancode key) const;
-                bool getMouseButton(const Uint8 button) const;
+                bool getMouseButton(const Uint8 button) const; //application crash with Uint32
                 bool getMouseMotion() const;
 
                 int getX() const;
