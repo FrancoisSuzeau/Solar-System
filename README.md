@@ -59,6 +59,9 @@ Make sure that the executable file is in the ````bin```` directory.
 
 + Overlay : Now the application adapts with the screen size (recover the screen parameter with a system call function)
 
+### 04/08/2021
++ Settings window : a simple window where we can choose settings (hdr, exposure, speed navigation, music, music volume and if overlay is display or not)
+
 
 ## More in coming ...
 
@@ -73,6 +76,6 @@ For the moment I am working on this following aspect :
 
 + By clicking on the planet, we will have the possibility to read information of this body
 
-+ Add a setting configuration
++ try to use model file loading to add complex forme (like asteroid belt) using Assimp API
 
 Many of these ideas came to me while I am coding, so I hope more come too.
