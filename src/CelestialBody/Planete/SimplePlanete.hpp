@@ -20,6 +20,7 @@ PURPOSE : header of the SimplePlanete class
         #include "../../Texture/Texture.hpp"
         #include "../../Text/Text.hpp"
         #include "../../Atmosphere/Atmosphere.hpp"
+        #include "../../PlaneteInformation/PlaneteInformation.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -35,6 +36,8 @@ PURPOSE : header of the SimplePlanete class
                 int             nb_moon;
                 Atmosphere      *m_atmosphere;
 
+                PlaneteInformation      m_plan_info;
+
  
                 
             public:
@@ -48,6 +51,8 @@ PURPOSE : header of the SimplePlanete class
                 void updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src);
                 void updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src);
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr);
+
+                void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
                 std::string getName() const;
                 
         };

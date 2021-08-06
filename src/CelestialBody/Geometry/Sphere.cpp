@@ -216,3 +216,9 @@ void Sphere::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi,
 {
     //do nothing only for child  class
 }
+
+void Sphere::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+{
+    //do nothing only for child  class
+
+}

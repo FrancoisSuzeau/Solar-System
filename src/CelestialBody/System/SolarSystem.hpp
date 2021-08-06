@@ -57,6 +57,7 @@ PURPOSE : header of the virtual SolarSystem class
                 void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr) override;
                 void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr) override;
+                void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr) override;
 
 
         };

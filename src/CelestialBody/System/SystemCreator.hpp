@@ -62,6 +62,11 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displayAtmo(projection, modelview, camPos, hdr);
                 }
 
+                void drawInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr)
+                {
+                        m_system->displayInfo(projection, modelview, camPos, hdr);
+                }
+
                 void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
                 {
                         m_system->displaySkybox(projection, modelview, hdr);

@@ -44,12 +44,16 @@ PlaneteRing::PlaneteRing(std::string const texture, std::string const name, floa
 
 PlaneteRing::PlaneteRing() : SimplePlanete(), m_ring()
 {
-
+    
 }
 
 PlaneteRing::~PlaneteRing()
 {
    delete m_ring;
+   if( (m_name == "Uranus") || (m_name == "Neptune") )
+    {
+        delete m_atmosphere;
+    }
 }
 
 /***********************************************************************************************************************************************************************/

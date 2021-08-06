@@ -90,6 +90,9 @@ PURPOSE : header of the OpenGlSketch class
                 bool menu;
                 bool menu_app_key_pressed;
 
+                bool info_render;
+                bool info_render_key_pressed;
+
                 unsigned int frame_rate;
                 Uint32 start_loop, end_loop, time_past;
 
@@ -120,6 +123,7 @@ PURPOSE : header of the OpenGlSketch class
                 void    startLoop();
                 void    windowProcess();
                 void    renderScene();
+                void    renderInfo();
                 void    renderOverlay();
 
                 void initFrameBuffer();
