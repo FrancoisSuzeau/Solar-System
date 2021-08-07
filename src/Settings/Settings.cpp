@@ -26,7 +26,8 @@ m_exposure(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shader
 m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
 m_music_playing(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
 m_music_volume(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
+m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
+m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 {
     m_titre.loadTTF("Settings");
     m_quit.loadTTF("Quit Simulation");
@@ -36,6 +37,7 @@ m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader
     m_music_playing.loadTTF("Music : ON / OFF");
     m_music_volume.loadTTF("Music : - / +");
     m_overlay_display.loadTTF("Overlay : ON / OFF");
+    m_info_planete.loadTTF("Planete information : ON / OFF");
     m_mouse_button_pressed = false;
 
     screen_width = GetSystemMetrics(SM_CXSCREEN);
@@ -172,6 +174,12 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
         m_overlay_display.renderTextOverlay(projection, modelview);
 
     modelview = save;
+
+        modelview = translate(modelview, vec3(0.0, -0.17, -0.0));
+        modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
+        m_info_planete.renderTextOverlay(projection, modelview);
+
+    modelview = save;
     
 }
 
@@ -190,8 +198,11 @@ int Settings::manageButton(Input const &input)
     if((input.getMouseButton(SDL_MOUSEBUTTONDOWN)) && (!m_mouse_button_pressed))
     {
         m_mouse_button_pressed = true;
-        // std::cout << "x = " << input.getX() << std::endl;
-        // std::cout << "y = " << input.getY() << std::endl;
+        std::cout << "x = " << input.getX() << std::endl;
+        std::cout << "y = " << input.getY() << std::endl;
+
+        // std::cout << "width : " << screen_width << std::endl;
+        // std::cout << "height : " << screen_height << std::endl;
 
         //HDR : ON
         if( (input.getX() >= (screen_width/2) - (27/ratio_x)) && (input.getX() <= (screen_width/2) + (19/ratio_x)) )
@@ -310,6 +321,16 @@ int Settings::manageButton(Input const &input)
             {
                 //std::cout << "YES !" << std::endl;
                 return ButtonChoice::Button::OVERLAY_OFF;
+            }
+        }
+
+        //PLANETE INFO : ON
+        if( (input.getX() >= (screen_width/2) + (50/ratio_x)) && (input.getX() <= (screen_width/2) + (71/ratio_x)) )
+        {
+            if((input.getY() >= (screen_height/2) + (75/ratio_y)) && (input.getY() <= (screen_height/2) + (95/ratio_y)))
+            {
+                std::cout << "YES !" << std::endl;
+                //return ButtonChoice::Button::PLANETE_INFO_OFF;
             }
         }
 

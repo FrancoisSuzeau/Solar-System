@@ -55,7 +55,9 @@ PURPOSE : header of the Settings class
                         MUSIC_DEC,
                         MUSIC_INC,
                         OVERLAY_ON,
-                        OVERLAY_OFF
+                        OVERLAY_OFF,
+                        PLANETE_INFO_ON,
+                        PLANETE_INFO_OFF
 
                 }Button;
         }
@@ -79,6 +81,7 @@ PURPOSE : header of the Settings class
                 Text            m_music_playing;
                 Text            m_music_volume;
                 Text            m_overlay_display;
+                Text            m_info_planete;
 
                 bool            m_mouse_button_pressed;
 
