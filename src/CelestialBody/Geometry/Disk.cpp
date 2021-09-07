@@ -203,3 +203,9 @@ void Disk::updateVBO(void *data, int size_bytes, int offset)
     //unlock VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+//NOT CONCERN
+void Disk::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+{
+    
+}

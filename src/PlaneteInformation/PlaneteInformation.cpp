@@ -111,7 +111,6 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
         modelview = translate(modelview, vec3(-0.39, -0.01, 0.0));
         m_grey_rect.display(projection, modelview, hdr);
 
-
     modelview = save;
 
     //Diplay text information

@@ -198,8 +198,8 @@ int Settings::manageButton(Input const &input)
     if((input.getMouseButton(SDL_MOUSEBUTTONDOWN)) && (!m_mouse_button_pressed))
     {
         m_mouse_button_pressed = true;
-        std::cout << "x = " << input.getX() << std::endl;
-        std::cout << "y = " << input.getY() << std::endl;
+        // std::cout << "x = " << input.getX() << std::endl;
+        // std::cout << "y = " << input.getY() << std::endl;
 
         // std::cout << "width : " << screen_width << std::endl;
         // std::cout << "height : " << screen_height << std::endl;

@@ -218,10 +218,13 @@ void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, flo
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
 {
-    if(m_name == "Venus")
-    {
-        m_plan_info.renderInfo(projection, modelview, hdr);
-    }   
+    // if(m_name == "Venus")
+    // {
+    //     m_plan_info.renderInfo(projection, modelview, hdr);
+    // }
+
+    m_plan_info.renderInfo(projection, modelview, hdr);
+
 }
 
 /***********************************************************************************************************************************************************************/

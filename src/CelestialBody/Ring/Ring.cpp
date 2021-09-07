@@ -162,3 +162,9 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
 
     glUseProgram(0);
 }
+
+//NOT CONCERN 
+void Ring::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+{
+    
+}

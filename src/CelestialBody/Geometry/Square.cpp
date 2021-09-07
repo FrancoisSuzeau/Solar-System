@@ -256,3 +256,9 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview)
         }
     }
 }
+
+//NOT CONCERN
+void Square::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+{
+
+}
