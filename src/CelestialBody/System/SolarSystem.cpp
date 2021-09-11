@@ -364,7 +364,7 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
             
         float r = std::sqrt(r_squarre);
 
-        if(r <= 50)
+        if(r <= 20)
         {
             modelview = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
             m_planete_creator[i]->drawInfoPlan(projection, modelview, hdr);

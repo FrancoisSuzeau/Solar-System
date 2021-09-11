@@ -325,12 +325,22 @@ int Settings::manageButton(Input const &input)
         }
 
         //PLANETE INFO : ON
-        if( (input.getX() >= (screen_width/2) + (50/ratio_x)) && (input.getX() <= (screen_width/2) + (71/ratio_x)) )
+        if( (input.getX() >= (screen_width/2) + (73/ratio_x)) && (input.getX() <= (screen_width/2) + (103/ratio_x)) )
         {
-            if((input.getY() >= (screen_height/2) + (75/ratio_y)) && (input.getY() <= (screen_height/2) + (95/ratio_y)))
+            if((input.getY() >= (screen_height/2) + (115/ratio_y)) && (input.getY() <= (screen_height/2) + (141/ratio_y)))
             {
-                std::cout << "YES !" << std::endl;
-                //return ButtonChoice::Button::PLANETE_INFO_OFF;
+                // std::cout << "YES ON !" << std::endl;
+                return ButtonChoice::Button::PLANETE_INFO_ON;
+            }
+        }
+
+        //PLANETE INFO : OFF
+        if( (input.getX() >= (screen_width/2) + (122/ratio_x)) && (input.getX() <= (screen_width/2) + (163/ratio_x)) )
+        {
+            if((input.getY() >= (screen_height/2) + (115/ratio_y)) && (input.getY() <= (screen_height/2) + (141/ratio_y)))
+            {
+                // std::cout << "YES OFF !" << std::endl;
+                return ButtonChoice::Button::PLANETE_INFO_OFF;
             }
         }
 

@@ -870,6 +870,14 @@ void OpenGlSketch::renderSettings()
                 m_overlay_display = false;
                 break;
 
+            case PLANETE_INFO_ON:
+                info_render = true;
+                break;
+            
+            case PLANETE_INFO_OFF:
+                info_render = false;
+                break;
+
             default:
                 break;
         }
