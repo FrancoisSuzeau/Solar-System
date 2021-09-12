@@ -7,6 +7,8 @@ NAMEFILE : Main.cpp
 
 PURPOSE : main loop of the executable
 */
+
+
 #include <Windows.h>
 #include "OpenGlSketch/OpenGlSketch.hpp"
 
@@ -27,9 +29,7 @@ int main(int argc, char **argv)
     {
         return EXIT_FAILURE;
     }
-
-    
-    
+  
     sketch.startLoop();
 
     sketch.initFrameBuffer();

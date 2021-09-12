@@ -445,33 +445,22 @@ void Overlay::setMusicInformation(std::string const track)
         m_studio_music.setText("EA Games Soundtrack");
     }
 
-    if(track == "Star Citizen - ArcCorp Theme")
-    {
-        m_Author_music.setText("P. Macedo Camacho");
-        m_studio_music.setText("Star Citizen Soundtrack");
-    }
-    
-    if(track == "Space Suite Generic 02")
-    {
-        m_Author_music.setText("Darren Lambourne");
-        m_studio_music.setText("Star Citizen Soundtrack");
-    }
-
-    if(track == "The Darkness")
-    {
-        m_Author_music.setText("P. Macedo Camacho");
-        m_studio_music.setText("Star Citizen Soundtrack");
-    }
-    if(track == "Into the Void") 
-    {
-        m_Author_music.setText("P. Macedo Camacho");
-        m_studio_music.setText("Star Citizen Soundtrack");
-    }
-
     if(track == "Natural Splendor") 
     {
         m_Author_music.setText("Gerald M. Dorai");
         m_studio_music.setText("Le Phonarium - Nantes");
+    }
+
+    if(track == "Dying Star") 
+    {
+        m_Author_music.setText("Utho Riley");
+        m_studio_music.setText("Symphonic Orchestral Music");
+    }
+
+    if(track == "Orizon Theme") 
+    {
+        m_Author_music.setText("Pedro Camacho");
+        m_studio_music.setText("Star Citizen Soundtrack");
     }
     
 }

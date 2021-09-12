@@ -26,8 +26,8 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) :
 Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"), m_texture_surface(texture),
-m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_plan_info(name)
+m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
+// m_plan_info(name)
 {
     m_texture_surface.loadTexture();
     m_name_renderer.loadTTF(m_name);
@@ -39,7 +39,7 @@ m_plan_info(name)
     m_inclinaison_angle = inclinaison_angle;
     m_speed_rotation = 0.1;
 
-    m_plan_info.setPosPlan(initial_pos);
+    // m_plan_info.setPosPlan(initial_pos);
 
     if(m_name == "Mars")
     {
@@ -60,7 +60,8 @@ m_plan_info(name)
     }
 }
 
-SimplePlanete::SimplePlanete(): Sphere(), m_plan_info()
+SimplePlanete::SimplePlanete(): Sphere()
+// m_plan_info()
 {
 
 }
@@ -216,16 +217,16 @@ void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, flo
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayInfo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
-{
-    // if(m_name == "Venus")
-    // {
-    //     m_plan_info.renderInfo(projection, modelview, hdr);
-    // }
+// void SimplePlanete::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+// {
+//     // if(m_name == "Venus")
+//     // {
+//     //     m_plan_info.renderInfo(projection, modelview, hdr);
+//     // }
 
-    m_plan_info.renderInfo(projection, modelview, hdr);
+//     m_plan_info.renderInfo(projection, modelview, hdr);
 
-}
+// }
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************************** getName ****************************************************************************/

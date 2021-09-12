@@ -17,7 +17,7 @@ PURPOSE :   - allow the program wich key is used
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Input::Input(): m_x(0), m_y(0), m_rel_x(0), m_rel_y(0), m_terminate(false)
+Input::Input(): m_x(0), m_y(0), m_rel_x(0), m_rel_y(0), m_terminate(false), m_scroll(0)
 {
     //initialize key array
     for (int i(0); i < SDL_NUM_SCANCODES; i++)
@@ -81,6 +81,21 @@ void Input::updateEvents()
                 {
                     m_terminate = true;
                 }
+                break;
+
+            //scrolling
+            case SDL_MOUSEWHEEL:
+
+                if(m_event.wheel.y > 0) //goes up
+                {
+                    m_scroll = 1;
+                }
+
+                if(m_event.wheel.y < 0) //goes down
+                {
+                    m_scroll = -1;
+                }
+
                 break;
 
             default:
@@ -150,6 +165,18 @@ int Input::getXRel() const
 int Input::getYRel() const
 {
     return m_rel_y;
+}
+
+int Input::getScroll()
+{
+    if(m_scroll != 0)
+    {
+        float tmp = m_scroll;
+        m_scroll = 0;
+        return tmp;
+    }
+
+    return 0;
 }
 
 /***********************************************************************************************************************************************************************/

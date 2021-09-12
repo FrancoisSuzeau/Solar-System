@@ -724,18 +724,33 @@ void OpenGlSketch::windowProcess()
         //     volume = 1;
         // }
 
-        if(m_input.getKey(SDL_SCANCODE_LEFT))
+        // if(m_input.getKey(SDL_SCANCODE_LEFT))
+        // {
+        //     if(camera->getSpeed() >= 0.0)
+        //     {
+        //         camera->setSpeed(-0.1);
+        //     }
+        // }
+        // if(m_input.getKey(SDL_SCANCODE_RIGHT))
+        // {
+        //     if(camera->getSpeed() <= 1.0)
+        //     {
+        //         camera->setSpeed(0.1);
+        //     }
+        // }
+
+        int scroll = m_input.getScroll();
+
+        if(scroll != 0)
         {
-            if(camera->getSpeed() >= 0.0)
-            {
-                camera->setSpeed(-0.1);
-            }
-        }
-        if(m_input.getKey(SDL_SCANCODE_RIGHT))
-        {
-            if(camera->getSpeed() <= 1.0)
+            if((camera->getSpeed() <= 1.0) && (scroll > 0))
             {
                 camera->setSpeed(0.1);
+            }
+
+            if((camera->getSpeed() >= 0.0) && (scroll < 0))
+            {
+                camera->setSpeed(-0.1);
             }
         }
         

@@ -57,10 +57,10 @@ PURPOSE : header of the virtual PlaneteCreator class
                        m_planete->displayAtmo(projection, modelview, phi, theta, camPosUpd, light_src, camPos, hdr);
                 }
 
-                void drawInfoPlan(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
-                {
-                        m_planete->displayInfo(projection, modelview, hdr);
-                }
+                // void drawInfoPlan(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+                // {
+                //         m_planete->displayInfo(projection, modelview, hdr);
+                // }
 
                 void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
                 {
@@ -90,6 +90,11 @@ PURPOSE : header of the virtual PlaneteCreator class
                 float getSizePlan() const
                 {
                         return m_planete->getRealSize();
+                }
+
+                std::string getName() const
+                {
+                        return m_planete->getName();
                 }
 
 

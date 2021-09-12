@@ -36,6 +36,7 @@ PURPOSE : header of the Input class
                 int         m_rel_x;
                 int         m_rel_y;
                 bool        m_terminate;
+                int         m_scroll;
 
                 
 
@@ -57,6 +58,8 @@ PURPOSE : header of the Input class
 
                 int getXRel() const;
                 int getYRel() const;
+
+                int   getScroll();
 
                 void displayPointer(bool response) const;
 

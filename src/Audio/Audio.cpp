@@ -21,26 +21,22 @@ PURPOSE :   - load music file
 /***********************************************************************************************************************************************************************/
 Audio::Audio(): m_volume(MIX_MAX_VOLUME / 2), 
 m_music(0), //create a warning but needed after
-m_track(5), m_in_pause(false)
+m_track(3), m_in_pause(false)
 {
     m_file_music = {
 
         "../assets/audio/mass_effect.mp3",
-        "../assets/audio/ArCorp_Theme.mp3",
-        "../assets/audio/Space_Suit_generic3.mp3",
-        "../assets/audio/The_darkness_SC.mp3",
-        "../assets/audio/Into_the_void_SC.mp3",
-        "../assets/audio/natural_splender.mp3"
+        "../assets/audio/natural_splender.mp3",
+        "../assets/audio/dying-star.mp3",
+        "../assets/audio/SC-Orizon-theme.mp3"
     };
 
     m_track_music = {
 
         "Mass Effect - Vigil",
-        "Star Citizen - ArcCorp Theme",
-        "Space Suite Generic 02",
-        "The Darkness",
-        "Into the Void",
-        "Natural Splendor"
+        "Natural Splendor",
+        "Dying Star",
+        "Orizon Theme"
     };
 }
 

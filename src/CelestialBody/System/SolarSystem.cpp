@@ -17,7 +17,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SolarSystem::SolarSystem(std::string name, int celestial_object_count)
+SolarSystem::SolarSystem(std::string name, int celestial_object_count) : m_planete_info("None")
 {
     m_system_name = name;
     m_companion_count = celestial_object_count;
@@ -367,7 +367,16 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         if(r <= 20)
         {
             modelview = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-            m_planete_creator[i]->drawInfoPlan(projection, modelview, hdr);
+            //m_planete_creator[i]->drawInfoPlan(projection, modelview, hdr);
+            std::string tmp_name = m_planete_creator[i]->getName();
+            
+            if(tmp_name != m_planete_info.getInfoName())
+            {
+                m_planete_info.changeNamePlan(tmp_name);
+                std::cout << tmp_name << std::endl;
+            }
+            
+            m_planete_info.renderInfo(projection, modelview, hdr);
         }
 
 

@@ -56,6 +56,9 @@ PURPOSE : header of the PlaneteInformation class
 
                 void renderInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
                 void setPosPlan(glm::vec3 const &posPlan);
+                void changeNamePlan(std::string const name);
+                std::string getInfoName() const;
+
 
         };
 
