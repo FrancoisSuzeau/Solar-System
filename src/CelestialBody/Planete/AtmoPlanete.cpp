@@ -27,11 +27,6 @@ using namespace glm;
 AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos)
 {
 
-    Shader s("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag");
-    m_shader = s;
-
-    
-    
     /************************************************* add atmosphere texture ********************************************************/
     std::string tmp;
     if(m_name == "Mars")
@@ -75,7 +70,7 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 {
     
     //Activate the shader
-    glUseProgram(m_shader.getProgramID());
+    glUseProgram(atmo_plan_shader->getProgramID());
 
     //lock VBO and Index Buffer Object
     glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
@@ -89,26 +84,26 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
     glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
         //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-        m_shader.setMat4("modelview", modelview);
-        m_shader.setMat4("projection", projection);
-        m_shader.setMat4("light_src", light_src);
+        // glUniformMatrix4fv(glGetUniformLocation(atmo_plan_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+        // glUniformMatrix4fv(glGetUniformLocation(atmo_plan_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+        // glUniformMatrix4fv(glGetUniformLocation(atmo_plan_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
+        atmo_plan_shader->setMat4("modelview", modelview);
+        atmo_plan_shader->setMat4("projection", projection);
+        atmo_plan_shader->setMat4("light_src", light_src);
         
         //texture variable to shader
-        // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
-        // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture1"), 1);
-        m_shader.setTexture("texture0", 0);
-        m_shader.setTexture("texture1", 1);
+        // glUniform1i(glGetUniformLocation(atmo_plan_shader->getProgramID(), "texture0"), 0);
+        // glUniform1i(glGetUniformLocation(atmo_plan_shader->getProgramID(), "texture1"), 1);
+        atmo_plan_shader->setTexture("texture0", 0);
+        atmo_plan_shader->setTexture("texture1", 1);
 
-        //glUniform1f(glGetUniformLocation(m_shader.getProgramID(), "oppacity"), m_oppacity);
-        m_shader.setFloat("oppacity", m_oppacity);
+        //glUniform1f(glGetUniformLocation(atmo_plan_shader->getProgramID(), "oppacity"), m_oppacity);
+        atmo_plan_shader->setFloat("oppacity", m_oppacity);
 
         //send camera position
-        m_shader.setVec3("viewPos", camPos);
+        atmo_plan_shader->setVec3("viewPos", camPos);
 
-        m_shader.setInt("hdr", hdr);
+        atmo_plan_shader->setInt("hdr", hdr);
         
         
         //active and lock unit texture 1: surface
@@ -121,6 +116,9 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
         
         //draw all textured vertices
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
+
+        // std::cout << atmo_plan_shader << " " << m_name << std::endl;
+
 
         glBindTexture(GL_TEXTURE_2D, 0);
         

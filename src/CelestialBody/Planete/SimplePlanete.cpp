@@ -25,7 +25,7 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) :
-Sphere(1, 50, 50, "../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"), m_texture_surface(texture),
+Sphere(1, 50, 50), m_texture_surface(texture),
 m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
 // m_plan_info(name)
 {
@@ -78,7 +78,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
 {
     
     //Activate the shader
-    glUseProgram(m_shader.getProgramID());
+    glUseProgram(simple_plan_shader->getProgramID());
 
     //lock VBO and Index Buffer Object
     glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
@@ -93,20 +93,20 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
 
 
         //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-        m_shader.setMat4("modelview", modelview);
-        m_shader.setMat4("projection", projection);
-        m_shader.setMat4("light_src", light_src);
+        // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+        // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+        // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
+        simple_plan_shader->setMat4("modelview", modelview);
+        simple_plan_shader->setMat4("projection", projection);
+        simple_plan_shader->setMat4("light_src", light_src);
        
         //texture variable to shader
-        // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
-        m_shader.setTexture("texture0", 0);
+        // glUniform1i(glGetUniformLocation(simple_plan_shader->getProgramID(), "texture0"), 0);
+        simple_plan_shader->setTexture("texture0", 0);
 
-        m_shader.setVec3("viewPos", camPos);
+        simple_plan_shader->setVec3("viewPos", camPos);
 
-        m_shader.setInt("hdr", hdr);
+        simple_plan_shader->setInt("hdr", hdr);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
@@ -114,7 +114,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
         //draw all textured vertices
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
-        std::cout << simple_plan_shader << " " << m_name << std::endl;
+        // std::cout << simple_plan_shader << " " << m_name << std::endl;
         
         glBindTexture(GL_TEXTURE_2D, 0);
         

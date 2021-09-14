@@ -25,7 +25,7 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 Star::Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture, std::string const name, float const real_size) :
-Sphere(radius, longSegs, latSegs, "../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag"), m_cloud_texture(texture),
+Sphere(radius, longSegs, latSegs), m_cloud_texture(texture),
 m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"), m_light_vao(0)
 {
     m_cloud_texture.loadTexture();
@@ -83,7 +83,7 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
 {
     
     //Activate the shader
-    glUseProgram(m_shader.getProgramID());
+    glUseProgram(star_shader->getProgramID());
 
     //lock VBO and Index Buffer Object
     glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
@@ -96,11 +96,11 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
     glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
     glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        m_shader.setMat4("modelview", modelview);
-        m_shader.setMat4("projection", projection);
-        m_shader.setMat4("light_src", light_src);
+        // glUniformMatrix4fv(glGetUniformLocation(star_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+        // glUniformMatrix4fv(glGetUniformLocation(star_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+        star_shader->setMat4("modelview", modelview);
+        star_shader->setMat4("projection", projection);
+        star_shader->setMat4("light_src", light_src);
 
         // positions
         // std::vector<glm::vec3> lightPositions;
@@ -118,15 +118,15 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
         // // set lighting uniforms
         // for (unsigned int i = 0; i < lightPositions.size(); i++)
         // {
-        //     m_shader.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
-        //     m_shader.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
+        //     star_shader->setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
+        //     star_shader->setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
         // }
         
         //texture variable to shader
-        //glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
-        m_shader.setTexture("texture0", 0);
+        //glUniform1i(glGetUniformLocation(star_shader->getProgramID(), "texture0"), 0);
+        star_shader->setTexture("texture0", 0);
 
-        m_shader.setVec3("viewPos", camPos);
+        star_shader->setVec3("viewPos", camPos);
         
         //active and lock cloudy texture
         glActiveTexture(GL_TEXTURE0);

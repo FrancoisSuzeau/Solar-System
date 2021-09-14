@@ -29,10 +29,10 @@ Sphere::Sphere() : m_vbo(0), m_ibo(0), m_radius(0)
 
 }
 
-Sphere::Sphere(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const vertex_shader, std::string const frag_shader) : 
+Sphere::Sphere(const float radius, const unsigned int longSegs, const unsigned int latSegs) : 
 m_vbo(0), m_ibo(0), m_element_count(0), m_radius(radius)
 {
-    Shader shad(vertex_shader, frag_shader);
+    Shader shad("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag");
     m_shader = shad;
     /************************************************* calculate vertex position ********************************************************/
     const unsigned int longVerts = longSegs + 1;

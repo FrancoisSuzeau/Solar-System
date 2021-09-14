@@ -26,6 +26,14 @@ SolarSystem::SolarSystem(std::string name, int celestial_object_count)
     m_simple_planete_count = 5;
     skybox = new Skybox();
     sun = new Star(1, 50, 50, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 20.0);
+
+    m_body_shader.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"));
+    m_body_shader[0]->loadShader();
+    m_body_shader.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag"));
+    m_body_shader[1]->loadShader();
+    m_body_shader.push_back(new Shader("../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag"));
+    m_body_shader[2]->loadShader();
+
 }
 
 SolarSystem::SolarSystem() : sun()
@@ -52,6 +60,15 @@ SolarSystem::~SolarSystem()
     {
         delete m_planete_info;
     }
+
+    for (int i(0); i < 3; i++)
+    {
+        if(m_body_shader[i] != nullptr)
+        {
+            delete m_body_shader[i];
+        }
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -59,35 +76,30 @@ SolarSystem::~SolarSystem()
 /***********************************************************************************************************************************************************************/
 void SolarSystem::loadSystem(int count)
 {
-    Shader *shad_simple = new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag");
-    m_planete_shader.push_back(shad_simple);
 
     /************************************************* loading planetary system ********************************************************/
     //Earth System
     if(count == 1)
     {
-        SystemCreator *earth_system = new PlanetarySystemCreator();
-        earth_system->MakingSystem("Earth System", 1);
-        earth_system->loadSystem(count);
-        m_planetary_system.push_back(earth_system);
+        m_planetary_system.push_back(new PlanetarySystemCreator());
+        m_planetary_system[0]->MakingSystem("Earth System", 1);
+        m_planetary_system[0]->loadSystem(count);
     }
 
     //Jovian System
     if(count == 2)
     {
-        SystemCreator *jovian_system = new PlanetarySystemCreator();
-        jovian_system->MakingSystem("Jovian System", 4);
-        jovian_system->loadSystem(count);
-        m_planetary_system.push_back(jovian_system);
+        m_planetary_system.push_back(new PlanetarySystemCreator());
+        m_planetary_system[1]->MakingSystem("Jovian System", 4);
+        m_planetary_system[1]->loadSystem(count);
     }
 
     //Saturian System
     if(count == 3)
     {
-        SystemCreator *saturian_system = new PlanetarySystemCreator();
-        saturian_system->MakingSystem("Saturnian System", 3);
-        saturian_system->loadSystem(count);
-        m_planetary_system.push_back(saturian_system);
+        m_planetary_system.push_back(new PlanetarySystemCreator());
+        m_planetary_system[2]->MakingSystem("Saturnian System", 3);
+        m_planetary_system[2]->loadSystem(count);
     }  
     //===================================================================================================================
 
@@ -139,7 +151,7 @@ void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, boo
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader)
+void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader, Shader *companion_shader)
 {
     glm::mat4 save = modelview;
 
@@ -150,7 +162,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         sun->updatePosition(projection, modelview, 0.0);
         sun->updatePositionLight(projection, light_src);
-        sun->display(projection, modelview, light_src, camPos, hdr);
+        sun->display(projection, modelview, light_src, camPos, hdr, m_body_shader[2]);
         
 
     /************************************************* MERCURY RENDER ********************************************************/
@@ -161,7 +173,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[0]->updatePosLight(projection, light_src);
-        m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_planete_shader[0]);
+        m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0]);
 
     /************************************************* VENUS RENDER ********************************************************/
     //restaure the modelview matrix
@@ -170,15 +182,14 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[1]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[1]->updatePosLight(projection, light_src);
-        m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos, hdr);
+        m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[1]);
 
     /************************************************* EARTH RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[0]->drawSystem(projection, modelview, camPos, hdr, m_position);
-        
+        m_planetary_system[0]->drawSystem(projection, modelview, camPos, hdr, m_position, m_body_shader[1], m_body_shader[0]);
 
     /************************************************* MARS RENDER ********************************************************/
     //restaure the modelview matrix
@@ -187,21 +198,21 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[2]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[2]->updatePosLight(projection, light_src);
-        m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos, hdr);
+        m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[1]);
 
     /************************************************* JUPITER RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[1]->drawSystem(projection, modelview, camPos, hdr, m_position, m_planete_shader[0]);
+        m_planetary_system[1]->drawSystem(projection, modelview, camPos, hdr, m_position, m_body_shader[0], m_body_shader[0]);
         
     /************************************************* SATURN RENDER ********************************************************/
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        m_planetary_system[2]->drawSystem(projection, modelview, camPos, hdr, m_position, m_planete_shader[0]);
+        m_planetary_system[2]->drawSystem(projection, modelview, camPos, hdr, m_position, m_body_shader[0], m_body_shader[0]);
 
     /************************************************* URANUS RENDER ********************************************************/
     //restaure the modelview matrix
@@ -210,7 +221,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[3]->updatePosLight(projection, light_src);
-        m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_planete_shader[0]);
+        m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0]);
 
     /************************************************* NEPTUNE RENDER ********************************************************/
     //restaure the modelview matrix
@@ -219,7 +230,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
         m_planete_creator[4]->updatePosLight(projection, light_src);
-        m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_planete_shader[0]);
+        m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0]);
 
     //restaure the modelview matrix
     modelview = save;

@@ -51,7 +51,7 @@ PURPOSE : header of the Sphere class
                 
             public:
 
-                Sphere(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const vertex_shader, std::string const frag_shader);
+                Sphere(const float radius, const unsigned int longSegs, const unsigned int latSegs);
 
                 Sphere();
                 ~Sphere();

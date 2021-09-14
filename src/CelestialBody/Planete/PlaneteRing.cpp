@@ -62,7 +62,7 @@ PlaneteRing::~PlaneteRing()
 void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader)
 {
     //Activate the shader
-    glUseProgram(m_shader.getProgramID());
+    glUseProgram(plan_ring_shader->getProgramID());
 
     glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
@@ -74,19 +74,19 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
     glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
         //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-        m_shader.setMat4("modelview", modelview);
-        m_shader.setMat4("projection", projection);
-        m_shader.setMat4("light_src", light_src);
+        // glUniformMatrix4fv(glGetUniformLocation(plan_ring_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+        // glUniformMatrix4fv(glGetUniformLocation(plan_ring_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+        // glUniformMatrix4fv(glGetUniformLocation(plan_ring_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
+        plan_ring_shader->setMat4("modelview", modelview);
+        plan_ring_shader->setMat4("projection", projection);
+        plan_ring_shader->setMat4("light_src", light_src);
         
-        // glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "texture0"), 0);
-        m_shader.setTexture("texture0", 0);
+        // glUniform1i(glGetUniformLocation(plan_ring_shader->getProgramID(), "texture0"), 0);
+        plan_ring_shader->setTexture("texture0", 0);
 
-        m_shader.setVec3("viewPos", camPos);
+        plan_ring_shader->setVec3("viewPos", camPos);
         
-        m_shader.setInt("hdr", hdr);
+        plan_ring_shader->setInt("hdr", hdr);
         
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());

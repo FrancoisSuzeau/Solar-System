@@ -124,7 +124,7 @@ void PlanetarySystem::loadSystem(int count)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader)
+void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader, Shader *companion_shader)
 {
     glm::mat4 save = modelview;
     glm::vec3 target_point(0.0, 0.0, 0.0);
@@ -134,7 +134,7 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     m_host_creator->UpdatePositionPlan(projection, modelview);
     m_host_creator->updatePosLight(projection, light_src);
-    m_host_creator->drawPlanete(projection, modelview, light_src, camPos, hdr);
+    m_host_creator->drawPlanete(projection, modelview, light_src, camPos, hdr, host_shader);
 
     modelview = save;
     light_src = save_light_src;
@@ -143,7 +143,7 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         m_moons_creator[i]->UpdatePositionPlan(projection, modelview);
         m_moons_creator[i]->updatePosLight(projection, light_src);
-        m_moons_creator[i]->drawPlanete(projection, modelview, light_src, camPos, hdr); 
+        m_moons_creator[i]->drawPlanete(projection, modelview, light_src, camPos, hdr, companion_shader); 
 
         modelview = save;
         light_src = save_light_src;
