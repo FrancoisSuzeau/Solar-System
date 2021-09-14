@@ -62,7 +62,7 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displayAtmo(projection, modelview, camPos, hdr);
                 }
 
-                void drawInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr)
+                void drawInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr)
                 {
                         m_system->displayInfo(projection, modelview, camPos, hdr);
                 }

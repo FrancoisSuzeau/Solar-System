@@ -21,7 +21,7 @@ PURPOSE :   - load music file
 /***********************************************************************************************************************************************************************/
 Audio::Audio(): m_volume(MIX_MAX_VOLUME / 2), 
 m_music(0), //create a warning but needed after
-m_track(3), m_in_pause(false)
+m_track(0), m_in_pause(false)
 {
     m_file_music = {
 

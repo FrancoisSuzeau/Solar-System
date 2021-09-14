@@ -27,7 +27,6 @@ PURPOSE : header of the virtual SolarSystem class
         #include "../Planete/AtmoPlaneteCreator.hpp"
         #include "../Planete/SimplePlaneteCreator.hpp"
         #include "../Planete/PlaneteRingCreator.hpp"
-        #include "../../PlaneteInformation/PlaneteInformation.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -44,9 +43,6 @@ PURPOSE : header of the virtual SolarSystem class
 
                 std::vector<PlaneteCreator*> m_planete_creator;
 
-                PlaneteInformation              m_planete_info;
-                
-                
                 
             public:
 
@@ -60,7 +56,7 @@ PURPOSE : header of the virtual SolarSystem class
                 void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr) override;
                 void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) override;
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr) override;
-                void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr) override;
+                void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr) override;
 
 
         };

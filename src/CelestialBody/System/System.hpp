@@ -24,6 +24,8 @@ PURPOSE : header of the virtual System class
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
+
+        #include "../../PlaneteInformation/PlaneteInformation.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -35,6 +37,8 @@ PURPOSE : header of the virtual System class
                 std::string                 m_system_name;
                 std::vector<std::string>    m_companion_name;
                 int                         m_companion_count;
+
+                PlaneteInformation              *m_planete_info;
                 
             public:
 
@@ -45,7 +49,7 @@ PURPOSE : header of the virtual System class
                 virtual void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr) = 0;
                 virtual void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos) = 0;
                 virtual void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr) = 0;
-                virtual void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr) = 0;
+                virtual void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr) = 0;
                 
         };
 

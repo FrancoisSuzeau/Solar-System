@@ -26,6 +26,12 @@ PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count) :
 
     m_name_renderer.loadTTF(m_system_name);
 
+    if(m_planete_info == nullptr)
+    {
+        m_planete_info = new PlaneteInformation("None");
+        std::cout << "nope" << std::endl;
+    }
+
 }
 
 PlanetarySystem::PlanetarySystem()
@@ -45,6 +51,11 @@ PlanetarySystem::~PlanetarySystem()
     if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
         delete m_atmosphere;
+    }
+
+    if(m_planete_info != nullptr)
+    {
+        delete m_planete_info;
     }
     
 }
@@ -244,9 +255,45 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr)
+void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info)
 {
+    glm::mat4 save = modelview;
+
+    glm::vec3 planete_pos = m_host_creator->getPostion();
     
+
+        float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
+        float y = camPos[1] - planete_pos[1];
+        float z = camPos[2] - planete_pos[2];
+            
+            
+        float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+            
+        float r = std::sqrt(r_squarre);
+
+        if(r <= 20)
+        {
+            modelview = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+            //m_host_creator[i]->drawInfoPlan(projection, modelview, hdr);
+            std::string tmp_name = m_host_creator->getName();
+            
+            if(tmp_name != m_planete_info->getInfoName())
+            {
+                if(m_planete_info != nullptr)
+                {
+                    m_planete_info->changeNamePlan(tmp_name);
+                }
+                
+            }
+            
+            if(m_planete_info != nullptr)
+            {
+                m_planete_info->renderInfo(projection, modelview, hdr);
+            }
+            
+        }
+
+        modelview = save;
 }
 
 /***********************************************************************************************************************************************************************/

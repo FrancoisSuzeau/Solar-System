@@ -17,8 +17,9 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SolarSystem::SolarSystem(std::string name, int celestial_object_count) : m_planete_info("None")
+SolarSystem::SolarSystem(std::string name, int celestial_object_count)
 {
+    m_planete_info = new PlaneteInformation("None");
     m_system_name = name;
     m_companion_count = celestial_object_count;
     m_planetarySYS_count = 3;
@@ -46,6 +47,11 @@ SolarSystem::~SolarSystem()
     
     delete skybox;
     delete sun;
+
+    if(m_planete_info != nullptr)
+    {
+        delete m_planete_info;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -346,7 +352,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr)
+void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *plan_info)
 {
     glm::mat4 save = modelview;
 
@@ -370,13 +376,16 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
             //m_planete_creator[i]->drawInfoPlan(projection, modelview, hdr);
             std::string tmp_name = m_planete_creator[i]->getName();
             
-            if(tmp_name != m_planete_info.getInfoName())
+            if(tmp_name != m_planete_info->getInfoName())
             {
-                m_planete_info.changeNamePlan(tmp_name);
-                std::cout << tmp_name << std::endl;
+                m_planete_info->changeNamePlan(tmp_name);
+                std::string tmp = "../../Shader";
+                std::cout << tmp + "/amtosphere.vert" << std::endl;
             }
+
+
             
-            m_planete_info.renderInfo(projection, modelview, hdr);
+            m_planete_info->renderInfo(projection, modelview, hdr);
         }
 
 
@@ -385,4 +394,15 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     }
 
     modelview = save;
+
+    //display information of planetof the planetary system
+    for (int i(0); i < m_planetarySYS_count; i++)
+    {
+        m_planetary_system[i]->drawInfo(projection, modelview, camPos, hdr);
+
+        modelview = save;
+    }
+
+    modelview = save;
+    
 }
