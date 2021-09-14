@@ -55,7 +55,7 @@ PURPOSE : header of the Sphere class
 
                 Sphere();
                 ~Sphere();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *sphere_shader = nullptr);
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos);
                 void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
                 

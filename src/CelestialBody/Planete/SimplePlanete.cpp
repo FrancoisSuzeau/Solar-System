@@ -74,7 +74,7 @@ SimplePlanete::~SimplePlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
+void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader)
 {
     
     //Activate the shader
@@ -114,6 +114,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
         //draw all textured vertices
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
+        std::cout << simple_plan_shader << " " << m_name << std::endl;
         
         glBindTexture(GL_TEXTURE_2D, 0);
         
@@ -213,20 +214,6 @@ void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, flo
     }
     
 }
-
-/***********************************************************************************************************************************************************************/
-/******************************************************************************* displayInfo ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-// void SimplePlanete::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
-// {
-//     // if(m_name == "Venus")
-//     // {
-//     //     m_plan_info.renderInfo(projection, modelview, hdr);
-//     // }
-
-//     m_plan_info.renderInfo(projection, modelview, hdr);
-
-// }
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************************** getName ****************************************************************************/

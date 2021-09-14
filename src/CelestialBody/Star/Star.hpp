@@ -45,7 +45,7 @@ PURPOSE : header of the Star class
                 Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture_surf, std::string const name, float const real_size);
                 Star();
                 ~Star();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *star_shader = nullptr);
                 //void displayName(glm::mat4 &projection, glm::mat4 &modelview);
                 void updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation);
                 void updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src);

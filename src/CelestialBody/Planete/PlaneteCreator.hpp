@@ -62,9 +62,9 @@ PURPOSE : header of the virtual PlaneteCreator class
                 //         m_planete->displayInfo(projection, modelview, hdr);
                 // }
 
-                void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
+                void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *m_plan_shader = nullptr)
                 {
-                        m_planete->display(projection, modelview, light_src, camPos, hdr);
+                        m_planete->display(projection, modelview, light_src, camPos, hdr, m_plan_shader);
                 }
 
                 void UpdatePositionPlan(glm::mat4 &projection, glm::mat4 &modelview)

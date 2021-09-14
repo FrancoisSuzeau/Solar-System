@@ -53,7 +53,7 @@ PURPOSE : header of the Atmosphere class
                 Atmosphere();
                 ~Atmosphere();
 
-                void display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr);
                 void load();
         };
 

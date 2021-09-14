@@ -59,7 +59,7 @@ PlaneteRing::~PlaneteRing()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayCrate **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
+void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader)
 {
     //Activate the shader
     glUseProgram(m_shader.getProgramID());

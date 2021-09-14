@@ -55,7 +55,7 @@ PURPOSE : header of the Square class
                 ~Square();
 
                 void load();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr = false);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr = false, Shader *square_shader = nullptr);
                 void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
                 void drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview);
                 
