@@ -25,9 +25,12 @@ The initial position of the view matrix (camera) is on the ````100, 100, 100````
 + Left button mouse (maintain) : orient camera (up, down, right, left)
 + UP : increase the volume of the music
 + DOWN : decrease the volume
-+ LEFT : decrease the camera velocity
-+ RIGHT : increase the camera velocity
++ LEFT : decrease the camera velocity (deprecated)
++ RIGHT : increase the camera velocity (deprecated)
 + ESCAPE : Quit the program
++ P : Display the settings menu
++ Mouse Wheel : Change the navigation speed by 10% the speed of the light
++ I : Display body information 
 
 Make sure that the executable file is in the ````bin```` directory.
 
@@ -61,7 +64,11 @@ Make sure that the executable file is in the ````bin```` directory.
 
 ### 04/08/2021
 + Settings window : a simple window where we can choose settings (hdr, exposure, speed navigation, music, music volume and if overlay is display or not)
++ Cliking on a setting : It adatps on the screen dimension
 
+### 14/09/2021
++ We can now have a little window showing planete information (for now it is only displaying the name of the body)
++ Use the mouse wheel to change speed of navigation
 
 ## More in coming ...
 
@@ -74,8 +81,6 @@ For the moment I am working on this following aspect :
 
 + With the celestial mechanics build I will change the apparent size of the planet scaling them with the distance to the sun.
 
-+ By clicking on the planet, we will have the possibility to read information of this body
-
-+ try to use model file loading to add complex forme (like asteroid belt) using Assimp API
++ try to use model file loading to add complex forme (like asteroid belt) using Assimp API (need to migrate on Visual Studio Community due to link editing not supported with g++)
 
 Many of these ideas came to me while I am coding, so I hope more come too.

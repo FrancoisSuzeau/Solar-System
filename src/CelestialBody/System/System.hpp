@@ -38,7 +38,7 @@ PURPOSE : header of the virtual System class
                 std::vector<std::string>    m_companion_name;
                 int                         m_companion_count;
 
-                PlaneteInformation              *m_planete_info;
+                
                 
             public:
 

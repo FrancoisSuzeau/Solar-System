@@ -64,7 +64,7 @@ PURPOSE : header of the virtual SystemCreator class
 
                 void drawInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr)
                 {
-                        m_system->displayInfo(projection, modelview, camPos, hdr);
+                        m_system->displayInfo(projection, modelview, camPos, hdr, planete_info);
                 }
 
                 void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)

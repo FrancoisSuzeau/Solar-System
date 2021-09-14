@@ -26,11 +26,7 @@ PlanetarySystem::PlanetarySystem(std::string name_system, int companion_count) :
 
     m_name_renderer.loadTTF(m_system_name);
 
-    if(m_planete_info == nullptr)
-    {
-        m_planete_info = new PlaneteInformation("None");
-        std::cout << "nope" << std::endl;
-    }
+    //No need to create a planete info pointer because we use Only one
 
 }
 
@@ -51,11 +47,6 @@ PlanetarySystem::~PlanetarySystem()
     if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
         delete m_atmosphere;
-    }
-
-    if(m_planete_info != nullptr)
-    {
-        delete m_planete_info;
     }
     
 }
@@ -277,18 +268,14 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, g
             //m_host_creator[i]->drawInfoPlan(projection, modelview, hdr);
             std::string tmp_name = m_host_creator->getName();
             
-            if(tmp_name != m_planete_info->getInfoName())
+            if(planete_info != nullptr)
             {
-                if(m_planete_info != nullptr)
+                 if(tmp_name != planete_info->getInfoName())
                 {
-                    m_planete_info->changeNamePlan(tmp_name);
+                    planete_info->changeNamePlan(tmp_name);
                 }
-                
-            }
-            
-            if(m_planete_info != nullptr)
-            {
-                m_planete_info->renderInfo(projection, modelview, hdr);
+
+                planete_info->renderInfo(projection, modelview, hdr);
             }
             
         }

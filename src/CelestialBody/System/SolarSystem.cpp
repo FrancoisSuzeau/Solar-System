@@ -379,8 +379,6 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
             if(tmp_name != m_planete_info->getInfoName())
             {
                 m_planete_info->changeNamePlan(tmp_name);
-                std::string tmp = "../../Shader";
-                std::cout << tmp + "/amtosphere.vert" << std::endl;
             }
 
 
@@ -398,7 +396,7 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     //display information of planetof the planetary system
     for (int i(0); i < m_planetarySYS_count; i++)
     {
-        m_planetary_system[i]->drawInfo(projection, modelview, camPos, hdr);
+        m_planetary_system[i]->drawInfo(projection, modelview, camPos, hdr, m_planete_info);
 
         modelview = save;
     }
