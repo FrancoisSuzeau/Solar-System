@@ -21,17 +21,14 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Atmosphere::Atmosphere(float size, std::string const name, std::string const texture): Disk(size, "../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag"),
+Atmosphere::Atmosphere(float size, std::string const name, std::string const texture): Disk(size),
 m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
 {
 
     
-    // this->setShader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
-    // m_shader.loader();
-
+    
     if(name == "Earth")
     {
-        //m_color_atmo = vec3(119/255.0, 181.0/255.0, 254.0/255.0); //bleu clair
         m_color_atmo = vec3(147.0/255.0, 188.0/255.0, 231.0/255.0); //autre bleu clair
     }
     else if(name == "Venus")
@@ -158,69 +155,74 @@ void Atmosphere::load()
 /***********************************************************************************************************************************************************************/
 void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
-    /************************************************* positionning atmosphere **************************************************************/
-	phi = phi * 180 / M_PI;
-	theta = theta * 180 / M_PI;
+    if(atmo_shader != nullptr)
+    {
+        /************************************************* positionning atmosphere **************************************************************/
+        phi = phi * 180 / M_PI;
+        theta = theta * 180 / M_PI;
 
-	glm::mat4 save = modelview;
+        glm::mat4 save = modelview;
 
-	if((phi < 0) && (camPosUpd[1] > 0))
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (camPosUpd[1] < 0) )
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (camPosUpd[1] > 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi < 0) && (camPosUpd[1] < 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
+        if((phi < 0) && (camPosUpd[1] > 0))
+        {
+            modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi > 0) && (camPosUpd[1] < 0) )
+        {
+            modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi > 0) && (camPosUpd[1] > 0) )
+        {
+            modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi < 0) && (camPosUpd[1] < 0) )
+        {
+            modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
 
-    modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
+        modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
 
-    
-    //==============================================================================================================================
-    //Activate the shader
-    glUseProgram(m_shader.getProgramID());
-
-    //lock VAO
-    glBindVertexArray(m_vaoID);
-
-        //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-        m_shader.setMat4("modelview", modelview);
-        m_shader.setMat4("projection", projection);
-        m_shader.setMat4("light_src", light_src);
-
-        m_shader.setVec3("viewPos", camPos);
-        m_shader.setVec3("atmoColor", m_color_atmo);
-        m_shader.setInt("hdr", hdr);
         
+        //==============================================================================================================================
+        //Activate the shader
+        glUseProgram(atmo_shader->getProgramID());
 
-        //lock texture
-        glBindTexture(GL_TEXTURE_2D, m_texture.getID());
+        //lock VAO
+        glBindVertexArray(m_vaoID);
 
-        //display the form
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+            //send matrices to shader
+            // glUniformMatrix4fv(glGetUniformLocation(atmo_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+            // glUniformMatrix4fv(glGetUniformLocation(atmo_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            // glUniformMatrix4fv(glGetUniformLocation(atmo_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
+            atmo_shader->setMat4("modelview", modelview);
+            atmo_shader->setMat4("projection", projection);
+            atmo_shader->setMat4("light_src", light_src);
 
-        //unlock texture
-        glBindTexture(GL_TEXTURE_2D, 0);
+            atmo_shader->setVec3("viewPos", camPos);
+            atmo_shader->setVec3("atmoColor", m_color_atmo);
+            atmo_shader->setInt("hdr", hdr);
+            
+
+            //lock texture
+            glBindTexture(GL_TEXTURE_2D, m_texture.getID());
+
+            //display the form
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            //unlock texture
+            glBindTexture(GL_TEXTURE_2D, 0);
 
 
-        // glDisableVertexAttribArray(2);
-        // glDisableVertexAttribArray(0);
+            // glDisableVertexAttribArray(2);
+            // glDisableVertexAttribArray(0);
 
-    //unlock VAO
-    glBindVertexArray(0);
+        //unlock VAO
+        glBindVertexArray(0);
 
-    glUseProgram(0);
+        glUseProgram(0);
 
-    modelview = save;
+        modelview = save;
+    }
+    
+    
 }

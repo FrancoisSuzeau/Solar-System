@@ -22,19 +22,9 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-                int     m_bytes_vertices_size;
-Square::Square(float size, std::string const vertex_shader, std::string const frag_shader, float const color) : m_vboID(0),
+Square::Square(float size, float const color) : m_vboID(0),
 m_bytes_colors_size(18 * sizeof(float))
 {
-    //Shader color_shader("Shader/Shaders/couleur3D.vert", "Shader/Shaders/couleur3D.frag"); //the path is in fonction of the level of the executable
-    // float colors[] = {240.0/255.0, 210.0/255.0, 23.0/255.0,
-    //                     230.0/255.0, 0.0, 230.0/255.0,
-    //                     0.0, 1.0, 0.0};
-    //loading shader
-    
-    Shader shad(vertex_shader, frag_shader);
-    m_shader = shad;
-    //m_shader.loadShader();
 
     m_bytes_vertices_size = 18 * sizeof(float);
     m_size = size;
@@ -79,30 +69,34 @@ Square::~Square()
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Square::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader)
-{   
-    //Activate the shader
-    glUseProgram(m_shader.getProgramID());
+{
+    if(square_shader != nullptr)
+    {
+        //Activate the shader
+        glUseProgram(square_shader->getProgramID());
 
-        //lock vao
-        glBindVertexArray(m_vaoID);
+            //lock vao
+            glBindVertexArray(m_vaoID);
 
-        //send matrices to shader
-        glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            //send matrices to shader
+            glUniformMatrix4fv(glGetUniformLocation(square_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+            glUniformMatrix4fv(glGetUniformLocation(square_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
 
-        m_shader.setInt("hdr", hdr);
+            square_shader->setInt("hdr", hdr);
 
-        //display the form
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+            //display the form
+            glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        // glDisableVertexAttribArray(1);
-        // glDisableVertexAttribArray(0);
+            // glDisableVertexAttribArray(1);
+            // glDisableVertexAttribArray(0);
 
 
-        //unlock vao
-        glBindVertexArray(0);
+            //unlock vao
+            glBindVertexArray(0);
 
-    glUseProgram(0);
+        glUseProgram(0);
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -211,54 +205,60 @@ void Square::updateVBO(void *data, int size_bytes, int offset)
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** drawLoad **********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview)
+void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, Shader *square_shader)
 {
     glm::mat4 save = modelview;
+    
 
-    if(count == 0)
+    if(square_shader != nullptr)
     {
-            modelview = translate(modelview, vec3((count - 12.2) * 0.05, -0.3, 0.0));
-            display(projection, modelview);
-
-        //restaure the modelview matrix
-        modelview = save;
-
-            modelview = translate(modelview, vec3((count - 11.2) * 0.05, -0.3, 0.0));
-            display(projection, modelview);
-
-        //restaure the modelview matrix
-        modelview = save;
-
-            modelview = translate(modelview, vec3((count - 10.2) * 0.05, -0.3, 0.0));
-            display(projection, modelview);
-
-        //restaure the modelview matrix
-        modelview = save;
-    }
-    else
-    {
-        for (int i = 0; i < count * 3; i++)
+        if(count == 0)
         {
-                modelview = translate(modelview, vec3((i - 12.2) * 0.05, -0.3, 0.0));
-                display(projection, modelview);
+                modelview = translate(modelview, vec3((count - 12.2) * 0.05, -0.3, 0.0));
+                display(projection, modelview, false, square_shader);
 
+            //restaure the modelview matrix
             modelview = save;
 
-                modelview = translate(modelview, vec3((i - 11.2) * 0.05, -0.3, 0.0));
-                display(projection, modelview);
+                modelview = translate(modelview, vec3((count - 11.2) * 0.05, -0.3, 0.0));
+                display(projection, modelview, false, square_shader);
 
+            //restaure the modelview matrix
             modelview = save;
 
-                modelview = translate(modelview, vec3((i - 10.2) * 0.05, -0.3, 0.0));
-                display(projection, modelview);
+                modelview = translate(modelview, vec3((count - 10.2) * 0.05, -0.3, 0.0));
+                display(projection, modelview, false, square_shader);
 
+            //restaure the modelview matrix
             modelview = save;
         }
+        else
+        {
+            for (int i = 0; i < count * 3; i++)
+            {
+                    modelview = translate(modelview, vec3((i - 12.2) * 0.05, -0.3, 0.0));
+                    display(projection, modelview, false, square_shader);
+
+                modelview = save;
+
+                    modelview = translate(modelview, vec3((i - 11.2) * 0.05, -0.3, 0.0));
+                    display(projection, modelview, false, square_shader);
+
+                modelview = save;
+
+                    modelview = translate(modelview, vec3((i - 10.2) * 0.05, -0.3, 0.0));
+                    display(projection, modelview, false, square_shader);
+
+                modelview = save;
+            }
+        }
     }
+
+    
 }
 
 //NOT CONCERN
-void Square::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+void Square::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader)
 {
 
 }

@@ -77,10 +77,10 @@ PURPOSE : header of the Overlay class
                 Overlay();
                 ~Overlay();
 
-                void displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
-                void displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::string const track);
-                void displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, glm::vec3 &position, float const speed);
-                void displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
+                void displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader = nullptr);
+                void displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::string const track, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, glm::vec3 &position, float const speed, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
 
                 void setMusicInformation(std::string const track);
                 void setPostionInformation(glm::vec3 &position, float const speed);

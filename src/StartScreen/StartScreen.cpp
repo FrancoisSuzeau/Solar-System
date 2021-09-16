@@ -19,8 +19,8 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-StartScreen::StartScreen() : 
-m_text_loadScreen(3.0, 0.2, 6, "../assets/font/venus rising rg.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
+StartScreen::StartScreen(TTF_Font *police) : 
+m_text_loadScreen(3.0, 0.2, 6, "../assets/font/venus rising rg.ttf", police)
 {
     m_text_loadScreen.loadTTF(" Solar System");
     std::cout << ">> Start Screen initiated" << std::endl;
@@ -34,11 +34,14 @@ StartScreen::~StartScreen()
 /***********************************************************************************************************************************************************************/
 /***************************************************************************** DrawStartScreen *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void StartScreen::drawStartScreen(glm::mat4 &projection, glm::mat4 &modelview)
+void StartScreen::drawStartScreen(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
 {
     glm::mat4 save = modelview;
 
-    m_text_loadScreen.renderTextStartScreen(projection, modelview);
+    if(text_shader != nullptr)
+    {
+        m_text_loadScreen.renderTextStartScreen(projection, modelview, text_shader);
+    }
 
 	modelview = save;
 }

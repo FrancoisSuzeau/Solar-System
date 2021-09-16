@@ -22,11 +22,11 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Ring::Ring(float size, std::string const texture): Disk(size, "../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag"),
+Ring::Ring(float size, std::string const texture): Disk(size),
 m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
 {
-    // this->setShader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
-    // m_shader.loader();
+    Shader shad("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
+    m_shader_ring = shad;
     
     m_texture.loadTexture();
 
@@ -128,21 +128,21 @@ void Ring::load()
 void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *ring_shader)
 {
     //Activate the shader
-    glUseProgram(m_shader.getProgramID());
+    glUseProgram(m_shader_ring.getProgramID());
 
     //lock VAO
     glBindVertexArray(m_vaoID);
 
         //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-        m_shader.setMat4("modelview", modelview);
-        m_shader.setMat4("projection", projection);
-        m_shader.setMat4("light_src", light_src);
+        // glUniformMatrix4fv(glGetUniformLocation(m_shader_ring.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+        // glUniformMatrix4fv(glGetUniformLocation(m_shader_ring.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+        // glUniformMatrix4fv(glGetUniformLocation(m_shader_ring.getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
+        m_shader_ring.setMat4("modelview", modelview);
+        m_shader_ring.setMat4("projection", projection);
+        m_shader_ring.setMat4("light_src", light_src);
 
-        m_shader.setVec3("viewPos", camPos);
-        m_shader.setInt("hdr", hdr);
+        m_shader_ring.setVec3("viewPos", camPos);
+        m_shader_ring.setInt("hdr", hdr);
 
         //lock texture
         glBindTexture(GL_TEXTURE_2D, m_texture.getID());

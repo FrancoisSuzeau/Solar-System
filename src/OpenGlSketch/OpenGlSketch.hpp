@@ -68,6 +68,7 @@ PURPOSE : header of the OpenGlSketch class
                 SDL_Window      *m_window;
                 SDL_GLContext   m_openGL_context;
                 GLenum          m_initiGLEW;
+                std::vector<TTF_Font*>  m_police;
 
                 SystemCreator   *solar_system;
 
@@ -77,6 +78,8 @@ PURPOSE : header of the OpenGlSketch class
                 unsigned int depth_rb;
 
                 Shader *screenShader;
+                Shader *text_shader;
+                Shader *square_shader;
 
                 bool hdr;
                 bool hdr_key_pressed;

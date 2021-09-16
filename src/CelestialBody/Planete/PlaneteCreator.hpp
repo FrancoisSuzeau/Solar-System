@@ -47,20 +47,15 @@ PURPOSE : header of the virtual PlaneteCreator class
                         return true;
                 }
 
-                void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y)
+                void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr)
                 {
-                        m_planete->displayName(projection, modelview, ratio, phi, theta, y);
+                        m_planete->displayName(projection, modelview, ratio, phi, theta, y, name_render_shader);
                 }
 
-                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
+                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
                 {
-                       m_planete->displayAtmo(projection, modelview, phi, theta, camPosUpd, light_src, camPos, hdr);
+                       m_planete->displayAtmo(projection, modelview, phi, theta, camPosUpd, light_src, camPos, hdr, atmo_shader);
                 }
-
-                // void drawInfoPlan(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
-                // {
-                //         m_planete->displayInfo(projection, modelview, hdr);
-                // }
 
                 void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *m_plan_shader = nullptr)
                 {

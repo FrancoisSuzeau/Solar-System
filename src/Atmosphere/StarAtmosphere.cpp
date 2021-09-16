@@ -21,20 +21,11 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-StarAtmosphere::StarAtmosphere(float size, std::string const name, std::string const texture): Disk(size, "../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag"),
+StarAtmosphere::StarAtmosphere(float size, std::string const name, std::string const texture): Disk(size),
 m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
 {
-
-    
-    // this->setShader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
-    // m_shader.loader();
-
-    
     m_color_atmo = vec3(255.0/255.0, 255.0/255.0, 255.0/255.0);
-    std::cout << ">>>>>>>>>>> " << name << std::endl;
-    m_shader_sun = new Shader("../src/Shader/Shaders/sunAtmo.vert", "../src/Shader/Shaders/sunAtmo.frag");
-    m_shader_sun->loadShader();
-    
+
     m_texture.loadTexture();
 
     float temp_coord[] = {0, 0,   1, 0,   1, 1,
@@ -58,10 +49,7 @@ StarAtmosphere::StarAtmosphere() : Disk()
 
 StarAtmosphere::~StarAtmosphere()
 {
-    if(m_color_atmo == vec3(255.0/255.0, 255.0/255.0, 0.0/255.0)) //color for sun
-    {
-        delete m_shader_sun;
-    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -137,131 +125,139 @@ void StarAtmosphere::load()
 /***********************************************************************************************************************************************************************/
 void StarAtmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, Shader *star_atmo_shader)
 {
-    /************************************************* positionning atmosphere **************************************************************/
-	phi = phi * 180 / M_PI;
-	theta = theta * 180 / M_PI;
+    if(star_atmo_shader != nullptr)
+    {
+        /************************************************* positionning atmosphere **************************************************************/
+        phi = phi * 180 / M_PI;
+        theta = theta * 180 / M_PI;
 
-	glm::mat4 save = modelview;
-	if((phi < 0) && (camPosUpd[1] > 0))
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (camPosUpd[1] < 0) )
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (camPosUpd[1] > 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi < 0) && (camPosUpd[1] < 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
+        glm::mat4 save = modelview;
+        if((phi < 0) && (camPosUpd[1] > 0))
+        {
+            modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi > 0) && (camPosUpd[1] < 0) )
+        {
+            modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi > 0) && (camPosUpd[1] > 0) )
+        {
+            modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi < 0) && (camPosUpd[1] < 0) )
+        {
+            modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
 
-    modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0)); 
-	
-    //==============================================================================================================================
-    //Activate the shader
-    glUseProgram(m_shader.getProgramID());
+        modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0)); 
+        
+        //==============================================================================================================================
+        //Activate the shader
+        glUseProgram(star_atmo_shader->getProgramID());
 
-    //lock VAO
-    glBindVertexArray(m_vaoID);
+        //lock VAO
+        glBindVertexArray(m_vaoID);
 
-        //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-        m_shader.setMat4("modelview", modelview);
-        m_shader.setMat4("projection", projection);
-        m_shader.setMat4("light_src", light_src);
+            //send matrices to shader
+            // glUniformMatrix4fv(glGetUniformLocation(star_atmo_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+            // glUniformMatrix4fv(glGetUniformLocation(star_atmo_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            // glUniformMatrix4fv(glGetUniformLocation(star_atmo_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
+            star_atmo_shader->setMat4("modelview", modelview);
+            star_atmo_shader->setMat4("projection", projection);
+            star_atmo_shader->setMat4("light_src", light_src);
 
-        m_shader.setVec3("viewPos", camPos);
-        m_shader.setVec3("atmoColor", m_color_atmo);
+            star_atmo_shader->setVec3("viewPos", camPos);
+            star_atmo_shader->setVec3("atmoColor", m_color_atmo);
 
-        //lock texture
-        glBindTexture(GL_TEXTURE_2D, m_texture.getID());
+            //lock texture
+            glBindTexture(GL_TEXTURE_2D, m_texture.getID());
 
-        //display the form
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+            //display the form
+            glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        //unlock texture
-        glBindTexture(GL_TEXTURE_2D, 0);
+            //unlock texture
+            glBindTexture(GL_TEXTURE_2D, 0);
 
 
-        // glDisableVertexAttribArray(2);
-        // glDisableVertexAttribArray(0);
+            // glDisableVertexAttribArray(2);
+            // glDisableVertexAttribArray(0);
 
-    //unlock VAO
-    glBindVertexArray(0);
+        //unlock VAO
+        glBindVertexArray(0);
 
-    glUseProgram(0);
+        glUseProgram(0);
 
-    modelview = save;
+        modelview = save;
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** displaySunAtmo *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void StarAtmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, bool hdr)
+void StarAtmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, bool hdr, Shader *atmo_shader)
 {
-    /************************************************* positionning atmosphere **************************************************************/
-	phi = phi * 180 / M_PI;
-	theta = theta * 180 / M_PI;
+    if(atmo_shader != nullptr)
+    {
+        /************************************************* positionning atmosphere **************************************************************/
+        phi = phi * 180 / M_PI;
+        theta = theta * 180 / M_PI;
 
-	glm::mat4 save = modelview;
-	if((phi < 0) && (camPosUpd[1] > 0))
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (camPosUpd[1] < 0) )
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (camPosUpd[1] > 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi < 0) && (camPosUpd[1] < 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
+        glm::mat4 save = modelview;
+        if((phi < 0) && (camPosUpd[1] > 0))
+        {
+            modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi > 0) && (camPosUpd[1] < 0) )
+        {
+            modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi > 0) && (camPosUpd[1] > 0) )
+        {
+            modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
+        else if( (phi < 0) && (camPosUpd[1] < 0) )
+        {
+            modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+        }
 
-    modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
-	
-    //==============================================================================================================================
-    //Activate the shader
-    glUseProgram(m_shader_sun->getProgramID());
+        modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
+        
+        //==============================================================================================================================
+        //Activate the shader
+        glUseProgram(atmo_shader->getProgramID());
 
-    //lock VAO
-    glBindVertexArray(m_vaoID);
+        //lock VAO
+        glBindVertexArray(m_vaoID);
 
-        //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader_sun->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader_sun->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        m_shader_sun->setMat4("modelview", modelview);
-        m_shader_sun->setMat4("projection", projection);
+            //send matrices to shader
+            // glUniformMatrix4fv(glGetUniformLocation(atmo_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+            // glUniformMatrix4fv(glGetUniformLocation(atmo_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            atmo_shader->setMat4("modelview", modelview);
+            atmo_shader->setMat4("projection", projection);
 
-        m_shader_sun->setVec3("atmoColor", m_color_atmo);
-        m_shader_sun->setInt("hdr", hdr);
+            atmo_shader->setVec3("atmoColor", m_color_atmo);
+            atmo_shader->setInt("hdr", hdr);
 
-        //lock texture
-        glBindTexture(GL_TEXTURE_2D, m_texture.getID());
+            //lock texture
+            glBindTexture(GL_TEXTURE_2D, m_texture.getID());
 
-        //display the form
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+            //display the form
+            glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        //unlock texture
-        glBindTexture(GL_TEXTURE_2D, 0);
+            //unlock texture
+            glBindTexture(GL_TEXTURE_2D, 0);
 
 
-        // glDisableVertexAttribArray(2);
-        // glDisableVertexAttribArray(0);
+            // glDisableVertexAttribArray(2);
+            // glDisableVertexAttribArray(0);
 
-    //unlock VAO
-    glBindVertexArray(0);
+        //unlock VAO
+        glBindVertexArray(0);
 
-    glUseProgram(0);
+        glUseProgram(0);
 
-    modelview = save;
+        modelview = save;
+    }
+    
 }

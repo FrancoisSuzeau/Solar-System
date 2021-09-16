@@ -313,6 +313,10 @@ void OpenGlSketch::initFrameBuffer()
 
 
     screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
+    if(screenShader == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
     // shaderBlur = new Shader("../src/Shader/Shaders/blur.vert", "../src/Shader/Shaders/blur.frag");
 
     screenShader->loadShader();
@@ -325,17 +329,76 @@ void OpenGlSketch::initFrameBuffer()
 void OpenGlSketch::startLoop()
 {
     /************************************************* Variables ********************************************************/
-    StartScreen *startScreen = new StartScreen();
+    /************************************************* load police ********************************************************/
+    m_police.push_back(TTF_OpenFont("../assets/font/venus rising rg.ttf", 300));
+    if(m_police[0] == nullptr)
+    {
+        std::cout << ">> Loading font file : ERROR : " << TTF_GetError() << std::endl;
+    }
+    std::cout << ">> Loading font file  " << "../assets/font/venus rising rg.ttf" << " : SUCCESS" << std::endl;
+
+    m_police.push_back(TTF_OpenFont("../assets/font/aAtmospheric.ttf", 300));
+    if(m_police[1] == nullptr)
+    {
+        std::cout << ">> Loading font file : ERROR : " << TTF_GetError() << std::endl;
+    }
+    std::cout << ">> Loading font file  " << "../assets/font/aAtmospheric.ttf" << " : SUCCESS" << std::endl;
+
+    StartScreen *startScreen = new StartScreen(m_police[0]);
+    if(startScreen == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+
     Camera      *startScreen_cam = new Camera(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0), 0.5, 0.9);
+    if(startScreen_cam == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    text_shader = new Shader("../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag");
+    if(text_shader == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+    text_shader->loadShader();
 
     m_overlay = new Overlay();
+    if(m_overlay == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+
     m_settings = new Settings();
+    if(m_settings == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
 
     aud = new Audio();
+    if(aud == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
 
     solar_system = new SolarSystemCreator();
+    if(solar_system == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
 
-    Square      *square = new Square(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.500);
+    square_shader = new Shader("../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag");
+    if(square_shader == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+    square_shader->loadShader();
+
+    Square      *square = new Square(0.05, 0.500);
+    if(square == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
 
     int nb_loaded(0);
 
@@ -358,19 +421,33 @@ void OpenGlSketch::startLoop()
         //cleaning the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        startScreen_cam->lookAt(model_view);
+        if(startScreen_cam != nullptr)
+        {
+            startScreen_cam->lookAt(model_view);
+        }
+        
 
         //save the modelview matrix
         save_model_view = model_view;
 
             model_view = translate(model_view, vec3(0.0, 0.5, 2.6));
-            startScreen->drawStartScreen(projection, model_view);
+            if(startScreen != nullptr)
+            {
+                if(text_shader != nullptr)
+                {
+                    startScreen->drawStartScreen(projection, model_view, text_shader);
+                }
+            }
+            
 
         //restaure the modelview matrix
         model_view = save_model_view;
         
-            square->drawLoad(nb_loaded, projection, model_view);
-
+            if(square != nullptr)
+            {
+                square->drawLoad(nb_loaded, projection, model_view, square_shader);
+            }
+            
         //restaure the modelview matrix
         model_view = save_model_view;
 
@@ -379,21 +456,41 @@ void OpenGlSketch::startLoop()
 
         if(nb_loaded == 0)
         {
-            solar_system->MakingSystem("Solar System", 8);
-            nb_loaded++;
+            if(solar_system != nullptr)
+            {
+                solar_system->MakingSystem("Solar System", 8);
+                nb_loaded++;
+            }
+            
         }
         if(nb_loaded < 9)
         {
-            nb_loaded += solar_system->loadSystem(nb_loaded);
+            if(solar_system != nullptr)
+            {
+                nb_loaded += solar_system->loadSystem(nb_loaded);
+            }
+            
         }
         
     }
 
     SDL_Delay(1000);
 
-    delete startScreen;
-    delete startScreen_cam;
-    delete square;
+    if(startScreen != nullptr)
+    {
+        delete startScreen;
+    }
+    
+    if(startScreen_cam != nullptr)
+    {
+        delete startScreen_cam;
+    }
+    
+    if(square != nullptr)
+    {
+        delete square;
+    }
+    
 
 }
 
@@ -415,6 +512,10 @@ void OpenGlSketch::mainLoop()
     time_past = 0;
 
     camera = new Camera(vec3(1, 100, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
+    if(camera == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
 
     //hdr variables
     exposure = 5.0f;
@@ -443,8 +544,12 @@ void OpenGlSketch::mainLoop()
     model_view = mat4(1.0);
 
     //load and play the music
-    aud->loadMusic();
-    aud->playMusic();
+    if(aud != nullptr)
+    {
+        aud->loadMusic();
+        aud->playMusic();
+    }
+    
 
     while(!m_terminate)
     {   
@@ -463,15 +568,23 @@ void OpenGlSketch::mainLoop()
     //======================================================================================================================================
 
     /******************************************************** MANAGING MUSIC *******************************************************************/
-        aud->volume(volume);
-        aud->pause(pause_music);
-        volume = 0;
-        aud->updateTrack();
+        if(aud != nullptr)
+        {
+            aud->volume(volume);
+            aud->pause(pause_music);
+            volume = 0;
+            aud->updateTrack();
+        }
+        
     //===========================================================================================================================================
 
-        camera->move(m_input, !menu);
+        if(camera != nullptr)
+        {
+            camera->move(m_input, !menu);
 
-        camera->lookAt(model_view);
+            camera->lookAt(model_view);
+        }
+        
 
         // ///make sure we clear the framebuffer's content
         // glClearColor(0.0, 0.0, 0.0, 1.0f);
@@ -546,27 +659,32 @@ void OpenGlSketch::mainLoop()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(screenShader->getProgramID());
+        if(screenShader != nullptr)
+        {
+            glUseProgram(screenShader->getProgramID());
 
-            glBindVertexArray(quadVAO);
+                glBindVertexArray(quadVAO);
 
-                screenShader->setTexture("screenTexture", 0);
-                // screenShader->setTexture("bloomBlur", 1);
-                screenShader->setFloat("exposure", exposure);
-                screenShader->setInt("hdr", hdr);
+                    screenShader->setTexture("screenTexture", 0);
+                    // screenShader->setTexture("bloomBlur", 1);
+                    screenShader->setFloat("exposure", exposure);
+                    screenShader->setInt("hdr", hdr);
 
-                // glActiveTexture(GL_TEXTURE0);
-                // glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
-                // glActiveTexture(GL_TEXTURE1);
-                // glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[!horizontal]);
+                    // glActiveTexture(GL_TEXTURE0);
+                    // glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
+                    // glActiveTexture(GL_TEXTURE1);
+                    // glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[!horizontal]);
 
-                glBindTexture(GL_TEXTURE_2D, fb_texture);	// use the color attachment texture as the texture of the quad plane
-                glDrawArrays(GL_TRIANGLES, 0, 6);
+                    glBindTexture(GL_TEXTURE_2D, fb_texture);	// use the color attachment texture as the texture of the quad plane
+                    glDrawArrays(GL_TRIANGLES, 0, 6);
 
-                glBindTexture(GL_TEXTURE_2D, 0);
+                    glBindTexture(GL_TEXTURE_2D, 0);
 
-            glBindVertexArray(0);
-        glUseProgram(0);
+                glBindVertexArray(0);
+            glUseProgram(0);
+        }
+
+        
 
     /************************************************* SWAPPING WINDOWS ********************************************************/
 
@@ -583,13 +701,58 @@ void OpenGlSketch::mainLoop()
     //===================================================================================================================
     }
 
-    delete solar_system;
-    delete camera;
-    delete aud;
-    delete screenShader;
+    if(solar_system != nullptr)
+    {
+        delete solar_system;
+    }
+    
+    if(camera != nullptr)
+    {
+        delete camera;
+    }
+    
+    if(aud != nullptr)
+    {
+        delete aud;
+    }
+    
+    if(screenShader != nullptr)
+    {
+        delete screenShader;
+    }
+    
     // delete shaderBlur;
-    delete m_overlay;
-    delete m_settings;
+
+    if(m_overlay != nullptr)
+    {
+        delete m_overlay;
+    }
+    
+    if(m_settings != nullptr)
+    {
+        delete m_settings;
+    }
+    
+    if(text_shader != nullptr)
+    {
+        delete text_shader;
+    }
+
+    if(square_shader != nullptr)
+    {
+        delete square_shader;
+    }
+
+    for (int i(0); i < 2; i++)
+    {
+        // if(m_police[i] != nullptr)
+        // {
+        //     std::cout << "NOOOOOOOOOOOOOOOOOOOOOO : " << m_police[i] << std::endl;
+        //     TTF_CloseFont(m_police[i]);
+        // }
+    }
+    
+    
 
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
@@ -603,39 +766,43 @@ void OpenGlSketch::mainLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::renderOverlay()
 {
-    if(m_overlay_display)
+    if((m_overlay_display) && (square_shader != nullptr))
     {
-        std::string track = aud->getTrack();
-        glm::vec3 position = camera->getPosition();
-        float speed = camera->getSpeed();
+        if((aud != nullptr) && (camera != nullptr) && (m_overlay != nullptr))
+        {
+            std::string track = aud->getTrack();
+            glm::vec3 position = camera->getPosition();
+            float speed = camera->getSpeed();
 
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-                m_overlay->displayGeneralOverlay(projection, model_view, hdr);
+                    m_overlay->displayGeneralOverlay(projection, model_view, hdr, square_shader);
 
-            //restaure the modelview matrix
-            model_view = save_model_view;
+                //restaure the modelview matrix
+                model_view = save_model_view;
 
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-                m_overlay->displayMusicOverlay(projection, model_view, hdr, track);
+                    m_overlay->displayMusicOverlay(projection, model_view, hdr, track, text_shader, square_shader);
 
-            //restaure the modelview matrix
-            model_view = save_model_view;
+                //restaure the modelview matrix
+                model_view = save_model_view;
 
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-                m_overlay->displayMoveInfoOverlay(projection, model_view, hdr, position, speed);
+                    m_overlay->displayMoveInfoOverlay(projection, model_view, hdr, position, speed, text_shader, square_shader);
 
-            //restaure the modelview matrix
-            model_view = save_model_view;
+                //restaure the modelview matrix
+                model_view = save_model_view;
 
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-                m_overlay->displayTimeInfoOverlay(projection, model_view, hdr);
+                    m_overlay->displayTimeInfoOverlay(projection, model_view, hdr, text_shader, square_shader);
 
-            //restaure the modelview matrix
-            model_view = save_model_view;
+                //restaure the modelview matrix
+                model_view = save_model_view;
+        }
+        
     }
     
 }
@@ -645,7 +812,9 @@ void OpenGlSketch::renderOverlay()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::renderScene()
 {
-    glm::vec3 camPos = camera->getPosition();
+    if( (camera != nullptr) && (solar_system != nullptr))
+    {
+        glm::vec3 camPos = camera->getPosition();
 
             //save the modelview matrix
             save_model_view = model_view;
@@ -673,10 +842,16 @@ void OpenGlSketch::renderScene()
 
             /******************************************* name render *****************************************************/
 
-                solar_system->drawName(projection, model_view, camPos);
+                if(text_shader != nullptr)
+                {
+                    solar_system->drawName(projection, model_view, camPos, text_shader);
+                }
+                
 
             //restaure the modelview matrix
             model_view = save_model_view;
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -684,18 +859,26 @@ void OpenGlSketch::renderScene()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::renderInfo()
 {
-    if(info_render)
+    if((camera != nullptr) && (solar_system != nullptr) && (square_shader != nullptr))
     {
-        //save the modelview matrix
-        save_model_view = model_view;
+        if(info_render)
+        {
+            //save the modelview matrix
+            save_model_view = model_view;
 
-        glm::vec3 camPos = camera->getPosition();
+            glm::vec3 camPos = camera->getPosition();
 
-            solar_system->drawInfo(projection, model_view, camPos, hdr);
+                if(text_shader != nullptr)
+                {
+                    solar_system->drawInfo(projection, model_view, camPos, hdr, nullptr, text_shader, square_shader);
+                }
+                
 
-        //restaure the modelview matrix
-        model_view = save_model_view;
+            //restaure the modelview matrix
+            model_view = save_model_view;
+        }
     }
+    
     
 
 }
@@ -741,18 +924,22 @@ void OpenGlSketch::windowProcess()
 
         int scroll = m_input.getScroll();
 
-        if(scroll != 0)
+        if(camera != nullptr)
         {
-            if((camera->getSpeed() <= 1.0) && (scroll > 0))
+            if(scroll != 0)
             {
-                camera->setSpeed(0.1);
-            }
+                if((camera->getSpeed() <= 1.0) && (scroll > 0))
+                {
+                    camera->setSpeed(0.1);
+                }
 
-            if((camera->getSpeed() >= 0.0) && (scroll < 0))
-            {
-                camera->setSpeed(-0.1);
+                if((camera->getSpeed() >= 0.0) && (scroll < 0))
+                {
+                    camera->setSpeed(-0.1);
+                }
             }
         }
+        
         
         // if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_music_key_pressed))
         // {
@@ -793,113 +980,121 @@ void OpenGlSketch::windowProcess()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::renderSettings()
 {
-    
-    if(menu)
+    if((camera != nullptr) && (m_settings != nullptr) && (square_shader != nullptr))
     {
-        m_input.capturePointer(false);
-        m_input.displayPointer(true);
-
-        model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-
-            m_settings->displayFrameSettings(projection, model_view, hdr);
-
-        model_view = save_model_view;
-
-        int button_type = m_settings->manageButton(m_input);
-
-        switch (button_type)
+        if(menu)
         {
-            case QUIT:
-                m_terminate = true;
-                break;
+            m_input.capturePointer(false);
+            m_input.displayPointer(true);
 
-            case HDR_ON:
-                hdr = true;
-                break;
+            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
-            case HDR_OFF:
-                hdr = false;
-                break;
+                m_settings->displayFrameSettings(projection, model_view, hdr, text_shader, square_shader);
 
-            case EXPOSURE_DEC:
-                if( (exposure >= 0.0) && (exposure <= 5.0))
-                {
-                    exposure = exposure - 1.0;
-                }
-                if(exposure == 0.0)
-                {
-                    hdr = false;
-                }
-                break;
+            model_view = save_model_view;
 
-            case EXPOSURE_INC:
-                if( (exposure >= 0.0) && (exposure <= 5.0))
-                {
-                    exposure = exposure + 1.0;
-                }
-                if(exposure > 5.0)
-                {
-                    exposure = 5.0;
-                }
-                if(exposure == 1.0)
-                {
+            int button_type = m_settings->manageButton(m_input);
+
+            switch (button_type)
+            {
+                case QUIT:
+                    m_terminate = true;
+                    break;
+
+                case HDR_ON:
                     hdr = true;
-                }
-                break;
+                    if(exposure == 0.0)
+                    {
+                        exposure = 5.0;
+                    }
+                    break;
 
-            case SPEED_DEC:
-                if((camera->getSpeed() >= 0.0))
-                {
-                    camera->setSpeed(-0.1);
-                }
-                break;
+                case HDR_OFF:
+                    hdr = false;
+                    break;
 
-            case SPEED_INC:
-                if(camera->getSpeed() <= 1.0)
-                {
-                    camera->setSpeed(0.1);
-                }
-                break;
+                case EXPOSURE_DEC:
+                    if( (exposure >= 0.0) && (exposure <= 5.0))
+                    {
+                        exposure = exposure - 1.0;
+                    }
+                    if(exposure == 0.0)
+                    {
+                        hdr = false;
+                    }
+                    break;
 
-            case MUSIC_ON:
-                pause_music = false;
-                break;
-    
-            case MUSIC_OFF:
-                pause_music = true;
-                break;
+                case EXPOSURE_INC:
+                    if( (exposure >= 0.0) && (exposure <= 5.0))
+                    {
+                        exposure = exposure + 1.0;
+                    }
+                    if(exposure > 5.0)
+                    {
+                        exposure = 5.0;
+                    }
+                    if(exposure == 1.0)
+                    {
+                        hdr = true;
+                    }
+                    break;
 
-            case MUSIC_DEC:
-                volume = -2;
-                break;
+                case SPEED_DEC:
+                    if((camera->getSpeed() >= 0.0))
+                    {
+                        camera->setSpeed(-0.1);
+                    }
+                    break;
 
-            case MUSIC_INC:
-                volume = 2;
-                break;
+                case SPEED_INC:
+                    if(camera->getSpeed() <= 1.0)
+                    {
+                        camera->setSpeed(0.1);
+                    }
+                    break;
 
-            case OVERLAY_ON:
-                m_overlay_display = true;
-                break;
+                case MUSIC_ON:
+                    pause_music = false;
+                    break;
+        
+                case MUSIC_OFF:
+                    pause_music = true;
+                    break;
 
-            case OVERLAY_OFF:
-                m_overlay_display = false;
-                break;
+                case MUSIC_DEC:
+                    volume = -2;
+                    break;
 
-            case PLANETE_INFO_ON:
-                info_render = true;
-                break;
-            
-            case PLANETE_INFO_OFF:
-                info_render = false;
-                break;
+                case MUSIC_INC:
+                    volume = 2;
+                    break;
 
-            default:
-                break;
+                case OVERLAY_ON:
+                    m_overlay_display = true;
+                    break;
+
+                case OVERLAY_OFF:
+                    m_overlay_display = false;
+                    break;
+
+                case PLANETE_INFO_ON:
+                    info_render = true;
+                    break;
+                
+                case PLANETE_INFO_OFF:
+                    info_render = false;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            m_input.capturePointer(true);
+            m_input.displayPointer(false);
         }
     }
-    else
-    {
-        m_input.capturePointer(true);
-        m_input.displayPointer(false);
-    }
+    
+    
 }

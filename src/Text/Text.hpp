@@ -39,7 +39,6 @@ PURPOSE : header of the Text class
                 std::string     m_file_path;
                 TTF_Font        *m_police;
                 SDL_Color       m_colorText;
-                Shader          m_shader;
                 float           m_vertices[18];
                 float           m_texture_coord[12];
                 GLuint          m_id;
@@ -48,16 +47,17 @@ PURPOSE : header of the Text class
                 
             public:
 
-                Text(float x, float y, float z, std::string file_path, std::string const vertex_shader, std::string const fragment_shader);
+                Text(float x, float y, float z, std::string file_path);
+                Text(float x, float y, float z, std::string file_path, TTF_Font *police);
                 Text();
                 Text& operator=(Text const &text_to_copy);
                 ~Text();
 
                 bool loadTTF(std::string const text);
                 SDL_Surface *reversePixels(SDL_Surface *src) const;
-                void            renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double size, float phi, float theta, float y);
-                void            renderTextStartScreen(glm::mat4 &projection, glm::mat4 &modelview);
-                void            renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview);
+                void            renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double size, float phi, float theta, float y, Shader *name_render_shader = nullptr);
+                void            renderTextStartScreen(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader = nullptr);
+                void            renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader = nullptr);
                 void            setText(std::string const text);
                 
         };

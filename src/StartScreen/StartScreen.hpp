@@ -23,6 +23,8 @@ PURPOSE : header of the virtual StartScreen class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
+        #include <SDL2/SDL_ttf.h>
+
         #include "../Text/Text.hpp"
         #include "../CelestialBody/Geometry/Square.hpp"
 
@@ -40,10 +42,10 @@ PURPOSE : header of the virtual StartScreen class
                 
             public:
                 
-                StartScreen();
+                StartScreen(TTF_Font *police);
                 ~StartScreen();
 
-                void drawStartScreen(glm::mat4 &projection, glm::mat4 &modelview);
+                void drawStartScreen(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader = nullptr);
 
         };
 

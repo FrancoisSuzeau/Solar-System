@@ -52,19 +52,19 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
-                void drawName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos)
+                void drawName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader = nullptr)
                 {
-                        m_system->displayName(projection, modelview, camPos);
+                        m_system->displayName(projection, modelview, camPos, name_render_shader);
                 }
 
-                void drawAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr)
+                void drawAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
                 {
-                        m_system->displayAtmo(projection, modelview, camPos, hdr);
+                        m_system->displayAtmo(projection, modelview, camPos, hdr, atmo_shader);
                 }
 
-                void drawInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr)
+                void drawInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr, Shader *text_shader = nullptr, Shader *square_shader = nullptr)
                 {
-                        m_system->displayInfo(projection, modelview, camPos, hdr, planete_info);
+                        m_system->displayInfo(projection, modelview, camPos, hdr, planete_info, text_shader, square_shader);
                 }
 
                 void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)

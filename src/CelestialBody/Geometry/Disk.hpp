@@ -48,13 +48,12 @@ PURPOSE : header of the Disk class
                 
             public:
 
-                Disk(float size, std::string const vertex_shader, std::string const frag_shader);
+                Disk(float size);
                 Disk();
                 ~Disk();
 
                 void load();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *disk_shader = nullptr);
-                void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
                 
                 void updateVBO(void *data, int size_bytes, int offset);
                 

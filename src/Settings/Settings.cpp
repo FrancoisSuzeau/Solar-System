@@ -17,17 +17,17 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Settings::Settings() : m_black_rect(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.1),
-m_grey_rect(0.05, "../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", 0.7),
-m_titre(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_quit(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_hdr(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_exposure(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_music_playing(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_music_volume(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag"),
-m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
+Settings::Settings() : m_black_rect(0.05, 0.1),
+m_grey_rect(0.05, 0.7),
+m_titre(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
+m_quit(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
+m_hdr(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
+m_exposure(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
+m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
+m_music_playing(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
+m_music_volume(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
+m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
+m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf")
 {
     m_titre.loadTTF("Settings");
     m_quit.loadTTF("Quit Simulation");
@@ -52,7 +52,7 @@ Settings::~Settings()
 /***********************************************************************************************************************************************************************/
 /********************************************************************* displayFrameSettings ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader, Shader *square_shader)
 {
     glm::mat4 save = modelview;
     float constance = 0.05;
@@ -60,126 +60,134 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
     float start_x_black = -0.3;
     float start_y = 0.35;
 
-    //black fill
-    for (size_t i(0); i < 15; i++)
+    if(square_shader != nullptr)
     {
-        for (size_t j(0); j < 13; j++)
+        //black fill
+        for (size_t i(0); i < 15; i++)
         {
-                modelview = translate(modelview, vec3(start_x_black, start_y, 0.0));
-                m_black_rect.display(projection, modelview, hdr);
-            
-            modelview = save;
-            start_x_black = start_x_black + constance;
+            for (size_t j(0); j < 13; j++)
+            {
+                    modelview = translate(modelview, vec3(start_x_black, start_y, 0.0));
+                    m_black_rect.display(projection, modelview, hdr, square_shader);
+                
+                modelview = save;
+                start_x_black = start_x_black + constance;
+            }
+
+            start_y = start_y - constance;
+            start_x_black = -0.3;
         }
 
-        start_y = start_y - constance;
-        start_x_black = -0.3;
+        //white border top and bottom
+        float start_x_white = -0.3;
+
+        for (size_t i(0); i < 13; i++)
+        {
+                modelview = translate(modelview, vec3(start_x_white, 0.36, 0.0));
+                m_grey_rect.display(projection, modelview, hdr, square_shader);
+                
+            modelview = save;
+
+                modelview = translate(modelview, vec3(start_x_white, -0.36, 0.0));
+                m_grey_rect.display(projection, modelview, hdr, square_shader);
+
+            modelview = save;
+
+            start_x_white = start_x_white + constance;
+        }
+
+        //white border left and right
+        float start_y_white = 0.36;
+
+        for (size_t i(0); i < 15; i++)
+        {
+                modelview = translate(modelview, vec3(-0.31, start_y_white, 0.0));
+                m_grey_rect.display(projection, modelview, hdr, square_shader);
+                
+            modelview = save;
+
+                modelview = translate(modelview, vec3(0.31, start_y_white, 0.0));
+                m_grey_rect.display(projection, modelview, hdr, square_shader);
+                
+            modelview = save;
+
+            start_y_white = start_y_white - constance;
+        }
+
+        //the last to white on the bottom corner left and right
+
+            modelview = translate(modelview, vec3(-0.31, -0.36, 0.0));
+            m_grey_rect.display(projection, modelview, hdr, square_shader);
+                
+        modelview = save;
+
+            modelview = translate(modelview, vec3(0.31, -0.36, 0.0));
+            m_grey_rect.display(projection, modelview, hdr, square_shader);
     }
-
-    //white border top and bottom
-    float start_x_white = -0.3;
-
-    for (size_t i(0); i < 13; i++)
-    {
-            modelview = translate(modelview, vec3(start_x_white, 0.36, 0.0));
-            m_grey_rect.display(projection, modelview, hdr);
-            
-        modelview = save;
-
-            modelview = translate(modelview, vec3(start_x_white, -0.36, 0.0));
-            m_grey_rect.display(projection, modelview, hdr);
-
-        modelview = save;
-
-        start_x_white = start_x_white + constance;
-    }
-
-    //white border left and right
-    float start_y_white = 0.36;
-
-    for (size_t i(0); i < 15; i++)
-    {
-            modelview = translate(modelview, vec3(-0.31, start_y_white, 0.0));
-            m_grey_rect.display(projection, modelview, hdr);
-            
-        modelview = save;
-
-            modelview = translate(modelview, vec3(0.31, start_y_white, 0.0));
-            m_grey_rect.display(projection, modelview, hdr);
-            
-        modelview = save;
-
-        start_y_white = start_y_white - constance;
-    }
-
-    //the last to white on the bottom corner left and right
-
-        modelview = translate(modelview, vec3(-0.31, -0.36, 0.0));
-        m_grey_rect.display(projection, modelview, hdr);
-            
-    modelview = save;
-
-        modelview = translate(modelview, vec3(0.31, -0.36, 0.0));
-        m_grey_rect.display(projection, modelview, hdr);
+    
             
     modelview = save;
 
 
     //******************************************************************* render titre settings ***********************************************************************
 
-        modelview = translate(modelview, vec3(0.0, 0.34, -0.0));
-        modelview = scale(modelview, vec3(0.075, 0.09, 0.0));
-        m_titre.renderTextOverlay(projection, modelview);
+        if(text_shader != nullptr)
+        {
+                modelview = translate(modelview, vec3(0.0, 0.34, -0.0));
+                modelview = scale(modelview, vec3(0.075, 0.09, 0.0));
+                m_titre.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, -0.345, -0.0));
-        modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-        m_quit.renderTextOverlay(projection, modelview);
+                modelview = translate(modelview, vec3(0.0, -0.345, -0.0));
+                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
+                m_quit.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, 0.25, -0.0));
-        modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-        m_hdr.renderTextOverlay(projection, modelview);
+                modelview = translate(modelview, vec3(0.0, 0.25, -0.0));
+                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
+                m_hdr.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, 0.18, -0.0));
-        modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-        m_exposure.renderTextOverlay(projection, modelview);
+                modelview = translate(modelview, vec3(0.0, 0.18, -0.0));
+                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
+                m_exposure.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, 0.11, -0.0));
-        modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-        m_speed.renderTextOverlay(projection, modelview);
+                modelview = translate(modelview, vec3(0.0, 0.11, -0.0));
+                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
+                m_speed.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, 0.04, -0.0));
-        modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-        m_music_playing.renderTextOverlay(projection, modelview);
+                modelview = translate(modelview, vec3(0.0, 0.04, -0.0));
+                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
+                m_music_playing.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, -0.03, -0.0));
-        modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-        m_music_volume.renderTextOverlay(projection, modelview);
+                modelview = translate(modelview, vec3(0.0, -0.03, -0.0));
+                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
+                m_music_volume.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, -0.1, -0.0));
-        modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-        m_overlay_display.renderTextOverlay(projection, modelview);
+                modelview = translate(modelview, vec3(0.0, -0.1, -0.0));
+                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
+                m_overlay_display.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
 
-        modelview = translate(modelview, vec3(0.0, -0.17, -0.0));
-        modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
-        m_info_planete.renderTextOverlay(projection, modelview);
+                modelview = translate(modelview, vec3(0.0, -0.17, -0.0));
+                modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
+                m_info_planete.renderTextOverlay(projection, modelview, text_shader);
 
-    modelview = save;
+            modelview = save;
+        }
+        
     
 }
 

@@ -22,18 +22,8 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Disk::Disk(float size, std::string const vertex_shader, std::string const frag_shader) : m_vboID(0), m_bytes_colors_size(18 * sizeof(float))
+Disk::Disk(float size) : m_vboID(0), m_bytes_colors_size(18 * sizeof(float))
 {
-    //Shader color_shader("Shader/Shaders/couleur3D.vert", "Shader/Shaders/couleur3D.frag"); //the path is in fonction of the level of the executable
-    // float colors[] = {240.0/255.0, 210.0/255.0, 23.0/255.0,
-    //                     230.0/255.0, 0.0, 230.0/255.0,
-    //                     0.0, 1.0, 0.0};
-    //loading shader
-    
-    Shader shad(vertex_shader, frag_shader);
-    m_shader = shad;
-    //m_shader.loadShader();
-
     m_bytes_vertices_size = 18 * sizeof(float);
     m_size = size;
     m_size /= 2;
@@ -77,28 +67,32 @@ Disk::~Disk()
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Disk::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *disk_shader)
-{   
-    //Activate the shader
-    glUseProgram(m_shader.getProgramID());
+{
+    if(disk_shader != nullptr)
+    {
+        //Activate the shader
+        glUseProgram(disk_shader->getProgramID());
 
-        //lock vao
-        glBindVertexArray(m_vaoID);
+            //lock vao
+            glBindVertexArray(m_vaoID);
 
-        //send matrices to shader
-        glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            //send matrices to shader
+            glUniformMatrix4fv(glGetUniformLocation(disk_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+            glUniformMatrix4fv(glGetUniformLocation(disk_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
 
-        //display the form
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+            //display the form
+            glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        // glDisableVertexAttribArray(1);
-        // glDisableVertexAttribArray(0);
+            // glDisableVertexAttribArray(1);
+            // glDisableVertexAttribArray(0);
 
 
-        //unlock vao
-        glBindVertexArray(0);
+            //unlock vao
+            glBindVertexArray(0);
 
-    glUseProgram(0);
+        glUseProgram(0);
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -202,10 +196,4 @@ void Disk::updateVBO(void *data, int size_bytes, int offset)
 
     //unlock VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-//NOT CONCERN
-void Disk::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
-{
-    
 }

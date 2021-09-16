@@ -35,10 +35,6 @@ PURPOSE : header of the SimplePlanete class
                 Text            m_name_renderer;
                 int             nb_moon;
                 Atmosphere      *m_atmosphere;
-
-                // PlaneteInformation      m_plan_info;
-
- 
                 
             public:
 
@@ -46,11 +42,11 @@ PURPOSE : header of the SimplePlanete class
                 SimplePlanete();
                 ~SimplePlanete();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader = nullptr);
-                void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y);
+                void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
                 void updatePosition(glm::mat4 &projection, glm::mat4 &modelview);
                 void updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src);
                 void updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src);
-                void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr);
+                void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr);
                 
                 std::string getName() const;
                 

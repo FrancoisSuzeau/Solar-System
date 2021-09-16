@@ -23,10 +23,9 @@ Text::Text()
 
 }
 
-Text::Text(float x, float y, float z, std::string file_path, std::string const vertex_shader, std::string const fragment_shader) : 
-m_file_path(file_path), m_shader(vertex_shader, fragment_shader)
+Text::Text(float x, float y, float z, std::string file_path) : 
+m_file_path(file_path)
 {
-	m_shader.loadShader();
     /************************************************* making triangle ********************************************************/
     float	verticeTmp[] = { -x, -y, -z,   x, -y, -z,   x, y, -z,  // Triangle 1
 						-x, -y, -z,   -x, y, -z,   x, y, -z };  // Triangle 2
@@ -45,12 +44,48 @@ m_file_path(file_path), m_shader(vertex_shader, fragment_shader)
 	}
     //===================================================================================================================
 
+	m_police = nullptr;
+
+}
+
+Text::Text(float x, float y, float z, std::string file_path, TTF_Font *police) : 
+m_file_path(file_path)
+{
+    /************************************************* making triangle ********************************************************/
+    float	verticeTmp[] = { -x, -y, -z,   x, -y, -z,   x, y, -z,  // Triangle 1
+						-x, -y, -z,   -x, y, -z,   x, y, -z };  // Triangle 2
+
+	float	coordTmp[] = { 0, 0,   1, 0,   1, 1,     // Triangle 1
+							0, 0,   0, 1,   1, 1 };    // Triangle 2
+
+	for (int i = 0; i < 18; i++)
+	{
+		m_vertices[i] = verticeTmp[i];
+
+	}
+	for (int i = 0; i < 12; i++)
+	{
+		m_texture_coord[i] = coordTmp[i];
+	}
+    //===================================================================================================================
+
+	m_police = police;
+	if(m_police == nullptr)
+	{
+		
+		exit(EXIT_FAILURE);
+	}
 
 }
 
 Text::~Text()
 {
-    TTF_CloseFont(m_police);
+	if(m_police != nullptr)
+	{
+		
+		TTF_CloseFont(m_police);
+	}
+    
 	glDeleteTextures(1, &m_id);
 }
 
@@ -59,14 +94,19 @@ Text::~Text()
 /***********************************************************************************************************************************************************************/
 bool Text::loadTTF(std::string const text)
 {
+	
     /************************************************* load police ********************************************************/
-    m_police = TTF_OpenFont(m_file_path.c_str(), 300);
-    if(m_police == nullptr)
-    {
-        std::cout << ">> Loading font file : ERROR : " << TTF_GetError() << std::endl;
-        return false;
-    }
-    std::cout << ">> Loading font file  " << m_file_path << " : SUCCESS" << std::endl;
+	if(m_police == nullptr)
+	{
+		m_police = TTF_OpenFont(m_file_path.c_str(), 300);
+		if(m_police == nullptr)
+		{
+			std::cout << ">> Loading font file : ERROR : " << TTF_GetError() << std::endl;
+			return false;
+		}
+		std::cout << ">> Loading font file  " << m_file_path << " : SUCCESS" << std::endl;
+	}
+    
     //===================================================================================================================
 
     /************************************************* create surface and invert pixel ********************************************************/
@@ -158,148 +198,158 @@ SDL_Surface *Text::reversePixels(SDL_Surface *src) const
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ renderText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y)
+void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
 {
-	// projection = perspective(70.0, (double)width / height, 1.0, 100.0);
-	// modelview = mat4(1.0);
 
-	/************************************************* positionning text **************************************************************/
-	float sizet = 4.0;
-	phi = phi * 180 / M_PI;
-	theta = theta * 180 / M_PI;
+	if(name_render_shader != nullptr)
+	{
+		/************************************************* positionning text **************************************************************/
+		float sizet = 4.0;
+		phi = phi * 180 / M_PI;
+		theta = theta * 180 / M_PI;
+		
+		glm::mat4 save = modelview;
+		modelview = translate(modelview, vec3(0.0, sizet - 4.0, z + 4.0));
+		if((phi < 0) && (y > 0))
+		{
+			modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+		}
+		else if( (phi > 0) && (y < 0) )
+		{
+			modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+		}
+		else if( (phi > 0) && (y > 0) )
+		{
+			modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+		}
+		else if( (phi < 0) && (y < 0) )
+		{
+			modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+
+		}
+
+		modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
+		
+		modelview = scale(modelview, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
+		//==============================================================================================================================
+
+		//activate shader program
+		glUseProgram(name_render_shader->getProgramID());
+
+		//send vertices coordinates
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
+		glEnableVertexAttribArray(0);
+
+		//send texture coordinates
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
+		glEnableVertexAttribArray(2);
+
+		//send matrices
+		glUniformMatrix4fv(glGetUniformLocation(name_render_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(name_render_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+
+		//lock texture
+		glBindTexture(GL_TEXTURE_2D, m_id);
+
+		//render
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		//unlock texture
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		//deactivate array
+		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(0);
+
+		//deactivate shader program
+		glUseProgram(0);
+
+		modelview = save;
+	}
 	
-	glm::mat4 save = modelview;
-	modelview = translate(modelview, vec3(0.0, sizet - 4.0, z + 4.0));
-	if((phi < 0) && (y > 0))
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (y < 0) )
-	{
-		modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi > 0) && (y > 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-	}
-	else if( (phi < 0) && (y < 0) )
-	{
-		modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
-
-	}
-
-	modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
-	
-	modelview = scale(modelview, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
-    //==============================================================================================================================
-
-	//activate shader program
-	glUseProgram(m_shader.getProgramID());
-
-	//send vertices coordinates
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
-	glEnableVertexAttribArray(0);
-
-	//send texture coordinates
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
-	glEnableVertexAttribArray(2);
-
-	//send matrices
-	glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-	glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-
-	//lock texture
-	glBindTexture(GL_TEXTURE_2D, m_id);
-
-	//render
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	//unlock texture
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//deactivate array
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(0);
-
-	//deactivate shader program
-	glUseProgram(0);
-
-	modelview = save;
 
 }
 
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ renderTextStartScreen ************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderTextStartScreen(glm::mat4 &projection, glm::mat4 &modelview)
+void Text::renderTextStartScreen(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
 {
-	//activate shader program
-	glUseProgram(m_shader.getProgramID());
+	if(text_shader != nullptr)
+	{
+		//activate shader program
+		glUseProgram(text_shader->getProgramID());
 
-	//send vertices coordinates
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
-	glEnableVertexAttribArray(0);
+		//send vertices coordinates
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
+		glEnableVertexAttribArray(0);
 
-	//send texture coordinates
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
-	glEnableVertexAttribArray(2);
+		//send texture coordinates
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
+		glEnableVertexAttribArray(2);
 
-	//send matrices
-	glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-	glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+		//send matrices
+		glUniformMatrix4fv(glGetUniformLocation(text_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(text_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
 
-	//lock texture
-	glBindTexture(GL_TEXTURE_2D, m_id);
+		//lock texture
+		glBindTexture(GL_TEXTURE_2D, m_id);
 
-	//render
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+		//render
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	//unlock texture
-	glBindTexture(GL_TEXTURE_2D, 0);
+		//unlock texture
+		glBindTexture(GL_TEXTURE_2D, 0);
 
-	//deactivate array
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(0);
+		//deactivate array
+		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(0);
 
-	//deactivate shader program
-	glUseProgram(0);
+		//deactivate shader program
+		glUseProgram(0);
+	}
+	
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* renderTextoverlay *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview)
+void Text::renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
 {
-	//activate shader program
-	glUseProgram(m_shader.getProgramID());
+	if(text_shader != nullptr)
+	{
+		//activate shader program
+		glUseProgram(text_shader->getProgramID());
 
-	//send vertices coordinates
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
-	glEnableVertexAttribArray(0);
+		//send vertices coordinates
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
+		glEnableVertexAttribArray(0);
 
-	//send texture coordinates
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
-	glEnableVertexAttribArray(2);
+		//send texture coordinates
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
+		glEnableVertexAttribArray(2);
 
-	//send matrices
-	glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-	glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+		//send matrices
+		glUniformMatrix4fv(glGetUniformLocation(text_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(text_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
 
-	//lock texture
-	glBindTexture(GL_TEXTURE_2D, m_id);
+		//lock texture
+		glBindTexture(GL_TEXTURE_2D, m_id);
 
-	//render
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+		//render
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	//unlock texture
-	glBindTexture(GL_TEXTURE_2D, 0);
+		//unlock texture
+		glBindTexture(GL_TEXTURE_2D, 0);
 
-	//deactivate array
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(0);
+		//deactivate array
+		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(0);
 
-	//deactivate shader program
-	glUseProgram(0);
+		//deactivate shader program
+		glUseProgram(0);
+	}
+	
 }
 
 /***********************************************************************************************************************************************************************/

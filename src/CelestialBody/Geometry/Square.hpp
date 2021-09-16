@@ -35,7 +35,6 @@ PURPOSE : header of the Square class
             
             private:
 
-                Shader      m_shader;
                 float       m_real_size;
                 float       m_size;
                 
@@ -50,14 +49,14 @@ PURPOSE : header of the Square class
                 
             public:
 
-                Square(float size, std::string const vertex_shader, std::string const frag_shader, float const color);
+                Square(float size, float const color);
                 Square();
                 ~Square();
 
                 void load();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr = false, Shader *square_shader = nullptr);
-                void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
-                void drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview);
+                void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader = nullptr);
+                void drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, Shader *square_shader = nullptr);
                 
                 void updateVBO(void *data, int size_bytes, int offset);
                 

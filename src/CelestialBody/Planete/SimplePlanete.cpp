@@ -26,8 +26,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) :
 Sphere(1, 50, 50), m_texture_surface(texture),
-m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", "../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag")
-// m_plan_info(name)
+m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf")
 {
     m_texture_surface.loadTexture();
     m_name_renderer.loadTTF(m_name);
@@ -44,19 +43,34 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", ".
     if(m_name == "Mars")
     {
         m_atmosphere = new Atmosphere(9.7, m_name, "../assets/textures/atmosphere.png");
-
+        if(m_atmosphere == nullptr)
+        {
+            exit(EXIT_FAILURE);
+        }
     }
     else if(m_name == "Venus")
     {
         m_atmosphere = new Atmosphere(10.4, m_name, "../assets/textures/atmosphere.png");
+        if(m_atmosphere == nullptr)
+        {
+            exit(EXIT_FAILURE);
+        }
     }
     else if(m_name == "Uranus")
     {
         m_atmosphere = new Atmosphere(15.2, m_name, "../assets/textures/atmosphere.png");
+        if(m_atmosphere == nullptr)
+        {
+            exit(EXIT_FAILURE);
+        }
     }
     else if(m_name == "Neptune")
     {
         m_atmosphere = new Atmosphere(15.2, m_name, "../assets/textures/atmosphere.png");
+        if(m_atmosphere == nullptr)
+        {
+            exit(EXIT_FAILURE);
+        }
     }
 }
 
@@ -68,7 +82,7 @@ SimplePlanete::SimplePlanete(): Sphere()
 
 SimplePlanete::~SimplePlanete()
 {
-   
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -76,66 +90,73 @@ SimplePlanete::~SimplePlanete()
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader)
 {
+    if(simple_plan_shader != nullptr)
+    {
+        //Activate the shader
+        glUseProgram(simple_plan_shader->getProgramID());
+
+        //lock VBO and Index Buffer Object
+        glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glTexCoordPointer(2,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3 * 2));
+        glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
+        glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
+
+
+            //send matrices to shader
+            // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+            // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
+            simple_plan_shader->setMat4("modelview", modelview);
+            simple_plan_shader->setMat4("projection", projection);
+            simple_plan_shader->setMat4("light_src", light_src);
+        
+            //texture variable to shader
+            // glUniform1i(glGetUniformLocation(simple_plan_shader->getProgramID(), "texture0"), 0);
+            simple_plan_shader->setTexture("texture0", 0);
+
+            simple_plan_shader->setVec3("viewPos", camPos);
+
+            simple_plan_shader->setInt("hdr", hdr);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
+            
+            //draw all textured vertices
+            glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
+
+            // std::cout << simple_plan_shader << " " << m_name << std::endl;
+            
+            glBindTexture(GL_TEXTURE_2D, 0);
+            
+        /************************************************* unbind VBO and IBO ********************************************************/
+        glBindBuffer(GL_ARRAY_BUFFER,         0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        //===================================================================================================================================
+
+        glUseProgram(0);
+    }
     
-    //Activate the shader
-    glUseProgram(simple_plan_shader->getProgramID());
-
-    //lock VBO and Index Buffer Object
-    glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glTexCoordPointer(2,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3 * 2));
-    glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
-    glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
-
-
-        //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-        simple_plan_shader->setMat4("modelview", modelview);
-        simple_plan_shader->setMat4("projection", projection);
-        simple_plan_shader->setMat4("light_src", light_src);
-       
-        //texture variable to shader
-        // glUniform1i(glGetUniformLocation(simple_plan_shader->getProgramID(), "texture0"), 0);
-        simple_plan_shader->setTexture("texture0", 0);
-
-        simple_plan_shader->setVec3("viewPos", camPos);
-
-        simple_plan_shader->setInt("hdr", hdr);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
-        
-        //draw all textured vertices
-        glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
-
-        // std::cout << simple_plan_shader << " " << m_name << std::endl;
-        
-        glBindTexture(GL_TEXTURE_2D, 0);
-        
-    /************************************************* unbind VBO and IBO ********************************************************/
-    glBindBuffer(GL_ARRAY_BUFFER,         0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    //===================================================================================================================================
-
-    glUseProgram(0);
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayName ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y)
+void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y, Shader *name_render_shader)
 {
-    translateCelestialBody(modelview, m_current_position);
-    m_name_renderer.renderText(projection, modelview, m_real_size, ratio, phi, theta, y);
+    if(name_render_shader != nullptr)
+    {
+        translateCelestialBody(modelview, m_current_position);
+        m_name_renderer.renderText(projection, modelview, m_real_size, ratio, phi, theta, y, name_render_shader);
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -205,12 +226,20 @@ void SimplePlanete::updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr)
+void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
     if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune") )
     {
-        translateCelestialBody(modelview, m_current_position);
-        m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos, hdr);
+        if(atmo_shader != nullptr)
+        {
+            translateCelestialBody(modelview, m_current_position);
+            if(m_atmosphere != nullptr)
+            {
+                m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos, hdr, atmo_shader);
+            }
+            
+        }
+        
     }
     
 }

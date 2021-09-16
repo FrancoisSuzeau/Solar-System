@@ -30,6 +30,7 @@ PURPOSE : header of the Ring class
                 Texture         m_texture;
                 float           m_coord[12];
                 int             m_bytes_coord_size;
+                Shader          m_shader_ring;
 
             public:
             
