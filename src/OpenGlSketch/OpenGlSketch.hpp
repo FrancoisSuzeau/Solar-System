@@ -102,6 +102,7 @@ PURPOSE : header of the OpenGlSketch class
                 bool m_terminate;
 
                 bool m_overlay_display;
+                bool m_name_display;
 
 
 

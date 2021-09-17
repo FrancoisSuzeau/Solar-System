@@ -529,6 +529,7 @@ void OpenGlSketch::mainLoop()
     info_render_key_pressed = false;
 
     m_overlay_display = true;
+    m_name_display = false;
 
     //bloom effect variables
     // bool horizontal = true, first_iteration = true;
@@ -841,7 +842,7 @@ void OpenGlSketch::renderScene()
 
             /******************************************* name render *****************************************************/
 
-                if(text_shader != nullptr)
+                if((text_shader != nullptr) && (m_name_display == true))
                 {
                     solar_system->drawName(projection, model_view, camPos, text_shader);
                 }
@@ -1082,6 +1083,14 @@ void OpenGlSketch::renderSettings()
                 
                 case PLANETE_INFO_OFF:
                     info_render = false;
+                    break;
+
+                case SHOW_NAME_ON:
+                    m_name_display = true;
+                    break;
+
+                case SHOW_NAME_OFF:
+                    m_name_display = false;
                     break;
 
                 default:

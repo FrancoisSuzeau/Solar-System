@@ -27,7 +27,8 @@ m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_music_playing(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_music_volume(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
+m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+display_name_plan(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 {
     m_titre.loadTTF("Settings");
     m_quit.loadTTF("Quit Simulation");
@@ -38,6 +39,7 @@ m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
     m_music_volume.loadTTF("Music : - / +");
     m_overlay_display.loadTTF("Overlay : ON / OFF");
     m_info_planete.loadTTF("Planete information : ON / OFF");
+    display_name_plan.loadTTF("Show body name : ON / OFF");
     m_mouse_button_pressed = false;
 
     screen_width = GetSystemMetrics(SM_CXSCREEN);
@@ -185,6 +187,11 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
                 modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
                 m_info_planete.renderTextOverlay(projection, modelview, text_shader);
 
+            modelview = save;
+
+                modelview = translate(modelview, vec3(0.0, -0.24, -0.0));
+                modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
+                display_name_plan.renderTextOverlay(projection, modelview, text_shader);
             modelview = save;
         }
         
@@ -349,6 +356,26 @@ int Settings::manageButton(Input const &input)
             {
                 // std::cout << "YES OFF !" << std::endl;
                 return ButtonChoice::Button::PLANETE_INFO_OFF;
+            }
+        }
+
+        //DISPLAY NAME : ON
+        if( (input.getX() >= (screen_width/2) + (59/ratio_x)) && (input.getX() <= (screen_width/2) + (94/ratio_x)) )
+        {
+            if((input.getY() >= (screen_height/2) + (168/ratio_y)) && (input.getY() <= (screen_height/2) + (194/ratio_y)))
+            {
+                // std::cout << "YES ON !" << std::endl;
+                return ButtonChoice::Button::SHOW_NAME_ON;
+            }
+        }
+
+        //DISPLAY NAME : OFF
+        if( (input.getX() >= (screen_width/2) + (115/ratio_x)) && (input.getX() <= (screen_width/2) + (161/ratio_x)) )
+        {
+            if((input.getY() >= (screen_height/2) + (168/ratio_y)) && (input.getY() <= (screen_height/2) + (194/ratio_y)))
+            {
+                // std::cout << "YES OFF !" << std::endl;
+                return ButtonChoice::Button::SHOW_NAME_OFF;
             }
         }
 

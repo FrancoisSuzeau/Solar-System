@@ -49,7 +49,6 @@ Make sure that the executable file is in the ````bin```` directory.
 
 + Atmosphere effect : Venus, Earth, Mars, Jupiter and Saturn have transparent and colored atmosphere all arround their surface. It is simply a disk moving in relation with the camera position. These atmosphere are not shadowed because of the impossibility to make a framebuffer work well.
 
-
 ### 21/07/2021
 + Sound : Add a playist feature, now six track are playing one after the other. (Had to initialize pointer to struct Mix_music to NULL -> drop a warning)
 
@@ -68,7 +67,13 @@ Make sure that the executable file is in the ````bin```` directory.
 
 ### 14/09/2021
 + We can now have a little window showing planete information (for now it is only displaying the name of the body)
-+ Use the mouse wheel to change speed of navigation
++ Use the mouse wheel to change speed navigation
+
+### 17/09/2021
++ Add a setting option : Can choose to show name of body or not
++ Optimization : one shader per object type displayed (one for text, one for overlay/setting/information frame, one per body type, one for atmosphere)
++ Optimization : font are only loaded by SDL once and then Opengl use the SDL_Surface pointer to build the opengl object
++ Optimization : Pointer test at each allocation/use and pointer released
 
 ## More in coming ...
 
