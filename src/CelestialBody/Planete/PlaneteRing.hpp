@@ -37,7 +37,6 @@ PURPOSE : header of the PlaneteRing class
                 PlaneteRing();
                 ~PlaneteRing();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader = nullptr);
-                
         };
 
 
