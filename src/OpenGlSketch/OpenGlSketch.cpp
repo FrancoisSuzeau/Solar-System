@@ -363,13 +363,13 @@ void OpenGlSketch::startLoop()
     }
     text_shader->loadShader();
 
-    m_overlay = new Overlay();
+    m_overlay = new Overlay(m_police[1]);
     if(m_overlay == nullptr)
     {
         exit(EXIT_FAILURE);
     }
 
-    m_settings = new Settings();
+    m_settings = new Settings(m_police[1]);
     if(m_settings == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -458,7 +458,7 @@ void OpenGlSketch::startLoop()
         {
             if(solar_system != nullptr)
             {
-                solar_system->MakingSystem("Solar System", 8);
+                solar_system->MakingSystem("Solar System", 8, m_police[1]);
                 nb_loaded++;
             }
             
@@ -467,7 +467,7 @@ void OpenGlSketch::startLoop()
         {
             if(solar_system != nullptr)
             {
-                nb_loaded += solar_system->loadSystem(nb_loaded);
+                nb_loaded += solar_system->loadSystem(nb_loaded, m_police[1]);
             }
             
         }
@@ -745,11 +745,10 @@ void OpenGlSketch::mainLoop()
 
     for (int i(0); i < 2; i++)
     {
-        // if(m_police[i] != nullptr)
-        // {
-        //     std::cout << "NOOOOOOOOOOOOOOOOOOOOOO : " << m_police[i] << std::endl;
-        //     TTF_CloseFont(m_police[i]);
-        // }
+        if(m_police[i] != nullptr)
+        {
+            TTF_CloseFont(m_police[i]);
+        }
     }
     
     

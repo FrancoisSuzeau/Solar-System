@@ -74,7 +74,7 @@ PURPOSE : header of the Overlay class
 
             public:
             
-                Overlay();
+                Overlay(TTF_Font *police);
                 ~Overlay();
 
                 void displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader = nullptr);

@@ -38,7 +38,7 @@ PURPOSE : header of the SimplePlanete class
                 
             public:
 
-                SimplePlanete(std::string const texture_surf, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos);
+                SimplePlanete(std::string const texture_surf, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police);
                 SimplePlanete();
                 ~SimplePlanete();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader = nullptr);

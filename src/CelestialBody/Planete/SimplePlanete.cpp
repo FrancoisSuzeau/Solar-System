@@ -24,9 +24,9 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) :
+SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) :
 Sphere(1, 50, 50), m_texture_surface(texture),
-m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf")
+m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 {
     m_texture_surface.loadTexture();
     m_name_renderer.loadTTF(m_name);

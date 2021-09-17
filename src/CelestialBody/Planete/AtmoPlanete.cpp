@@ -24,7 +24,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos)
+AtmoPlanete::AtmoPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos, police)
 {
 
     /************************************************* add atmosphere texture ********************************************************/

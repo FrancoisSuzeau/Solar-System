@@ -39,11 +39,11 @@ PURPOSE : header of the virtual PlaneteCreator class
 
                 virtual ~PlaneteCreator() {delete m_planete;};
 
-                virtual SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) = 0;
+                virtual SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) = 0;
 
-                bool MakingPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) 
+                bool MakingPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) 
                 {
-                        m_planete = this->FactoryMethod(texture, name, real_size, inclinaison_angle, initial_pos);
+                        m_planete = this->FactoryMethod(texture, name, real_size, inclinaison_angle, initial_pos, police);
                         return true;
                 }
 

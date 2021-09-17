@@ -38,17 +38,17 @@ PURPOSE : header of the virtual SystemCreator class
 
                 virtual ~SystemCreator() {delete m_system;};
 
-                virtual System* FactoryMethod(std::string name_system, int companion_count) = 0;
+                virtual System* FactoryMethod(std::string name_system, TTF_Font *police, int companion_count) = 0;
 
-                bool MakingSystem(std::string name_system, int companion_count) 
+                bool MakingSystem(std::string name_system, int companion_count, TTF_Font *police) 
                 {
-                        m_system = this->FactoryMethod(name_system, companion_count);
+                        m_system = this->FactoryMethod(name_system, police, companion_count);
                         return true;
                 }
 
-                int loadSystem(int count)
+                int loadSystem(int count, TTF_Font *police)
                 {
-                        m_system->loadSystem(count);
+                        m_system->loadSystem(count, police);
                         return 1;
                 }
 

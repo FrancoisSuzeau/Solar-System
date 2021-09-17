@@ -17,9 +17,9 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SolarSystem::SolarSystem(std::string name, int celestial_object_count)
+SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_object_count)
 {
-    m_planete_info = new PlaneteInformation("None");
+    m_planete_info = new PlaneteInformation("None", police);
     if(m_planete_info == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -131,9 +131,12 @@ SolarSystem::~SolarSystem()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* loadSystem ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::loadSystem(int count)
+void SolarSystem::loadSystem(int count, TTF_Font *police)
 {
-
+    if(police == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
     /************************************************* loading planetary system ********************************************************/
     //Earth System
     if(count == 1)
@@ -143,8 +146,8 @@ void SolarSystem::loadSystem(int count)
         {
             exit(EXIT_FAILURE);
         }
-        m_planetary_system[0]->MakingSystem("Earth System", 1);
-        m_planetary_system[0]->loadSystem(count);
+        m_planetary_system[0]->MakingSystem("Earth System", 1, police);
+        m_planetary_system[0]->loadSystem(count, police);
     }
 
     //Jovian System
@@ -155,8 +158,8 @@ void SolarSystem::loadSystem(int count)
         {
             exit(EXIT_FAILURE);
         }
-        m_planetary_system[1]->MakingSystem("Jovian System", 4);
-        m_planetary_system[1]->loadSystem(count);
+        m_planetary_system[1]->MakingSystem("Jovian System", 4, police);
+        m_planetary_system[1]->loadSystem(count, police);
     }
 
     //Saturian System
@@ -167,8 +170,8 @@ void SolarSystem::loadSystem(int count)
         {
             exit(EXIT_FAILURE);
         }
-        m_planetary_system[2]->MakingSystem("Saturnian System", 3);
-        m_planetary_system[2]->loadSystem(count);
+        m_planetary_system[2]->MakingSystem("Saturnian System", 3, police);
+        m_planetary_system[2]->loadSystem(count, police);
     }  
     //===================================================================================================================
 
@@ -181,7 +184,7 @@ void SolarSystem::loadSystem(int count)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(50.0, 0.0, 0.0));
+        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(50.0, 0.0, 0.0), police);
     }
     
     if(count == 5)
@@ -191,7 +194,7 @@ void SolarSystem::loadSystem(int count)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, -80.0, 0.0));
+        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, -80.0, 0.0), police);
     }
 
     if(count == 6)
@@ -201,7 +204,7 @@ void SolarSystem::loadSystem(int count)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 4.5, 25.19, glm::vec3(0, 140, 0));
+        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 4.5, 25.19, glm::vec3(0, 140, 0), police);
     }
 
     if(count == 7)
@@ -211,7 +214,7 @@ void SolarSystem::loadSystem(int count)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 7.0, 97.77, glm::vec3(-300.0, 0.0, 0.0));
+        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 7.0, 97.77, glm::vec3(-300.0, 0.0, 0.0), police);
     }
     if(count == 8)
     {
@@ -220,7 +223,7 @@ void SolarSystem::loadSystem(int count)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 7.0, 26.32, glm::vec3(0.0, 350.0, 0.0));
+        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 7.0, 26.32, glm::vec3(0.0, 350.0, 0.0), police);
     }
     //===================================================================================================================
 

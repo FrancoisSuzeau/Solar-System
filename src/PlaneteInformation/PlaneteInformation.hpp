@@ -50,7 +50,7 @@ PURPOSE : header of the PlaneteInformation class
 
             public:
             
-                PlaneteInformation(std::string const name_plan);
+                PlaneteInformation(std::string const name_plan, TTF_Font *police);
                 PlaneteInformation();
                 ~PlaneteInformation();
 

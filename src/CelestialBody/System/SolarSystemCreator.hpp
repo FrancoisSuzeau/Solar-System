@@ -38,12 +38,12 @@ PURPOSE : header of the virtual SolarSystemCreator class
             public:
 
 
-                System* FactoryMethod(std::string name_system, int companion_count) override
+                System* FactoryMethod(std::string name_system, TTF_Font *police, int companion_count) override
                 {
                         puts("");
                         puts("");
                         std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << name_system << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                        return new SolarSystem(name_system, companion_count);
+                        return new SolarSystem(name_system, police, companion_count);
                 }
 
 

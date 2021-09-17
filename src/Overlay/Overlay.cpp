@@ -22,19 +22,19 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 
-Overlay::Overlay() : m_black_rect(0.05, 0.05),
+Overlay::Overlay(TTF_Font *police) : m_black_rect(0.05, 0.05),
 m_grey_rect(0.05, 0.1),
-m_track_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_Author_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_studio_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_move_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_position(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_position_info_x(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_position_info_y(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_position_info_z(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_speed_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf")
+m_track_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_Author_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_studio_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_move_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_position(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_position_info_x(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_position_info_y(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_position_info_z(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_speed_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 {
     m_track_music.loadTTF("None");
     m_Author_music.loadTTF("None");

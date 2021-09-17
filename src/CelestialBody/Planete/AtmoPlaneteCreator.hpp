@@ -38,12 +38,12 @@ PURPOSE : header of the virtual AtmoPlaneteCreator class
             public:
 
 
-                SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos) override
+                SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) override
                 {
                         puts("");
                         puts("");
                         std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Planete Creator : " << name << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                        return new AtmoPlanete(texture, name, real_size, inclinaison_angle, initial_pos);
+                        return new AtmoPlanete(texture, name, real_size, inclinaison_angle, initial_pos, police);
                 }
 
 

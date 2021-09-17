@@ -90,7 +90,7 @@ PURPOSE : header of the Settings class
 
             public:
             
-                Settings();
+                Settings(TTF_Font *police);
                 ~Settings();
 
                 void displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);

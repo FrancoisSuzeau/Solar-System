@@ -80,12 +80,8 @@ m_file_path(file_path)
 
 Text::~Text()
 {
-	if(m_police != nullptr)
-	{
-		
-		TTF_CloseFont(m_police);
-	}
-    
+	//no need to close font because it is made in the mainLoop method
+	
 	glDeleteTextures(1, &m_id);
 }
 

@@ -17,10 +17,10 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlaneteInformation::PlaneteInformation(std::string const name_plan) : m_name_plan(name_plan),
+PlaneteInformation::PlaneteInformation(std::string const name_plan, TTF_Font *police) : m_name_plan(name_plan),
 m_grey_rect(0.05, 0.7),
 m_black_rect(0.05, 0.1),
-m_text_name(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf")
+m_text_name(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 {
     screen_h = GetSystemMetrics(SM_CXSCREEN);
     screen_w = GetSystemMetrics(SM_CYSCREEN);

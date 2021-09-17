@@ -17,17 +17,17 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Settings::Settings() : m_black_rect(0.05, 0.1),
+Settings::Settings(TTF_Font *police) : m_black_rect(0.05, 0.1),
 m_grey_rect(0.05, 0.7),
-m_titre(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_quit(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_hdr(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_exposure(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_music_playing(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_music_volume(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf"),
-m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf")
+m_titre(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_quit(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_hdr(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_exposure(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_music_playing(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_music_volume(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
+m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 {
     m_titre.loadTTF("Settings");
     m_quit.loadTTF("Quit Simulation");
