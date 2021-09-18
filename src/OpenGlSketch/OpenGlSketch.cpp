@@ -511,7 +511,7 @@ void OpenGlSketch::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    camera = new Camera(vec3(1, 270, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 0.9);
+    camera = new Camera(vec3(1, 270, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 1.0);
     if(camera == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -928,7 +928,7 @@ void OpenGlSketch::windowProcess()
         {
             if(scroll != 0)
             {
-                if((camera->getSpeed() <= 1.0) && (scroll > 0))
+                if((camera->getSpeed() < 1.0) && (scroll > 0))
                 {
                     camera->setSpeed(0.1);
                 }
