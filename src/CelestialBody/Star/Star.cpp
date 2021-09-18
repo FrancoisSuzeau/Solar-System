@@ -36,7 +36,7 @@ m_name(name), m_light_vao(0)
     m_speed_rotation = 0.1;
     m_rotation_angle = 0.0;
 
-    m_atmosphere = new StarAtmosphere(1500, m_name, "../assets/textures/atmosphere.png");
+    m_atmosphere = new StarAtmosphere(2150, m_name, "../assets/textures/atmosphere.png");
     if(m_atmosphere == nullptr)
     {
         exit(EXIT_FAILURE);
