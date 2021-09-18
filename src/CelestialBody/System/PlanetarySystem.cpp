@@ -78,14 +78,14 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 2.0, 5.145, glm::vec3(-110, 20, 0), police);
+        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 2.0, 5.145, glm::vec3(-120, 20, 0), police);
 
         m_host_creator = new AtmoPlaneteCreator();
         if(m_host_creator == nullptr)
         {
             exit(EXIT_FAILURE);
         }
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 5.0, 23.26, glm::vec3(-110, 0, 0), police);
+        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 9.0, 23.26, glm::vec3(-120, 0, 0), police);
 
         m_atmosphere = new Atmosphere(10.8, "Earth", "../assets/textures/atmosphere.png");
         if(m_atmosphere == nullptr)

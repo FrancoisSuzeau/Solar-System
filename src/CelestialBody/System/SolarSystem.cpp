@@ -36,7 +36,7 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
         exit(EXIT_FAILURE);
     }
 
-    sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 100.0);
+    sun = new Star(1, 50, 50, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 109.0 * 9.0);
     if(sun == nullptr)
     {
         exit(EXIT_FAILURE);

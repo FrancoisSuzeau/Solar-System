@@ -511,7 +511,7 @@ void OpenGlSketch::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    camera = new Camera(vec3(1, 270, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 1.0);
+    camera = new Camera(vec3(1, 5000, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 20.0);
     if(camera == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -541,7 +541,7 @@ void OpenGlSketch::mainLoop()
     m_input.displayPointer(false);
     
     //initialize modelview and projection matrix
-    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 1000.0);
+    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 10000.0);
     model_view = mat4(1.0);
 
     //load and play the music
@@ -928,14 +928,14 @@ void OpenGlSketch::windowProcess()
         {
             if(scroll != 0)
             {
-                if((camera->getSpeed() < 1.0) && (scroll > 0))
+                if((camera->getSpeed() < 20.0) && (scroll > 0))
                 {
-                    camera->setSpeed(0.1);
+                    camera->setSpeed(1.0);
                 }
 
                 if((camera->getSpeed() >= 0.0) && (scroll < 0))
                 {
-                    camera->setSpeed(-0.1);
+                    camera->setSpeed(-1.0);
                 }
             }
         }
