@@ -8,7 +8,7 @@
 in vec2 coordTexture;
 uniform vec3 atmoColor;
 
-uniform sampler2D texture;
+uniform sampler2D texture0;
 uniform bool hdr;
 layout (location = 0) out vec4 FragColor;
 
@@ -17,14 +17,14 @@ layout (location = 0) out vec4 FragColor;
 void main()
 {
     // *********************************************** calculate png transparency ***************************************************
-    vec4 alpha_color = texture2D(texture, coordTexture);
+    vec4 alpha_color = texture2D(texture0, coordTexture);
     if(alpha_color.r < 0.1)
     {
         discard;
     }
 
-   // *********************************************** bind texture with color unit to fragment coordinate WITH transparency ***************************************************
-    vec3 objectColor = texture(texture, coordTexture).rgb * atmoColor;
+   // *********************************************** bind texture0 with color unit to fragment coordinate WITH transparency ***************************************************
+    vec3 objectColor = texture(texture0, coordTexture).rgb * atmoColor;
     float min_Transparency;
     if(hdr)
     {

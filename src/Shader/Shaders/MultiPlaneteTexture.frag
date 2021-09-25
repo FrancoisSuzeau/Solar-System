@@ -1,5 +1,5 @@
 #version 330 core
-varying vec4 texCoords;
+in vec4 texCoords;
 uniform sampler2D texture0;
 uniform sampler2D texture1;
 uniform float oppacity;
@@ -36,7 +36,7 @@ void main(void) {
         lightColor = vec3(1.0, 1.0, 1.0);
     }
 
-    vec3 lightPos = {0.1f, 0.0f, 0.0f};
+    vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
 
     // *********************************************** mitigation ***************************************************
     //mitigation

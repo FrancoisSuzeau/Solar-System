@@ -1,5 +1,5 @@
 #version 330 core
-varying vec4 texCoords;
+in vec4 texCoords;
 uniform sampler2D texture0;
 uniform vec3 viewPos;
 in vec3 Normal;
@@ -33,7 +33,7 @@ void main(void) {
         lightColor = vec3(1.0, 1.0, 1.0);
     }
 
-    vec3 lightPos = {0.1f, 0.0f, 0.0f};
+    vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
 
     vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
     

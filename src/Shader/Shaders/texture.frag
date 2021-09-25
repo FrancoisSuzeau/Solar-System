@@ -15,7 +15,7 @@ uniform bool hdr;
 
 // Uniform
 
-uniform sampler2D texture;
+uniform sampler2D texture0;
 
 layout (location = 0) out vec4 FragColor;
 
@@ -25,13 +25,13 @@ layout (location = 0) out vec4 FragColor;
 void main()
 {
     // *********************************************** calculate png transparency ***************************************************
-    vec4 alpha_color = texture2D(texture, coordTexture);
+    vec4 alpha_color = texture2D(texture0, coordTexture);
     if(alpha_color.r < 0.1)
     {
         discard;
     }
     
-    //gl_FragColor = texture(texture, coordTexture);
+    //gl_FragColor = texture0(texture0, coordTexture);
 
     vec3 lightColor;
     if(hdr)
@@ -42,7 +42,7 @@ void main()
     {
         lightColor = vec3(1.0, 1.0, 1.0);
     }
-    vec3 lightPos = {1.0f, 0.0f, 0.0f};
+    vec3 lightPos = vec3(1.0f, 0.0f, 0.0f);
     
     // *********************************************** light mitigation ***************************************************
     float lightConst = 1.0f;
@@ -80,7 +80,7 @@ void main()
     vec3 ambiant = ambiantStrength * lightColor;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    vec3 objectColor = texture(texture, coordTexture).rgb;
+    vec3 objectColor = texture(texture0, coordTexture).rgb;
     vec3 result = (ambiant + diffuse) * objectColor;
 
     //ambiant *= mitigation;

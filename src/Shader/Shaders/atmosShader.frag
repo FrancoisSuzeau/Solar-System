@@ -12,7 +12,7 @@ uniform vec3 viewPos;
 uniform vec3 atmoColor;
 uniform bool hdr;
 
-uniform sampler2D texture;
+uniform sampler2D texture0;
 layout (location = 0) out vec4 FragColor;
 
 // Fonction main
@@ -21,7 +21,7 @@ layout (location = 0) out vec4 FragColor;
 void main()
 {
     // *********************************************** calculate png transparency ***************************************************
-    vec4 alpha_color = texture2D(texture, coordTexture);
+    vec4 alpha_color = texture2D(texture0, coordTexture);
     if(alpha_color.r < 0.1)
     {
         discard;
@@ -36,7 +36,7 @@ void main()
     {
         lightColor = vec3(1.0, 1.0, 1.0);
     }
-    vec3 lightPos = {1.0f, 0.0f, 0.0f};
+    vec3 lightPos = vec3(1.0f, 0.0f, 0.0f);
 
     // *********************************************** light mitigation ***************************************************
     float lightConst = 1.0f;
@@ -81,8 +81,8 @@ void main()
     //diffuse *= mitigation;
     //specular *= mitigation;
 
-    // *********************************************** bind texture with color unit to fragment coordinate WITH transparency ***************************************************
-    vec3 objectColor = texture(texture, coordTexture).rgb * atmoColor;
+    // *********************************************** bind texture0 with color unit to fragment coordinate WITH transparency ***************************************************
+    vec3 objectColor = texture(texture0, coordTexture).rgb * atmoColor;
     float min_Transparency;
     if(hdr)
     {

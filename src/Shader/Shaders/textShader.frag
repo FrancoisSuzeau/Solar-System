@@ -9,7 +9,7 @@ in vec2 coordTexture;
 
 // Uniform
 
-uniform sampler2D texture;
+uniform sampler2D texture0;
 layout (location = 0) out vec4 FragColor;
 
 
@@ -18,11 +18,11 @@ layout (location = 0) out vec4 FragColor;
 void main()
 {
     // Couleur du pixel
-    vec4 alpha_color = texture2D(texture, coordTexture);
+    vec4 alpha_color = texture2D(texture0, coordTexture);
     if(alpha_color.r < 0.1)
     {
         discard;
     }
     
-    FragColor = texture(texture, coordTexture);
+    FragColor = texture(texture0, coordTexture);
 }

@@ -11,7 +11,7 @@ uniform bool hdr;
 
 // Sortie 
 
-out vec4 out_Color;
+layout (location = 0) out vec4 FragColor;
 
 
 // Fonction main
@@ -19,7 +19,7 @@ out vec4 out_Color;
 void main()
 {
     // Couleur finale du pixel
-    vec3 correct_color = {0.2, 0.2, 0.2};
+    vec3 correct_color = vec3(0.2, 0.2, 0.2);
     vec3 result;
     if(hdr)
     {
@@ -30,5 +30,5 @@ void main()
         result = color;
     }
 
-    out_Color = vec4(result, 1.0);
+    FragColor = vec4(result, 1.0);
 }

@@ -9,7 +9,7 @@ uniform bool hdr;
 
 void main()
 {
-    vec3 lightColor = {1.0, 1.0, 1.0};
+    vec3 lightColor = vec3(1.0, 1.0, 1.0);
 
     // *********************************************** ambiant light ***************************************************
     float ambiantStrength = 0.3;
