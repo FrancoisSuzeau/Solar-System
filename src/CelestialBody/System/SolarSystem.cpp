@@ -36,7 +36,7 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
         exit(EXIT_FAILURE);
     }
 
-    sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 109.0 * 9.0);
+    sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 981);
     if(sun == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -184,7 +184,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.0, 0.01, glm::vec3(50.0, 0.0, 0.0), police);
+        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 3.456, 0.01, glm::vec3(5790.0, 0.0, 0.0), police);
     }
     
     if(count == 5)
@@ -194,7 +194,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 4.8, 177.3, glm::vec3(-80.0, -80.0, 0.0), police);
+        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 8.541, 177.3, glm::vec3(0.0, -10820.0, 0.0), police);
     }
 
     if(count == 6)
@@ -204,7 +204,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 4.5, 25.19, glm::vec3(0, 140, 0), police);
+        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 4.797, 25.19, glm::vec3(0, 22790, 0), police);
     }
 
     if(count == 7)
@@ -214,7 +214,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 7.0, 97.77, glm::vec3(-300.0, 0.0, 0.0), police);
+        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 36.063, 97.77, glm::vec3(-287070.0, 0.0, 0.0), police);
     }
     if(count == 8)
     {
@@ -223,7 +223,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 7.0, 26.32, glm::vec3(0.0, 350.0, 0.0), police);
+        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 34.947, 26.32, glm::vec3(0.0, 449840.0, 0.0), police);
     }
     //===================================================================================================================
 
@@ -441,7 +441,7 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
            float phi = atan(y/x);
            float theta = acos(z/r);
 
-           if(r >= 100)
+           if(r >= 600)
            {
                if(name_render_shader != nullptr)
                {

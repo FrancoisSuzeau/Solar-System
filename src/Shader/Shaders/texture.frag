@@ -1,6 +1,6 @@
 // Version du GLSL
 
-#version 150 core
+#version 330 core
 
 
 // Entr�e
@@ -16,6 +16,8 @@ uniform bool hdr;
 // Uniform
 
 uniform sampler2D texture;
+
+layout (location = 0) out vec4 FragColor;
 
 
 // Fonction main
@@ -85,6 +87,6 @@ void main()
     //diffuse *= mitigation;
     //specular *= mitigation;
     
-    gl_FragColor = vec4(result, 1.0);
+    FragColor = vec4(result, 1.0);
     
 }

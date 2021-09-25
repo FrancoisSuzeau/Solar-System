@@ -64,6 +64,8 @@ PURPOSE : header of the Camera class
 
                 float getSpeed() const;
                 void setSpeed(float speed);
+                void setMinimumSpeed();
+                void setMaximumSpeed();
 
                 glm::vec3 getOrientation() const;
 

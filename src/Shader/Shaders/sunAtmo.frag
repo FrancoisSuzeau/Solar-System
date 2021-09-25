@@ -1,6 +1,6 @@
 // Version du GLSL
 
-#version 150 core
+#version 330 core
 
 
 // Entr�e
@@ -10,6 +10,7 @@ uniform vec3 atmoColor;
 
 uniform sampler2D texture;
 uniform bool hdr;
+layout (location = 0) out vec4 FragColor;
 
 // Fonction main
 
@@ -36,6 +37,6 @@ void main()
 
     vec4 trans = max(vec4(0.0), ((vec4(objectColor, 1.0)) - min_Transparency));
     
-    gl_FragColor = trans;
+    FragColor = trans;
     
 }

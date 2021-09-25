@@ -521,7 +521,7 @@ void Overlay::setPostionInformation(glm::vec3 &position, float const speed)
         z = z/9.0;
     }
     
-    if( (r + (30.0 + speed * 30) <= m_ancient_radius) || (r - (30.0 + speed * 30) >= m_ancient_radius))
+    if( (r + (90.0 + speed * 90) <= m_ancient_radius) || (r - (90.0 + speed * 90) >= m_ancient_radius))
     {
         //recover the first two digits
         std::ostringstream oss_x;
@@ -562,7 +562,7 @@ void Overlay::setPostionInformation(glm::vec3 &position, float const speed)
 void Overlay::setSpeedInformation(float const speed)
 {
     double light_speed = 299792458;
-    double new_light_speed = light_speed * (speed/20.0);
+    double new_light_speed = light_speed * (speed/70.0);
 
     if(new_light_speed <= 0)
     {
@@ -571,6 +571,11 @@ void Overlay::setSpeedInformation(float const speed)
 
     if(m_ancient_speed != speed)
     {
+        //recover the first two digits
+        // std::ostringstream oss_x;
+        // oss_x << std::setprecision(3) << new_light_speed;
+        // std::string tmp = oss_x.str() + "m/s";
+
         std::string tmp = std::to_string(new_light_speed) + "m/s";
         m_speed.setText(tmp);
         m_ancient_speed = speed;

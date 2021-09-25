@@ -511,7 +511,7 @@ void OpenGlSketch::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    camera = new Camera(vec3(1, 5000, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 20.0);
+    camera = new Camera(vec3(1, 5000, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 70.0);
     if(camera == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -529,7 +529,7 @@ void OpenGlSketch::mainLoop()
     info_render_key_pressed = false;
 
     m_overlay_display = true;
-    m_name_display = false;
+    m_name_display = true;
 
     //bloom effect variables
     // bool horizontal = true, first_iteration = true;
@@ -541,7 +541,7 @@ void OpenGlSketch::mainLoop()
     m_input.displayPointer(false);
     
     //initialize modelview and projection matrix
-    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 10000.0);
+    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 100000000.0);
     model_view = mat4(1.0);
 
     //load and play the music
@@ -558,11 +558,6 @@ void OpenGlSketch::mainLoop()
     
     /********************************************************** MANAGING EVENTS *************************************************************/
         m_input.updateEvents();
-
-        if(m_input.getKey(SDL_SCANCODE_ESCAPE))
-        {
-            break;
-        }
 
         windowProcess();
 
@@ -888,6 +883,11 @@ void OpenGlSketch::renderInfo()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::windowProcess()
 {
+        if(m_input.getKey(SDL_SCANCODE_ESCAPE))
+        {
+            m_terminate = true;
+        }
+
         // if ((m_input.getKey(SDL_SCANCODE_H)) && (!hdr_key_pressed))
         // {
         //     hdr = !hdr;
@@ -928,7 +928,7 @@ void OpenGlSketch::windowProcess()
         {
             if(scroll != 0)
             {
-                if((camera->getSpeed() < 20.0) && (scroll > 0))
+                if((camera->getSpeed() < 70.0) && (scroll > 0))
                 {
                     camera->setSpeed(1.0);
                 }
@@ -941,15 +941,18 @@ void OpenGlSketch::windowProcess()
         }
         
         
-        // if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_music_key_pressed))
-        // {
-        //     pause_music = !pause_music;
-        //     pause_music_key_pressed = true;
-        // }
-        // if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
-        // {
-        //     pause_music_key_pressed = false;
-        // }
+        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_music_key_pressed))
+        {
+            if(camera->getSpeed() > 0.6)
+            {
+                camera->setMinimumSpeed();
+            }
+            pause_music_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
+        {
+            pause_music_key_pressed = false;
+        }
 
         if((m_input.getKey(SDL_SCANCODE_P)) && (!menu_app_key_pressed))
         {

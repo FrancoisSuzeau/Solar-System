@@ -31,7 +31,7 @@ m_name(name), m_light_vao(0)
     m_cloud_texture.loadTexture();
 
     m_real_size = real_size;
-    m_initial_pos = vec3(0.1, 0.0, 0.0);
+    m_initial_pos = vec3(0.01, 0.0, 0.0);
     m_current_position = m_initial_pos;
     m_speed_rotation = 0.1;
     m_rotation_angle = 0.0;

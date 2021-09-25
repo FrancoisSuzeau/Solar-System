@@ -1,6 +1,6 @@
 // Version du GLSL
 
-#version 150 core
+#version 330 core
 
 
 // Entr�e
@@ -10,6 +10,7 @@ in vec2 coordTexture;
 // Uniform
 
 uniform sampler2D texture;
+layout (location = 0) out vec4 FragColor;
 
 
 // Fonction main
@@ -23,5 +24,5 @@ void main()
         discard;
     }
     
-    gl_FragColor = texture(texture, coordTexture);
+    FragColor = texture(texture, coordTexture);
 }
