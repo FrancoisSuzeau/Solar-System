@@ -241,9 +241,9 @@ void Camera::setSpeed(float speed)
         m_speed = 0;
     }
 
-    if(m_speed > 70)
+    if(m_speed > 200)
     {
-        m_speed = 70;
+        m_speed = 200;
     }
 }
 
@@ -254,7 +254,7 @@ void Camera::setMinimumSpeed()
 
 void Camera::setMaximumSpeed()
 {
-    m_speed = 70;
+    m_speed = 200;
 }
 
 glm::vec3 Camera::getPosition() const

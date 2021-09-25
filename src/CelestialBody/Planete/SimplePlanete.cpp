@@ -42,7 +42,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
 
     if(m_name == "Mars")
     {
-        m_atmosphere = new Atmosphere(10.3, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(35, m_name, "../assets/textures/atmosphere.png");
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -50,7 +50,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
     }
     else if(m_name == "Venus")
     {
-        m_atmosphere = new Atmosphere(18.3, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(63, m_name, "../assets/textures/atmosphere.png");
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -58,7 +58,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
     }
     else if(m_name == "Uranus")
     {
-        m_atmosphere = new Atmosphere(80, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(270, m_name, "../assets/textures/atmosphere.png");
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -66,7 +66,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
     }
     else if(m_name == "Neptune")
     {
-        m_atmosphere = new Atmosphere(76, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(260, m_name, "../assets/textures/atmosphere.png");
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);

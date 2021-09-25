@@ -41,7 +41,8 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     }
     else if (name == "Jupiter")
     {
-        m_color_atmo = vec3(215.0/255.0, 184.0/255.0, 148.0/255.0);
+        // m_color_atmo = vec3(215.0/255.0, 184.0/255.0, 148.0/255.0);
+        m_color_atmo = vec3(233.0/255.0, 219.0/255.0, 171.0/255.0);
     }
     else if (name == "Saturn")
     {

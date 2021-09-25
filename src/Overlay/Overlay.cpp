@@ -343,7 +343,7 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
             modelview = save;
 
-            setPostionInformation(position, speed);
+            //setPostionInformation(position, speed);
 
                 modelview = translate(modelview, vec3(-1.15, -0.564, -0.0));
                 modelview = scale(modelview, vec3(0.02, 0.045, 0.0));
@@ -351,23 +351,23 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
             modelview = save;
 
-                modelview = translate(modelview, vec3(-1.17, -0.594, -0.0));
-                modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
-                m_position_info_x.renderTextOverlay(projection, modelview, text_shader);
+            //     modelview = translate(modelview, vec3(-1.17, -0.594, -0.0));
+            //     modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
+            //     m_position_info_x.renderTextOverlay(projection, modelview, text_shader);
 
-            modelview = save;
+            // modelview = save;
 
-                modelview = translate(modelview, vec3(-1.17, -0.624, -0.0));
-                modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
-                m_position_info_y.renderTextOverlay(projection, modelview, text_shader);
+            //     modelview = translate(modelview, vec3(-1.17, -0.624, -0.0));
+            //     modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
+            //     m_position_info_y.renderTextOverlay(projection, modelview, text_shader);
 
-            modelview = save;
+            // modelview = save;
 
-                modelview = translate(modelview, vec3(-1.17, -0.654, -0.0));
-                modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
-                m_position_info_z.renderTextOverlay(projection, modelview, text_shader);
+            //     modelview = translate(modelview, vec3(-1.17, -0.654, -0.0));
+            //     modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
+            //     m_position_info_z.renderTextOverlay(projection, modelview, text_shader);
 
-            modelview = save;
+            // modelview = save;
 
                 modelview = translate(modelview, vec3(-0.92, -0.564, -0.0));
                 modelview = scale(modelview, vec3(0.02, 0.038, 0.0));
@@ -378,7 +378,7 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
             setSpeedInformation(speed);
 
                 modelview = translate(modelview, vec3(-0.92, -0.614, -0.0));
-                modelview = scale(modelview, vec3(0.04, 0.058, 0.0));
+                modelview = scale(modelview, vec3(0.01, 0.04, 0.0));
                 m_speed.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
@@ -561,25 +561,26 @@ void Overlay::setPostionInformation(glm::vec3 &position, float const speed)
 /***********************************************************************************************************************************************************************/
 void Overlay::setSpeedInformation(float const speed)
 {
-    double light_speed = 299792458;
-    double new_light_speed = light_speed * (speed/70.0);
+    
+    float value_perc = (speed * 100)/200;
 
-    if(new_light_speed <= 0)
+    if(value_perc <= 0)
     {
-        new_light_speed = 0;
+        value_perc = 0;
     }
 
     if(m_ancient_speed != speed)
     {
-        //recover the first two digits
-        // std::ostringstream oss_x;
-        // oss_x << std::setprecision(3) << new_light_speed;
-        // std::string tmp = oss_x.str() + "m/s";
+        // recover the first two digits
+        std::ostringstream oss_x;
+        oss_x << std::setprecision(3) << value_perc;
+        std::string tmp = oss_x.str() + "%";
 
-        std::string tmp = std::to_string(new_light_speed) + "m/s";
         m_speed.setText(tmp);
         m_ancient_speed = speed;
     }
+
+    
 }
 
 /***********************************************************************************************************************************************************************/

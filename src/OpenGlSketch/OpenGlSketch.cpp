@@ -411,7 +411,7 @@ void OpenGlSketch::startLoop()
     m_input.displayPointer(false);
 
     //initialize modelview and projection matrix
-    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 100.0);
+    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 120.0);
     model_view = mat4(1.0);
 
     //loading system and making start screen
@@ -458,7 +458,7 @@ void OpenGlSketch::startLoop()
         {
             if(solar_system != nullptr)
             {
-                solar_system->MakingSystem("Solar System", 8, m_police[1]);
+                solar_system->MakingSystem("Solar System", 8, m_police[0]);
                 nb_loaded++;
             }
             
@@ -467,7 +467,7 @@ void OpenGlSketch::startLoop()
         {
             if(solar_system != nullptr)
             {
-                nb_loaded += solar_system->loadSystem(nb_loaded, m_police[1]);
+                nb_loaded += solar_system->loadSystem(nb_loaded, m_police[0]);
             }
             
         }
@@ -511,7 +511,7 @@ void OpenGlSketch::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    camera = new Camera(vec3(1, 5000, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 70.0);
+    camera = new Camera(vec3(1, 9000, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 200.0);
     if(camera == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -928,7 +928,7 @@ void OpenGlSketch::windowProcess()
         {
             if(scroll != 0)
             {
-                if((camera->getSpeed() < 70.0) && (scroll > 0))
+                if((camera->getSpeed() < 200.0) && (scroll > 0))
                 {
                     camera->setSpeed(1.0);
                 }
