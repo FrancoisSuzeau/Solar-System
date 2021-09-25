@@ -941,7 +941,7 @@ void OpenGlSketch::windowProcess()
         }
         
         
-        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!pause_music_key_pressed))
+        if((m_input.getKey(SDL_SCANCODE_Q)) && (!pause_music_key_pressed))
         {
             if(camera->getSpeed() > 0.6)
             {
@@ -949,7 +949,20 @@ void OpenGlSketch::windowProcess()
             }
             pause_music_key_pressed = true;
         }
-        if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
+        if ((m_input.getKey(SDL_SCANCODE_Q)) == false)
+        {
+            pause_music_key_pressed = false;
+        }
+
+        if((m_input.getKey(SDL_SCANCODE_E)) && (!pause_music_key_pressed))
+        {
+            if(camera->getSpeed() > 0.6)
+            {
+                camera->setMaximumSpeed();
+            }
+            pause_music_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_E)) == false)
         {
             pause_music_key_pressed = false;
         }

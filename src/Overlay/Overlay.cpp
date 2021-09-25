@@ -29,9 +29,6 @@ m_Author_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_studio_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_move_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_position(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_position_info_x(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_position_info_y(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_position_info_z(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_speed_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
@@ -40,11 +37,8 @@ m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
     m_Author_music.loadTTF("None");
     m_studio_music.loadTTF("None");
 
-    m_move_info.loadTTF("Move Information");
+    m_move_info.loadTTF("Navigation");
     m_position.loadTTF("Position :");
-    m_position_info_x.loadTTF("None");
-    m_position_info_y.loadTTF("None");
-    m_position_info_z.loadTTF("None");
     m_speed_info.loadTTF("Speed :");
     m_speed.loadTTF("None");
 
@@ -54,9 +48,6 @@ m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 
     m_ancient_track = "None";
     m_ancient_radius = 0.0;
-    ancient_x = "None";
-    ancient_y = "None";
-    ancient_z = "None";
     m_ancient_speed = 0.0;
     m_ancient_time = "None";
     m_sec = 0;
@@ -343,7 +334,6 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
             modelview = save;
 
-            //setPostionInformation(position, speed);
 
                 modelview = translate(modelview, vec3(-1.15, -0.564, -0.0));
                 modelview = scale(modelview, vec3(0.02, 0.045, 0.0));
@@ -351,25 +341,7 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
             modelview = save;
 
-            //     modelview = translate(modelview, vec3(-1.17, -0.594, -0.0));
-            //     modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
-            //     m_position_info_x.renderTextOverlay(projection, modelview, text_shader);
-
-            // modelview = save;
-
-            //     modelview = translate(modelview, vec3(-1.17, -0.624, -0.0));
-            //     modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
-            //     m_position_info_y.renderTextOverlay(projection, modelview, text_shader);
-
-            // modelview = save;
-
-            //     modelview = translate(modelview, vec3(-1.17, -0.654, -0.0));
-            //     modelview = scale(modelview, vec3(0.01, 0.045, 0.0));
-            //     m_position_info_z.renderTextOverlay(projection, modelview, text_shader);
-
-            // modelview = save;
-
-                modelview = translate(modelview, vec3(-0.92, -0.564, -0.0));
+                modelview = translate(modelview, vec3(-1.15, -0.650, -0.0));
                 modelview = scale(modelview, vec3(0.02, 0.038, 0.0));
                 m_speed_info.renderTextOverlay(projection, modelview, text_shader);
 
@@ -377,8 +349,8 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
             setSpeedInformation(speed);
 
-                modelview = translate(modelview, vec3(-0.92, -0.614, -0.0));
-                modelview = scale(modelview, vec3(0.01, 0.04, 0.0));
+                modelview = translate(modelview, vec3(-0.95, -0.650, -0.0));
+                modelview = scale(modelview, vec3(0.04, 0.04, 0.0));
                 m_speed.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
@@ -496,73 +468,12 @@ void Overlay::setMusicInformation(std::string const track)
 }
 
 /***********************************************************************************************************************************************************************/
-/********************************************************************** setPostionInformation **************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Overlay::setPostionInformation(glm::vec3 &position, float const speed)
-{
-    float x = position[0];
-    float y = position[1];
-    float z = position[2];
-    double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-    double r = std::sqrt(r_squarre);
-
-    if(abs(x) >= 9.0)
-    {
-        x = x/9.0;
-    }
-
-    if(abs(y) >= 9.0)
-    {
-        y = y/9.0;
-    }
-
-    if(abs(z) >= 9.0)
-    {
-        z = z/9.0;
-    }
-    
-    if( (r + (90.0 + speed * 90) <= m_ancient_radius) || (r - (90.0 + speed * 90) >= m_ancient_radius))
-    {
-        //recover the first two digits
-        std::ostringstream oss_x;
-        oss_x << std::setprecision(3) << x;
-        std::string tmp_x = "x : " + oss_x.str();
-
-        std::ostringstream oss_y;
-        oss_y << std::setprecision(3) << y;
-        std::string tmp_y = "y : " + oss_y.str();
-
-        std::ostringstream oss_z;
-        oss_z << std::setprecision(3) << z;
-        std::string tmp_z = "z : " + oss_z.str();
-
-        if(ancient_x != oss_x.str())
-        {
-            m_position_info_x.setText(tmp_x);
-            ancient_x = oss_x.str();
-        }
-        if(ancient_y != oss_y.str())
-        {
-            m_position_info_y.setText(tmp_y);
-            ancient_y = oss_y.str();
-        }
-        if(ancient_z != oss_z.str())
-        {
-            m_position_info_z.setText(tmp_z);
-            ancient_z = oss_z.str();
-        }
-
-        m_ancient_radius = r;
-    }
-}
-
-/***********************************************************************************************************************************************************************/
 /********************************************************************** setSpeedInformation **************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Overlay::setSpeedInformation(float const speed)
 {
     
-    float value_perc = (speed * 100)/200;
+    float value_perc = ((speed * 100)/200)/100;
 
     if(value_perc <= 0)
     {
@@ -574,7 +485,7 @@ void Overlay::setSpeedInformation(float const speed)
         // recover the first two digits
         std::ostringstream oss_x;
         oss_x << std::setprecision(3) << value_perc;
-        std::string tmp = oss_x.str() + "%";
+        std::string tmp = oss_x.str() + " time light speed";
 
         m_speed.setText(tmp);
         m_ancient_speed = speed;

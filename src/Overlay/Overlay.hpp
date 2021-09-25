@@ -54,9 +54,6 @@ PURPOSE : header of the Overlay class
                 
                 Text            m_move_info;
                 Text            m_position;
-                Text            m_position_info_x;
-                Text            m_position_info_y;
-                Text            m_position_info_z;
                 Text            m_speed_info;
                 Text            m_speed;
 
@@ -64,9 +61,6 @@ PURPOSE : header of the Overlay class
                 Text            m_time_info;
 
                 std::string     m_ancient_track;
-                std::string     ancient_x;
-                std::string     ancient_y;
-                std::string     ancient_z;
                 float           m_ancient_radius;
                 float           m_ancient_speed;
                 std::string     m_ancient_time;
@@ -83,7 +77,6 @@ PURPOSE : header of the Overlay class
                 void displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
 
                 void setMusicInformation(std::string const track);
-                void setPostionInformation(glm::vec3 &position, float const speed);
                 void setSpeedInformation(float const speed);
                 void setTimeInformation();
         };

@@ -273,30 +273,46 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
         float phi = atan(y/x);
         float theta = acos(z/r);
 
-        if( r >= 600 )
+        if( r >= 400 * size_plan )
         {
             modelview = translate(modelview, host_pos);
             m_name_renderer.renderText(projection, modelview, size_plan, r, phi, theta, y, name_render_shader);
             // std::cout << name_render_shader << std::endl;
+            modelview = save;
+        }
+        else
+        {
+            for (int i(0); i < m_companion_count; i++)
+            {
+                glm::vec3 moon_pos = m_moons_creator[i]->getPostion();
+                float size_moon = m_host_creator->getSizePlan();
+
+                x = camPos[0] - moon_pos[0]; //doesn't know why I have to use the reverse value
+                y = camPos[1] - moon_pos[1];
+                z = camPos[2] - moon_pos[2];
+                r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+                    
+                r = std::sqrt(r_squarre);
+
+                phi = atan(y/x);
+                theta = acos(z/r);
+                if(r >= 10 * size_moon)
+                {
+                    if(name_render_shader != nullptr)
+                    {
+                        m_moons_creator[i]->displayName(projection, modelview, r, phi, theta, y, name_render_shader);
+                        // std::cout << name_render_shader << std::endl;
+                    }
+                }
+                
+                modelview = save;
+            }
         }
 
-        
-        //     m_host_creator->displayName(projection, modelview);
-
-        // modelview = save;
-
-        // for (int i(0); i < m_companion_count; i++)
-        // {
-        //     m_moons_creator[i]->displayName(projection, modelview);
-
-        //     modelview = save;
-        // }
-
-        
+        modelview = save;
     }
     
     modelview = save;
-
 }
 
 /***********************************************************************************************************************************************************************/
@@ -362,6 +378,7 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, g
     glm::mat4 save = modelview;
 
     glm::vec3 planete_pos = m_host_creator->getPostion();
+    float size_plan = m_host_creator->getSizePlan();
     
 
         float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
@@ -373,7 +390,7 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, g
             
         float r = std::sqrt(r_squarre);
 
-        if(r <= 20)
+        if(r <= 10 * size_plan)
         {
             modelview = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
             //m_host_creator[i]->drawInfoPlan(projection, modelview, hdr);

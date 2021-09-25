@@ -441,7 +441,9 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
            float phi = atan(y/x);
            float theta = acos(z/r);
 
-           if(r >= 600)
+           float size_plan = m_planete_creator[i]->getSizePlan();
+        //    std::cout << m_planete_creator[i]->getName() << " : " << r << std::endl;
+           if(r >= 400 * size_plan)
            {
                if(name_render_shader != nullptr)
                {
@@ -568,6 +570,7 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         if( (m_planete_creator[i] != nullptr) && (m_planete_info != nullptr))
         {
             glm::vec3 planete_pos = m_planete_creator[i]->getPostion();
+            float size_plan = m_planete_creator[i]->getSizePlan();
     
 
             float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
@@ -579,7 +582,7 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
                 
             float r = std::sqrt(r_squarre);
 
-            if(r <= 20)
+            if(r <= 10 * size_plan)
             {
                 modelview = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
                 //m_planete_creator[i]->drawInfoPlan(projection, modelview, hdr);
