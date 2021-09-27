@@ -15,16 +15,18 @@ At the launch, all the textures, audio, font files are loaded. You can follow th
 After a while the Solar System appears with all planets and moons (note that Mercury is on the other side of the Sun to test lights effects)
 For now, planets and moons are only rotating, I haven't merge the celestial mechanics on the main branch yet.
 
-The initial position of the view matrix (camera) is on the ````100, 100, 100```` coordinates. You can move your sight with your keyboord and your mouse. Here is the list of all the move command following this shem : QWERTY/AZERTY.
-+ Q/Z : move forward
+The initial position of the view matrix (camera) is on the ````1, 9000, 1```` coordinates. You can move your sight with your keyboord and your mouse. Here is the list of all the move command following this shem : QWERTY/AZERTY.
++ W/Z : move forward
 + S : 	move backward
 + A/Q : move to the left
 + D : move to the right
++ Q/A : set speed to minimum
++ E : set speed to maximum
 + LCTR : move up
 + LSHIFT : move down
 + Left button mouse (maintain) : orient camera (up, down, right, left)
-+ UP : increase the volume of the music
-+ DOWN : decrease the volume
++ UP : increase the volume of the music (deprecated)
++ DOWN : decrease the volume (deprecated)
 + LEFT : decrease the camera velocity (deprecated)
 + RIGHT : increase the camera velocity (deprecated)
 + ESCAPE : Quit the program
@@ -44,10 +46,10 @@ Make sure that the executable file is in the ````bin```` directory.
 + Fix some bugs and memory leaks
 + Now linkable object files (*.o) will be ignored by git
 
-### 20/07/2021
+### 20/07/2021 (change atmosphere effect the 27/09/2021)
 + Distant objects behaviour : OpenGL let you to have the possibility to fixe perspective aspect. When you move backward, after a while, the object disappear and his name appear. Also, these name are oriented with the camera position
 
-+ Atmosphere effect : Venus, Earth, Mars, Jupiter and Saturn have transparent and colored atmosphere all arround their surface. It is simply a disk moving in relation with the camera position. These atmosphere are not shadowed because of the impossibility to make a framebuffer work well.
++ Atmosphere effect : Venus, Earth, Mars, have transparent and colored atmosphere all arround their surface.
 
 ### 21/07/2021
 + Sound : Add a playist feature, now six track are playing one after the other. (Had to initialize pointer to struct Mix_music to NULL -> drop a warning)
@@ -56,7 +58,7 @@ Make sure that the executable file is in the ````bin```` directory.
 + Framebuffer : Use it to make an HDR mode (For now I cannot make a bloom effect on the light -> skybox not displaying and blur effect not working)
 + Overlay : a simple overlay displaying some information using the framebuffer API
     - Music : Name of the track, compositor and (the record studio or the orchestra)
-    - Navigation information : The x, y, z coordinates and the navigation speed based on the light speed multiply by the camera speed (from 0 to 1). The coordinates are not refreshed all the frame due to a certain time calculation and impacting the fluidity, but they are refreshed when the radius length from the origin coordinates of the world to the camera is changing by 10 + (camera speed * 10)
+    - Navigation information : the navigation speed based on the light speed multiply by the camera speed (from 0 to 200).
     - Date : the day, the month and the hour recovered on the system running this application
 
 + Overlay : Now the application adapts with the screen size (recover the screen parameter with a system call function)
@@ -75,17 +77,27 @@ Make sure that the executable file is in the ````bin```` directory.
 + Optimization : font are only loaded by SDL once and then Opengl use the SDL_Surface pointer to build the opengl object
 + Optimization : Pointer test at each allocation/use and pointer released
 
-## More in coming ...
+### 27/09/2021
++ Scalling the simulation with Earth as scale (multiply by 30)
++ Name disapear dynamiquely with view sized of the body
++ Moon have now their name displaying
++ Speed navigation : with a percent of light speed as unit
++ No more (x, y, z) coordinates
++ Setting : add option to show planete information or not
++ Correcting cross machine : adapte GLSL script to OpenGL version installed on the host machine (Windows)
 
+## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
 For the moment I am working on this following aspect :
 + Implements atmosphere effects (like red shadowing on the frontier of the dark side of a planets, bloom and blur effect) : impossible due to a not working framebuffer
 
++ Overlay : Display the sphere influence when approching a body or interplanetary travel
+
 + After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
 
-+ With the celestial mechanics build I will change the apparent size of the planet scaling them with the distance to the sun.
-
 + try to use model file loading to add complex forme (like asteroid belt) using Assimp API (need to migrate on Visual Studio Community due to link editing not supported with g++)
+
++ Make a Linux version : Have to think twice because I have to change screen adaptation of the overlay
 
 Many of these ideas came to me while I am coding, so I hope more come too.
