@@ -53,7 +53,7 @@ PURPOSE : header of the Disk class
                 ~Disk();
 
                 void load();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *disk_shader = nullptr);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *disk_shader = nullptr, Shader *ring_shader = nullptr);
                 
                 void updateVBO(void *data, int size_bytes, int offset);
                 

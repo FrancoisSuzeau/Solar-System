@@ -49,6 +49,8 @@ PURPOSE : header of the virtual SolarSystem class
 
                 std::vector<Shader*>            m_body_shader;
                 Shader*                         m_atmo_shader;
+                Shader*                         m_ring_shader;
+                Shader                          *m_sphere_shader;
 
                 
             public:
@@ -59,7 +61,7 @@ PURPOSE : header of the virtual SolarSystem class
 
 
                 void loadSystem(int count, TTF_Font *police) override;
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos = glm::vec3(0.0, 0.0, 0.0), Shader *host_shader = nullptr, Shader *companion_shader = nullptr) override;
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos = glm::vec3(0.0, 0.0, 0.0), Shader *host_shader = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr) override;
                 void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr) override;
                 void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader = nullptr) override;
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) override;

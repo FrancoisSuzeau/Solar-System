@@ -55,7 +55,7 @@ PURPOSE : header of the StarAtmosphere class
                 StarAtmosphere();
                 ~StarAtmosphere();
 
-                void display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, Shader *star_atmo_shader = nullptr);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, Shader *star_atmo_shader = nullptr, Shader *ring_shader = nullptr);
                 void displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, bool hdr, Shader *atmo_shader = nullptr);
                 void load();
         };

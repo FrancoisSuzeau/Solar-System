@@ -63,12 +63,26 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
     }
     m_body_shader[2]->loadShader();
 
-    m_atmo_shader = new Shader("../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag");
-    if(m_atmo_shader == nullptr)
+    // m_atmo_shader = new Shader("../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag");
+    // if(m_atmo_shader == nullptr)
+    // {
+    //     exit(EXIT_FAILURE);
+    // }
+    // m_atmo_shader->loadShader();
+
+    m_ring_shader = new Shader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
+    if(m_ring_shader == nullptr)
     {
         exit(EXIT_FAILURE);
     }
-    m_atmo_shader->loadShader();
+    m_ring_shader->loadShader();
+
+    m_sphere_shader = new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag");
+    if(m_sphere_shader == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+    m_sphere_shader->loadShader();
 
 }
 
@@ -121,10 +135,16 @@ SolarSystem::~SolarSystem()
         }
     }
 
-    if(m_atmo_shader != nullptr)
+    if(m_ring_shader != nullptr)
     {
-        delete m_atmo_shader;
+        delete m_ring_shader;
     }
+
+    if(m_sphere_shader != nullptr)
+    {
+        delete m_sphere_shader;
+    }
+    
     
 }
 
@@ -247,7 +267,7 @@ void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, boo
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader, Shader *companion_shader)
+void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
 {
     glm::mat4 save = modelview;
 
@@ -352,9 +372,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         if(m_planetary_system[2] != nullptr)
         {
-            if( m_body_shader[0] != nullptr )
+            if( (m_body_shader[0] != nullptr) && (m_ring_shader != nullptr) )
             {
-                m_planetary_system[2]->drawSystem(projection, modelview, camPos, hdr, m_position, m_body_shader[0], m_body_shader[0]);
+                m_planetary_system[2]->drawSystem(projection, modelview, camPos, hdr, m_position, m_body_shader[0], m_body_shader[0], m_ring_shader);
             }
         }
         
@@ -368,9 +388,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[3]->updatePosLight(projection, light_src);
             
-            if(m_body_shader[0] != nullptr)
+            if( (m_body_shader[0] != nullptr) && (m_ring_shader != nullptr) )
             {
-                m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0]);
+                m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0], m_ring_shader);
             }
         }
         
@@ -384,9 +404,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[4]->updatePosLight(projection, light_src);
 
-            if(m_body_shader[0] != nullptr)
+            if( (m_body_shader[0] != nullptr) && (m_ring_shader != nullptr) )
             {
-                m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0]);
+                m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0], m_ring_shader);
             }
         }
         
@@ -490,7 +510,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         {
             if(m_atmo_shader != nullptr)
             {
-                sun->displayAtmo(projection, modelview, phi_sun, theta_sun, cameraPos_sun, hdr, m_atmo_shader);
+                //sun->displayAtmo(projection, modelview, phi_sun, theta_sun, cameraPos_sun, hdr, m_atmo_shader);
             }
             
         }
@@ -507,7 +527,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         {
             if(m_atmo_shader != nullptr)
             {
-                m_planetary_system[i]->drawAtmo(projection, modelview, camPos, hdr, m_atmo_shader);
+                m_planetary_system[i]->drawAtmo(projection, modelview, camPos, hdr, m_sphere_shader);
             }
             
         }
@@ -521,28 +541,13 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         if(m_planete_creator[i] != nullptr)
         {
-            glm::vec3 planete_pos = m_planete_creator[i]->getPostion();
-    
-
-            float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
-            float y = camPos[1] - planete_pos[1];
-            float z = camPos[2] - planete_pos[2];
-                
-                
-            float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-                
-            float r = std::sqrt(r_squarre);
-
-            float phi = atan(y/x);
-            float theta = acos(z/r);
-
-            glm::vec3 cameraPos = vec3(x, y, z);
-
-            m_planete_creator[i]->updateAtmoInter(projection, light_src);
+            modelview = save;
+            m_planete_creator[i]->UpdatePositionPlan(projection, modelview);
+            m_planete_creator[i]->updatePosLight(projection, light_src);
 
             if(m_atmo_shader != nullptr)
             {
-                m_planete_creator[i]->drawAtmoPlanete(projection, modelview, phi, theta, cameraPos, light_src, camPos, hdr, m_atmo_shader);
+                m_planete_creator[i]->drawAtmoPlanete(projection, modelview, light_src, camPos, hdr, m_sphere_shader);
             }
             
         }

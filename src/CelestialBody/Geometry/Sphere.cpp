@@ -198,6 +198,8 @@ void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &lig
         sphere_shader->setMat4("light_src", light_src);
 
         sphere_shader->setVec3("viewPos", camPos);
+
+        sphere_shader->setInt("hdr", hdr);
         
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 

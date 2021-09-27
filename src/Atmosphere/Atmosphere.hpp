@@ -30,31 +30,29 @@ PURPOSE : header of the Atmosphere class
         #include <vector>
         #include <cmath>
 
-        
-        #include "../Texture/Texture.hpp"
-        #include "../CelestialBody/Geometry/Disk.hpp"
+        #include "../CelestialBody/Geometry/Sphere.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
 
-        class Atmosphere: public Disk
+        class Atmosphere
         {
             
             private:
 
-                Texture         m_texture;
-                float           m_coord[12];
-                int             m_bytes_coord_size;
                 glm::vec3       m_color_atmo;
+
+                Sphere                          *sphere_atmosphere;
+                float                           m_size;
+                std::string                     name_planete_host;
 
             public:
             
-                Atmosphere(float size, std::string const name, std::string const texture);
+                Atmosphere(float size, std::string const name);
                 Atmosphere();
                 ~Atmosphere();
 
-                void display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr);
-                void load();
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr, Shader *ring_shader = nullptr);
         };
 
 

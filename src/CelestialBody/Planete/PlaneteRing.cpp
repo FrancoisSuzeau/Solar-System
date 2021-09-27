@@ -72,7 +72,7 @@ PlaneteRing::~PlaneteRing()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader)
+void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader, Shader *ring_shader)
 {
     if(plan_ring_shader != nullptr)
     {
@@ -110,9 +110,9 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
             glBindTexture(GL_TEXTURE_2D, 0);
 
-            if(m_ring != nullptr)
+            if((m_ring != nullptr) && (ring_shader != nullptr))
             {
-                m_ring->display(projection, modelview, light_src, camPos, hdr);
+                m_ring->display(projection, modelview, light_src, camPos, hdr, ring_shader);
             }
 
         /************************************************* unbind VBO and IBO ********************************************************/

@@ -42,7 +42,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
 
     if(m_name == "Mars")
     {
-        m_atmosphere = new Atmosphere(35, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(1.05, m_name);
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -50,7 +50,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
     }
     else if(m_name == "Venus")
     {
-        m_atmosphere = new Atmosphere(63, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(1.05, m_name);
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -58,7 +58,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
     }
     else if(m_name == "Uranus")
     {
-        m_atmosphere = new Atmosphere(270, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(1.05, m_name);
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -66,7 +66,7 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
     }
     else if(m_name == "Neptune")
     {
-        m_atmosphere = new Atmosphere(260, m_name, "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(1.05, m_name);
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -88,7 +88,7 @@ SimplePlanete::~SimplePlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader)
+void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader, Shader *ring_shader)
 {
     if(simple_plan_shader != nullptr)
     {
@@ -226,16 +226,16 @@ void SimplePlanete::updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &body_pos, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
     if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune") )
     {
         if(atmo_shader != nullptr)
         {
-            translateCelestialBody(modelview, m_current_position);
+            
             if(m_atmosphere != nullptr)
             {
-                m_atmosphere->display(projection, modelview, phi, theta, body_pos, light_src, camPos, hdr, atmo_shader);
+                m_atmosphere->display(projection, modelview,  light_src, camPos, hdr, atmo_shader);
             }
             
         }

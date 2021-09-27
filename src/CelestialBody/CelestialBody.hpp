@@ -41,7 +41,7 @@ PURPOSE : Interface CelestialBody
 
             public:
 
-                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *body_shader = nullptr) = 0;
+                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *body_shader = nullptr, Shader *ring_shader = nullptr) = 0;
                 
                 //virtual void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
 

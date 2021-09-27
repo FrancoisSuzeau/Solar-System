@@ -123,7 +123,7 @@ void StarAtmosphere::load()
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void StarAtmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, Shader *star_atmo_shader)
+void StarAtmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, glm::mat4 &light_src, glm::vec3 &camPos, Shader *star_atmo_shader, Shader *ring_shader)
 {
     if(star_atmo_shader != nullptr)
     {

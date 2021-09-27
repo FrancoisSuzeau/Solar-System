@@ -25,8 +25,6 @@ using namespace glm;
 Ring::Ring(float size, std::string const texture): Disk(size),
 m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
 {
-    Shader shad("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
-    m_shader_ring = shad;
     
     m_texture.loadTexture();
 
@@ -127,40 +125,44 @@ void Ring::load()
 /***********************************************************************************************************************************************************************/
 void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *ring_shader)
 {
-    //Activate the shader
-    glUseProgram(m_shader_ring.getProgramID());
+    if(ring_shader != nullptr)
+    {
+        //Activate the shader
+        glUseProgram(ring_shader->getProgramID());
 
-    //lock VAO
-    glBindVertexArray(m_vaoID);
+        //lock VAO
+        glBindVertexArray(m_vaoID);
 
-        //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader_ring.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader_ring.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader_ring.getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-        m_shader_ring.setMat4("modelview", modelview);
-        m_shader_ring.setMat4("projection", projection);
-        m_shader_ring.setMat4("light_src", light_src);
+            //send matrices to shader
+            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
+            ring_shader->setMat4("modelview", modelview);
+            ring_shader->setMat4("projection", projection);
+            ring_shader->setMat4("light_src", light_src);
 
-        m_shader_ring.setVec3("viewPos", camPos);
-        m_shader_ring.setInt("hdr", hdr);
+            ring_shader->setVec3("viewPos", camPos);
+            ring_shader->setInt("hdr", hdr);
 
-        //lock texture
-        glBindTexture(GL_TEXTURE_2D, m_texture.getID());
+            //lock texture
+            glBindTexture(GL_TEXTURE_2D, m_texture.getID());
 
-        //display the form
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+            //display the form
+            glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        //unlock texture
-        glBindTexture(GL_TEXTURE_2D, 0);
+            //unlock texture
+            glBindTexture(GL_TEXTURE_2D, 0);
 
 
-        // glDisableVertexAttribArray(2);
-        // glDisableVertexAttribArray(0);
+            // glDisableVertexAttribArray(2);
+            // glDisableVertexAttribArray(0);
 
-    //unlock VAO
-    glBindVertexArray(0);
+        //unlock VAO
+        glBindVertexArray(0);
 
-    glUseProgram(0);
+        glUseProgram(0);
+    }
+    
 }
 
 //NOT CONCERN 

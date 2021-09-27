@@ -29,7 +29,7 @@ void main(void) {
     vec3 lightColor;
     if(hdr)
     {
-        lightColor = vec3(0.3, 0.3, 0.3);
+        lightColor = vec3(0.8, 0.8, 0.8);
     }
     else
     {

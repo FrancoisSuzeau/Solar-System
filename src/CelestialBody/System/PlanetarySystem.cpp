@@ -27,6 +27,7 @@ PlanetarySystem::PlanetarySystem(std::string name_system, TTF_Font *police, int 
     m_name_renderer.loadTTF(m_system_name);
 
     //No need to create a planete info pointer because we use Only one
+    
 
 }
 
@@ -60,7 +61,7 @@ PlanetarySystem::~PlanetarySystem()
         }
         
     }
-    
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -87,7 +88,7 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         }
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0, 23.26, glm::vec3(-150000, 0, 0), police);
 
-        m_atmosphere = new Atmosphere(65, "Earth", "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(1.05, "Earth");
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -136,7 +137,7 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27, 3.13, glm::vec3(778340, 0, 0), police);
 
-        m_atmosphere = new Atmosphere(800.3, "Jupiter", "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(1.05, "Jupiter");
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -177,7 +178,7 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         }
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476, 26.73, glm::vec3(0.0, -1426700, 0), police);
 
-        m_atmosphere = new Atmosphere(630.3, "Saturn", "../assets/textures/atmosphere.png");
+        m_atmosphere = new Atmosphere(1.05, "Saturn");
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -194,7 +195,7 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader, Shader *companion_shader)
+void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
 {
     
     glm::mat4 save = modelview;
@@ -207,7 +208,8 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         m_host_creator->UpdatePositionPlan(projection, modelview);
         m_host_creator->updatePosLight(projection, light_src);
-        m_host_creator->drawPlanete(projection, modelview, light_src, camPos, hdr, host_shader);
+        m_host_creator->drawPlanete(projection, modelview, light_src, camPos, hdr, host_shader, ring_shader);
+
     }
 
     modelview = save;
@@ -327,43 +329,19 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
         glm::vec3 target_point(0.0, 0.0, 0.0);
         glm::vec3 vertical_axe(0.0, 0.0, 1.0);
         glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
-
-        if(m_host_creator == nullptr) //exceptionnaly we exit the program because without light it can be a solar system
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_host_creator->updateAtmoInter(projection, light_src);
         glm::mat4 save_light_src = light_src;
 
-        if(m_host_creator == nullptr) //exceptionnaly we exit the program because without light it can be a solar position
+        if(m_host_creator != nullptr)
         {
-            exit(EXIT_FAILURE);
-        }
-        glm::vec3 host_pos = m_host_creator->getPostion();
+            m_host_creator->UpdatePositionPlan(projection, modelview);
+            m_host_creator->updatePosLight(projection, light_src);
 
-        double x = camPos[0] - host_pos[0]; //doesn't know why I have to use the reverse value
-        double y = camPos[1] - host_pos[1];
-        double z = camPos[2] - host_pos[2];
-        double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-            
-        double r = std::sqrt(r_squarre);
-
-        float phi = atan(y/x);
-        float theta = acos(z/r);
-
-        glm::vec3 cameraPos = vec3(x, y, z);
-
-        modelview = translate(modelview, host_pos);
-        if(atmo_shader !=nullptr)
-        {
-            if(m_atmosphere !=nullptr)
+            if((m_atmosphere != nullptr) && (atmo_shader != nullptr))
             {
-                m_atmosphere->display(projection, modelview, phi, theta, cameraPos, light_src, camPos, hdr, atmo_shader);
+                m_atmosphere->display(projection, modelview, light_src, camPos, hdr, atmo_shader);
             }
-            
         }
-        
-
+               
         modelview = save;
         light_src = save_light_src;
     }
