@@ -508,7 +508,7 @@ void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
     pause_music = false;
-    pause_music_key_pressed = false;
+    speed_key_pressed = false;
     volume = 0;
 
     m_terminate = false;
@@ -538,6 +538,8 @@ void OpenGlSketch::mainLoop()
 
     m_overlay_display = true;
     m_name_display = true;
+
+    is_moving = false;
 
     //bloom effect variables
     // bool horizontal = true, first_iteration = true;
@@ -623,8 +625,13 @@ void OpenGlSketch::mainLoop()
             renderSettings();
     //=======================================================================================================================================================
 
-    /******************************************************************* RENDER OVERLAY ********************************************************************/
+    /******************************************************************* RENDER PARTICLES ********************************************************************/
+
+        if(is_moving)
+        {
             renderParticles();
+        }
+        
     //=======================================================================================================================================================
             
 
@@ -906,40 +913,6 @@ void OpenGlSketch::windowProcess()
             m_terminate = true;
         }
 
-        // if ((m_input.getKey(SDL_SCANCODE_H)) && (!hdr_key_pressed))
-        // {
-        //     hdr = !hdr;
-        //     hdr_key_pressed = true;
-        // }
-        // if ((m_input.getKey(SDL_SCANCODE_H)) == false)
-        // {
-        //     hdr_key_pressed = false;
-        // }
-
-        // if(m_input.getKey(SDL_SCANCODE_DOWN))
-        // {
-        //     volume = -1;
-        // }
-        // if(m_input.getKey(SDL_SCANCODE_UP))
-        // {
-        //     volume = 1;
-        // }
-
-        // if(m_input.getKey(SDL_SCANCODE_LEFT))
-        // {
-        //     if(camera->getSpeed() >= 0.0)
-        //     {
-        //         camera->setSpeed(-0.1);
-        //     }
-        // }
-        // if(m_input.getKey(SDL_SCANCODE_RIGHT))
-        // {
-        //     if(camera->getSpeed() <= 1.0)
-        //     {
-        //         camera->setSpeed(0.1);
-        //     }
-        // }
-
         int scroll = m_input.getScroll();
 
         if(camera != nullptr)
@@ -959,30 +932,30 @@ void OpenGlSketch::windowProcess()
         }
         
         
-        if((m_input.getKey(SDL_SCANCODE_Q)) && (!pause_music_key_pressed))
+        if((m_input.getKey(SDL_SCANCODE_Q)) && (!speed_key_pressed))
         {
             if(camera->getSpeed() > 0.6)
             {
                 camera->setMinimumSpeed();
             }
-            pause_music_key_pressed = true;
+            speed_key_pressed = true;
         }
         if ((m_input.getKey(SDL_SCANCODE_Q)) == false)
         {
-            pause_music_key_pressed = false;
+            speed_key_pressed = false;
         }
 
-        if((m_input.getKey(SDL_SCANCODE_E)) && (!pause_music_key_pressed))
+        if((m_input.getKey(SDL_SCANCODE_E)) && (!speed_key_pressed))
         {
             if(camera->getSpeed() > 0.6)
             {
                 camera->setMaximumSpeed();
             }
-            pause_music_key_pressed = true;
+            speed_key_pressed = true;
         }
         if ((m_input.getKey(SDL_SCANCODE_E)) == false)
         {
-            pause_music_key_pressed = false;
+            speed_key_pressed = false;
         }
 
         if((m_input.getKey(SDL_SCANCODE_P)) && (!menu_app_key_pressed))
@@ -1005,8 +978,16 @@ void OpenGlSketch::windowProcess()
             info_render_key_pressed = false;
         }
 
-        
+        if((m_input.getKey(SDL_SCANCODE_W)) || (m_input.getKey(SDL_SCANCODE_S)) || (m_input.getKey(SDL_SCANCODE_A)) || (m_input.getKey(SDL_SCANCODE_D)))
+        {
+            is_moving = true;
+        }
+        else if((!m_input.getKey(SDL_SCANCODE_W)) && (!m_input.getKey(SDL_SCANCODE_S)) && (!m_input.getKey(SDL_SCANCODE_A)) && (!m_input.getKey(SDL_SCANCODE_D)))
+        {
+            is_moving = false;
+        }
 
+        //is_moving = false;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -1147,6 +1128,8 @@ void OpenGlSketch::renderSettings()
 void OpenGlSketch::renderParticles()
 {
     glm::mat4 save = model_view;
+
+        model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
         if(m_particuleGenerator != nullptr)
         {

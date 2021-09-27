@@ -21,6 +21,9 @@ Particule::Particule()
 {
     initParticles();
 
+    screen_width = GetSystemMetrics(SM_CXSCREEN);
+    screen_height = GetSystemMetrics(SM_CYSCREEN);
+
     m_sphere_particle = new Sphere(1, 20, 20);
     if(m_sphere_particle == nullptr)
     {
@@ -63,18 +66,12 @@ void Particule::initParticles()
 {
     for (int i(0); i < MAX_PARTICLES; i++)
     {
-        m_particle_data[i].active = true;
-        m_particle_data[i].life = 1.0;
 
-        m_particle_data[i].fade = myRand(0.01, 0.05);
+        m_particle_data[i].x = myRand(-10.0, 10.0);
+        m_particle_data[i].y = myRand(-10.0, 10.0);
+        m_particle_data[i].z = myRand(-2.5, 0.0);
 
-        m_particle_data[i].xi = myRand(-10.0, 10.0);
-        m_particle_data[i].yi = myRand(-10.0, 10.0);
-        m_particle_data[i].zi = myRand(10.0, 20.0);
-
-        m_particle_data[i].xg = 0.0;
-        m_particle_data[i].yg = 0.0;
-        m_particle_data[i].zg = -1.0;
+        
         
     }
 }
@@ -86,13 +83,40 @@ void Particule::drawParticles(glm::mat4 &projection, glm::mat4 &modelview)
 {
     glm::mat4 save = modelview;
 
-        modelview = translate(modelview, vec3(1, 8000, 1));
-        modelview = scale(modelview, vec3(50, 50, 50));
-
-        if((m_sphere_shader != nullptr) && (m_sphere_particle != nullptr))
+        for (int i(0); i < MAX_PARTICLES; i++)
         {
-            m_sphere_particle->draw(projection, modelview, m_sphere_shader);
+
+            modelview = translate(modelview, vec3(m_particle_data[i].x, m_particle_data[i].y, m_particle_data[i].z));
+            modelview = scale(modelview, (vec3(0.002)));
+
+            if((m_sphere_particle != nullptr) && (m_sphere_shader != nullptr))
+            {
+                m_sphere_particle->draw(projection, modelview, 1.0, m_sphere_shader);
+            }
+
+            modelview = save;
+
+            moveParticle(m_particle_data[i]);
         }
+        
 
     modelview = save;
+}
+
+/***********************************************************************************************************************************************************************/
+/***************************************************************************** moveParticle ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Particule::moveParticle(particles &particle)
+{
+    if((particle.z >= -2.5) && (particle.z <= 0.0))
+    {
+        particle.z = particle.z + 0.05;
+    }
+
+    if(particle.z > 0.0)
+    {
+        particle.x = myRand(-10.0, 10.0);
+        particle.y = myRand(-10.0, 10.0);
+        particle.z = myRand(-2.5, 0.0);
+    }
 }

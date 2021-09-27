@@ -25,6 +25,7 @@ PURPOSE : header of the Particule class
         #include <iostream>
         #include <string>
         #include <math.h>
+        #include <Windows.h>
 
         #include "../Shader/Shader.hpp"
         #include "../CelestialBody/Geometry/Sphere.hpp"
@@ -33,12 +34,9 @@ PURPOSE : header of the Particule class
 
         typedef struct particles {
 
-                    bool    active;
-                    double  life;
-                    double  fade;
-                    double  x, y, z;
-                    double  xi, yi, zi;
-                    double xg, yg, zg;
+                    double  x;
+                    double  y;
+                    double  z;
 
         } particles;
         
@@ -55,15 +53,21 @@ PURPOSE : header of the Particule class
                 Sphere      *m_sphere_particle;
                 Shader      *m_sphere_shader;
 
+                int screen_width;
+                int screen_height;
+
                 double myRand(double const min, double const max);
+                void moveParticle(particles &particle);
+                void initParticles();
 
             public:
             
                 Particule();
                 ~Particule();
 
-                void initParticles();
+                
                 void drawParticles(glm::mat4 &projection, glm::mat4 &modelview);
+                
 
                 
 

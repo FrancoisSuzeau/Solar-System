@@ -85,7 +85,7 @@ PURPOSE : header of the OpenGlSketch class
                 float exposure;
 
                 bool pause_music;
-                bool pause_music_key_pressed;
+                bool speed_key_pressed;
                 int volume;
 
                 Settings *m_settings;
@@ -114,6 +114,8 @@ PURPOSE : header of the OpenGlSketch class
                 Overlay *m_overlay;
 
                 Particule *m_particuleGenerator;
+
+                bool is_moving;
                 
 
             public:

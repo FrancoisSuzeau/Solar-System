@@ -254,7 +254,7 @@ void Sphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hd
     }
 }
 
-void Sphere::draw(glm::mat4 &projection, glm::mat4 &modelview, Shader *atmo_shader)
+void Sphere::draw(glm::mat4 &projection, glm::mat4 &modelview, float transparency, Shader *atmo_shader)
 {
     if(atmo_shader != nullptr)
     {
@@ -275,6 +275,7 @@ void Sphere::draw(glm::mat4 &projection, glm::mat4 &modelview, Shader *atmo_shad
         // glUniformMatrix4fv(glGetUniformLocation(atmo_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
         atmo_shader->setMat4("modelview", modelview);
         atmo_shader->setMat4("projection", projection);
+        atmo_shader->setFloat("transparency", transparency);
         
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
