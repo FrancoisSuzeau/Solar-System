@@ -36,7 +36,7 @@ m_name(name), m_light_vao(0)
     m_speed_rotation = 0.1;
     m_rotation_angle = 0.0;
 
-    m_atmosphere = new StarAtmosphere(7500, m_name, "../assets/textures/atmosphere.png");
+    m_atmosphere = new Atmosphere(1.05, m_name);
     if(m_atmosphere == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -215,14 +215,14 @@ void Star::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, glm::vec3 &camPosUpd, bool hdr, Shader *atmo_shader)
+void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atmo_shader)
 {
     if(atmo_shader != nullptr)
     {
         translateCelestialBody(modelview, m_current_position);
         if(m_atmosphere != nullptr)
         {
-            m_atmosphere->displaySunAtmo(projection, modelview, phi, theta, camPosUpd, hdr, atmo_shader);
+            m_atmosphere->displaySunAtmo(projection, modelview, hdr, atmo_shader);
         }
            
     }

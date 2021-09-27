@@ -216,7 +216,40 @@ void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &lig
     
 }
 
-void Sphere::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, float phi, float theta, float y, glm::mat4 &light_src, glm::vec3 &camPos, Shader *atm_shader)
+void Sphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atm_shader)
 {
-    //do nothing only for child  class
+    if(atm_shader != nullptr)
+    {
+        glUseProgram(atm_shader->getProgramID());
+        /************************************************* bind VBO and IBO ********************************************************/
+        glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glTexCoordPointer(2,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3 * 2));
+        glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
+        glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
+        //===================================================================================================================================
+
+        // Render
+        // glUniformMatrix4fv(glGetUniformLocation(atm_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+        // glUniformMatrix4fv(glGetUniformLocation(atm_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+        atm_shader->setMat4("modelview", modelview);
+        atm_shader->setMat4("projection", projection);
+
+        atm_shader->setInt("hdr", hdr);
+        
+        glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
+
+        /************************************************* unbind VBO and IBO ********************************************************/
+        glBindBuffer(GL_ARRAY_BUFFER,         0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        //===================================================================================================================================
+
+        glUseProgram(0);
+    }
 }

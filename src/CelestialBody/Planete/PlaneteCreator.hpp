@@ -72,11 +72,6 @@ PURPOSE : header of the virtual PlaneteCreator class
                         m_planete->updatePositionLight(projection, modelview);
                 }
 
-                void updateAtmoInter(glm::mat4 &projection, glm::mat4 &light_src)
-                {
-                        m_planete->updateAtmoInter(projection, light_src);
-                }
-
                 vec3 getPostion() const
                 {
                        return m_planete->getCurrentPos();

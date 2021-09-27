@@ -17,7 +17,7 @@ CC=g++
 # SRC contient liste des fichier sources du projet 
 # on pourrait utiliser une construction automatique a l'aide du joker *.c et la commande wildcard mais il faudra gerer les dépendances vis a vis des .h
 # SRC=$(wildcard *.c)
-SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Atmosphere/StarAtmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp
+SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp
 
 OBJET=$(SRC:.cpp=.o)
 
@@ -44,12 +44,11 @@ Ring.o: CelestialBody/Ring/Ring.hpp CelestialBody/Geometry/Disk.hpp Texture/Text
 PlaneteRing.o: CelestialBody/Planete/PlaneteRing.hpp CelestialBody/Planete/SimplePlanete.hpp CelestialBody/Ring/Ring.hpp
 Text.o: Text/Text.hpp Texture/Texture.hpp Shader/Shader.hpp
 Skybox.o: CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp
-Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp Atmosphere/StarAtmosphere.hpp
+Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp Atmosphere/Atmosphere.hpp
 PlanetarySystem.o: CelestialBody/System/PlanetarySystem.hpp CelestialBody/System/System.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp Atmosphere/Atmosphere.hpp
 SolarSystem.o: CelestialBody/System/SolarSystem/hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp
 StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
-StarAtmosphere.o: Atmosphere/StarAtmosphere.hpp CelestialBody/CelestialBody.hpp CelestialBody/Geometry/Disk.hpp
 Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp
 Settings.o: Settings/Settings.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp
 PlaneteInformation.o: PlaneteInformation/PlaneteInformation.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp

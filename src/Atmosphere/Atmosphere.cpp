@@ -26,6 +26,11 @@ Atmosphere::Atmosphere(float size, std::string const name)
 
     name_planete_host = name;
     m_size = size;
+
+    if(name == "Sun")
+    {
+        m_color_atmo = vec3(255.0/255.0, 255.0/255.0, 255.0/255.0);
+    }
     
     if(name == "Earth")
     {
@@ -113,6 +118,40 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 
 
         modelview = save;
     }
-    
-    
+}
+
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************************ display **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Atmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atmo_shader)
+{
+    if(atmo_shader != nullptr)
+    {
+        
+        glm::mat4 save = modelview;
+        modelview = scale(modelview, vec3(3500 , 3500, 3500));
+        //==============================================================================================================================
+        //Activate the shader
+        glUseProgram(atmo_shader->getProgramID());
+
+           
+            atmo_shader->setMat4("modelview", modelview);
+            atmo_shader->setMat4("projection", projection);
+
+            atmo_shader->setVec3("atmoColor", m_color_atmo);
+            atmo_shader->setInt("hdr", hdr);
+
+            
+            if(sphere_atmosphere != nullptr)
+            {
+                sphere_atmosphere->displaySunAtmo(projection, modelview, hdr, atmo_shader);
+            }
+            
+            
+        glUseProgram(0);
+           
+
+        modelview = save;
+    }
 }

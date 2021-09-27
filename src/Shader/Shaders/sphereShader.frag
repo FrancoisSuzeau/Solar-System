@@ -12,7 +12,7 @@ uniform bool hdr;
 layout (location = 0) out vec4 FragColor;
 void main()
 {
-    vec3 objectColor = atmoColor;;
+    vec3 objectColor = atmoColor;
 
     vec3 lightColor;
     if(hdr)

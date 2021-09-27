@@ -48,9 +48,9 @@ PURPOSE : header of the virtual SolarSystem class
                 PlaneteInformation              *m_planete_info;
 
                 std::vector<Shader*>            m_body_shader;
-                Shader*                         m_atmo_shader;
                 Shader*                         m_ring_shader;
                 Shader                          *m_sphere_shader;
+                Shader                          *m_sun_atmo_shader;
 
                 
             public:

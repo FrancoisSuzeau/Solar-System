@@ -511,7 +511,7 @@ void OpenGlSketch::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    camera = new Camera(vec3(-150000, 1000, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 200.0);
+    camera = new Camera(vec3(1, 9000, 1), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 200.0);
     
     if(camera == nullptr)
     {

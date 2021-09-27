@@ -63,13 +63,6 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
     }
     m_body_shader[2]->loadShader();
 
-    // m_atmo_shader = new Shader("../src/Shader/Shaders/atmosShader.vert", "../src/Shader/Shaders/atmosShader.frag");
-    // if(m_atmo_shader == nullptr)
-    // {
-    //     exit(EXIT_FAILURE);
-    // }
-    // m_atmo_shader->loadShader();
-
     m_ring_shader = new Shader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
     if(m_ring_shader == nullptr)
     {
@@ -83,6 +76,13 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
         exit(EXIT_FAILURE);
     }
     m_sphere_shader->loadShader();
+
+    m_sun_atmo_shader = new Shader("../src/Shader/Shaders/sunAtmo.vert", "../src/Shader/Shaders/sunAtmo.frag");
+    if(m_sun_atmo_shader == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+    m_sun_atmo_shader->loadShader();
 
 }
 
@@ -143,6 +143,11 @@ SolarSystem::~SolarSystem()
     if(m_sphere_shader != nullptr)
     {
         delete m_sphere_shader;
+    }
+
+    if(m_sun_atmo_shader != nullptr)
+    {
+        delete m_sun_atmo_shader;
     }
     
     
@@ -494,27 +499,15 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         }
         glm::vec3 position_sun = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
         glm::mat4 light_src = glm::lookAt(position_sun, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
-        float x_sun = camPos[0] - position_sun[0]; //doesn't know why I have to use the reverse value
-        float y_sun = camPos[1] - position_sun[1];
-        float z_sun = camPos[2] - position_sun[2];
-            
-        float r_square_sun = std::pow(x_sun, 2) + std::pow(y_sun, 2) + std::pow(z_sun, 2);
-            
-        float r_sun = std::sqrt(r_square_sun);
-
-        float phi_sun = atan(y_sun/x_sun);
-        float theta_sun = acos(z_sun/r_sun);
-
-        glm::vec3 cameraPos_sun = vec3(x_sun, y_sun, z_sun);
+        
         if(sun != nullptr)
         {
-            if(m_atmo_shader != nullptr)
+            if(m_sun_atmo_shader != nullptr)
             {
-                //sun->displayAtmo(projection, modelview, phi_sun, theta_sun, cameraPos_sun, hdr, m_atmo_shader);
+                sun->displayAtmo(projection, modelview, hdr, m_sun_atmo_shader);
             }
             
         }
-        
 
     modelview = save;
     glm::mat4 save_light_src = light_src;
@@ -525,7 +518,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         if(m_planetary_system[i] != nullptr)
         {
-            if(m_atmo_shader != nullptr)
+            if(m_sphere_shader != nullptr)
             {
                 m_planetary_system[i]->drawAtmo(projection, modelview, camPos, hdr, m_sphere_shader);
             }
@@ -541,11 +534,10 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         if(m_planete_creator[i] != nullptr)
         {
-            modelview = save;
             m_planete_creator[i]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[i]->updatePosLight(projection, light_src);
 
-            if(m_atmo_shader != nullptr)
+            if((m_sphere_shader != nullptr) && (m_planete_creator[i] != nullptr))
             {
                 m_planete_creator[i]->drawAtmoPlanete(projection, modelview, light_src, camPos, hdr, m_sphere_shader);
             }
