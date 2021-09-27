@@ -18,6 +18,15 @@ PURPOSE : header of the Ring class
 
         #include "../../Texture/Texture.hpp"
         #include "../Geometry/Disk.hpp"
+        #include "../../Shader/Shader.hpp"
+
+        #include <string>
+        #include <vector>
+        #include <iostream>
+        #include <GL/glew.h>
+        #include <glm/glm.hpp>
+        #include <glm/gtx/transform.hpp>
+        #include <glm/gtc/type_ptr.hpp>
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -30,7 +39,6 @@ PURPOSE : header of the Ring class
                 Texture         m_texture;
                 float           m_coord[12];
                 int             m_bytes_coord_size;
-                Shader          m_shader_ring;
 
             public:
             

@@ -28,6 +28,11 @@ PURPOSE : header of the virtual SolarSystem class
         #include "../Planete/SimplePlaneteCreator.hpp"
         #include "../Planete/PlaneteRingCreator.hpp"
         #include "../../Shader/Shader.hpp"
+
+        #include "../../PlaneteInformation/PlaneteInformation.hpp"
+
+        #include <SDL2/SDL.h>
+        #include <SDL2/SDL_ttf.h>
         
        
 /********************************************************************* class definition *********************************************************************/

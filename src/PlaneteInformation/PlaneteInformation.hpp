@@ -25,9 +25,12 @@ PURPOSE : header of the PlaneteInformation class
         #include <iostream>
         #include <string>
         #include <Windows.h>
+
+        #include <SDL2/SDL_ttf.h>
         
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
+        #include "../Shader/Shader.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/

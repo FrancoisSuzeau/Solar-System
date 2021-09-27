@@ -20,6 +20,17 @@ PURPOSE : header of the Star class
         #include "../../Texture/Texture.hpp"
 
         #include "../../Atmosphere/Atmosphere.hpp"
+        #include "../../Shader/Shader.hpp"
+
+        #include <glm/glm.hpp>
+        #include <glm/gtx/transform.hpp>
+        #include <glm/gtc/type_ptr.hpp>
+
+        #include <GL/glew.h>
+        #include <iostream>
+        #include <string>
+        #include <cstring>
+        #include <vector>
         
 
 /********************************************************************* class definition *********************************************************************/

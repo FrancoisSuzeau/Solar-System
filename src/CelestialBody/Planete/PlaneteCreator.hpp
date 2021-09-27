@@ -24,7 +24,7 @@ PURPOSE : header of the virtual PlaneteCreator class
         #include <glm/gtc/type_ptr.hpp>
 
         #include "SimplePlanete.hpp"
-        #include "AtmoPlanete.hpp"
+        #include "../../Shader/Shader.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 

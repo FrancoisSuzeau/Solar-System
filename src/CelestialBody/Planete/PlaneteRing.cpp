@@ -63,10 +63,10 @@ PlaneteRing::~PlaneteRing()
     {
         delete m_ring;
     }
-    if( (m_name == "Uranus") || (m_name == "Neptune") )
-    {
-        delete m_atmosphere;
-    }
+    // if( (m_name == "Uranus") || (m_name == "Neptune") )
+    // {
+    //     delete m_atmosphere;
+    // }
 }
 
 /***********************************************************************************************************************************************************************/

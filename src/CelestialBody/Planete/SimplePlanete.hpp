@@ -21,6 +21,18 @@ PURPOSE : header of the SimplePlanete class
         #include "../../Text/Text.hpp"
         #include "../../Atmosphere/Atmosphere.hpp"
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
+        #include "../../Shader/Shader.hpp"
+
+        #include <string>
+        #include <vector>
+        #include <iostream>
+        #include <GL/glew.h>
+        #include <glm/glm.hpp>
+        #include <glm/gtx/transform.hpp>
+        #include <glm/gtc/type_ptr.hpp>
+        
+        #include <SDL2/SDL.h>
+        #include <SDL2/SDL_ttf.h>
         
 
 /********************************************************************* class definition *********************************************************************/

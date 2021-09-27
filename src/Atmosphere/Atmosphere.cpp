@@ -29,7 +29,7 @@ Atmosphere::Atmosphere(float size, std::string const name)
 
     if(name == "Sun")
     {
-        m_color_atmo = vec3(255.0/255.0, 255.0/255.0, 255.0/255.0);
+        m_color_atmo = vec3(255.0/255.0, 255.0/255.0, 224.0/255.0);
     }
     
     if(name == "Earth")
@@ -42,24 +42,7 @@ Atmosphere::Atmosphere(float size, std::string const name)
     }
     else if (name == "Mars")
     {
-        m_color_atmo = vec3(1.0, 178.0/255.0, 86.0/255.0);
-    }
-    else if (name == "Jupiter")
-    {
-        // m_color_atmo = vec3(215.0/255.0, 184.0/255.0, 148.0/255.0);
-        m_color_atmo = vec3(233.0/255.0, 219.0/255.0, 171.0/255.0);
-    }
-    else if (name == "Saturn")
-    {
-        m_color_atmo = vec3(233.0/255.0, 219.0/255.0, 171.0/255.0);
-    }
-    else if (name == "Uranus")
-    {
-        m_color_atmo = vec3(142.0/255.0, 230.0/255.0, 207.0/255.0);
-    }
-    else if (name == "Neptune")
-    {
-        m_color_atmo = vec3(101.0/255.0, 197.0/255.0, 255.0/255.0);
+        m_color_atmo = vec3(178.0/255.0, 100.0/255.0, 100.0/255.0);
     }
 
     sphere_atmosphere = new Sphere(1, 70, 70);

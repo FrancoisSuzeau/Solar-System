@@ -24,6 +24,7 @@ PURPOSE : header of the Settings class
 
         #include <GL/glew.h>
         #include <SDL2/SDL.h>
+        #include <SDL2/SDL_ttf.h>
         #include <iostream>
         #include <iomanip>
         #include <sstream>
@@ -37,6 +38,7 @@ PURPOSE : header of the Settings class
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
         #include "../Input/Input.hpp"
+        #include "../Shader/Shader.hpp"
 
         namespace ButtonChoice
         {

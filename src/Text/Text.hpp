@@ -17,6 +17,7 @@ PURPOSE : header of the Text class
 /********************************************************************* includes *********************************************************************/
         
         #include <SDL2/SDL_ttf.h>
+        #include <SDL2/SDL.h>
         #include <iostream>
         #include <string>
 

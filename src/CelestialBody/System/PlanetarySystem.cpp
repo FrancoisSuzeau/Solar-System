@@ -53,7 +53,7 @@ PlanetarySystem::~PlanetarySystem()
     }
     
 
-    if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
+    if((m_system_name == "Earth System")) //|| (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
         if(m_atmosphere != nullptr)
         {
@@ -137,11 +137,11 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27, 3.13, glm::vec3(778340, 0, 0), police);
 
-        m_atmosphere = new Atmosphere(1.05, "Jupiter");
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        // m_atmosphere = new Atmosphere(1.05, "Jupiter");
+        // if(m_atmosphere == nullptr)
+        // {
+        //     exit(EXIT_FAILURE);
+        // }
 
     }
     else if(m_system_name == "Saturnian System")
@@ -178,11 +178,11 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         }
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476, 26.73, glm::vec3(0.0, -1426700, 0), police);
 
-        m_atmosphere = new Atmosphere(1.05, "Saturn");
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        // m_atmosphere = new Atmosphere(1.05, "Saturn");
+        // if(m_atmosphere == nullptr)
+        // {
+        //     exit(EXIT_FAILURE);
+        // }
 
     }
     else
@@ -322,7 +322,7 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
-    if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
+    if((m_system_name == "Earth System")) //|| (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
         glm::mat4 save = modelview;
         glm::vec3 position(0.1, 0.0, 0.0);

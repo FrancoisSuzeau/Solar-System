@@ -25,6 +25,9 @@ PURPOSE : header of the virtual SolarSystemCreator class
 
         #include "SystemCreator.hpp"
         #include "SolarSystem.hpp"
+
+        #include <SDL2/SDL.h>
+        #include <SDL2/SDL_ttf.h>
        
 /********************************************************************* class definition *********************************************************************/
 

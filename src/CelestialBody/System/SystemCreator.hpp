@@ -23,6 +23,11 @@ PURPOSE : header of the virtual SystemCreator class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
+        #include <SDL2/SDL.h>
+        #include <SDL2/SDL_ttf.h>
+
+        #include "../../Shader/Shader.hpp"
+
         #include "System.hpp"
        
 /********************************************************************* class definition *********************************************************************/

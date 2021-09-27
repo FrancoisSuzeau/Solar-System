@@ -56,22 +56,22 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
             exit(EXIT_FAILURE);
         }
     }
-    else if(m_name == "Uranus")
-    {
-        m_atmosphere = new Atmosphere(1.05, m_name);
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-    }
-    else if(m_name == "Neptune")
-    {
-        m_atmosphere = new Atmosphere(1.05, m_name);
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-    }
+    // else if(m_name == "Uranus")
+    // {
+    //     m_atmosphere = new Atmosphere(1.05, m_name);
+    //     if(m_atmosphere == nullptr)
+    //     {
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
+    // else if(m_name == "Neptune")
+    // {
+    //     m_atmosphere = new Atmosphere(1.05, m_name);
+    //     if(m_atmosphere == nullptr)
+    //     {
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
 }
 
 SimplePlanete::SimplePlanete(): Sphere()
@@ -212,7 +212,7 @@ void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
-    if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune") )
+    if( (m_name == "Mars") || (m_name == "Venus")) //|| (m_name == "Uranus") || (m_name == "Neptune") )
     {
         if(atmo_shader != nullptr)
         {

@@ -18,6 +18,14 @@ PURPOSE : header of the AtmoPlanete class
 
         #include "SimplePlanete.hpp"
         
+        #include <string>
+        #include <vector>
+        #include <iostream>
+        #include <GL/glew.h>
+        #include <glm/glm.hpp>
+        #include <glm/gtx/transform.hpp>
+        #include <glm/gtc/type_ptr.hpp>
+        
         
        
 /********************************************************************* class definition *********************************************************************/

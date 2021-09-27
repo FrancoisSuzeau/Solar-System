@@ -19,6 +19,9 @@ PURPOSE : Interface CelestialBody
         #include "../Shader/Shader.hpp"
 
         #include <string>
+        #include <vector>
+        #include <iostream>
+        #include <GL/glew.h>
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
@@ -30,7 +33,7 @@ PURPOSE : Interface CelestialBody
         {
             protected:
             
-                Shader      m_shader;
+                
                 float       m_real_size;
                 float       m_size;
                 float       m_inclinaison_angle;

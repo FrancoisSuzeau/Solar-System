@@ -24,6 +24,9 @@ PURPOSE : header of the virtual SimplePlaneteCreator class
         #include <glm/gtc/type_ptr.hpp>
 
         #include "PlaneteCreator.hpp"
+
+        #include <SDL2/SDL.h>
+        #include <SDL2/SDL_ttf.h>
        
 /********************************************************************* class definition *********************************************************************/
 

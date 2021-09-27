@@ -24,6 +24,21 @@ PURPOSE : header of the virtual PlanetarySystem class
         #include "../Planete/PlaneteRingCreator.hpp"
 
         #include "../../Atmosphere/Atmosphere.hpp"
+        #include "../../Text/Text.hpp"
+        #include "../../Shader/Shader.hpp"
+
+        #include "../../PlaneteInformation/PlaneteInformation.hpp"
+
+        #include <SDL2/SDL.h>
+        #include <SDL2/SDL_ttf.h>
+
+        #include <string>
+        #include <vector>
+        #include <iostream>
+        #include <GL/glew.h>
+        #include <glm/glm.hpp>
+        #include <glm/gtx/transform.hpp>
+        #include <glm/gtc/type_ptr.hpp>
        
 /********************************************************************* class definition *********************************************************************/
 

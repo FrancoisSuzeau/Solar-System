@@ -31,6 +31,7 @@ PURPOSE : header of the Atmosphere class
         #include <cmath>
 
         #include "../CelestialBody/Geometry/Sphere.hpp"
+        #include "../Shader/Shader.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/

@@ -26,7 +26,7 @@ PURPOSE : header of the virtual StartScreen class
         #include <SDL2/SDL_ttf.h>
 
         #include "../Text/Text.hpp"
-        #include "../CelestialBody/Geometry/Square.hpp"
+        #include "../Shader/Shader.hpp"
 
         
        
