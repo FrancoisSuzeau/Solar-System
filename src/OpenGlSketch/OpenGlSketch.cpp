@@ -400,6 +400,13 @@ void OpenGlSketch::startLoop()
         exit(EXIT_FAILURE);
     }
 
+    m_particuleGenerator = new Particule();
+    std::cout << m_particuleGenerator << std::endl;
+    if(m_particuleGenerator == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+
     int nb_loaded(0);
 
     mat4 projection;
@@ -615,6 +622,10 @@ void OpenGlSketch::mainLoop()
     /******************************************************************* RENDER OVERLAY ********************************************************************/
             renderSettings();
     //=======================================================================================================================================================
+
+    /******************************************************************* RENDER OVERLAY ********************************************************************/
+            renderParticles();
+    //=======================================================================================================================================================
             
 
 
@@ -739,6 +750,11 @@ void OpenGlSketch::mainLoop()
     if(square_shader != nullptr)
     {
         delete square_shader;
+    }
+
+    if(m_particuleGenerator != nullptr)
+    {
+        delete m_particuleGenerator;
     }
 
     for (int i(0); i < 2; i++)
@@ -1123,4 +1139,19 @@ void OpenGlSketch::renderSettings()
     }
     
     
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* renderParticles *********************************************************************/
+/***********************************************************************************************************************************************************************/
+void OpenGlSketch::renderParticles()
+{
+    glm::mat4 save = model_view;
+
+        if(m_particuleGenerator != nullptr)
+        {
+            m_particuleGenerator->drawParticles(projection, model_view);
+        }
+
+    model_view = save;
 }

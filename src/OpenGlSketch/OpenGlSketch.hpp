@@ -41,6 +41,7 @@ PURPOSE : header of the OpenGlSketch class
         #include "../Shader/Shader.hpp"
 
         #include "../Settings/Settings.hpp"
+        #include "../Particule/Particule.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -111,6 +112,8 @@ PURPOSE : header of the OpenGlSketch class
                 // Shader *shaderBlur;
 
                 Overlay *m_overlay;
+
+                Particule *m_particuleGenerator;
                 
 
             public:
@@ -127,6 +130,7 @@ PURPOSE : header of the OpenGlSketch class
                 void    renderScene();
                 void    renderInfo();
                 void    renderOverlay();
+                void    renderParticles();
 
                 void initFrameBuffer();
                 void renderSettings();
