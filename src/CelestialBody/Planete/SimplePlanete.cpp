@@ -212,7 +212,7 @@ void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
-    if( (m_name == "Mars") || (m_name == "Venus")) //|| (m_name == "Uranus") || (m_name == "Neptune") )
+    if( (m_name == "Mars") || (m_name == "Venus")) 
     {
         if(atmo_shader != nullptr)
         {

@@ -53,7 +53,7 @@ PlanetarySystem::~PlanetarySystem()
     }
     
 
-    if((m_system_name == "Earth System")) //|| (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
+    if(m_system_name == "Earth System")
     {
         if(m_atmosphere != nullptr)
         {
@@ -137,12 +137,6 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27, 3.13, glm::vec3(778340, 0, 0), police);
 
-        // m_atmosphere = new Atmosphere(1.05, "Jupiter");
-        // if(m_atmosphere == nullptr)
-        // {
-        //     exit(EXIT_FAILURE);
-        // }
-
     }
     else if(m_system_name == "Saturnian System")
     {
@@ -177,12 +171,6 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
             exit(EXIT_FAILURE);
         }
         m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476, 26.73, glm::vec3(0.0, -1426700, 0), police);
-
-        // m_atmosphere = new Atmosphere(1.05, "Saturn");
-        // if(m_atmosphere == nullptr)
-        // {
-        //     exit(EXIT_FAILURE);
-        // }
 
     }
     else

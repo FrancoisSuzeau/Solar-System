@@ -34,9 +34,11 @@ PURPOSE : header of the Particule class
 
         typedef struct particles {
 
-                    double  x;
-                    double  y;
-                    double  z;
+                    double      x;
+                    double      y;
+                    double      z;
+
+                    int         id;
 
         } particles;
         
@@ -48,17 +50,16 @@ PURPOSE : header of the Particule class
             
             private:
 
-                particles   m_particle_data[MAX_PARTICLES];
+                particles   m_particle_data1[MAX_PARTICLES];
+                particles   m_particle_data2[MAX_PARTICLES];
 
                 Sphere      *m_sphere_particle;
                 Shader      *m_sphere_shader;
 
-                int screen_width;
-                int screen_height;
-
                 double myRand(double const min, double const max);
                 void moveParticle(particles &particle);
                 void initParticles();
+                void drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle);
 
             public:
             
@@ -67,6 +68,7 @@ PURPOSE : header of the Particule class
 
                 
                 void drawParticles(glm::mat4 &projection, glm::mat4 &modelview);
+                
                 
 
                 

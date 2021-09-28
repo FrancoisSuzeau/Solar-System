@@ -551,7 +551,7 @@ void OpenGlSketch::mainLoop()
     m_input.displayPointer(false);
     
     //initialize modelview and projection matrix
-    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 100000000.0);
+    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 9000000.0);
     model_view = mat4(1.0);
 
     //load and play the music
@@ -986,8 +986,6 @@ void OpenGlSketch::windowProcess()
         {
             is_moving = false;
         }
-
-        //is_moving = false;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -1130,10 +1128,31 @@ void OpenGlSketch::renderParticles()
     glm::mat4 save = model_view;
 
         model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+        if((m_input.getKey(SDL_SCANCODE_A)))
+        {
+            model_view = rotate(model_view, 90.0f, vec3(0.0, 1.0, 0.0));
+        }
 
+        if((m_input.getKey(SDL_SCANCODE_D)))
+        {
+            model_view = rotate(model_view, -90.0f, vec3(0.0, 1.0, 0.0));
+        }
+
+        if((m_input.getKey(SDL_SCANCODE_S)))
+        {
+            model_view = rotate(model_view, 180.0f, vec3(0.0, 1.0, 0.0));
+        }
+        
         if(m_particuleGenerator != nullptr)
         {
-            m_particuleGenerator->drawParticles(projection, model_view);
+            if((m_input.getKey(SDL_SCANCODE_W)) && (m_input.getKey(SDL_SCANCODE_S)))
+            {
+                //do nothing
+            }
+            else
+            {
+                m_particuleGenerator->drawParticles(projection, model_view);
+            }
         }
 
     model_view = save;
