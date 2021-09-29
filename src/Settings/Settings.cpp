@@ -17,8 +17,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Settings::Settings(TTF_Font *police) : m_black_rect(0.05, 0.1),
-m_grey_rect(0.05, 0.7),
+Settings::Settings(TTF_Font *police):
 m_titre(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_quit(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_hdr(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
@@ -44,11 +43,21 @@ display_name_plan(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 
     screen_width = GetSystemMetrics(SM_CXSCREEN);
     screen_height = GetSystemMetrics(SM_CYSCREEN);
+
+    m_grey_rect = new Square(0.05, 0.2);
+    if(m_grey_rect == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
 }
 
 Settings::~Settings()
 {
-
+    if(m_grey_rect != nullptr)
+    {
+        delete m_grey_rect;
+    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -62,7 +71,7 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
     float start_x_black = -0.3;
     float start_y = 0.35;
 
-    if(square_shader != nullptr)
+    if((square_shader != nullptr) && (m_grey_rect != nullptr))
     {
         //black fill
         for (size_t i(0); i < 15; i++)
@@ -70,7 +79,7 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
             for (size_t j(0); j < 13; j++)
             {
                     modelview = translate(modelview, vec3(start_x_black, start_y, 0.0));
-                    m_black_rect.display(projection, modelview, hdr, square_shader);
+                    m_grey_rect->display(projection, modelview, hdr, square_shader);
                 
                 modelview = save;
                 start_x_black = start_x_black + constance;
@@ -78,7 +87,10 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
 
             start_y = start_y - constance;
             start_x_black = -0.3;
+
+            modelview = save;
         }
+        modelview = save;
 
         //white border top and bottom
         float start_x_white = -0.3;
@@ -86,12 +98,12 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
         for (size_t i(0); i < 13; i++)
         {
                 modelview = translate(modelview, vec3(start_x_white, 0.36, 0.0));
-                m_grey_rect.display(projection, modelview, hdr, square_shader);
+                m_grey_rect->display(projection, modelview, hdr, square_shader);
                 
             modelview = save;
 
                 modelview = translate(modelview, vec3(start_x_white, -0.36, 0.0));
-                m_grey_rect.display(projection, modelview, hdr, square_shader);
+                m_grey_rect->display(projection, modelview, hdr, square_shader);
 
             modelview = save;
 
@@ -104,12 +116,12 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
         for (size_t i(0); i < 15; i++)
         {
                 modelview = translate(modelview, vec3(-0.31, start_y_white, 0.0));
-                m_grey_rect.display(projection, modelview, hdr, square_shader);
+                m_grey_rect->display(projection, modelview, hdr, square_shader);
                 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.31, start_y_white, 0.0));
-                m_grey_rect.display(projection, modelview, hdr, square_shader);
+                m_grey_rect->display(projection, modelview, hdr, square_shader);
                 
             modelview = save;
 
@@ -119,12 +131,12 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
         //the last to white on the bottom corner left and right
 
             modelview = translate(modelview, vec3(-0.31, -0.36, 0.0));
-            m_grey_rect.display(projection, modelview, hdr, square_shader);
+            m_grey_rect->display(projection, modelview, hdr, square_shader);
                 
         modelview = save;
 
             modelview = translate(modelview, vec3(0.31, -0.36, 0.0));
-            m_grey_rect.display(projection, modelview, hdr, square_shader);
+            m_grey_rect->display(projection, modelview, hdr, square_shader);
     }
     
             

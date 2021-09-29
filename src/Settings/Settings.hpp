@@ -74,8 +74,7 @@ PURPOSE : header of the Settings class
             
             private:
 
-                Square          m_grey_rect;
-                Square          m_black_rect;
+                Square          *m_grey_rect;
 
                 Text            m_titre;
                 Text            m_quit;

@@ -86,9 +86,9 @@ void Particule::drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input
 
         determineOrientation(projection, modelview, input);
         m_speed = 1 * speed / 200;
-        if(m_speed < 0.188)
+        if(m_speed < 0.3)
         {
-            m_speed = 0.188;
+            m_speed = 0.3;
         }
 
         for (int i(0); i < MAX_PARTICLES; i++)
