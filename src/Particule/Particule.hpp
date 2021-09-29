@@ -29,6 +29,7 @@ PURPOSE : header of the Particule class
 
         #include "../Shader/Shader.hpp"
         #include "../CelestialBody/Geometry/Sphere.hpp"
+        #include "../Input/Input.hpp"
 
         #define MAX_PARTICLES 1000
 
@@ -57,9 +58,15 @@ PURPOSE : header of the Particule class
                 Shader      *m_sphere_shader;
 
                 double myRand(double const min, double const max);
-                void moveParticle(particles &particle);
+                void moveParticleFandB(particles &particle); // forward and backward
+                void moveParticleLandR(particles &particle); //left and right
                 void initParticles();
                 void drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle);
+                void determineOrientation(glm::mat4 &projection, glm::mat4 &modelview, Input input);
+
+                int             m_senseFandB;
+                int             m_senseLandR;
+                float           m_speed;
 
             public:
             
@@ -67,7 +74,7 @@ PURPOSE : header of the Particule class
                 ~Particule();
 
                 
-                void drawParticles(glm::mat4 &projection, glm::mat4 &modelview);
+                void drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, float speed);
                 
                 
 

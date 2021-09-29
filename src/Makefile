@@ -52,7 +52,7 @@ Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/Geometry/Sphere.hpp Shader
 Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp
 Settings.o: Settings/Settings.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp Input/Input.hpp
 PlaneteInformation.o: PlaneteInformation/PlaneteInformation.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp
-Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp
+Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp
 
 %.o:%.cpp
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${CFLAGS}

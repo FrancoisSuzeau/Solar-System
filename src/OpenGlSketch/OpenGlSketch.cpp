@@ -1128,20 +1128,6 @@ void OpenGlSketch::renderParticles()
     glm::mat4 save = model_view;
 
         model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-        if((m_input.getKey(SDL_SCANCODE_A)))
-        {
-            model_view = rotate(model_view, 90.0f, vec3(0.0, 1.0, 0.0));
-        }
-
-        if((m_input.getKey(SDL_SCANCODE_D)))
-        {
-            model_view = rotate(model_view, -90.0f, vec3(0.0, 1.0, 0.0));
-        }
-
-        if((m_input.getKey(SDL_SCANCODE_S)))
-        {
-            model_view = rotate(model_view, 180.0f, vec3(0.0, 1.0, 0.0));
-        }
         
         if(m_particuleGenerator != nullptr)
         {
@@ -1151,7 +1137,7 @@ void OpenGlSketch::renderParticles()
             }
             else
             {
-                m_particuleGenerator->drawParticles(projection, model_view);
+                m_particuleGenerator->drawParticles(projection, model_view, m_input, camera->getSpeed());
             }
         }
 
