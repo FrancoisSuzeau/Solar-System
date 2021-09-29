@@ -86,6 +86,10 @@ Make sure that the executable file is in the ````bin```` directory.
 + Setting : add option to show planete information or not
 + Correcting cross machine : adapte GLSL script to OpenGL version installed on the host machine (Windows)
 
+### 29/07/2021
++ Adding particule effect when moving into scene
++ Fix a bug on settings feature but have to perform design
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
@@ -93,6 +97,8 @@ For the moment I am working on this following aspect :
 + Implements atmosphere effects (like red shadowing on the frontier of the dark side of a planets, bloom and blur effect) : impossible due to a not working framebuffer
 
 + Overlay : Display the sphere influence when approching a body or interplanetary travel
+
++ Settings : perform design with shader
 
 + After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
 
