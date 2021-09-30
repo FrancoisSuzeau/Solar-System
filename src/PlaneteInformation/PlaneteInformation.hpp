@@ -40,8 +40,7 @@ PURPOSE : header of the PlaneteInformation class
             
             private:
 
-                Square          m_grey_rect;
-                Square          m_black_rect;
+                Square          *m_rect;
 
                 Text            m_text_name;
                 
