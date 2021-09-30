@@ -6,6 +6,7 @@
 // Entr�e
 
 in vec3 color;
+uniform vec3 color2;
 uniform bool hdr;
 
 
@@ -23,11 +24,12 @@ void main()
     vec3 result;
     if(hdr)
     {
-        result = correct_color * color;
+        result = correct_color * color2;
+        
     }
     else
     {
-        result = color;
+        result = color2;
     }
 
     FragColor = vec4(result, 1.0);

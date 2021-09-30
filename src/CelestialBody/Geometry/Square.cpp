@@ -68,7 +68,7 @@ Square::~Square()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Square::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader)
+void Square::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 color, bool hdr, Shader *square_shader)
 {
     if(square_shader != nullptr)
     {
@@ -83,6 +83,7 @@ void Square::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shad
             glUniformMatrix4fv(glGetUniformLocation(square_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
 
             square_shader->setInt("hdr", hdr);
+            square_shader->setVec3("color2", color);
 
             //display the form
             glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -98,6 +99,8 @@ void Square::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shad
     }
     
 }
+
+
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** load ******************************************************************************/
@@ -205,7 +208,7 @@ void Square::updateVBO(void *data, int size_bytes, int offset)
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** drawLoad **********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, Shader *square_shader)
+void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 color, Shader *square_shader)
 {
     glm::mat4 save = modelview;
     
@@ -215,19 +218,19 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, Sh
         if(count == 0)
         {
                 modelview = translate(modelview, vec3((count - 12.2) * 0.05, -0.3, 0.0));
-                display(projection, modelview, false, square_shader);
+                display(projection, modelview, color, false, square_shader);
 
             //restaure the modelview matrix
             modelview = save;
 
                 modelview = translate(modelview, vec3((count - 11.2) * 0.05, -0.3, 0.0));
-                display(projection, modelview, false, square_shader);
+                display(projection, modelview, color, false, square_shader);
 
             //restaure the modelview matrix
             modelview = save;
 
                 modelview = translate(modelview, vec3((count - 10.2) * 0.05, -0.3, 0.0));
-                display(projection, modelview, false, square_shader);
+                display(projection, modelview, color, false, square_shader);
 
             //restaure the modelview matrix
             modelview = save;
@@ -237,17 +240,17 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, Sh
             for (int i = 0; i < count * 3; i++)
             {
                     modelview = translate(modelview, vec3((i - 12.2) * 0.05, -0.3, 0.0));
-                    display(projection, modelview, false, square_shader);
+                    display(projection, modelview, color, false, square_shader);
 
                 modelview = save;
 
                     modelview = translate(modelview, vec3((i - 11.2) * 0.05, -0.3, 0.0));
-                    display(projection, modelview, false, square_shader);
+                    display(projection, modelview, color, false, square_shader);
 
                 modelview = save;
 
                     modelview = translate(modelview, vec3((i - 10.2) * 0.05, -0.3, 0.0));
-                    display(projection, modelview, false, square_shader);
+                    display(projection, modelview, color, false, square_shader);
 
                 modelview = save;
             }
@@ -258,7 +261,7 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, Sh
 }
 
 //NOT CONCERN
-void Square::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader)
+void Square::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 color, bool hdr, Shader *square_shader)
 {
 
 }

@@ -395,6 +395,7 @@ void OpenGlSketch::startLoop()
     square_shader->loadShader();
 
     Square      *square = new Square(0.05, 0.500);
+    vec3 color = vec3(0.5);
     if(square == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -452,7 +453,7 @@ void OpenGlSketch::startLoop()
         
             if(square != nullptr)
             {
-                square->drawLoad(nb_loaded, projection, model_view, square_shader);
+                square->drawLoad(nb_loaded, projection, model_view, color, square_shader);
             }
             
         //restaure the modelview matrix

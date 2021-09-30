@@ -68,6 +68,9 @@ PURPOSE : header of the Overlay class
                 std::string     m_ancient_time;
                 int             m_sec;
 
+                glm::vec3 m_colorBlack;
+                glm::vec3 m_colorGrey;
+
             public:
             
                 Overlay(TTF_Font *police);

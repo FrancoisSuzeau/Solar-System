@@ -51,6 +51,9 @@ PURPOSE : header of the PlaneteInformation class
                 int             screen_w;
                 int             screen_h;
 
+                glm::vec3       colorGrey;
+                glm::vec3       colorBlack;
+
             public:
             
                 PlaneteInformation(std::string const name_plan, TTF_Font *police);

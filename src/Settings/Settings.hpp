@@ -92,6 +92,9 @@ PURPOSE : header of the Settings class
                 int             screen_width;
                 int             screen_height;
 
+                glm::vec3            colorGrey;
+                glm::vec3            colorBlack;
+
             public:
             
                 Settings(TTF_Font *police);
