@@ -52,6 +52,9 @@ display_name_plan(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
     {
         exit(EXIT_FAILURE);
     }
+
+    initButtonCoord();
+
 }
 
 Settings::~Settings()
@@ -61,6 +64,51 @@ Settings::~Settings()
         delete m_grey_rect;
     }
     
+}
+
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************* initButtonCoord *********************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Settings::initButtonCoord()
+{
+    float ratio_x = (float) 1920/screen_width; 
+    float ratio_y = (float) 1080/screen_height;
+
+    float tab_coords[17][5] = {
+
+        {(screen_width/2) - (27/ratio_x), (screen_width/2) + (19/ratio_x), (screen_height/2) - (206/ratio_y), (screen_height/2) - (188/ratio_y), (float) ButtonChoice::Button::HDR_ON},
+        {(screen_width/2) + (33/ratio_x), (screen_width/2) + (116/ratio_x), (screen_height/2) - (206/ratio_y),  (screen_height/2) - (188/ratio_y), (float) ButtonChoice::Button::HDR_OFF},
+        {(screen_width/2) + (55/ratio_x), (screen_width/2) + (76/ratio_x), (screen_height/2) - (148/ratio_y), (screen_height/2) - (135/ratio_y), (float) ButtonChoice::Button::EXPOSURE_DEC},
+        {(screen_width/2) + (97/ratio_x), (screen_width/2) + (120/ratio_x), (screen_height/2) - (148/ratio_y), (screen_height/2) - (135/ratio_y), (float) ButtonChoice::Button::EXPOSURE_INC}, 
+        {(screen_width/2) + (28/ratio_x), (screen_width/2) + (55/ratio_x), (screen_height/2) - (93/ratio_y), (screen_height/2) - (80/ratio_y), (float) ButtonChoice::Button::SPEED_DEC},
+        {(screen_width/2) + (96/ratio_x), (screen_width/2) + (117/ratio_x), (screen_height/2) - (93/ratio_y), (screen_height/2) - (80/ratio_y), (float) ButtonChoice::Button::SPEED_INC},
+        {(screen_width/2) - (9/ratio_x), (screen_width/2) + (20/ratio_x), (screen_height/2) - (42/ratio_y), (screen_height/2) - (25/ratio_y), (float) ButtonChoice::Button::MUSIC_ON},
+        {(screen_width/2) + (60/ratio_x), (screen_width/2) + (115/ratio_x), (screen_height/2) - (42/ratio_y), (screen_height/2) - (25/ratio_y), (float) ButtonChoice::Button::MUSIC_OFF},
+        {(screen_width/2) + (36/ratio_x), (screen_width/2) + (56/ratio_x), (screen_height/2) + (14/ratio_y), (screen_height/2) + (28/ratio_y), (float) ButtonChoice::Button::MUSIC_DEC},
+        {(screen_width/2) + (94/ratio_x), (screen_width/2) + (117/ratio_x), (screen_height/2) + (14/ratio_y), (screen_height/2) + (28/ratio_y), (float) ButtonChoice::Button::MUSIC_INC},
+        {(screen_width/2) + (10/ratio_x), (screen_width/2) + (43/ratio_x), (screen_height/2) + (65/ratio_y), (screen_height/2) + (81/ratio_y), (float) ButtonChoice::Button::OVERLAY_ON},
+        {(screen_width/2) + (68/ratio_x), (screen_width/2) + (115/ratio_x), (screen_height/2) + (65/ratio_y), (screen_height/2) + (81/ratio_y), (float) ButtonChoice::Button::OVERLAY_OFF},
+        {(screen_width/2) + (73/ratio_x), (screen_width/2) + (103/ratio_x), (screen_height/2) + (115/ratio_y), (screen_height/2) + (141/ratio_y), (float) ButtonChoice::Button::PLANETE_INFO_ON},
+        {(screen_width/2) + (122/ratio_x), (screen_width/2) + (163/ratio_x), (screen_height/2) + (115/ratio_y), (screen_height/2) + (141/ratio_y), (float) ButtonChoice::Button::PLANETE_INFO_OFF},
+        {(screen_width/2) + (59/ratio_x), (screen_width/2) + (94/ratio_x), (screen_height/2) + (168/ratio_y), (screen_height/2) + (194/ratio_y), (float) ButtonChoice::Button::SHOW_NAME_ON},
+        {(screen_width/2) + (115/ratio_x), (screen_width/2) + (161/ratio_x), (screen_height/2) + (168/ratio_y), (screen_height/2) + (194/ratio_y), (float) ButtonChoice::Button::SHOW_NAME_OFF},
+        {(screen_width/2) - (115/ratio_x), (screen_width/2) + (115/ratio_x), (screen_height/2) + (258/ratio_y), (screen_height/2) + (272/ratio_y), (float) ButtonChoice::Button::QUIT}
+
+    };
+
+    for (int i(0); i < 17; i++)
+    {
+        button_coord a;
+        a.x_left = tab_coords[i][0];
+        a.x_right = tab_coords[i][1];
+        a.y_up = tab_coords[i][2];
+        a.y_down = tab_coords[i][3];
+        a.button_type = (int) tab_coords[i][4];
+
+        m_buttons_coord.push_back(a);
+    } 
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -73,7 +121,7 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
 
     float start_x_black = -0.3;
     float start_y = 0.35;
-    glm::vec3 color = vec3(0.1, 0.1, 0.1);
+    
     if((square_shader != nullptr) && (m_grey_rect != nullptr))
     {
         //black fill
@@ -214,194 +262,41 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
 }
 
 /***********************************************************************************************************************************************************************/
-/********************************************************************* quitSimulation **********************************************************************************/
+/********************************************************************* manageButton ************************************************************************************/
+/***********************************************************************************************************************************************************************/
+int Settings::checkCoordButton(Input const &input, button_coord coordinate)
+{
+    if( (input.getX() >= coordinate.x_left) && (input.getX() <= coordinate.x_right) )
+    {
+        if((input.getY() >= coordinate.y_up) && (input.getY() <= coordinate.y_down))
+        {
+            return coordinate.button_type;   
+        }
+    }
+
+    return ButtonChoice::Button::NONE;
+
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************* manageButton ************************************************************************************/
 /***********************************************************************************************************************************************************************/
 int Settings::manageButton(Input const &input)
 {
-    /*
-        For portable aspect towards the screen resolution (may be the GPU resolution), i need the ratio between my resolution (1920x1080) and other under
-        this threshold. It is not optimum but I don't have an other screen with a better resolution to work on it
-    */
-    float ratio_x = (float) 1920/screen_width; 
-    float ratio_y = (float) 1080/screen_height;
-
     if((input.getMouseButton(SDL_MOUSEBUTTONDOWN)) && (!m_mouse_button_pressed))
     {
         m_mouse_button_pressed = true;
-        // std::cout << "x = " << input.getX() << std::endl;
-        // std::cout << "y = " << input.getY() << std::endl;
+        
 
-        // std::cout << "width : " << screen_width << std::endl;
-        // std::cout << "height : " << screen_height << std::endl;
-
-        //HDR : ON
-        if( (input.getX() >= (screen_width/2) - (27/ratio_x)) && (input.getX() <= (screen_width/2) + (19/ratio_x)) )
+        for (int i(0); i < 17; i++)
         {
-            if((input.getY() >= (screen_height/2) - (206/ratio_y)) && (input.getY() <= (screen_height/2) - (188/ratio_y)))
+            int a = checkCoordButton(input, m_buttons_coord[i]);
+            if(a != ButtonChoice::Button::NONE)
             {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::HDR_ON;
+                return a;
             }
         }
 
-        //HDR : OFF
-        if( (input.getX() >= (screen_width/2) + (33/ratio_x)) && (input.getX() <= (screen_width/2) + (116/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) - (206/ratio_y)) && (input.getY() <= (screen_height/2) - (188/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::HDR_OFF;
-            }
-        }
-
-        //EXPOSURE : -
-        if( (input.getX() >= (screen_width/2) + (55/ratio_x)) && (input.getX() <= (screen_width/2) + (76/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) - (148/ratio_y)) && (input.getY() <= (screen_height/2) - (135/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::EXPOSURE_DEC;
-            }
-        }
-
-        //EXPOSURE : +
-        if( (input.getX() >= (screen_width/2) + (97/ratio_x)) && (input.getX() <= (screen_width/2) + (120/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) - (148/ratio_y)) && (input.getY() <= (screen_height/2) - (135/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::EXPOSURE_INC;
-            }
-        }
-
-        //SPEED : -
-        if( (input.getX() >= (screen_width/2) + (28/ratio_x)) && (input.getX() <= (screen_width/2) + (55/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) - (93/ratio_y)) && (input.getY() <= (screen_height/2) - (80/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::SPEED_DEC;
-            }
-        }
-
-        //SPEED : +
-        if( (input.getX() >= (screen_width/2) + (96/ratio_x)) && (input.getX() <= (screen_width/2) + (117/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) - (93/ratio_y)) && (input.getY() <= (screen_height/2) - (80/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::SPEED_INC;
-            }
-        }
-
-        //MUSIC ON
-        if( (input.getX() >= (screen_width/2) - (9/ratio_x)) && (input.getX() <= (screen_width/2) + (20/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) - (42/ratio_y)) && (input.getY() <= (screen_height/2) - (25/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::MUSIC_ON;
-            }
-        }
-
-        //MUSIC OFF
-        if( (input.getX() >= (screen_width/2) + (60/ratio_x)) && (input.getX() <= (screen_width/2) + (115/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) - (42/ratio_y)) && (input.getY() <= (screen_height/2) - (25/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::MUSIC_OFF;
-            }
-        }
-
-        //MUSIC VOLUME : -
-        if( (input.getX() >= (screen_width/2) + (36/ratio_x)) && (input.getX() <= (screen_width/2) + (56/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (14/ratio_y)) && (input.getY() <= (screen_height/2) + (28/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::MUSIC_DEC;
-            }
-        }
-
-        //MUSIC VOLUME : +
-        if( (input.getX() >= (screen_width/2) + (94/ratio_x)) && (input.getX() <= (screen_width/2) + (117/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (14/ratio_y)) && (input.getY() <= (screen_height/2) + (28/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::MUSIC_INC;
-            }
-        }
-
-        //OVERLAY : ON
-        if( (input.getX() >= (screen_width/2) + (10/ratio_x)) && (input.getX() <= (screen_width/2) + (43/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (65/ratio_y)) && (input.getY() <= (screen_height/2) + (81/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::OVERLAY_ON;
-            }
-        }
-
-        //OVERLAY : OFF
-        if( (input.getX() >= (screen_width/2) + (68/ratio_x)) && (input.getX() <= (screen_width/2) + (115/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (65/ratio_y)) && (input.getY() <= (screen_height/2) + (81/ratio_y)))
-            {
-                //std::cout << "YES !" << std::endl;
-                return ButtonChoice::Button::OVERLAY_OFF;
-            }
-        }
-
-        //PLANETE INFO : ON
-        if( (input.getX() >= (screen_width/2) + (73/ratio_x)) && (input.getX() <= (screen_width/2) + (103/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (115/ratio_y)) && (input.getY() <= (screen_height/2) + (141/ratio_y)))
-            {
-                // std::cout << "YES ON !" << std::endl;
-                return ButtonChoice::Button::PLANETE_INFO_ON;
-            }
-        }
-
-        //PLANETE INFO : OFF
-        if( (input.getX() >= (screen_width/2) + (122/ratio_x)) && (input.getX() <= (screen_width/2) + (163/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (115/ratio_y)) && (input.getY() <= (screen_height/2) + (141/ratio_y)))
-            {
-                // std::cout << "YES OFF !" << std::endl;
-                return ButtonChoice::Button::PLANETE_INFO_OFF;
-            }
-        }
-
-        //DISPLAY NAME : ON
-        if( (input.getX() >= (screen_width/2) + (59/ratio_x)) && (input.getX() <= (screen_width/2) + (94/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (168/ratio_y)) && (input.getY() <= (screen_height/2) + (194/ratio_y)))
-            {
-                // std::cout << "YES ON !" << std::endl;
-                return ButtonChoice::Button::SHOW_NAME_ON;
-            }
-        }
-
-        //DISPLAY NAME : OFF
-        if( (input.getX() >= (screen_width/2) + (115/ratio_x)) && (input.getX() <= (screen_width/2) + (161/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (168/ratio_y)) && (input.getY() <= (screen_height/2) + (194/ratio_y)))
-            {
-                // std::cout << "YES OFF !" << std::endl;
-                return ButtonChoice::Button::SHOW_NAME_OFF;
-            }
-        }
-
-        //QUIT SIMULATION
-        if( (input.getX() >= (screen_width/2) - (115/ratio_x)) && (input.getX() <= (screen_width/2) + (115/ratio_x)) )
-        {
-            if((input.getY() >= (screen_height/2) + (258/ratio_y)) && (input.getY() <= (screen_height/2) + (272/ratio_y)))
-            {
-                return ButtonChoice::Button::QUIT;
-            }
-        }
     }
 
     if(input.getMouseButton(SDL_MOUSEBUTTONDOWN) == false)

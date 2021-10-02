@@ -65,6 +65,17 @@ PURPOSE : header of the Settings class
 
                 }Button;
         }
+
+        typedef struct button_coord {
+
+                float     x_left;
+                float     x_right;
+                float     y_up;
+                float     y_down;
+
+                int     button_type;
+
+        } button_coord;
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -73,6 +84,8 @@ PURPOSE : header of the Settings class
         {
             
             private:
+
+                std::vector<button_coord> m_buttons_coord;
 
                 Square          *m_grey_rect;
 
@@ -94,6 +107,9 @@ PURPOSE : header of the Settings class
 
                 glm::vec3            colorGrey;
                 glm::vec3            colorBlack;
+
+                void initButtonCoord();
+                int checkCoordButton(Input const &input, button_coord coordinate);
 
             public:
             
