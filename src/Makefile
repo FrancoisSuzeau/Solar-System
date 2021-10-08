@@ -4,12 +4,12 @@
 # $^ la liste des dépendances
 # @$ pour desactiver l'echo des lignes de commandes en cas d'erreur
 
-CFLAGS=-Wall -m32
-LD_SDL_MINGW32=-L./../lib -I./../include -m32 -lmingw32 -lSDL2main -lSDL2
-LD_SDLIMAGE_MINGW32=-L./../lib -I./../include -m32 -lmingw32 -lSDL2_image
-LD_SDLMIXER_MINGW32=-L./../lib -I./../include -m32 -lmingw32 -lSDL2_mixer
-LD_SDLTTF_MINGW32=-L./../lib -I./../include -m32 -lmingw32 -lSDL2_ttf
-LD_GLEW_MINGW32=-L./../lib -I./../include -m32 -lmingw32 -lglew32 -lopengl32 -lglu32 -lgdi32 
+CFLAGS=-Wall -m64
+LD_SDL_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2main -lSDL2
+LD_SDLIMAGE_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_image
+LD_SDLMIXER_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_mixer
+LD_SDLTTF_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_ttf
+LD_GLEW_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lglew32 -lopengl32 -lglu32 -lgdi32 
 EXEC=../bin/SS_Project(C++)
 CC=g++
 

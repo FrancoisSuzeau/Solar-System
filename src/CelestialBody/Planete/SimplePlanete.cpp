@@ -26,7 +26,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) :
 Sphere(1, 70, 70), m_texture_surface(texture),
-m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
+m_name(name), m_name_renderer(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police)
 {
     m_texture_surface.loadTexture();
     m_name_renderer.loadTTF(m_name);
@@ -34,15 +34,15 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
     m_real_size = real_size;
     m_initial_pos = initial_pos;
     m_current_position = m_initial_pos;
-    m_rotation_angle = 0.0;
+    m_rotation_angle = 0.0f;
     m_inclinaison_angle = inclinaison_angle;
-    m_speed_rotation = 0.1;
+    m_speed_rotation = 0.1f;
 
     // m_plan_info.setPosPlan(initial_pos);
 
     if(m_name == "Mars")
     {
-        m_atmosphere = new Atmosphere(1.05, m_name);
+        m_atmosphere = new Atmosphere(1.05f, m_name);
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -50,28 +50,12 @@ m_name(name), m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", po
     }
     else if(m_name == "Venus")
     {
-        m_atmosphere = new Atmosphere(1.05, m_name);
+        m_atmosphere = new Atmosphere(1.05f, m_name);
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
         }
     }
-    // else if(m_name == "Uranus")
-    // {
-    //     m_atmosphere = new Atmosphere(1.05, m_name);
-    //     if(m_atmosphere == nullptr)
-    //     {
-    //         exit(EXIT_FAILURE);
-    //     }
-    // }
-    // else if(m_name == "Neptune")
-    // {
-    //     m_atmosphere = new Atmosphere(1.05, m_name);
-    //     if(m_atmosphere == nullptr)
-    //     {
-    //         exit(EXIT_FAILURE);
-    //     }
-    // }
 }
 
 SimplePlanete::SimplePlanete(): Sphere()

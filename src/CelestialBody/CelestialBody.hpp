@@ -50,12 +50,12 @@ PURPOSE : Interface CelestialBody
 
                 void rotateCelestialBody(glm::mat4 &modelview, float angle)
                 {
-                    modelview = rotate(modelview, angle, vec3(0.0, 0.0, 1.0));
+                    modelview = rotate(modelview, glm::radians(angle), vec3(0.0, 0.0, 1.0));
                 }
 
                 void inclineCelestialBody(glm::mat4 &modelview, float angle)
                 {
-                    modelview = rotate(modelview, angle, vec3(0.0, 1.0, 0.0));
+                    modelview = rotate(modelview, glm::radians(angle), vec3(0.0, 1.0, 0.0));
                 }
 
                 void translateCelestialBody(glm::mat4 &modelview, glm::vec3 new_position)

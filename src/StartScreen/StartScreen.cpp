@@ -20,7 +20,7 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 StartScreen::StartScreen(TTF_Font *police) : 
-m_text_loadScreen(3.0, 0.2, 6, "../assets/font/venus rising rg.ttf", police)
+m_text_loadScreen(3.0f, 0.2f, 6.0f, "../assets/font/venus rising rg.ttf", police)
 {
     m_text_loadScreen.loadTTF(" Solar System");
     std::cout << ">> Start Screen initiated" << std::endl;

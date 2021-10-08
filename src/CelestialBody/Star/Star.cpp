@@ -31,12 +31,12 @@ m_name(name), m_light_vao(0)
     m_cloud_texture.loadTexture();
 
     m_real_size = real_size;
-    m_initial_pos = vec3(0.01, 0.0, 0.0);
+    m_initial_pos = vec3(0.01f, 0.0f, 0.0f);
     m_current_position = m_initial_pos;
-    m_speed_rotation = 0.1;
-    m_rotation_angle = 0.0;
+    m_speed_rotation = 0.1f;
+    m_rotation_angle = 0.0f;
 
-    m_atmosphere = new Atmosphere(1.05, m_name);
+    m_atmosphere = new Atmosphere(1.05f, m_name);
     if(m_atmosphere == nullptr)
     {
         exit(EXIT_FAILURE);

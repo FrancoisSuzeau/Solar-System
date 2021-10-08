@@ -209,7 +209,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49, 0.01, glm::vec3(57900.0, 0.0, 0.0), police);
+        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(57900.0f, 0.0f, 0.0f), police);
     }
     
     if(count == 5)
@@ -219,7 +219,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47, 177.3, glm::vec3(0.0, -108200.0, 0.0), police);
+        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -108200.0f, 0.0f), police);
     }
 
     if(count == 6)
@@ -229,7 +229,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99, 25.19, glm::vec3(0, 227900, 0), police);
+        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 227900, 0), police);
     }
 
     if(count == 7)
@@ -239,7 +239,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21, 97.77, glm::vec3(-2870700.0, 0.0, 0.0), police);
+        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-2870700.0f, 0.0f, 0.0f), police);
     }
     if(count == 8)
     {
@@ -248,7 +248,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49, 26.32, glm::vec3(0.0, 4498400.0, 0.0), police);
+        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 4498400.0f, 0.0f), police);
     }
     //===================================================================================================================
 
@@ -282,12 +282,12 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             exit(EXIT_FAILURE);
         }
         glm::vec3 m_position = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
-        glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
+        glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f));
         glm::mat4 save_light_src = light_src;
 
         if(sun != nullptr)
         {
-            sun->updatePosition(projection, modelview, 0.0);
+            sun->updatePosition(projection, modelview, 0.0f);
             sun->updatePositionLight(projection, light_src);
         
             if(m_body_shader[2] != nullptr)
@@ -498,7 +498,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
             exit(EXIT_FAILURE);
         }
         glm::vec3 position_sun = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
-        glm::mat4 light_src = glm::lookAt(position_sun, vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 1.0));
+        glm::mat4 light_src = glm::lookAt(position_sun, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f));
         
         if(sun != nullptr)
         {
@@ -581,7 +581,7 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
             if(r <= 10 * size_plan)
             {
-                modelview = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                modelview = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
                 //m_planete_creator[i]->drawInfoPlan(projection, modelview, hdr);
                 std::string tmp_name = m_planete_creator[i]->getName();
                 

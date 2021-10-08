@@ -217,19 +217,19 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, gl
     {
         if(count == 0)
         {
-                modelview = translate(modelview, vec3((count - 12.2) * 0.05, -0.3, 0.0));
+                modelview = translate(modelview, vec3((count - 12.2f) * 0.05f, -0.3f, 0.0f));
                 display(projection, modelview, color, false, square_shader);
 
             //restaure the modelview matrix
             modelview = save;
 
-                modelview = translate(modelview, vec3((count - 11.2) * 0.05, -0.3, 0.0));
+                modelview = translate(modelview, vec3((count - 11.2f) * 0.05f, -0.3f, 0.0f));
                 display(projection, modelview, color, false, square_shader);
 
             //restaure the modelview matrix
             modelview = save;
 
-                modelview = translate(modelview, vec3((count - 10.2) * 0.05, -0.3, 0.0));
+                modelview = translate(modelview, vec3((count - 10.2f) * 0.05f, -0.3f, 0.0f));
                 display(projection, modelview, color, false, square_shader);
 
             //restaure the modelview matrix
@@ -239,17 +239,17 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &modelview, gl
         {
             for (int i = 0; i < count * 3; i++)
             {
-                    modelview = translate(modelview, vec3((i - 12.2) * 0.05, -0.3, 0.0));
+                    modelview = translate(modelview, vec3((i - 12.2f) * 0.05f, -0.3f, 0.0f));
                     display(projection, modelview, color, false, square_shader);
 
                 modelview = save;
 
-                    modelview = translate(modelview, vec3((i - 11.2) * 0.05, -0.3, 0.0));
+                    modelview = translate(modelview, vec3((i - 11.2f) * 0.05f, -0.3f, 0.0f));
                     display(projection, modelview, color, false, square_shader);
 
                 modelview = save;
 
-                    modelview = translate(modelview, vec3((i - 10.2) * 0.05, -0.3, 0.0));
+                    modelview = translate(modelview, vec3((i - 10.2f) * 0.05f, -0.3f, 0.0f));
                     display(projection, modelview, color, false, square_shader);
 
                 modelview = save;

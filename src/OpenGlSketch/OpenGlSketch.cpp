@@ -162,13 +162,13 @@ bool OpenGlSketch::initGL()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::initFrameBuffer()
 {
-    float quadVertices[] = {-1.0, -1.0, -1.0,   1.0, -1.0, -1.0,   1.0, 1.0, -1.0,   
-                        -1.0, -1.0, -1.0,   -1.0, 1.0, -1.0,   1.0, 1.0, -1.0   
+    float quadVertices[] = {-1.0f, -1.0f, -1.0f,   1.0f, -1.0f, -1.0f,   1.0f, 1.0f, -1.0f,   
+                        -1.0f, -1.0f, -1.0f,   -1.0f, 1.0f, -1.0f,   1.0f, 1.0f, -1.0f   
 
     };
 
-    float temp_coord[] = {0, 0,   1, 0,   1, 1,
-                          0, 0,   0, 1,   1, 1
+    float temp_coord[] = {0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,
+                          0.0f, 0.0f,   0.0f, 1.0f,   1.0f, 1.0f
                           
                           };
 
@@ -350,7 +350,7 @@ void OpenGlSketch::startLoop()
         exit(EXIT_FAILURE);
     }
 
-    Camera      *startScreen_cam = new Camera(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0), 0.5, 0.9);
+    Camera      *startScreen_cam = new Camera(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f);
     if(startScreen_cam == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -394,8 +394,8 @@ void OpenGlSketch::startLoop()
     }
     square_shader->loadShader();
 
-    Square      *square = new Square(0.05, 0.500);
-    vec3 color = vec3(0.5);
+    Square      *square = new Square(0.05f, 0.500f);
+    vec3 color = vec3(0.5f);
     if(square == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -420,7 +420,7 @@ void OpenGlSketch::startLoop()
 
     //initialize modelview and projection matrix
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 120.0);
-    model_view = mat4(1.0);
+    model_view = mat4(1.0f);
 
     //loading system and making start screen
     while(nb_loaded < 9)
@@ -438,7 +438,7 @@ void OpenGlSketch::startLoop()
         //save the modelview matrix
         save_model_view = model_view;
 
-            model_view = translate(model_view, vec3(0.0, 0.5, 2.6));
+            model_view = translate(model_view, vec3(0.0f, 0.5f, 1.8f));
             if(startScreen != nullptr)
             {
                 if(text_shader != nullptr)
@@ -519,7 +519,7 @@ void OpenGlSketch::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    camera = new Camera(vec3(1.0, 9000, 1.0), vec3(0, 0, 0), vec3(0, 0, 1), 0.5, 200.0);
+    camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), 0.5f, 200.0f);
     
     if(camera == nullptr)
     {
@@ -553,7 +553,7 @@ void OpenGlSketch::mainLoop()
     
     //initialize modelview and projection matrix
     projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 9000000.0);
-    model_view = mat4(1.0);
+    model_view = mat4(1.0f);
 
     //load and play the music
     if(aud != nullptr)
@@ -795,28 +795,28 @@ void OpenGlSketch::renderOverlay()
             glm::vec3 position = camera->getPosition();
             float speed = camera->getSpeed();
 
-                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayGeneralOverlay(projection, model_view, hdr, square_shader);
 
                 //restaure the modelview matrix
                 model_view = save_model_view;
 
-                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMusicOverlay(projection, model_view, hdr, track, text_shader, square_shader);
 
                 //restaure the modelview matrix
                 model_view = save_model_view;
 
-                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMoveInfoOverlay(projection, model_view, hdr, position, speed, text_shader, square_shader);
 
                 //restaure the modelview matrix
                 model_view = save_model_view;
 
-                model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+                model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayTimeInfoOverlay(projection, model_view, hdr, text_shader, square_shader);
 
@@ -920,14 +920,14 @@ void OpenGlSketch::windowProcess()
         {
             if(scroll != 0)
             {
-                if((camera->getSpeed() < 200.0) && (scroll > 0))
+                if((camera->getSpeed() < 200.0f) && (scroll > 0))
                 {
-                    camera->setSpeed(1.0);
+                    camera->setSpeed(1.0f);
                 }
 
-                if((camera->getSpeed() >= 0.0) && (scroll < 0))
+                if((camera->getSpeed() >= 0.0f) && (scroll < 0))
                 {
-                    camera->setSpeed(-1.0);
+                    camera->setSpeed(-1.0f);
                 }
             }
         }
@@ -935,7 +935,7 @@ void OpenGlSketch::windowProcess()
         
         if((m_input.getKey(SDL_SCANCODE_Q)) && (!speed_key_pressed))
         {
-            if(camera->getSpeed() > 0.6)
+            if(camera->getSpeed() > 0.6f)
             {
                 camera->setMinimumSpeed();
             }
@@ -948,7 +948,7 @@ void OpenGlSketch::windowProcess()
 
         if((m_input.getKey(SDL_SCANCODE_E)) && (!speed_key_pressed))
         {
-            if(camera->getSpeed() > 0.6)
+            if(camera->getSpeed() > 0.6f)
             {
                 camera->setMaximumSpeed();
             }
@@ -1001,7 +1001,7 @@ void OpenGlSketch::renderSettings()
             m_input.capturePointer(false);
             m_input.displayPointer(true);
 
-            model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+            model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                 m_settings->displayFrameSettings(projection, model_view, hdr, text_shader, square_shader);
 
@@ -1017,9 +1017,9 @@ void OpenGlSketch::renderSettings()
 
                 case HDR_ON:
                     hdr = true;
-                    if(exposure == 0.0)
+                    if(exposure == 0.0f)
                     {
-                        exposure = 5.0;
+                        exposure = 5.0f;
                     }
                     break;
 
@@ -1028,42 +1028,42 @@ void OpenGlSketch::renderSettings()
                     break;
 
                 case EXPOSURE_DEC:
-                    if( (exposure >= 0.0) && (exposure <= 5.0))
+                    if( (exposure >= 0.0f) && (exposure <= 5.0f))
                     {
-                        exposure = exposure - 1.0;
+                        exposure = exposure - 1.0f;
                     }
-                    if(exposure == 0.0)
+                    if(exposure == 0.0f)
                     {
                         hdr = false;
                     }
                     break;
 
                 case EXPOSURE_INC:
-                    if( (exposure >= 0.0) && (exposure <= 5.0))
+                    if( (exposure >= 0.0f) && (exposure <= 5.0f))
                     {
-                        exposure = exposure + 1.0;
+                        exposure = exposure + 1.0f;
                     }
-                    if(exposure > 5.0)
+                    if(exposure > 5.0f)
                     {
-                        exposure = 5.0;
+                        exposure = 5.0f;
                     }
-                    if(exposure == 1.0)
+                    if(exposure == 1.0f)
                     {
                         hdr = true;
                     }
                     break;
 
                 case SPEED_DEC:
-                    if((camera->getSpeed() >= 0.0))
+                    if((camera->getSpeed() >= 0.0f))
                     {
-                        camera->setSpeed(-0.1);
+                        camera->setSpeed(-0.1f);
                     }
                     break;
 
                 case SPEED_INC:
-                    if(camera->getSpeed() <= 1.0)
+                    if(camera->getSpeed() <= 1.0f)
                     {
-                        camera->setSpeed(0.1);
+                        camera->setSpeed(0.1f);
                     }
                     break;
 
@@ -1128,7 +1128,7 @@ void OpenGlSketch::renderParticles()
 {
     glm::mat4 save = model_view;
 
-        model_view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+        model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
         
         if(m_particuleGenerator != nullptr)
         {

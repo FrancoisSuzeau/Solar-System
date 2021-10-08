@@ -200,31 +200,32 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z
 	if(name_render_shader != nullptr)
 	{
 		/************************************************* positionning text **************************************************************/
-		float sizet = 4.0;
-		phi = phi * 180 / M_PI;
-		theta = theta * 180 / M_PI;
+		float sizet = 4.0f;
+		phi = (float) (phi * 180 / M_PI);
+		theta = (float) (theta * 180 / M_PI);
 		
 		glm::mat4 save = modelview;
-		modelview = translate(modelview, vec3(0.0, sizet - 4.0, z + 4.0));
-		if((phi < 0) && (y > 0))
+		
+		modelview = translate(modelview, vec3(0.0f, sizet - 4.0f, z + 4.0f));
+		if((phi < 0.0f) && (y > 0.0f))
 		{
-			modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+			modelview = rotate(modelview, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 		}
-		else if( (phi > 0) && (y < 0) )
+		else if( (phi > 0.0f) && (y < 0.0f) )
 		{
-			modelview = rotate(modelview, -90.0f + phi, vec3(0.0, 0.0, 1.0));
+			modelview = rotate(modelview, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 		}
-		else if( (phi > 0) && (y > 0) )
+		else if( (phi > 0.0f) && (y > 0.0f) )
 		{
-			modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+			modelview = rotate(modelview, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 		}
-		else if( (phi < 0) && (y < 0) )
+		else if( (phi < 0.0f) && (y < 0.0f) )
 		{
-			modelview = rotate(modelview, 90.0f + phi, vec3(0.0, 0.0, 1.0));
+			modelview = rotate(modelview, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 
 		}
 
-		modelview = rotate(modelview, theta, vec3(1.0, 0.0, 0.0));
+		modelview = rotate(modelview, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
 		
 		modelview = scale(modelview, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
 		//==============================================================================================================================

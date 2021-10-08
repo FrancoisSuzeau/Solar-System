@@ -79,16 +79,16 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 8.19, 5.145, glm::vec3(-150000, 3800, 0), police);
+        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-150000, 3800, 0), police);
 
         m_host_creator = new AtmoPlaneteCreator();
         if(m_host_creator == nullptr)
         {
             exit(EXIT_FAILURE);
         }
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0, 23.26, glm::vec3(-150000, 0, 0), police);
+        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-150000, 0, 0), police);
 
-        m_atmosphere = new Atmosphere(1.05, "Earth");
+        m_atmosphere = new Atmosphere(1.05f, "Earth");
         if(m_atmosphere == nullptr)
         {
             exit(EXIT_FAILURE);
@@ -106,28 +106,28 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 7.5, 0.469, glm::vec3(771640, 0, 0), police);
+        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(771640, 0, 0), police);
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
         if(m_moons_creator[1] == nullptr)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 12.39, 0.170, glm::vec3(778340, -10700, 0), police);
+        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(778340, -10700, 0), police);
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
         if(m_moons_creator[2] == nullptr)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 8.57, 0.036, glm::vec3(778340, 4210, 0), police);
+        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(778340, 4210, 0), police);
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
         if(m_moons_creator[3] == nullptr)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[3]->MakingPlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 11.36, 0.187, glm::vec3(778340, -18800, 0), police);
+        m_moons_creator[3]->MakingPlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(778340, -18800, 0), police);
 
         m_host_creator = new SimplePlaneteCreator();
         if(m_host_creator == nullptr)
@@ -135,7 +135,7 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
             exit(EXIT_FAILURE);
         }
 
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27, 3.13, glm::vec3(778340, 0, 0), police);
+        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(778340, 0, 0), police);
 
     }
     else if(m_system_name == "Saturnian System")
@@ -149,28 +149,28 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 1.0, 1.53, glm::vec3(0.0, -1424850, 0), police);
+        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -1424850, 0), police);
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
         if(m_moons_creator[1] == nullptr)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 1.2, 0.0, glm::vec3(-2380, -1426700, 0), police);
+        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -1426700, 0), police);
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
         if(m_moons_creator[2] == nullptr)
         {
             exit(EXIT_FAILURE);
         }
-        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 12.5, 0.33, glm::vec3(12210, -1426700, 0), police);
+        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -1426700, 0), police);
 
         m_host_creator = new PlaneteRingCreator();
         if(m_host_creator == nullptr)
         {
             exit(EXIT_FAILURE);
         }
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476, 26.73, glm::vec3(0.0, -1426700, 0), police);
+        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -1426700, 0), police);
 
     }
     else
@@ -187,8 +187,8 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
 {
     
     glm::mat4 save = modelview;
-    glm::vec3 target_point(0.0, 0.0, 0.0);
-    glm::vec3 vertical_axe(0.0, 0.0, 1.0);
+    glm::vec3 target_point(0.0f, 0.0f, 0.0f);
+    glm::vec3 vertical_axe(0.0f, 0.0f, 1.0f);
     glm::mat4 light_src = glm::lookAt(sun_pos, target_point, vertical_axe);
     glm::mat4 save_light_src = light_src;
 
@@ -313,9 +313,9 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
     if((m_system_name == "Earth System")) //|| (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
         glm::mat4 save = modelview;
-        glm::vec3 position(0.1, 0.0, 0.0);
-        glm::vec3 target_point(0.0, 0.0, 0.0);
-        glm::vec3 vertical_axe(0.0, 0.0, 1.0);
+        glm::vec3 position(0.1f, 0.0f, 0.0f);
+        glm::vec3 target_point(0.0f, 0.0f, 0.0f);
+        glm::vec3 vertical_axe(0.0f, 0.0f, 1.0f);
         glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
         glm::mat4 save_light_src = light_src;
 
