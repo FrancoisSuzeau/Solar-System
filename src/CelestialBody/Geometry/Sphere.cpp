@@ -36,6 +36,11 @@ m_vbo(0), m_ibo(0), m_element_count(0), m_radius(radius)
     const unsigned int longVerts = longSegs + 1;
     const unsigned int latVerts = latSegs + 1;
     m_vertCount = longVerts * latVerts;
+
+    //HACK : this static inititialisation of the array is only available for mingw c++ compilor not for the Microsoft c++ compilor for example
+    //      -> Useless to have longSegs and LatSegs as parameter because there is only two instance type : 
+    //              - atmosphere with 70 longitude segments and 70 latitude segment
+    //              - particule with 5 longitude segments and 5 latitude segments
     GLfloat verts[longVerts][latVerts][VERT_NUM_FLOATS];
     
 
@@ -190,9 +195,7 @@ void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &lig
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
         //===================================================================================================================================
 
-        // Render
-        // glUniformMatrix4fv(glGetUniformLocation(sphere_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(sphere_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+
         sphere_shader->setMat4("modelview", modelview);
         sphere_shader->setMat4("projection", projection);
         sphere_shader->setMat4("light_src", light_src);
@@ -216,7 +219,10 @@ void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &lig
     
 }
 
-void Sphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atm_shader)
+/***********************************************************************************************************************************************************************/
+/*************************************************************************** displayForSun ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Sphere::displayForSun(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atm_shader)
 {
     if(atm_shader != nullptr)
     {
@@ -232,9 +238,6 @@ void Sphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hd
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
         //===================================================================================================================================
 
-        // Render
-        // glUniformMatrix4fv(glGetUniformLocation(atm_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(atm_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
         atm_shader->setMat4("modelview", modelview);
         atm_shader->setMat4("projection", projection);
 
@@ -270,9 +273,6 @@ void Sphere::draw(glm::mat4 &projection, glm::mat4 &modelview, float transparenc
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
         //===================================================================================================================================
 
-        // Render
-        // glUniformMatrix4fv(glGetUniformLocation(atmo_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-        // glUniformMatrix4fv(glGetUniformLocation(atmo_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
         atmo_shader->setMat4("modelview", modelview);
         atmo_shader->setMat4("projection", projection);
         atmo_shader->setFloat("transparency", transparency);

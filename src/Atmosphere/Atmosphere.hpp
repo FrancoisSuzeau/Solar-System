@@ -41,7 +41,7 @@ PURPOSE : header of the Atmosphere class
             
             private:
 
-                glm::vec3       m_color_atmo;
+                glm::vec3                       m_color_atmo;
 
                 Sphere                          *sphere_atmosphere;
                 float                           m_size;

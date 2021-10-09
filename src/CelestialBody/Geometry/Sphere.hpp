@@ -57,7 +57,7 @@ PURPOSE : header of the Sphere class
                 Sphere();
                 ~Sphere();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *sphere_shader = nullptr, Shader *ring_shader = nullptr) override;
-                void displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atmo_shader = nullptr);
+                void displayForSun(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atmo_shader = nullptr);
                 void draw(glm::mat4 &projection, glm::mat4 &modelview, float transparency, Shader *atmo_shader = nullptr);
         };
 

@@ -10,13 +10,7 @@ NAMEFILE : Atmosphere.cpp
 PURPOSE : class Atmosphere
 */
 
-#ifndef BUFFER_OFFSET
-#define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
-#endif
-
 #include "Atmosphere.hpp"
-
-using namespace glm;
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
@@ -27,24 +21,26 @@ Atmosphere::Atmosphere(float size, std::string const name)
     name_planete_host = name;
     m_size = size;
 
+    /*Because atmosphere objects will use the same shader, color is initiate by the instance and will be used later in the shader*/
     if(name == "Sun")
     {
-        m_color_atmo = vec3(255.0/255.0, 255.0/255.0, 224.0/255.0);
+        m_color_atmo = glm::vec3(255.0/255.0, 255.0/255.0, 224.0/255.0);
     }
-    
-    if(name == "Earth")
+    else if(name == "Earth")
     {
-        m_color_atmo = vec3(147.0/255.0, 188.0/255.0, 251.0/255.0); //autre bleu clair
+        m_color_atmo = glm::vec3(147.0/255.0, 188.0/255.0, 251.0/255.0);
     }
     else if(name == "Venus")
     {
-        m_color_atmo = vec3(1.0, 1.0, 224.0/255.0);
+        m_color_atmo = glm::vec3(1.0, 1.0, 224.0/255.0);
     }
     else if (name == "Mars")
     {
-        m_color_atmo = vec3(178.0/255.0, 100.0/255.0, 100.0/255.0);
+        m_color_atmo = glm::vec3(178.0/255.0, 100.0/255.0, 100.0/255.0);
     }
 
+
+    //HACK : go to sphere class declaration to change number of parameters
     sphere_atmosphere = new Sphere(1, 70, 70);
     if(sphere_atmosphere == nullptr)
     {
@@ -75,20 +71,11 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 
     {
         
         glm::mat4 save = modelview;
-        modelview = scale(modelview, vec3(m_size, m_size, m_size));
+        modelview = scale(modelview, glm::vec3(m_size, m_size, m_size));
         //==============================================================================================================================
-        //Activate the shader
         glUseProgram(atmo_shader->getProgramID());
 
-           
-            atmo_shader->setMat4("modelview", modelview);
-            atmo_shader->setMat4("projection", projection);
-            atmo_shader->setMat4("light_src", light_src);
-
-            atmo_shader->setVec3("viewPos", camPos);
             atmo_shader->setVec3("atmoColor", m_color_atmo);
-            atmo_shader->setInt("hdr", hdr);
-
             
             if(sphere_atmosphere != nullptr)
             {
@@ -113,22 +100,15 @@ void Atmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, boo
     {
         
         glm::mat4 save = modelview;
-        modelview = scale(modelview, vec3(3500 , 3500, 3500));
+        modelview = scale(modelview, glm::vec3(3500 , 3500, 3500));
         //==============================================================================================================================
-        //Activate the shader
         glUseProgram(atmo_shader->getProgramID());
 
-           
-            atmo_shader->setMat4("modelview", modelview);
-            atmo_shader->setMat4("projection", projection);
-
             atmo_shader->setVec3("atmoColor", m_color_atmo);
-            atmo_shader->setInt("hdr", hdr);
 
-            
             if(sphere_atmosphere != nullptr)
             {
-                sphere_atmosphere->displaySunAtmo(projection, modelview, hdr, atmo_shader);
+                sphere_atmosphere->displayForSun(projection, modelview, hdr, atmo_shader);
             }
             
             
