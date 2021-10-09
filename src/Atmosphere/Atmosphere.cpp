@@ -51,15 +51,15 @@ Atmosphere::Atmosphere(float size, std::string const name)
 
 Atmosphere::Atmosphere()
 {
-    if(sphere_atmosphere != nullptr)
-    {
-        delete sphere_atmosphere;
-    }
+    
 }
 
 Atmosphere::~Atmosphere()
 {
-    
+    if(sphere_atmosphere != nullptr)
+    {
+        delete sphere_atmosphere;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -72,6 +72,7 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 
         
         glm::mat4 save = modelview;
         modelview = scale(modelview, glm::vec3(m_size, m_size, m_size));
+
         //==============================================================================================================================
         glUseProgram(atmo_shader->getProgramID());
 
@@ -82,10 +83,8 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 
                 sphere_atmosphere->display(projection, modelview, light_src, camPos, hdr, atmo_shader);
             }
             
-            
         glUseProgram(0);
-           
-
+        
         modelview = save;
     }
 }
@@ -101,6 +100,7 @@ void Atmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, boo
         
         glm::mat4 save = modelview;
         modelview = scale(modelview, glm::vec3(3500 , 3500, 3500));
+
         //==============================================================================================================================
         glUseProgram(atmo_shader->getProgramID());
 
@@ -110,10 +110,8 @@ void Atmosphere::displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, boo
             {
                 sphere_atmosphere->displayForSun(projection, modelview, hdr, atmo_shader);
             }
-            
-            
+             
         glUseProgram(0);
-           
 
         modelview = save;
     }
