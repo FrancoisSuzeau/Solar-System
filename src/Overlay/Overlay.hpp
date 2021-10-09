@@ -71,6 +71,8 @@ PURPOSE : header of the Overlay class
                 glm::vec3 m_colorBlack;
                 glm::vec3 m_colorGrey;
 
+                void displaySquares(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::vector<glm::vec3> coordinates, Shader *square_shader = nullptr);
+
             public:
             
                 Overlay(TTF_Font *police);

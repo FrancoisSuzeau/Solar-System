@@ -12,8 +12,6 @@ PURPOSE : class Camera
 
 #include "Camera.hpp"
 
-using namespace glm;
-
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
@@ -45,28 +43,28 @@ void Camera::orientate(int x_rel, int y_rel)
     m_theta += -x_rel * m_sensibility;
 
     //limitate phi angle
-    if(m_phi > 89.0)
+    if(m_phi > 89.0f)
     {
-        m_phi = 89.0;
+        m_phi = 89.0f;
     }
-    else if (m_phi < -89.0)
+    else if (m_phi < -89.0f)
     {
-        m_phi = -89.0;
+        m_phi = -89.0f;
     }
 
     //===================================================================================================================
     
     /************************************************* calculate spheric coordonnate ********************************************************/
-    float phi_rad = m_phi * M_PI / 180; 
-    float theta_rad = m_theta * M_PI / 180;
+    float phi_rad = (float)(m_phi * M_PI / 180); 
+    float theta_rad = (float) (m_theta * M_PI / 180);
 
-    if(m_vertical_axe.x == 1.0)
+    if(m_vertical_axe.x == 1.0f)
     {
         m_orientation.x = sin(phi_rad);
         m_orientation.y= cos(phi_rad) * cos(theta_rad);
         m_orientation.z = cos(phi_rad) * sin(theta_rad);
     }
-    else if (m_vertical_axe.y == 1.0)
+    else if (m_vertical_axe.y == 1.0f)
     {
         m_orientation.x = cos(phi_rad) * sin(theta_rad);
         m_orientation.y= sin(phi_rad);
@@ -81,8 +79,8 @@ void Camera::orientate(int x_rel, int y_rel)
     //===================================================================================================================
 
     /************************************************* normalize moving vector ********************************************************/
-    m_lateral_move = cross(m_vertical_axe, m_orientation);
-    m_lateral_move = normalize(m_lateral_move);
+    m_lateral_move = glm::cross(m_vertical_axe, m_orientation);
+    m_lateral_move = glm::normalize(m_lateral_move);
     //===================================================================================================================
 
     /************************************************* calculate target point for openGL ********************************************************/
@@ -158,26 +156,26 @@ void Camera::setTargetPoint(glm::vec3 target_point)
 {
     /************************************************* calculate orientation vector ********************************************************/
     m_orientation = m_target_point - m_position;
-    m_orientation = normalize(m_orientation);
+    m_orientation = glm::normalize(m_orientation);
     //===================================================================================================================
 
     /************************************************* finding value angle ********************************************************/
-    if(m_vertical_axe.x == 1.0)
+    if(m_vertical_axe.x == 1.0f)
     {
         m_phi = asin(m_orientation.x);
         m_theta = acos(m_orientation.y / cos(m_phi));
 
-        if(m_orientation.y < 0)
+        if(m_orientation.y < 0.0f)
         {
             m_theta *= -1;
         }
     }
-    else if (m_vertical_axe.y == 1.0)
+    else if (m_vertical_axe.y == 1.0f)
     {
         m_phi = asin(m_orientation.y);
         m_theta = acos(m_orientation.z / cos(m_phi));
 
-        if(m_orientation.z < 0)
+        if(m_orientation.z < 0.0f)
         {
             m_theta *= -1;
         }
@@ -187,7 +185,7 @@ void Camera::setTargetPoint(glm::vec3 target_point)
         m_phi = asin(m_orientation.x);
         m_theta = acos(m_orientation.z / cos(m_phi));
 
-        if(m_orientation.z < 0)
+        if(m_orientation.z < 0.0f)
         {
             m_theta *= -1;
         }
@@ -195,8 +193,8 @@ void Camera::setTargetPoint(glm::vec3 target_point)
     //===================================================================================================================
 
     /************************************************* converting in degree ********************************************************/
-    m_phi = m_phi * 180 / M_PI;
-    m_theta = m_theta * 180 / M_PI;
+    m_phi = (float) (m_phi * 180 / M_PI);
+    m_theta = (float) (m_theta * 180 / M_PI);
     //===================================================================================================================
 
 }
@@ -236,25 +234,25 @@ float Camera::getSpeed() const
 void Camera::setSpeed(float speed)
 {
     m_speed = m_speed + speed;
-    if(m_speed < 0)
+    if(m_speed < 0.0f)
     {
-        m_speed = 0;
+        m_speed = 0.0f;
     }
 
-    if(m_speed > 200)
+    if(m_speed > 200.0f)
     {
-        m_speed = 200;
+        m_speed = 200.0f;
     }
 }
 
 void Camera::setMinimumSpeed()
 {
-    m_speed = 0.6;
+    m_speed = 0.6f;
 }
 
 void Camera::setMaximumSpeed()
 {
-    m_speed = 200;
+    m_speed = 200.0f;
 }
 
 glm::vec3 Camera::getPosition() const

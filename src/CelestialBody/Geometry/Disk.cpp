@@ -17,8 +17,6 @@ PURPOSE : class Disk
 
 #include "Disk.hpp"
 
-using namespace glm;
-
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
@@ -27,18 +25,17 @@ Disk::Disk(float size) : m_vboID(0), m_bytes_colors_size(18 * sizeof(float))
     m_bytes_vertices_size = 18 * sizeof(float);
     m_size = size;
     m_size /= 2;
-    float verticesTmp[] = {-m_size, -m_size, 0,   m_size, -m_size, 0,   m_size, m_size, 0,   
-                        -m_size, -m_size, 0,   -m_size, m_size, 0,   m_size, m_size, 0,   
+    float verticesTmp[] = {-m_size, -m_size, 0.0f,   m_size, -m_size, 0.0f,   m_size, m_size, 0.0f,   
+                        -m_size, -m_size, 0.0f,   -m_size, m_size, 0.0f,   m_size, m_size, 0.0f,   
 
                         };
 
 
-    float colorsTmp[] = {1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,
-                        1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,
+    float colorsTmp[] = {1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+                        1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
                         
                         };
 
-    //copying all value in our tab
     for (int i(0); i < 18; i++)
     {
         m_vertices[i] = verticesTmp[i];
@@ -70,24 +67,15 @@ void Disk::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
 {
     if(disk_shader != nullptr)
     {
-        //Activate the shader
         glUseProgram(disk_shader->getProgramID());
 
-            //lock vao
             glBindVertexArray(m_vaoID);
 
-            //send matrices to shader
-            glUniformMatrix4fv(glGetUniformLocation(disk_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-            glUniformMatrix4fv(glGetUniformLocation(disk_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            disk_shader->setMat4("projection", projection);
+            disk_shader->setMat4("modelview", modelview);
 
-            //display the form
             glDrawArrays(GL_TRIANGLES, 0, 6);
 
-            // glDisableVertexAttribArray(1);
-            // glDisableVertexAttribArray(0);
-
-
-            //unlock vao
             glBindVertexArray(0);
 
         glUseProgram(0);
@@ -161,39 +149,4 @@ void Disk::load()
     glBindVertexArray(0);
     //===================================================================================================================
 
-}
-
-/***********************************************************************************************************************************************************************/
-/********************************************************************************* updateVBO ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Disk::updateVBO(void *data, int size_bytes, int offset)
-{
-    //lock VBO
-    glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
-
-        //take the VBO adress
-        void *VBO_adress = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-        /*
-            - GL_READ_ONLY
-            - GL_WRITE_ONLY
-            - GL_READ_WRITE
-        */
-       if(VBO_adress == NULL)
-       {
-           std::cout << ">> Load VBO adress : ERROR" << std::endl;
-           glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-           return;
-
-       }
-
-       //update data
-       memcpy((char*)VBO_adress + offset, data, size_bytes);
-
-       //cancel VBO pointer
-       glUnmapBuffer(GL_ARRAY_BUFFER);
-       VBO_adress = 0;
-
-    //unlock VBO
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

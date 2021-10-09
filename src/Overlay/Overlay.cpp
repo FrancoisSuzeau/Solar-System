@@ -62,58 +62,61 @@ Overlay::~Overlay()
 }
 
 /***********************************************************************************************************************************************************************/
+/*********************************************************************** displaySquares ********************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Overlay::displaySquares(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::vector<glm::vec3> coordinates, Shader *square_shader)
+{
+    glm::mat4 save = modelview;
+
+        modelview = translate(modelview, coordinates[0]); //from bottom right to bottom left
+        m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
+
+    modelview = save;
+
+        modelview = translate(modelview, coordinates[1]); //from top right to top left
+        m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
+
+    modelview = save;
+}
+
+/***********************************************************************************************************************************************************************/
 /******************************************************************** displayGeneralOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader)
 {   
     glm::mat4 save = modelview;
-    float constance = 0.05;
+    float constance = 0.05f;
 
     /************************************************************************ horizontal bar *******************************************************************/
-        float start_top_black = 1.285;
-        float start_top_white = 1.285;
-        
-        float start_bottom_black = 1.285;
-        float start_bottom_white = 1.285;
-        
+        float start_horizontal = 1.285f;
 
         if(square_shader != nullptr)
         {
             for (size_t i(0); i < 52; i++) // 25 * 2 + 2
             {
-                //top bar
-                    modelview = translate(modelview, vec3(start_top_white, 0.720, -0.01)); //from bottom right to bottom left
-                    m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
+                std::vector<glm::vec3> coordinates1;
+                std::vector<glm::vec3> coordinates2;
 
-                modelview = save;
-                start_top_white = start_top_white - constance;
+                    coordinates1.push_back(glm::vec3(start_horizontal, 0.720f, -0.01f));
+                    coordinates1.push_back(glm::vec3(start_horizontal, 0.725f, 0.0f));
+                    coordinates2.push_back(glm::vec3(start_horizontal, -0.720f, -0.01f));
+                    coordinates2.push_back(glm::vec3(start_horizontal, -0.725f, 0.0f));
 
-                    modelview = translate(modelview, vec3(start_top_black, 0.725, 0.0)); //from top right to top left
-                    m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
+                    displaySquares(projection, modelview, hdr, coordinates1, square_shader);
+                    displaySquares(projection, modelview, hdr, coordinates2, square_shader);
 
-                modelview = save;
-                start_top_black = start_top_black - constance;
-
-                //bottom bar
-                    modelview = translate(modelview, vec3(start_bottom_white, -0.720, -0.01)); //from bottom right to bottom left
-                    m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
-
-                modelview = save;
-                start_bottom_white = start_bottom_white - constance;
-
-                    modelview = translate(modelview, vec3(start_bottom_black, -0.725, 0.0)); //from bottom right to bottom left
-                    m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
-
-                modelview = save;
-                start_bottom_black = start_bottom_black - constance;
+                start_horizontal = start_horizontal - constance;
+       
             }
 
-            modelview = translate(modelview, vec3(-1.285, 0.725, 0.0)); //top left
+            modelview = save;
+
+                modelview = translate(modelview, vec3(-1.285f, 0.725f, 0.0f)); //top left
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
 
-                modelview = translate(modelview, vec3(-1.285, -0.725, 0.0)); //bottom left
+                modelview = translate(modelview, vec3(-1.285f, -0.725f, 0.0f)); //bottom left
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
@@ -121,39 +124,22 @@ void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview,
 
     /*************************************************************************** vertical bar ******************************************************************/
 
-            float start_left_black = 0.675; //minus one square because of the top bar
-            float start_left_white = 0.675; //minus one square because of the top bar
-
-            float start_right_black = 0.675; //minus one square because of the top bar
-            float start_right_white = 0.675; //minus one square because of the top bar
+            float start_verticale = 0.675f; //minus one square because of the top bar
 
             for (size_t i(0); i < 28; i++) //goes to bottom bar
             {
-                //left bar
-                    modelview = translate(modelview, vec3(-1.285, start_left_black, 0.0)); ////from top left to bottom left
-                    m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
-                start_left_black = start_left_black - constance;
-                modelview = save;
+                std::vector<glm::vec3> coordinates;
 
-                    modelview = translate(modelview, vec3(-1.285, start_left_white, -0.01)); ////from top left to bottom left
-                    m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
+                    coordinates.push_back(glm::vec3(-1.285f, start_verticale, 0.0f));
+                    coordinates.push_back(glm::vec3(-1.285f, start_verticale, -0.01f));
+                    coordinates.push_back(glm::vec3(1.285f, start_verticale, 0.0f));
+                    coordinates.push_back(glm::vec3(1.285f, start_verticale, -0.01f));
 
-                start_left_white = start_left_white - constance;
-                modelview = save;
+                    displaySquares(projection, modelview, hdr, coordinates, square_shader);
 
-                //right bar
-                    modelview = translate(modelview, vec3(1.285, start_right_black, 0.0)); //from top right to bottom right
-                    m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
+                start_verticale = start_verticale - constance;
 
-                start_right_black = start_right_black - constance;
-                modelview = save;
-
-                    modelview = translate(modelview, vec3(1.285, start_right_white, -0.01)); ////from top left to bottom left
-                    m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
-
-                start_right_white = start_right_white - constance;
-                modelview = save;
             }
         }
           
@@ -168,11 +154,9 @@ void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview,
 void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::string const track, Shader *text_shader, Shader *square_shader)
 {
     glm::mat4 save = modelview;
-    float constance = 0.05;
+    float constance = 0.05f;
 
-    float start_bottom_black_first = 1.265;
-    float start_bottom_black_second = 1.265;
-    float start_bottom_white = 1.265;
+    float start = 1.265f;
 
     if(square_shader != nullptr)
     {
@@ -180,37 +164,30 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, b
         {
             /*In the first pass, we do not render the grey square because they will be cover by black square*/
 
-                modelview = translate(modelview, vec3(start_bottom_black_first, -0.675, 0.0)); //from bottom right to bottom left
+                modelview = translate(modelview, vec3(start, -0.675f, 0.0f)); //from bottom right to bottom left
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
-            start_bottom_black_first = start_bottom_black_first - constance;
-        }
 
-        for (size_t i(0); i < 10; i++)
-        {
-                modelview = translate(modelview, vec3(start_bottom_white, -0.620, -0.01)); //from bottom right to bottom left
-                m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
+                std::vector<glm::vec3> coordinates;
 
-            modelview = save;
-            start_bottom_white = start_bottom_white - constance;
+                    coordinates.push_back(glm::vec3(start, -0.620f, -0.01f));
+                    coordinates.push_back(glm::vec3(start, -0.625f, 0.0f));
+            
+                    displaySquares(projection, modelview, hdr, coordinates, square_shader);
 
-                modelview = translate(modelview, vec3(start_bottom_black_second, -0.625, 0.0)); //from bottom right to bottom left
-                m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
+            start = start - constance;
 
             modelview = save;
-            start_bottom_black_second = start_bottom_black_second - constance;
         }
-        
+
         modelview = save;
 
             /*We only draw the last one to make the border*/
 
-            modelview = translate(modelview, vec3(1.265 - 0.05*9, -0.670, -0.01)); //from bottom right to bottom left
+            modelview = translate(modelview, vec3(1.265f - 0.05f*9, -0.670f, -0.01f)); //from bottom right to bottom left
             m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
     }
-
-        
 
     modelview = save;
 
@@ -224,20 +201,20 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, b
 
         if(text_shader != nullptr)
         {
-            modelview = translate(modelview, vec3(0.91, -0.61, -0.0));
-                modelview = scale(modelview, vec3(0.04, 0.035, 0.0));
+            modelview = translate(modelview, vec3(0.91f, -0.61f, -0.0f));
+                modelview = scale(modelview, vec3(0.04f, 0.035f, 0.0f));
                 m_track_music.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
 
-                modelview = translate(modelview, vec3(0.85, -0.64, -0.0));
-                modelview = scale(modelview, vec3(0.02, 0.035, 0.0));
+                modelview = translate(modelview, vec3(0.85f, -0.64f, -0.0f));
+                modelview = scale(modelview, vec3(0.02f, 0.035f, 0.0f));
                 m_Author_music.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
 
-                modelview = translate(modelview, vec3(0.91, -0.67, -0.0));
-                modelview = scale(modelview, vec3(0.04, 0.035, 0.0));
+                modelview = translate(modelview, vec3(0.91f, -0.67f, -0.0f));
+                modelview = scale(modelview, vec3(0.04f, 0.035f, 0.0f));
                 m_studio_music.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
@@ -253,13 +230,13 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, b
 void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, glm::vec3 &position, float const speed, Shader *text_shader, Shader *square_shader)
 {
     glm::mat4 save = modelview;
-    float constance = 0.05;
+    float constance = 0.05f;
 
-    float start_bottom_black_first = -1.265;
-    float start_bottom_black_second = -1.265;
-    float start_bottom_black_third = -1.265;
-    float start_bottom_black_fourth = -1.265;
-    float start_bottom_white = -1.265;
+    float start_bottom_black_first = -1.265f;
+    float start_bottom_black_second = -1.265f;
+    float start_bottom_black_third = -1.265f;
+    float start_bottom_black_fourth = -1.265f;
+    float start_bottom_white = -1.265f;
 
     if(square_shader != nullptr)
     {
@@ -267,7 +244,7 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
         {
             /*In the first pass, we do not render the grey square because they will be cover by black square*/
 
-                modelview = translate(modelview, vec3(start_bottom_black_first, -0.675, 0.0)); //from bottom right to bottom left
+                modelview = translate(modelview, vec3(start_bottom_black_first, -0.675f, 0.0f)); //from bottom right to bottom left
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
@@ -278,7 +255,7 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
         {
             /*In the second pass, we do not render the grey square because they also will be cover by black square*/
 
-                modelview = translate(modelview, vec3(start_bottom_black_second, -0.625, 0.0)); //from bottom right to bottom left
+                modelview = translate(modelview, vec3(start_bottom_black_second, -0.625f, 0.0f)); //from bottom right to bottom left
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
@@ -289,7 +266,7 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
         {
             /*In the third pass, we do not render the grey square because they also will be cover by black square*/
 
-                modelview = translate(modelview, vec3(start_bottom_black_third, -0.575, 0.0)); //from bottom right to bottom left
+                modelview = translate(modelview, vec3(start_bottom_black_third, -0.575f, 0.0f)); //from bottom right to bottom left
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
@@ -299,13 +276,13 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
         //fourth and last pass with white border on the top
         for (size_t i(0); i < 10; i++)
         {
-                modelview = translate(modelview, vec3(start_bottom_white, -0.525, -0.01)); //from bottom right to bottom left
+                modelview = translate(modelview, vec3(start_bottom_white, -0.525f, -0.01f)); //from bottom right to bottom left
                 m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
 
             modelview = save;
             start_bottom_white = start_bottom_white + constance;
 
-                modelview = translate(modelview, vec3(start_bottom_black_fourth, -0.530, 0.0)); //from bottom right to bottom left
+                modelview = translate(modelview, vec3(start_bottom_black_fourth, -0.530f, 0.0f)); //from bottom right to bottom left
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
@@ -314,17 +291,17 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
         /*We only draw the lasts ones to make the border*/
 
-        modelview = translate(modelview, vec3(-1.265 + 0.05*9, -0.670, -0.01)); 
+        modelview = translate(modelview, vec3(-1.265f + 0.05f*9, -0.670f, -0.01f)); 
         m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
 
         modelview = save;
 
-            modelview = translate(modelview, vec3(-1.265 + 0.05*9, -0.625, -0.01)); 
+            modelview = translate(modelview, vec3(-1.265f + 0.05f*9, -0.625f, -0.01f)); 
             m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
 
         modelview = save;
 
-            modelview = translate(modelview, vec3(-1.265 + 0.05*9, -0.575, -0.01));
+            modelview = translate(modelview, vec3(-1.265f + 0.05f*9, -0.575f, -0.01f));
             m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
     }
 
@@ -332,29 +309,29 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
         if(text_shader != nullptr)
         {
-                modelview = translate(modelview, vec3(-1.03, -0.515, -0.0));
-                modelview = scale(modelview, vec3(0.05, 0.05, 0.0));
+                modelview = translate(modelview, vec3(-1.03f, -0.515f, -0.0f));
+                modelview = scale(modelview, vec3(0.05f, 0.05f, 0.0f));
                 m_move_info.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
 
 
-                modelview = translate(modelview, vec3(-1.15, -0.564, -0.0));
-                modelview = scale(modelview, vec3(0.02, 0.045, 0.0));
+                modelview = translate(modelview, vec3(-1.15f, -0.564f, -0.0f));
+                modelview = scale(modelview, vec3(0.02f, 0.045f, 0.0f));
                 m_position.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
 
-                modelview = translate(modelview, vec3(-1.15, -0.650, -0.0));
-                modelview = scale(modelview, vec3(0.02, 0.038, 0.0));
+                modelview = translate(modelview, vec3(-1.15f, -0.650f, -0.0f));
+                modelview = scale(modelview, vec3(0.02f, 0.038f, 0.0f));
                 m_speed_info.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
 
             setSpeedInformation(speed);
 
-                modelview = translate(modelview, vec3(-0.95, -0.650, -0.0));
-                modelview = scale(modelview, vec3(0.04, 0.04, 0.0));
+                modelview = translate(modelview, vec3(-0.95f, -0.650f, -0.0f));
+                modelview = scale(modelview, vec3(0.04f, 0.04f, 0.0f));
                 m_speed.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
@@ -369,26 +346,26 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader, Shader *square_shader)
 {
     glm::mat4 save = modelview;
-    float constance = 0.05;
+    float constance = 0.05f;
 
-    float start_top_black_to_left = 0;
-    float start_top_white_to_left = 0;
+    float start_top_black_to_left = 0.0f;
+    float start_top_white_to_left = 0.0f;
 
-    float start_top_black_to_right = 0.05;
-    float start_top_white_to_right = 0.05;
+    float start_top_black_to_right = 0.05f;
+    float start_top_white_to_right = 0.05f;
 
     if(square_shader != nullptr)
     {
         
         for (size_t i(0); i < 5; i++)
         {
-                modelview = translate(modelview, vec3(start_top_white_to_left, 0.670, -0.01)); 
+                modelview = translate(modelview, vec3(start_top_white_to_left, 0.670f, -0.01f)); 
                 m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
 
             modelview = save;
             start_top_white_to_left = start_top_white_to_left - constance;
 
-                modelview = translate(modelview, vec3(start_top_black_to_left, 0.675, 0.0)); 
+                modelview = translate(modelview, vec3(start_top_black_to_left, 0.675f, 0.0f)); 
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
@@ -398,13 +375,13 @@ void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
         for (size_t i(0); i < 4; i++)
         {
 
-                modelview = translate(modelview, vec3(start_top_white_to_right, 0.670, -0.01)); 
+                modelview = translate(modelview, vec3(start_top_white_to_right, 0.670f, -0.01f)); 
                 m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
 
             modelview = save;
             start_top_white_to_right = start_top_white_to_right + constance;
 
-                modelview = translate(modelview, vec3(start_top_black_to_right, 0.675, 0.0)); 
+                modelview = translate(modelview, vec3(start_top_black_to_right, 0.675f, 0.0f)); 
                 m_black_rect.display(projection, modelview, m_colorBlack, hdr, square_shader);
 
             modelview = save;
@@ -414,12 +391,12 @@ void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
             /*We only draw the lasts whites squares to make the border ont left and the right*/
 
-            modelview = translate(modelview, vec3(0 - 0.043*5, 0.670, -0.01)); 
+            modelview = translate(modelview, vec3(0.0f - 0.043f*5, 0.670f, -0.01f)); 
             m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
         
         modelview = save;
 
-            modelview = translate(modelview, vec3(0 + 0.043 * 5, 0.670, -0.01)); 
+            modelview = translate(modelview, vec3(0.0f + 0.043f * 5, 0.670f, -0.01f)); 
             m_grey_rect.display(projection, modelview, m_colorGrey, hdr, square_shader);
 
     }
@@ -431,8 +408,8 @@ void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
         {
             setTimeInformation();
 
-                modelview = translate(modelview, vec3(0.0, 0.658, -0.0));
-                modelview = scale(modelview, vec3(0.039, 0.050, 0.0));
+                modelview = translate(modelview, vec3(0.0f, 0.658f, -0.0f));
+                modelview = scale(modelview, vec3(0.039f, 0.050f, 0.0f));
                 m_time_info.renderTextOverlay(projection, modelview, text_shader);
 
             modelview = save;
@@ -479,9 +456,9 @@ void Overlay::setSpeedInformation(float const speed)
     
     float value_perc = ((speed * 100)/200)/100;
 
-    if(value_perc <= 0)
+    if(value_perc <= 0.0f)
     {
-        value_perc = 0;
+        value_perc = 0.0f;
     }
 
     if(m_ancient_speed != speed)

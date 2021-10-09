@@ -223,8 +223,8 @@ void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Sh
         if(m_atmosphere != nullptr)
         {
             //HACK : in fact we don't need this, have to change some parameter to pass them with default value
-            glm::mat4 light(1.0);
-            glm::vec3 campos(0.0);
+            glm::mat4 light(1.0f);
+            glm::vec3 campos(0.0f);
             m_atmosphere->display(projection, modelview, light, campos, hdr, atmo_shader);
         }
            

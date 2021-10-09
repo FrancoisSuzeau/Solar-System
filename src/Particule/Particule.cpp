@@ -120,7 +120,9 @@ void Particule::drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, par
 
         if((m_sphere_particle != nullptr) && (m_sphere_shader != nullptr))
         {
-            m_sphere_particle->draw(projection, modelview, 1.0, m_sphere_shader);
+            glm::mat4 light(1.0f);
+            glm::vec3 campos(0.0f);
+            m_sphere_particle->display(projection, modelview, light, campos, true, m_sphere_shader);
         }
 
         modelview = save;
