@@ -222,7 +222,10 @@ void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Sh
         translateCelestialBody(modelview, m_current_position);
         if(m_atmosphere != nullptr)
         {
-            m_atmosphere->displaySunAtmo(projection, modelview, hdr, atmo_shader);
+            //HACK : in fact we don't need this, have to change some parameter to pass them with default value
+            glm::mat4 light(1.0);
+            glm::vec3 campos(0.0);
+            m_atmosphere->display(projection, modelview, light, campos, hdr, atmo_shader);
         }
            
     }

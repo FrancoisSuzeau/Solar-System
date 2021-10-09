@@ -46,6 +46,7 @@ PURPOSE : header of the Atmosphere class
                 Sphere                          *sphere_atmosphere;
                 float                           m_size;
                 std::string                     name_planete_host;
+                glm::vec3                       m_apparent_size;
 
             public:
             
@@ -54,7 +55,6 @@ PURPOSE : header of the Atmosphere class
                 ~Atmosphere();
 
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr, Shader *ring_shader = nullptr);
-                void displaySunAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atmo_shader = nullptr);
         };
 
 
