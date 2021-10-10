@@ -42,6 +42,8 @@ PURPOSE : header of the OpenGlSketch class
 
         #include "../Settings/Settings.hpp"
         #include "../Particule/Particule.hpp"
+
+        #include "../Model/Model.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/

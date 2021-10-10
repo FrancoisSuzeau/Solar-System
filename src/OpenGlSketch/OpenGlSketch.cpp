@@ -507,6 +507,11 @@ void OpenGlSketch::startLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::mainLoop()
 {
+
+    Model ouRModel("../assets/model/backpack/backpack.obj");
+    Shader *model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
+    model_shader->loadShader();
+
     /************************************************* Variables ********************************************************/
     pause_music = false;
     speed_key_pressed = false;
@@ -561,6 +566,8 @@ void OpenGlSketch::mainLoop()
         aud->loadMusic();
         //aud->playMusic();
     }
+
+    
     
 
     while(!m_terminate)
@@ -634,6 +641,20 @@ void OpenGlSketch::mainLoop()
         
     //=======================================================================================================================================================
             
+            save_model_view == model_view;
+
+                model_view = translate(model_view, glm::vec3(1.0f, 8000.0f, 1.0f));
+                model_view = scale(model_view, glm::vec3(500.0f, 500.0f, 500.0f));
+
+                glUseProgram(model_shader->getProgramID());
+                model_shader->setMat4("projection", projection);
+                model_shader->setMat4("modelview", model_view);
+
+                ouRModel.draw(model_shader);
+
+                glUseProgram(0);
+
+            model_view = save_model_view;
 
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
@@ -735,6 +756,11 @@ void OpenGlSketch::mainLoop()
     if(screenShader != nullptr)
     {
         delete screenShader;
+    }
+
+    if(model_shader != nullptr)
+    {
+        delete model_shader;
     }
     
     // delete shaderBlur;
