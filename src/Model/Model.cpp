@@ -102,7 +102,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
                     vector.z = mesh->mNormals[i].z;
                     vertex.Normal = vector;
 
-                    std::cout << mesh << std::endl;
+                    // std::cout << mesh << std::endl;
 
                 }
                 
@@ -110,14 +110,14 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
                 // texture coordinates
                 if(mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
                 {
-                    std::cout << mesh << std::endl;
+                    // std::cout << mesh << std::endl;
                     glm::vec2 vec;
                     // a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
                     // use models where a vertex can have multiple texture coordinates so we always take the first set (0).
                     vec.x = mesh->mTextureCoords[0][i].x; 
                     vec.y = mesh->mTextureCoords[0][i].y;
                     vertex.TexCoords = vec;
-                    std::cout << mesh->mTextureCoords[0][i].x << std::endl;
+                    // std::cout << mesh->mTextureCoords[0][i].x << std::endl;
                     // tangent
                     // vector.x = mesh->mTangents[i].x;
                     // vector.y = mesh->mTangents[i].y;
@@ -189,18 +189,34 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 /***********************************************************************************************************************************************************************/
 std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, std::string const typeName)
 {
-    std::cout << " LOAD MATERIAL TEXTURE"  << std::endl;
+    // std::cout << " LOAD MATERIAL TEXTURE"  << std::endl;
     if(mat != nullptr)
     {
         std::vector<Texturate> textures;
         for(GLuint i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
+            mat->GetTexture(type, i, &str);
+
             GLboolean skip = false;
 
             for (GLuint j = 0; j < textures_loaded.size(); i++)
             {
-                /* code */
+                if(textures_loaded[j].path == str)
+                {
+                    textures.push_back(textures_loaded[j]);
+                    skip = true;
+                    break;
+                }
+            }
+
+            if(!skip)
+            {
+                Texturate texture;
+                texture.id = textureFromFile(str.C_Str(), m_directory);
+                texture.type = typeName;
+                texture.path = str;
+                textures.push_back(texture);
             }
             
             // mat->GetTexture(type, i, &str);
@@ -220,11 +236,11 @@ std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType
 /***********************************************************************************************************************************************************************/
 unsigned int Model::textureFromFile(const char *path, const std::string &directory)
 {
-    std::cout << "IN TEXTURE FROM FILE" << std::endl;
+    // std::cout << "IN TEXTURE FROM FILE" << std::endl;
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
-    unsigned int textureID;
+    GLuint textureID;
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
@@ -247,6 +263,8 @@ unsigned int Model::textureFromFile(const char *path, const std::string &directo
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         stbi_image_free(data);
     }

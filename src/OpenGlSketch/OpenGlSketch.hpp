@@ -26,6 +26,7 @@ PURPOSE : header of the OpenGlSketch class
         #include <SDL2/SDL_ttf.h>
         #include <iostream>
         #include <string>
+        #include <filesystem>
         
         #include "../CelestialBody/System/SystemCreator.hpp"
         #include "../CelestialBody/System/SolarSystemCreator.hpp"

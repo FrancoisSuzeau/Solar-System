@@ -24,6 +24,10 @@ PURPOSE : header of the Mesh class
 
         #include <GL/glew.h>
 
+        #include <assimp/Importer.hpp>
+        #include <assimp/scene.h>
+        #include <assimp/postprocess.h>
+
         #include <iostream>
         #include <string>
         #include <math.h>
@@ -40,14 +44,14 @@ PURPOSE : header of the Mesh class
             glm::vec3 Normal;
             glm::vec2 TexCoords;
 
-            // tangent
-            glm::vec3 Tangent;
-            // bitangent
-            glm::vec3 Bitangent;
-            //bone indexes which will influence this vertex
-            int m_BoneIDs[MAX_BONE_INFLUENCE];
-            //weights from each bone
-            float m_Weights[MAX_BONE_INFLUENCE];
+            // // tangent
+            // glm::vec3 Tangent;
+            // // bitangent
+            // glm::vec3 Bitangent;
+            // //bone indexes which will influence this vertex
+            // int m_BoneIDs[MAX_BONE_INFLUENCE];
+            // //weights from each bone
+            // float m_Weights[MAX_BONE_INFLUENCE];
 
         } Vertex;
 
@@ -56,7 +60,7 @@ PURPOSE : header of the Mesh class
             unsigned int id;
             std::string type;
 
-            std::string path;
+            aiString path;
 
         } Texturate;
 
@@ -68,7 +72,7 @@ PURPOSE : header of the Mesh class
             private:
 
                 std::vector<Vertex>         m_vertices;
-                std::vector<unsigned int>   m_indices;
+                std::vector<GLuint>   m_indices;
                 std::vector<Texturate>        m_textures;
 
                 unsigned int m_vao;
