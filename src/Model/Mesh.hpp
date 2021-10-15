@@ -44,14 +44,14 @@ PURPOSE : header of the Mesh class
             glm::vec3 Normal;
             glm::vec2 TexCoords;
 
-            // // tangent
-            // glm::vec3 Tangent;
-            // // bitangent
-            // glm::vec3 Bitangent;
-            // //bone indexes which will influence this vertex
-            // int m_BoneIDs[MAX_BONE_INFLUENCE];
-            // //weights from each bone
-            // float m_Weights[MAX_BONE_INFLUENCE];
+            // tangent
+            glm::vec3 Tangent;
+            // bitangent
+            glm::vec3 Bitangent;
+            //bone indexes which will influence this vertex
+            int m_BoneIDs[MAX_BONE_INFLUENCE];
+            //weights from each bone
+            float m_Weights[MAX_BONE_INFLUENCE];
 
         } Vertex;
 
@@ -60,7 +60,7 @@ PURPOSE : header of the Mesh class
             unsigned int id;
             std::string type;
 
-            aiString path;
+            std::string path;
 
         } Texturate;
 
@@ -72,8 +72,8 @@ PURPOSE : header of the Mesh class
             private:
 
                 std::vector<Vertex>         m_vertices;
-                std::vector<GLuint>   m_indices;
-                std::vector<Texturate>        m_textures;
+                std::vector<GLuint>         m_indices;
+                std::vector<Texturate>      m_textures;
 
                 unsigned int m_vao;
                 unsigned int m_vbo;

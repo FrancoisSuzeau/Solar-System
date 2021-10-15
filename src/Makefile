@@ -30,7 +30,7 @@ ${EXEC}: ${OBJET}
 # au cas ou .h est modifié
 
 main.o: OpenGlSketch/OpenGlSketch.hpp 
-OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.hpp Shader/Shader.hpp Overlay/Overlay.hpp Settings/Settings.hpp Particule/Particule.hpp
+OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.hpp Shader/Shader.hpp Overlay/Overlay.hpp Settings/Settings.hpp Particule/Particule.hpp Model/Model.hpp
 Shader.o: Shader/Shader.hpp
 Input.o: Input/Input.hpp
 Texture.o: Texture/Texture.hpp

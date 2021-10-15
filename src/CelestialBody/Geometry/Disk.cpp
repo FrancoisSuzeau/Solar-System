@@ -102,7 +102,7 @@ void Disk::load()
     glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
 
         //memory allocation
-        glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_colors_size, 0, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_colors_size, 0, GL_STATIC_DRAW);
         /*
             - GL_STATIC_DRAW : data with few updating
             - GL_DYNAMIC_DRAW : data with frequently updating (many times per second but not each frame

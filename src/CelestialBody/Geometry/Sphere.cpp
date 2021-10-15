@@ -117,7 +117,7 @@ m_vbo(0), m_ibo(0), m_element_count(0), m_radius(radius)
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
         //memory allocation
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * VERT_NUM_FLOATS * m_vertCount, 0, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * VERT_NUM_FLOATS * m_vertCount, 0, GL_STATIC_DRAW);
 
         /*
             - GL_STATIC_DRAW : data with few updating

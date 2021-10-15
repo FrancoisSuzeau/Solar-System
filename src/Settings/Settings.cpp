@@ -18,16 +18,16 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 Settings::Settings(TTF_Font *police):
-m_titre(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_quit(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_hdr(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_exposure(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_music_playing(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_music_volume(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_overlay_display(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_info_planete(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-display_name_plan(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
+m_titre(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+m_quit(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+m_hdr(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+m_exposure(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+m_speed(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+m_music_playing(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+m_music_volume(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+m_overlay_display(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+m_info_planete(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
+display_name_plan(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police)
 {
     m_titre.loadTTF("Settings");
     m_quit.loadTTF("Quit Simulation");
@@ -44,10 +44,10 @@ display_name_plan(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
     screen_width = GetSystemMetrics(SM_CXSCREEN);
     screen_height = GetSystemMetrics(SM_CYSCREEN);
 
-    colorGrey = vec3(0.7);
-    colorBlack = vec3(0.1);
+    colorGrey = vec3(0.7f);
+    colorBlack = vec3(0.1f);
 
-    m_grey_rect = new Square(0.05, 0.7);
+    m_grey_rect = new Square(0.05f, 0.7f);
     if(m_grey_rect == nullptr)
     {
         exit(EXIT_FAILURE);

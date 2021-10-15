@@ -419,7 +419,7 @@ void OpenGlSketch::startLoop()
     m_input.displayPointer(false);
 
     //initialize modelview and projection matrix
-    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 120.0);
+    projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 120.0);
     model_view = mat4(1.0f);
 
     //loading system and making start screen
@@ -438,7 +438,7 @@ void OpenGlSketch::startLoop()
         //save the modelview matrix
         save_model_view = model_view;
 
-            model_view = translate(model_view, vec3(0.0f, 0.5f, 1.8f));
+            model_view = translate(model_view, vec3(0.0f, 0.5f, 0.0f));
             if(startScreen != nullptr)
             {
                 if(text_shader != nullptr)
@@ -508,7 +508,7 @@ void OpenGlSketch::startLoop()
 void OpenGlSketch::mainLoop()
 {
 
-    Model ouRModel("../assets/model/backpack/backpack.obj");
+    Model ouRModel("../assets/model/cube.obj");
     Shader *model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
     model_shader->loadShader();
 
@@ -557,7 +557,7 @@ void OpenGlSketch::mainLoop()
     m_input.displayPointer(false);
     
     //initialize modelview and projection matrix
-    projection = perspective(70.0, (double)m_window_width / m_window_height, 1.0, 9000000.0);
+    projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 9000000.0);
     model_view = mat4(1.0f);
 
     //load and play the music
@@ -641,16 +641,17 @@ void OpenGlSketch::mainLoop()
         
     //=======================================================================================================================================================
             
-            save_model_view == model_view;
+            save_model_view = model_view;
 
                 model_view = translate(model_view, glm::vec3(0.0f, 0.0f, 0.0f));
-                model_view = scale(model_view, glm::vec3(1.0f, 1.0f, 1.0f));
+                model_view = scale(model_view, glm::vec3(500.0f, 500.0f, 500.0f));
 
                 glUseProgram(model_shader->getProgramID());
-                model_shader->setMat4("projection", projection);
-                model_shader->setMat4("modelview", model_view);
 
-                ouRModel.draw(model_shader);
+                    model_shader->setMat4("projection", projection);
+                    model_shader->setMat4("modelview", model_view);
+
+                    ouRModel.draw(model_shader);
 
                 glUseProgram(0);
 
@@ -820,28 +821,28 @@ void OpenGlSketch::renderOverlay()
             glm::vec3 position = camera->getPosition();
             float speed = camera->getSpeed();
 
-                model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayGeneralOverlay(projection, model_view, hdr, square_shader);
 
                 //restaure the modelview matrix
                 model_view = save_model_view;
 
-                model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMusicOverlay(projection, model_view, hdr, track, text_shader, square_shader);
 
                 //restaure the modelview matrix
                 model_view = save_model_view;
 
-                model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMoveInfoOverlay(projection, model_view, hdr, position, speed, text_shader, square_shader);
 
                 //restaure the modelview matrix
                 model_view = save_model_view;
 
-                model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayTimeInfoOverlay(projection, model_view, hdr, text_shader, square_shader);
 
@@ -1026,7 +1027,7 @@ void OpenGlSketch::renderSettings()
             m_input.capturePointer(false);
             m_input.displayPointer(true);
 
-            model_view = lookAt(vec3(0.0f, 0.0f, 1.5f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+            model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                 m_settings->displayFrameSettings(projection, model_view, hdr, text_shader, square_shader);
 

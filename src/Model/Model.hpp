@@ -52,11 +52,12 @@ PURPOSE : header of the Model class
                 std::vector<Mesh>               m_meshes;
                 std::vector<Texturate>          textures_loaded;
                 std::string                     m_directory;
+                bool                            m_gammaCorrection;
 
 
-                void loadModel(std::string const path);
+                void loadModel(std::string const &path);
                 void processNode(aiNode *node, const aiScene *scene);
-                unsigned int textureFromFile(const char *path, const std::string &directory);
+                unsigned int textureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
                 Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 
@@ -65,7 +66,7 @@ PURPOSE : header of the Model class
                 
             public:
             
-                Model(std::string const path);
+                Model(std::string const &path, bool gamma = false);
                 ~Model();
 
                 void draw(Shader *model_shader);
