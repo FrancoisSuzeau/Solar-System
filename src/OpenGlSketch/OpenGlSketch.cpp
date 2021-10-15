@@ -643,7 +643,7 @@ void OpenGlSketch::mainLoop()
             
             save_model_view = model_view;
 
-                model_view = translate(model_view, glm::vec3(0.0f, 0.0f, 0.0f));
+                model_view = translate(model_view, glm::vec3(1.0f, 9000.0f, 1.0f));
                 model_view = scale(model_view, glm::vec3(500.0f, 500.0f, 500.0f));
 
                 glUseProgram(model_shader->getProgramID());
