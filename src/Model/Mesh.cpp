@@ -137,6 +137,7 @@ void Mesh::draw(glm::mat4 &projection, glm::mat4 &view, glm::mat4 &model, bool h
             }
 
             glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
+            //glDrawElementsInstanced(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0, 1000);
 
             glBindVertexArray(0);
             

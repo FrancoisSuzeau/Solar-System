@@ -29,7 +29,7 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
     m_companion_count = celestial_object_count;
     m_planetarySYS_count = 3;
     m_simple_planete_count = 5;
-    m_amount = 1000;
+    m_amount = 2500;
 
     skybox = new Skybox();
     if(skybox == nullptr)
@@ -684,7 +684,7 @@ void SolarSystem::initModel()
     modelLights = new glm::mat4[m_amount];
 
     float radius = 9000.0f;
-    float offset = 1000.0f;
+    float offset = 100.0f;
 
     for (unsigned int i = 0; i < m_amount; i++)
     {
@@ -692,10 +692,10 @@ void SolarSystem::initModel()
 
         float angle = (float) i / (float) m_amount * 360.0f;
         float displacement = (rand() % (int)(2*offset * 100)) / 100.0f - offset;
-        float x = sin(glm::radians(angle)) * radius + displacement;
+        float x = cos(glm::radians(angle)) * radius + displacement;
 
         displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
-        float y = cos(glm::radians(angle)) * radius + displacement;
+        float y = sin(glm::radians(angle)) * radius + displacement;
 
         displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
         float z = displacement * 0.4f;
