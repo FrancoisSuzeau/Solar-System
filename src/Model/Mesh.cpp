@@ -27,12 +27,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 
 Mesh::~Mesh()
 {
-    //destroy VBO
-    // glDeleteBuffers(1, &m_vbo);
-    // glDeleteBuffers(1, &m_ebo);
-    
-    // //destroy VAO
-    // glDeleteVertexArrays(1, &m_vao);
+    //REMEMBER : DO NOT DESTROY VAO, VBO and EBO
 }
 
 /***********************************************************************************************************************************************************************/
@@ -40,27 +35,9 @@ Mesh::~Mesh()
 /***********************************************************************************************************************************************************************/
 void Mesh::setupMesh()
 {
-    //destroy a possible ancient VAO
-    // if(glIsVertexArray(m_vao) == GL_TRUE)
-    // {
-    //     glDeleteVertexArrays(1, &m_vao);
-    // }
-    //generate Vertex Array Object ID
+
     glGenVertexArrays(1, &m_vao);
-
-    //destroy a possible ancient VBO
-    // if(glIsBuffer(m_vbo) == GL_TRUE)
-    // {
-    //     glDeleteBuffers(1, &m_vbo);
-    // }
-    //generate Vertex Buffer Object ID
     glGenBuffers(1, &m_vbo);
-
-    //destroy a possible ancient EBO
-    // if(glIsBuffer(m_ebo) == GL_TRUE)
-    // {
-    //     glDeleteBuffers(1, &m_ebo);
-    // }
     glGenBuffers(1, &m_ebo);
 
 
@@ -112,12 +89,19 @@ void Mesh::setupMesh()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Mesh::draw(Shader *mesh_shader)
+void Mesh::draw(glm::mat4 &projection, glm::mat4 &view, glm::mat4 &model, bool hdr, glm::mat4 &light_src, Shader *mesh_shader)
 {
     if(mesh_shader != nullptr)
     {
-        
         glUseProgram(mesh_shader->getProgramID());
+
+        mesh_shader->setMat4("projection", projection);
+        mesh_shader->setMat4("view", view);
+        mesh_shader->setMat4("model", model);
+        mesh_shader->setMat4("light_src", light_src);
+
+        mesh_shader->setInt("hdr", hdr);
+        
         glBindVertexArray(m_vao);
 
             unsigned int diffuseNr = 1;
@@ -148,32 +132,18 @@ void Mesh::draw(Shader *mesh_shader)
                     number = std::to_string(heightNr++);
                 }
                 
-                std::cout << "diffuse : " << diffuseNr << std::endl;
-                std::cout << "specular : " << specularNr << std::endl;
-                std::cout << "normal : " << normalNr << std::endl;
-                std::cout << "height : " << heightNr << std::endl;
                 mesh_shader->setTexture((name + number).c_str(), i);
                 glBindTexture(GL_TEXTURE_2D, m_textures[i].id);
             }
 
-            //mesh_shader->setFloat("material.shininess", 16.0f);
-
-            // glActiveTexture(GL_TEXTURE0);
-
-            
-
-                glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
 
             glBindVertexArray(0);
-
-            // for (GLuint i = 0; i < this->m_textures.size(); i++)
-            // {
-            //     glActiveTexture(GL_TEXTURE0 + i);
-            //     glBindTexture(GL_TEXTURE_2D, 0);
-            // }
             
             glActiveTexture(GL_TEXTURE0);
-        glUseProgram(0);
+
+            glUseProgram(0);
+        
     }
 }
 

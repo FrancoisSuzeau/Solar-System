@@ -507,11 +507,6 @@ void OpenGlSketch::startLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::mainLoop()
 {
-
-    Model ouRModel("../assets/model/cube.obj");
-    Shader *model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
-    model_shader->loadShader();
-
     /************************************************* Variables ********************************************************/
     pause_music = false;
     speed_key_pressed = false;
@@ -640,22 +635,6 @@ void OpenGlSketch::mainLoop()
         }
         
     //=======================================================================================================================================================
-            
-            save_model_view = model_view;
-
-                model_view = translate(model_view, glm::vec3(1.0f, 9000.0f, 1.0f));
-                model_view = scale(model_view, glm::vec3(500.0f, 500.0f, 500.0f));
-
-                glUseProgram(model_shader->getProgramID());
-
-                    model_shader->setMat4("projection", projection);
-                    model_shader->setMat4("modelview", model_view);
-
-                    ouRModel.draw(model_shader);
-
-                glUseProgram(0);
-
-            model_view = save_model_view;
 
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
@@ -757,11 +736,6 @@ void OpenGlSketch::mainLoop()
     if(screenShader != nullptr)
     {
         delete screenShader;
-    }
-
-    if(model_shader != nullptr)
-    {
-        delete model_shader;
     }
     
     // delete shaderBlur;
@@ -893,6 +867,14 @@ void OpenGlSketch::renderScene()
                 {
                     solar_system->drawName(projection, model_view, camPos, text_shader);
                 }
+                
+
+            //restaure the modelview matrix
+            model_view = save_model_view;
+
+            /******************************************* asteroid field render *****************************************************/
+
+                solar_system->drawAsteroidField(projection, model_view, hdr);
                 
 
             //restaure the modelview matrix

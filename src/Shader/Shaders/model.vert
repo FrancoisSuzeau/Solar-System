@@ -4,12 +4,19 @@ layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
 
 out vec2 TexCoords;
+out vec3 Normal;
 
-uniform mat4 modelview;
+out vec3 FragPos;
+
+uniform mat4 view;
+uniform mat4 model;
 uniform mat4 projection;
+uniform mat4 light_src;
 
 void main()
 {    
-    gl_Position = projection * modelview * vec4(aPos, 1.0f);
+    gl_Position = projection * view * model * vec4(aPos, 1.0f);
     TexCoords = aTexCoords;
+    Normal = mat3(transpose(inverse(light_src))) * aNormal;
+    FragPos = vec3(light_src * vec4(aPos, 1.0));
 }

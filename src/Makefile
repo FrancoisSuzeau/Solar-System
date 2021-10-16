@@ -30,7 +30,7 @@ ${EXEC}: ${OBJET}
 # au cas ou .h est modifié
 
 main.o: OpenGlSketch/OpenGlSketch.hpp 
-OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.hpp Shader/Shader.hpp Overlay/Overlay.hpp Settings/Settings.hpp Particule/Particule.hpp Model/Model.hpp
+OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.hpp Shader/Shader.hpp Overlay/Overlay.hpp Settings/Settings.hpp Particule/Particule.hpp
 Shader.o: Shader/Shader.hpp
 Input.o: Input/Input.hpp
 Texture.o: Texture/Texture.hpp
@@ -47,7 +47,7 @@ Text.o: Text/Text.hpp Texture/Texture.hpp Shader/Shader.hpp
 Skybox.o: CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp
 Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Atmosphere/Atmosphere.hpp
 PlanetarySystem.o: CelestialBody/System/PlanetarySystem.hpp CelestialBody/System/System.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp Atmosphere/Atmosphere.hpp Text/Text.hpp Shader/Shader.hpp PlaneteInformation/PlaneteInformation.hpp
-SolarSystem.o: CelestialBody/System/SolarSystem.hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp PlaneteInformation/PlaneteInformation.hpp
+SolarSystem.o: CelestialBody/System/SolarSystem.hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp PlaneteInformation/PlaneteInformation.hpp Model/Mode.hpp
 StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp Shader/Shader.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/Geometry/Sphere.hpp Shader/Shader.hpp
 Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp

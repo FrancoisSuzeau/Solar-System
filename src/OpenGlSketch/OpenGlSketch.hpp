@@ -26,7 +26,7 @@ PURPOSE : header of the OpenGlSketch class
         #include <SDL2/SDL_ttf.h>
         #include <iostream>
         #include <string>
-        #include <filesystem>
+        #include <math.h>
         
         #include "../CelestialBody/System/SystemCreator.hpp"
         #include "../CelestialBody/System/SolarSystemCreator.hpp"
@@ -43,8 +43,6 @@ PURPOSE : header of the OpenGlSketch class
 
         #include "../Settings/Settings.hpp"
         #include "../Particule/Particule.hpp"
-
-        #include "../Model/Model.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/

@@ -29,6 +29,7 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
     m_companion_count = celestial_object_count;
     m_planetarySYS_count = 3;
     m_simple_planete_count = 5;
+    m_amount = 1000;
 
     skybox = new Skybox();
     if(skybox == nullptr)
@@ -41,6 +42,13 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
     {
         exit(EXIT_FAILURE);
     }
+
+    asteroid = new Model("../assets/model/rock/rock.obj");
+    if(asteroid == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+    this->initModel();
 
     m_body_shader.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"));
     if(m_body_shader[0] == nullptr)
@@ -84,6 +92,13 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
     }
     m_sun_atmo_shader->loadShader();
 
+    m_model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
+    if(m_model_shader == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+    m_model_shader->loadShader();
+
 }
 
 SolarSystem::SolarSystem() : sun()
@@ -120,6 +135,11 @@ SolarSystem::~SolarSystem()
     {
         delete sun;
     }
+
+    if(asteroid != nullptr)
+    {
+        delete asteroid;
+    }
     
 
     if(m_planete_info != nullptr)
@@ -148,6 +168,11 @@ SolarSystem::~SolarSystem()
     if(m_sun_atmo_shader != nullptr)
     {
         delete m_sun_atmo_shader;
+    }
+
+    if(m_model_shader != nullptr)
+    {
+        delete m_model_shader;
     }
     
     
@@ -267,6 +292,25 @@ void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, boo
         
 
     modelview = save;
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************* displayAsteroidField ******************************************************************/
+/***********************************************************************************************************************************************************************/
+void SolarSystem::displayAsteroidField(glm::mat4 &projection, glm::mat4 &view, bool hdr)
+{
+    glm::mat4 save = view;
+
+        if((asteroid != nullptr) && (m_model_shader != nullptr))
+        {
+            for (unsigned int i = 0; i < m_amount; i++)
+            {
+                asteroid->draw(projection, view, modelMatrices[i], hdr, modelLights[i], m_model_shader);
+            }
+            
+        }
+        
+    view = save;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -620,4 +664,57 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     modelview = save;
     
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************** initModel **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SolarSystem::initModel()
+{
+    if(sun == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+                        
+    glm::vec3 m_position = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
+    glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f));
+    glm::mat4 save_light_src = light_src;
+
+    modelMatrices = new glm::mat4[m_amount];
+    modelLights = new glm::mat4[m_amount];
+
+    float radius = 9000.0f;
+    float offset = 1000.0f;
+
+    for (unsigned int i = 0; i < m_amount; i++)
+    {
+        glm::mat4 model(1.0f);
+
+        float angle = (float) i / (float) m_amount * 360.0f;
+        float displacement = (rand() % (int)(2*offset * 100)) / 100.0f - offset;
+        float x = sin(glm::radians(angle)) * radius + displacement;
+
+        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        float y = cos(glm::radians(angle)) * radius + displacement;
+
+        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        float z = displacement * 0.4f;
+
+        model = glm::translate(model, glm::vec3(x, y, z));
+        light_src = glm::translate(light_src, glm::vec3(x, y, z));
+
+        float rotAngle = (rand() % 360);
+        model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+        light_src = glm::rotate(light_src, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+
+        float scaleM = (rand() % 20) / 100.0f + 5.0f;
+        model = glm::scale(model, glm::vec3(scaleM));
+        light_src = glm::scale(light_src, glm::vec3(scaleM));
+
+        modelMatrices[i] = model;
+        modelLights[i] = light_src;
+
+        light_src = save_light_src;
+
+    }
 }

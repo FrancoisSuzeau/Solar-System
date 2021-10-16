@@ -31,6 +31,10 @@ PURPOSE : header of the Model class
         
 
         #include <iostream>
+        #include <fstream>
+        #include <sstream>
+        #include <iostream>
+        #include <map>
         #include <string>
         #include <math.h>
         #include <vector>
@@ -50,10 +54,10 @@ PURPOSE : header of the Model class
             private:
 
                 std::vector<Mesh>               m_meshes;
-                std::vector<Texturate>          textures_loaded;
+                
                 std::string                     m_directory;
                 bool                            m_gammaCorrection;
-
+                std::vector<Texturate>          textures_loaded;
 
                 void loadModel(std::string const &path);
                 void processNode(aiNode *node, const aiScene *scene);
@@ -69,7 +73,8 @@ PURPOSE : header of the Model class
                 Model(std::string const &path, bool gamma = false);
                 ~Model();
 
-                void draw(Shader *model_shader);
+                void draw(glm::mat4 &projection, glm::mat4 &view, glm::mat4 &model, bool hdr, glm::mat4 &light_src, Shader *model_shader);
+                
 
         };
 

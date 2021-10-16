@@ -30,6 +30,7 @@ PURPOSE : header of the virtual SolarSystem class
         #include "../../Shader/Shader.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
+        #include "../../Model/Model.hpp"
 
         #include <SDL2/SDL.h>
         #include <SDL2/SDL_ttf.h>
@@ -47,6 +48,7 @@ PURPOSE : header of the virtual SolarSystem class
                 std::vector<SystemCreator*>     m_planetary_system;
                 Star                            *sun;
                 Skybox                          *skybox;
+                Model                           *asteroid;
 
                 std::vector<PlaneteCreator*> m_planete_creator;
 
@@ -56,7 +58,14 @@ PURPOSE : header of the virtual SolarSystem class
                 Shader*                         m_ring_shader;
                 Shader                          *m_sphere_shader;
                 Shader                          *m_sun_atmo_shader;
+                Shader                          *m_model_shader;
 
+                glm::mat4                       *modelMatrices;
+                glm::mat4                       *modelLights;
+
+                unsigned int                    m_amount;
+
+                void initModel();
                 
             public:
 
@@ -71,9 +80,14 @@ PURPOSE : header of the virtual SolarSystem class
                 void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader = nullptr) override;
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) override;
                 void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr, Shader *text_shader = nullptr, Shader *square_shader = nullptr) override;
+                void displayAsteroidField(glm::mat4 &projection, glm::mat4 &modelview, bool hdr) override;
+
+               
 
 
         };
+
+        
 
 
 #endif

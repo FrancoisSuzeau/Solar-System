@@ -86,7 +86,7 @@ PURPOSE : header of the Mesh class
                 Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texturate> textures);
                 ~Mesh();
 
-                void draw(Shader *mesh_shader = nullptr);
+                void draw(glm::mat4 &projection, glm::mat4 &view, glm::mat4 &model, bool hdr, glm::mat4 &light_src, Shader *mesh_shader = nullptr);
                 
                 std::vector<Vertex> getVertices() const;
                 std::vector<unsigned int> getIndices() const;

@@ -394,3 +394,8 @@ void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview,
     //do nothing and doesn't have
 }
 
+void PlanetarySystem::displayAsteroidField(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+{
+    //do nothing and doesn't have
+}
+

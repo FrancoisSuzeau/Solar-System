@@ -54,6 +54,7 @@ PURPOSE : header of the virtual System class
                 virtual void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader = nullptr) = 0;
                 virtual void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) = 0;
                 virtual void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr, Shader *text_shader = nullptr, Shader *square_shader = nullptr) = 0;
+                virtual void displayAsteroidField(glm::mat4 &projection, glm::mat4 &modelview, bool hdr) = 0;
                 
         };
 

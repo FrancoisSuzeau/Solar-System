@@ -103,21 +103,21 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
                 // texture coordinates
                 if(mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
                 {
-                    // std::cout << mesh << std::endl;
+                    
                     glm::vec2 vec;
                     // a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
                     // use models where a vertex can have multiple texture coordinates so we always take the first set (0).
                     vec.x = mesh->mTextureCoords[0][i].x; 
                     vec.y = mesh->mTextureCoords[0][i].y;
                     vertex.TexCoords = vec;
-                    // std::cout << mesh->mTextureCoords[0][i].x << std::endl;
+    
                     // tangent
                     vector.x = mesh->mTangents[i].x;
                     vector.y = mesh->mTangents[i].y;
                     vector.z = mesh->mTangents[i].z;
                     vertex.Tangent = vector;
-                    // std::cout << mesh << std::endl;
-                    // // bitangent
+                    
+                    // bitangent
                     vector.x = mesh->mBitangents[i].x;
                     vector.y = mesh->mBitangents[i].y;
                     vector.z = mesh->mBitangents[i].z;
@@ -171,10 +171,9 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
             textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
             // return a mesh object created from the extracted mesh data
-            std::cout << ">> Meshes are processed : SUCCESS" << std::endl;
-            std::cout << ">> vertices size : " << vertices.size() << std::endl;
-            std::cout << ">> indices size : " << indices.size() << std::endl;
-            std::cout << ">> textures size : " << textures.size() << std::endl;
+            // std::cout << "vertice size : " << vertices.size() << std::endl;
+            // std::cout << "indices size : " << indices.size() << std::endl;
+            // std::cout << "textures size : " << textures.size() << std::endl;
             return Mesh(vertices, indices, textures);
         }
             
@@ -250,7 +249,7 @@ unsigned int Model::textureFromFile(const char *path, const std::string &directo
             format = GL_RGBA;
 
         glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -277,14 +276,14 @@ unsigned int Model::textureFromFile(const char *path, const std::string &directo
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Model::draw(Shader *model_shader)
+void Model::draw(glm::mat4 &projection, glm::mat4 &view, glm::mat4 &model, bool hdr, glm::mat4 &light_src, Shader *model_shader)
 {
     
     if(model_shader != nullptr)
     {
         for (unsigned int i(0); i < m_meshes.size(); i++)
         {
-            m_meshes[i].draw(model_shader);
+            m_meshes[i].draw(projection, view, model, hdr, light_src, model_shader);
         }
         
     }
