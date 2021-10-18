@@ -297,20 +297,22 @@ void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, boo
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAsteroidField ******************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAsteroidField(glm::mat4 &projection, glm::mat4 &view, bool hdr)
+void SolarSystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = projection_view_mat[1];
 
         if((asteroid != nullptr) && (m_model_shader != nullptr))
         {
             for (unsigned int i = 0; i < m_amount; i++)
             {
-                asteroid->draw(projection, view, modelMatrices[i], hdr, modelLights[i], m_model_shader);
+                std::vector<glm::mat4> model_ligh_mat;
+                model_ligh_mat.push_back(modelMatrices[i]);
+                model_ligh_mat.push_back(modelLights[i]);
+                asteroid->draw(projection_view_mat, model_ligh_mat , hdr, m_model_shader);
             }
-            
         }
         
-    view = save;
+    projection_view_mat[1] = save;
 }
 
 /***********************************************************************************************************************************************************************/

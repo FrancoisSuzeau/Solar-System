@@ -24,7 +24,7 @@ void main()
     vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
 
     vec3 objectColor = texture(texture_diffuse1, TexCoords).rgb;
-    FragColor = texture(texture_diffuse1, TexCoords);
+    // vec3 objectColor = vec3(1.0f);
 
     // *********************************************** diffuse light ***************************************************
     vec3 norm = normalize(Normal);

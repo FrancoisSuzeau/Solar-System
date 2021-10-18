@@ -104,34 +104,10 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            // glUniformMatrix4fv(glGetUniformLocation(star_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-            // glUniformMatrix4fv(glGetUniformLocation(star_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
             star_shader->setMat4("modelview", modelview);
             star_shader->setMat4("projection", projection);
             star_shader->setMat4("light_src", light_src);
 
-            // positions
-            // std::vector<glm::vec3> lightPositions;
-            // lightPositions.push_back(glm::vec3( 0.0f,  0.0f, 49.5f)); // back light
-            // lightPositions.push_back(glm::vec3(-1.4f, -1.9f, 9.0f));
-            // lightPositions.push_back(glm::vec3( 0.0f, -1.8f, 4.0f));
-            // lightPositions.push_back(glm::vec3( 0.8f, -1.7f, 6.0f));
-            // // colors
-            // std::vector<glm::vec3> lightColors;
-            // lightColors.push_back(glm::vec3(200.0f, 200.0f, 200.0f));
-            // lightColors.push_back(glm::vec3(0.1f, 0.0f, 0.0f));
-            // lightColors.push_back(glm::vec3(0.0f, 0.0f, 0.2f));
-            // lightColors.push_back(glm::vec3(0.0f, 0.1f, 0.0f));
-
-            // // set lighting uniforms
-            // for (unsigned int i = 0; i < lightPositions.size(); i++)
-            // {
-            //     star_shader->setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
-            //     star_shader->setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
-            // }
-            
-            //texture variable to shader
-            //glUniform1i(glGetUniformLocation(star_shader->getProgramID(), "texture0"), 0);
             star_shader->setTexture("texture0", 0);
 
             star_shader->setVec3("viewPos", camPos);
@@ -160,14 +136,6 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************************* display *******************************************************************************/
-/***********************************************************************************************************************************************************************/
-// void Star::displayName(glm::mat4 &projection, glm::mat4 &modelview)
-// {
-//     m_name_renderer.renderText(projection, modelview, m_real_size);
-// }
-
-/***********************************************************************************************************************************************************************/
 /**************************************************************************** updatePosition ***************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation)
@@ -175,8 +143,6 @@ void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float con
     //postionning body
     translateCelestialBody(modelview, m_current_position);
 
-    //making the planete rotation
-    //making the planete rotation
     m_rotation_angle += m_speed_rotation;
     if(m_rotation_angle >= 360)
     {

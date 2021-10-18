@@ -43,6 +43,8 @@ PURPOSE : header of the OpenGlSketch class
 
         #include "../Settings/Settings.hpp"
         #include "../Particule/Particule.hpp"
+
+        #include "../Spaceship/Spaceship.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -103,14 +105,6 @@ PURPOSE : header of the OpenGlSketch class
 
                 bool m_overlay_display;
                 bool m_name_display;
-
-
-
-                // unsigned int colorBuffers[2];
-                // unsigned int rboDepth;
-                // unsigned int pingpongFBO[2];
-                // unsigned int pingpongColorbuffers[2];
-                // Shader *shaderBlur;
 
                 Overlay *m_overlay;
 

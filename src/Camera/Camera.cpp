@@ -279,3 +279,8 @@ glm::vec3 Camera::getTargetPoint() const
 {
     return m_target_point;
 }
+
+glm::vec3 Camera::getVerticalaxe() const
+{
+    return m_vertical_axe;
+}

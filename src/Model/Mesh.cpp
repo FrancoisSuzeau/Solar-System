@@ -89,16 +89,16 @@ void Mesh::setupMesh()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Mesh::draw(glm::mat4 &projection, glm::mat4 &view, glm::mat4 &model, bool hdr, glm::mat4 &light_src, Shader *mesh_shader)
+void Mesh::draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat4> model_light_mat, bool hdr, Shader *mesh_shader)
 {
     if(mesh_shader != nullptr)
     {
         glUseProgram(mesh_shader->getProgramID());
 
-        mesh_shader->setMat4("projection", projection);
-        mesh_shader->setMat4("view", view);
-        mesh_shader->setMat4("model", model);
-        mesh_shader->setMat4("light_src", light_src);
+        mesh_shader->setMat4("projection", projection_view_mat[0]);
+        mesh_shader->setMat4("view", projection_view_mat[1]);
+        mesh_shader->setMat4("model", model_light_mat[0]);
+        mesh_shader->setMat4("light_src", model_light_mat[1]);
 
         mesh_shader->setInt("hdr", hdr);
         
@@ -141,7 +141,13 @@ void Mesh::draw(glm::mat4 &projection, glm::mat4 &view, glm::mat4 &model, bool h
 
             glBindVertexArray(0);
             
-            glActiveTexture(GL_TEXTURE0);
+            for (unsigned int i(0); i < m_textures.size(); i++)
+            {
+                glActiveTexture(GL_TEXTURE0 + i);
+                glBindTexture(GL_TEXTURE_2D, 0);
+
+            }
+            
 
             glUseProgram(0);
         

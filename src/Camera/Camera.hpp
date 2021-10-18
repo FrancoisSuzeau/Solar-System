@@ -75,6 +75,8 @@ PURPOSE : header of the Camera class
                 void setTargetPoint(glm::vec3 target_point);
                 glm::vec3 getTargetPoint() const;
 
+                glm::vec3 getVerticalaxe() const;
+
                 
         };
 
