@@ -56,20 +56,19 @@ PURPOSE : header of the Spaceship class
             private:
 
                 Model                   *m_spaceship_model;
-                std::vector<glm::mat4>  m_model_light_matrice; //Use a vector to avoid passing the matrice in parameter list
+                std::vector<glm::mat4>  m_model_light_matrice; //Use a vector to avoid passing the two matrice in parameter list
                                                                 //there only will be two : model matrice of the ship and light matrice of the diffuse light
 
                 float cam_phi;
                 float cam_theta;
 
-                glm::vec3               m_current_pos_from_cam; //x = 0.0f, y = -4.8f, z = -1.2f
+                glm::vec3 m_current_pos;
 
 
                 
-                void positioningShip(Camera *camera, Input input);
-                void setCartesianCoordinate(glm::vec3 cam_pos);
+                void positioningShip(Camera *camera);
 
-                void orientateShip(Camera *camera);
+                void orientateShip(Camera *camera, Input input);
 
                 void scalingShip();
 

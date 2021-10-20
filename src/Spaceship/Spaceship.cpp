@@ -15,7 +15,7 @@ PURPOSE : class Spaceship
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Spaceship::Spaceship(std::string const path)
+Spaceship::Spaceship(std::string const path) : cam_phi(0.0f), cam_theta(-90.0f)
 {
     m_spaceship_model = new Model(path);
 
@@ -39,10 +39,11 @@ Spaceship::~Spaceship()
 /***********************************************************************************************************************************************************************/
 void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Camera *camera, Input input)
 {
+    
     if((m_spaceship_model != nullptr) && ((model_shader != nullptr)))
     {
-        this->positioningShip(camera, input);
-        this->orientateShip(camera);
+        this->positioningShip(camera);
+        this->orientateShip(camera, input);
         this->scalingShip();
 
         m_spaceship_model->draw(projection_view_mat, m_model_light_matrice, hdr, model_shader);
@@ -52,9 +53,10 @@ void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool h
 /***********************************************************************************************************************************************************************/
 /***************************************************************************** positioningShip *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::positioningShip(Camera *camera, Input input)
+void Spaceship::positioningShip(Camera *camera)
 {
     glm::vec3 cam_position = camera->getPosition();
+    m_current_pos = glm::vec3(0.0f + cam_position.x, -4.8f + cam_position.y, -1.2f + cam_position.z);
 
     //it is important to reintitialise the model matrice, if not all the calculation are made by the ancient calculation and we loose the space ship
     m_model_light_matrice[0] = glm::mat4(1.0f);
@@ -62,48 +64,28 @@ void Spaceship::positioningShip(Camera *camera, Input input)
     glm::vec3 sun_pos = glm::vec3(0.01f, 0.0f, 0.0f);
     m_model_light_matrice[1] = glm::lookAt(sun_pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
-    m_model_light_matrice[0] = glm::translate(m_model_light_matrice[0], cam_position);
-    m_model_light_matrice[1] = glm::translate(m_model_light_matrice[1], cam_position);
+    m_model_light_matrice[0] = glm::translate(m_model_light_matrice[0], m_current_pos);
+    m_model_light_matrice[1] = glm::translate(m_model_light_matrice[1], m_current_pos);
 
-    this->setCartesianCoordinate(cam_position);
 }
-
-/***********************************************************************************************************************************************************************/
-/***************************************************************************** setSphericalCoordinate *************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Spaceship::setCartesianCoordinate(glm::vec3 cam_pos)
-{
-    float x_from_cam = 0.0f;
-    float y_from_cam = -4.8f;
-    float z_from_cam = -1.2f;
-           
-    float r_squarre = std::pow(x_from_cam, 2) + std::pow(y_from_cam, 2) + std::pow(z_from_cam, 2);
-
-    float r = std::sqrt(r_squarre);
-
-    float z = r * cos(glm::radians(cam_theta));
-    float y = y_from_cam;
-    float x = x_from_cam;
-
-    m_model_light_matrice[0] = glm::translate(m_model_light_matrice[0], glm::vec3(z, y, x));
-    m_model_light_matrice[1] = glm::translate(m_model_light_matrice[1], glm::vec3(z, y, x));
-}
-
-
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* orientateShip *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::orientateShip(Camera *camera)
+void Spaceship::orientateShip(Camera *camera, Input input)
 {
-    cam_phi = camera->getPhi();
-    cam_theta = camera->getTheta();
+    if( (input.getMouseButton(SDL_MOUSEBUTTONDOWN)) && input.getMouseButton(SDL_BUTTON_LEFT) )
+    {
+        cam_phi = camera->getPhi();
+        cam_theta = camera->getTheta();
+    }
 
     m_model_light_matrice[0] = glm::rotate(m_model_light_matrice[0], glm::radians(90.0f - cam_phi), glm::vec3(1.0f, 0.0f, 0.0f));
     m_model_light_matrice[1] = glm::rotate(m_model_light_matrice[1], glm::radians(90.0f - cam_phi), glm::vec3(1.0f, 0.0f, 0.0f));
 
     m_model_light_matrice[0] = glm::rotate(m_model_light_matrice[0], glm::radians(90.0f + cam_theta), glm::vec3(0.0f, 1.0f, 0.0f));
     m_model_light_matrice[1] = glm::rotate(m_model_light_matrice[1], glm::radians(90.0f + cam_theta), glm::vec3(0.0f, 1.0f, 0.0f));
+    
 
 }
 

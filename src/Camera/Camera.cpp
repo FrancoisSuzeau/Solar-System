@@ -30,7 +30,7 @@ m_lateral_move(), m_position(position), m_target_point(target_point), m_sensibil
 
 Camera::~Camera()
 {
-
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -96,7 +96,7 @@ void Camera::move(Input const &input, bool move)
     if(move)
     {
         /************************************************* orientation managing ********************************************************/
-        if(input.getMouseButton(SDL_MOUSEBUTTONDOWN))
+        if(input.getMouseButton(SDL_MOUSEBUTTONDOWN) && input.getMouseButton(SDL_BUTTON_LEFT))
         {
             this->orientate(input.getXRel(), input.getYRel());
         }
