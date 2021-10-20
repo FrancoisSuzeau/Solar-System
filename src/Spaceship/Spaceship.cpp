@@ -62,9 +62,34 @@ void Spaceship::positioningShip(Camera *camera, Input input)
     glm::vec3 sun_pos = glm::vec3(0.01f, 0.0f, 0.0f);
     m_model_light_matrice[1] = glm::lookAt(sun_pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
-    m_model_light_matrice[0] = glm::translate(m_model_light_matrice[0], glm::vec3(0.0f + cam_position.x, -4.8f + cam_position.y, -1.2f + cam_position.z));
-    m_model_light_matrice[1] = glm::translate(m_model_light_matrice[1], glm::vec3(0.0f + cam_position.x, -4.8f + cam_position.y , -1.2f + cam_position.z));
+    m_model_light_matrice[0] = glm::translate(m_model_light_matrice[0], cam_position);
+    m_model_light_matrice[1] = glm::translate(m_model_light_matrice[1], cam_position);
+
+    this->setCartesianCoordinate(cam_position);
 }
+
+/***********************************************************************************************************************************************************************/
+/***************************************************************************** setSphericalCoordinate *************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Spaceship::setCartesianCoordinate(glm::vec3 cam_pos)
+{
+    float x_from_cam = 0.0f;
+    float y_from_cam = -4.8f;
+    float z_from_cam = -1.2f;
+           
+    float r_squarre = std::pow(x_from_cam, 2) + std::pow(y_from_cam, 2) + std::pow(z_from_cam, 2);
+
+    float r = std::sqrt(r_squarre);
+
+    float z = r * cos(glm::radians(cam_theta));
+    float y = y_from_cam;
+    float x = x_from_cam;
+
+    m_model_light_matrice[0] = glm::translate(m_model_light_matrice[0], glm::vec3(z, y, x));
+    m_model_light_matrice[1] = glm::translate(m_model_light_matrice[1], glm::vec3(z, y, x));
+}
+
+
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* orientateShip *************************************************************************/

@@ -62,6 +62,17 @@ PURPOSE : header of the Spaceship class
                 float cam_phi;
                 float cam_theta;
 
+                glm::vec3               m_current_pos_from_cam; //x = 0.0f, y = -4.8f, z = -1.2f
+
+
+                
+                void positioningShip(Camera *camera, Input input);
+                void setCartesianCoordinate(glm::vec3 cam_pos);
+
+                void orientateShip(Camera *camera);
+
+                void scalingShip();
+
                 
             public:
             
@@ -70,11 +81,6 @@ PURPOSE : header of the Spaceship class
 
                 void drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Camera *camera, Input input);
 
-                void positioningShip(Camera *camera, Input input);
-
-                void orientateShip(Camera *camera);
-
-                void scalingShip();
                 
         };
 
