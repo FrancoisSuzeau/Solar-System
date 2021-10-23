@@ -19,6 +19,7 @@ PURPOSE : header of the Camera class
         #include "../Input/Input.hpp"
 
         #include <string>
+        #include <math.h>
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
@@ -41,8 +42,19 @@ PURPOSE : header of the Camera class
                 glm::vec3   m_position;
                 glm::vec3   m_target_point;
 
-                float       m_sensibility;
-                float       m_speed;
+                float           m_sensibility;
+                float           m_speed;
+                float           distance_from_ship;
+                float           angle_around_player;
+                float           pitch;
+                float           yaw;
+                float           roll;
+
+                void calculatePitch(Input const &input);
+                void calculateAngleAroundShip(Input const &input);
+                float calculateHorizontalDistance();
+                float calculateVerticalDistance();
+                void calculateCameraPostion(float horizontal_distance, float vertical_distance, glm::vec3 ship_pos, float ship_rotY);
                 
 
             public:
@@ -53,7 +65,7 @@ PURPOSE : header of the Camera class
 
 
                 void orientate(int x_rel, int y_rel);
-                void move(Input const &input, bool move);
+                void move(Input const &input, bool move, glm::vec3 ship_pos, float ship_rotY);
                 void lookAt(glm::mat4 &model_view);
 
                 void setPosition(glm::vec3 position);

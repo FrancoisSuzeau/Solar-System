@@ -44,7 +44,6 @@ PURPOSE : header of the Spaceship class
         #include "../Shader/Shader.hpp"
         #include "../Model/Model.hpp"
         #include "../Input/Input.hpp"
-        #include "../Camera/Camera.hpp"
 
        
 
@@ -59,26 +58,28 @@ PURPOSE : header of the Spaceship class
                 std::vector<glm::mat4>  m_model_light_matrice; //Use a vector to avoid passing the two matrice in parameter list
                                                                 //there only will be two : model matrice of the ship and light matrice of the diffuse light
 
-                float cam_phi;
-                float cam_theta;
+                float m_pitch;
+                float m_yaw;
 
                 glm::vec3 m_current_pos;
 
 
                 
-                void positioningShip(Camera *camera);
+                void positioningShip(Input input);
 
-                void orientateShip(Camera *camera, Input input);
+                void orientateShip(Input input);
 
                 void scalingShip();
 
                 
             public:
             
-                Spaceship(std::string const path);
+                Spaceship(std::string const path, glm::vec3 cam_pos);
                 ~Spaceship();
 
-                void drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Camera *camera, Input input);
+                void drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Input input);
+                glm::vec3       getPosition() const;
+                float           getRotY() const;
 
                 
         };

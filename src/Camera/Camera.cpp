@@ -15,15 +15,17 @@ PURPOSE : class Camera
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Camera::Camera() : m_phi(0.0), m_theta(0.0), m_orientation(), m_vertical_axe(0, 0, 1),
-m_lateral_move(), m_position(), m_target_point(), m_sensibility(0.0), m_speed(0.0)
+Camera::Camera() : m_phi(0.0f), m_theta(0.0f), m_orientation(), m_vertical_axe(0.0f, 0.0f, 1.0f),
+m_lateral_move(), m_position(), m_target_point(), m_sensibility(0.0f), m_speed(0.0f), distance_from_ship(50.0f), angle_around_player(0.0f),
+pitch(20.0f), yaw(0.0f)
 {
 
 }
 
 Camera::Camera(glm::vec3 position, glm::vec3 target_point, glm::vec3 vertical_axe, float sensibility, float speed) : 
-m_phi(0.0), m_theta(0.0), m_orientation(), m_vertical_axe(vertical_axe),
-m_lateral_move(), m_position(position), m_target_point(target_point), m_sensibility(sensibility), m_speed(speed)
+m_phi(0.0f), m_theta(0.0f), m_orientation(), m_vertical_axe(vertical_axe),
+m_lateral_move(), m_position(position), m_target_point(target_point), m_sensibility(sensibility), m_speed(speed), distance_from_ship(50.0f), angle_around_player(0.0f),
+pitch(20.0f), yaw(0.0f)
 {
     this->setTargetPoint(target_point);
 }
@@ -88,18 +90,64 @@ void Camera::orientate(int x_rel, int y_rel)
     //===================================================================================================================
 }
 
+void Camera::calculatePitch(Input const &input)
+{
+    if(input.getMouseButton(SDL_BUTTON_RIGHT))
+    {
+        float pitch_change = input.getYRel() * 0.5f;
+        pitch -= pitch_change;
+            
+    }
+}
+
+void Camera::calculateAngleAroundShip(Input const &input)
+{
+    if(input.getMouseButton(SDL_BUTTON_RIGHT))
+    {
+        float angle_change = input.getXRel() * 0.5f;
+        angle_around_player -= angle_change;
+            
+    }
+}
+
+float Camera::calculateHorizontalDistance()
+{
+    return (float) distance_from_ship * cos(glm::radians(pitch));
+}
+
+float Camera::calculateVerticalDistance()
+{
+    return (float) distance_from_ship * sin(glm::radians(pitch));
+}
+
+void Camera::calculateCameraPostion(float horizontal_distance, float vertical_distance, glm::vec3 ship_pos, float ship_rotY)
+{
+    float theta = ship_rotY + angle_around_player;
+    float offset_x = (float) horizontal_distance * sin(glm::radians(theta));
+    float offset_y = (float) horizontal_distance * cos(glm::radians(theta));
+    m_position.x = ship_pos.x - offset_x;
+    m_position.y = ship_pos.y - offset_y;
+    m_position.z = ship_pos.z + vertical_distance;
+}
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** move **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Camera::move(Input const &input, bool move)
+void Camera::move(Input const &input, bool move, glm::vec3 ship_pos, float ship_rotY)
 {
     if(move)
     {
         /************************************************* orientation managing ********************************************************/
-        if(input.getMouseButton(SDL_MOUSEBUTTONDOWN) && input.getMouseButton(SDL_BUTTON_LEFT))
+        if(input.getMouseButton(SDL_BUTTON_RIGHT))
         {
             this->orientate(input.getXRel(), input.getYRel());
+            
         }
+
+        // this->calculatePitch(input);
+        // this->calculateAngleAroundShip(input);
+        // float horizontal_distance = this->calculateHorizontalDistance();
+        // float vertical_distance = this->calculateVerticalDistance();
+        // this->calculateCameraPostion(horizontal_distance, vertical_distance, ship);
         //===================================================================================================================
 
         /************************************************* moving camera ********************************************************/

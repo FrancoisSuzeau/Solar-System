@@ -356,7 +356,6 @@ void OpenGlSketch::startLoop()
     }
 
     m_particuleGenerator = new Particule();
-    std::cout << m_particuleGenerator << std::endl;
     if(m_particuleGenerator == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -461,13 +460,14 @@ void OpenGlSketch::startLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::mainLoop()
 {
-    Spaceship ship("../assets/model/spaceship/number1/OBJ/untitled.obj");
+    Spaceship ship("../assets/model/spaceship/number1/OBJ/untitled.obj", glm::vec3(1.0f, 9000.0f, 1.0f));
     Shader *m_model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
     if(m_model_shader == nullptr)
     {
         exit(EXIT_FAILURE);
     }
     m_model_shader->loadShader();
+    
     /************************************************* Variables ********************************************************/
     pause_music = false;
     speed_key_pressed = false;
@@ -545,7 +545,7 @@ void OpenGlSketch::mainLoop()
     //===========================================================================================================================================
         if(camera != nullptr)
         {
-            camera->move(m_input, !menu);
+            camera->move(m_input, !menu, ship.getPosition(), ship.getRotY());
 
             camera->lookAt(model_view);
         }
@@ -590,7 +590,7 @@ void OpenGlSketch::mainLoop()
             projection_view.push_back(projection);
             projection_view.push_back(model_view);
 
-            ship.drawSpaceship(projection_view, hdr, m_model_shader, camera, m_input);
+            ship.drawSpaceship(projection_view, hdr, m_model_shader, m_input);
         
         model_view = save_model_view;
 
