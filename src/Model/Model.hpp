@@ -73,7 +73,7 @@ PURPOSE : header of the Model class
                 Model(std::string const &path, bool gamma = false);
                 ~Model();
 
-                void draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat4> model_light_mat, bool hdr, Shader *model_shader);
+                void draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat4> model_light_mat, bool hdr, Shader *model_shader, glm::vec3 camPos);
                 
         };
 

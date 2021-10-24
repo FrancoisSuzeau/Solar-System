@@ -304,7 +304,7 @@ void OpenGlSketch::startLoop()
         exit(EXIT_FAILURE);
     }
 
-    Camera      *startScreen_cam = new Camera(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f);
+    Camera      *startScreen_cam = new Camera(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     if(startScreen_cam == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -360,6 +360,19 @@ void OpenGlSketch::startLoop()
     {
         exit(EXIT_FAILURE);
     }
+
+    ship = new Spaceship("../assets/model/spaceship/number1/OBJ/untitled.obj");
+    if(ship == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    m_model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
+    if(m_model_shader == nullptr)
+    {
+        exit(EXIT_FAILURE);
+    }
+    m_model_shader->loadShader();
 
     int nb_loaded(0);
 
@@ -419,7 +432,7 @@ void OpenGlSketch::startLoop()
         {
             if(solar_system != nullptr)
             {
-                solar_system->MakingSystem("Solar System", 8, m_police[0]);
+                solar_system->MakingSystem("Solar System", 8, m_police[0], m_model_shader);
                 nb_loaded++;
             }
             
@@ -460,13 +473,7 @@ void OpenGlSketch::startLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::mainLoop()
 {
-    Spaceship ship("../assets/model/spaceship/number1/OBJ/untitled.obj", glm::vec3(1.0f, 9000.0f, 1.0f));
-    Shader *m_model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
-    if(m_model_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_model_shader->loadShader();
+    
     
     /************************************************* Variables ********************************************************/
     pause_music = false;
@@ -480,7 +487,7 @@ void OpenGlSketch::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), 0.5f, 200.0f);
+    camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
     
     if(camera == nullptr)
     {
@@ -545,7 +552,7 @@ void OpenGlSketch::mainLoop()
     //===========================================================================================================================================
         if(camera != nullptr)
         {
-            camera->move(m_input, !menu, ship.getPosition(), ship.getRotY());
+            camera->move(m_input, !menu);
 
             camera->lookAt(model_view);
         }
@@ -590,7 +597,7 @@ void OpenGlSketch::mainLoop()
             projection_view.push_back(projection);
             projection_view.push_back(model_view);
 
-            ship.drawSpaceship(projection_view, hdr, m_model_shader, m_input);
+            ship->drawSpaceship(projection_view, hdr, m_model_shader, m_input, camera->getPosition());
         
         model_view = save_model_view;
 
@@ -698,6 +705,11 @@ void OpenGlSketch::mainLoop()
     {
         delete m_model_shader;
     }
+
+    if(ship != nullptr)
+    {
+        delete ship;
+    }
     
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
@@ -717,7 +729,7 @@ void OpenGlSketch::renderOverlay()
         {
             std::string track = aud->getTrack();
             glm::vec3 position = camera->getPosition();
-            float speed = camera->getSpeed();
+            float speed = ship->getSpeed();
 
                 model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
@@ -802,7 +814,7 @@ void OpenGlSketch::renderScene()
                 projection_view.push_back(projection);
                 projection_view.push_back(model_view);
 
-                solar_system->drawAsteroidField(projection_view, hdr);
+                solar_system->drawAsteroidField(projection_view, hdr, camPos);
                 
             //restaure the modelview matrix
             model_view = save_model_view;
@@ -851,18 +863,18 @@ void OpenGlSketch::windowProcess()
 
         int scroll = m_input.getScroll();
 
-        if(camera != nullptr)
+        if(ship != nullptr)
         {
             if(scroll != 0)
             {
-                if((camera->getSpeed() < 200.0f) && (scroll > 0))
+                if((ship->getSpeed() < 200.0f) && (scroll > 0))
                 {
-                    camera->setSpeed(1.0f);
+                    ship->setSpeed(1.0f);
                 }
 
-                if((camera->getSpeed() >= 0.0f) && (scroll < 0))
+                if((ship->getSpeed() >= 0.0f) && (scroll < 0))
                 {
-                    camera->setSpeed(-1.0f);
+                    ship->setSpeed(-1.0f);
                 }
             }
         }
@@ -870,9 +882,9 @@ void OpenGlSketch::windowProcess()
         
         if((m_input.getKey(SDL_SCANCODE_Q)) && (!speed_key_pressed))
         {
-            if(camera->getSpeed() > 0.6f)
+            if(ship->getSpeed() > 0.6f)
             {
-                camera->setMinimumSpeed();
+                ship->setMinimumSpeed();
             }
             speed_key_pressed = true;
         }
@@ -883,9 +895,9 @@ void OpenGlSketch::windowProcess()
 
         if((m_input.getKey(SDL_SCANCODE_E)) && (!speed_key_pressed))
         {
-            if(camera->getSpeed() > 0.6f)
+            if(ship->getSpeed() > 0.6f)
             {
-                camera->setMaximumSpeed();
+                ship->setMaximumSpeed();
             }
             speed_key_pressed = true;
         }
@@ -989,16 +1001,16 @@ void OpenGlSketch::renderSettings()
                     break;
 
                 case SPEED_DEC:
-                    if((camera->getSpeed() >= 0.0f))
+                    if((ship->getSpeed() >= 0.0f))
                     {
-                        camera->setSpeed(-0.1f);
+                        ship->setSpeed(-0.1f);
                     }
                     break;
 
                 case SPEED_INC:
-                    if(camera->getSpeed() <= 1.0f)
+                    if(ship->getSpeed() <= 1.0f)
                     {
-                        camera->setSpeed(0.1f);
+                        ship->setSpeed(0.1f);
                     }
                     break;
 
@@ -1073,7 +1085,7 @@ void OpenGlSketch::renderParticles()
             }
             else
             {
-                m_particuleGenerator->drawParticles(projection, model_view, m_input, camera->getSpeed());
+                m_particuleGenerator->drawParticles(projection, model_view, m_input, ship->getSpeed());
             }
         }
 

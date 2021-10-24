@@ -167,6 +167,11 @@ int Input::getYRel() const
     return m_rel_y;
 }
 
+SDL_Event Input::getEvent() const
+{
+    return m_event;
+}
+
 int Input::getScroll()
 {
     if(m_scroll != 0)

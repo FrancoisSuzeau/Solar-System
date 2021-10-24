@@ -59,6 +59,8 @@ PURPOSE : header of the Input class
                 int getXRel() const;
                 int getYRel() const;
 
+                SDL_Event getEvent() const;
+
                 int   getScroll();
 
                 void displayPointer(bool response) const;

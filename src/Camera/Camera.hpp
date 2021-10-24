@@ -17,12 +17,14 @@ PURPOSE : header of the Camera class
 /********************************************************************* includes *********************************************************************/
 
         #include "../Input/Input.hpp"
+        #include "../Spaceship/Spaceship.hpp"
 
         #include <string>
         #include <math.h>
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
+        #include <vector>
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -32,60 +34,38 @@ PURPOSE : header of the Camera class
 
             private:
 
-                float       m_phi;
-                float       m_theta;
-                glm::vec3   m_orientation;
-
                 glm::vec3   m_vertical_axe;
                 glm::vec3   m_lateral_move;
 
                 glm::vec3   m_position;
                 glm::vec3   m_target_point;
 
-                float           m_sensibility;
-                float           m_speed;
                 float           distance_from_ship;
                 float           angle_around_player;
                 float           pitch;
-                float           yaw;
-                float           roll;
+
+                Spaceship *m_ship;
 
                 void calculatePitch(Input const &input);
+                void calculateYaw(Input const &input);
                 void calculateAngleAroundShip(Input const &input);
-                float calculateHorizontalDistance();
-                float calculateVerticalDistance();
-                void calculateCameraPostion(float horizontal_distance, float vertical_distance, glm::vec3 ship_pos, float ship_rotY);
+                float calculateHorizontalDistance(Input const &input);
+                float calculateVerticalDistance(Input const &input);
+                void calculateCameraPostion(float horizontal_distance, float vertical_distance, Input const &input);
                 
 
             public:
             
                 Camera();
-                Camera(glm::vec3 position, glm::vec3 target_point, glm::vec3 vertical_axe, float sensibility, float speed);
+                Camera(glm::vec3 position, glm::vec3 target_point, glm::vec3 vertical_axe, Spaceship *ship = nullptr);
                 ~Camera();
 
 
-                void orientate(int x_rel, int y_rel);
-                void move(Input const &input, bool move, glm::vec3 ship_pos, float ship_rotY);
+                void move(Input const &input, bool move);
                 void lookAt(glm::mat4 &model_view);
 
-                void setPosition(glm::vec3 position);
+        
                 glm::vec3 getPosition() const;
-
-                float getSensibility() const;
-                void setSensibility(float sensibility);
-
-                float getSpeed() const;
-                void setSpeed(float speed);
-                void setMinimumSpeed();
-                void setMaximumSpeed();
-
-                glm::vec3 getOrientation() const;
-
-                float getPhi() const;
-                float getTheta() const;
-
-                void setTargetPoint(glm::vec3 target_point);
-                glm::vec3 getTargetPoint() const;
 
                 glm::vec3 getVerticalaxe() const;
 

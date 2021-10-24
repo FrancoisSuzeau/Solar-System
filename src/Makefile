@@ -38,7 +38,7 @@ Audio.o: Audio/Audio.hpp
 Sphere.o: CelestialBody/Geometry/Sphere.hpp CelestialBody/CelestialBody.hpp Shader/Shader.hpp
 AtmoPlanete.o: CelestialBody/Planete/SimplePlanete.hpp Shader/Shader.hpp
 SimplePlanete.o: CelestialBody/Planete/SimplePlanete.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Text/Text.hpp Atmosphere/Atmosphere.hpp PlaneteInformation/PlaneteInformation.hpp Shader/Shader.hpp
-Camera.o: Camera/Camera.hpp Input/Input.hpp
+Camera.o: Camera/Camera.hpp Input/Input.hpp Spaceship/Spaceship.hpp
 Disk.o: CelestialBody/Geometry/Disk.hpp CelestialBody/CelestialBody.hpp Shader/Shader.hpp
 Square.o: CelestialBody/Geometry/Square.hpp Shader/Shader.hpp
 Ring.o: CelestialBody/Ring/Ring.hpp CelestialBody/Geometry/Disk.hpp Texture/Texture.hpp Shader/Shader.hpp

@@ -89,7 +89,7 @@ void Mesh::setupMesh()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Mesh::draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat4> model_light_mat, bool hdr, Shader *mesh_shader)
+void Mesh::draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat4> model_light_mat, bool hdr, glm::vec3 camPos, Shader *mesh_shader)
 {
     if(mesh_shader != nullptr)
     {
@@ -101,6 +101,7 @@ void Mesh::draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat
         mesh_shader->setMat4("light_src", model_light_mat[1]);
 
         mesh_shader->setInt("hdr", hdr);
+        mesh_shader->setVec3("viewPos", camPos);
         
         glBindVertexArray(m_vao);
 

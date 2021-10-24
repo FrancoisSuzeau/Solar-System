@@ -15,7 +15,7 @@ PURPOSE : class Spaceship
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Spaceship::Spaceship(std::string const path, glm::vec3 cam_pos) : m_yaw(-90.0f), m_pitch(0.0f)
+Spaceship::Spaceship(std::string const path) : m_yaw(0.0f), m_pitch(90.0f), m_speed(20.0f), m_sensibility(0.5f)
 {
     m_spaceship_model = new Model(path);
     if(m_spaceship_model == nullptr)
@@ -29,7 +29,7 @@ Spaceship::Spaceship(std::string const path, glm::vec3 cam_pos) : m_yaw(-90.0f),
     m_model_light_matrice.push_back(model);
     m_model_light_matrice.push_back(light_src);
 
-    m_current_pos = glm::vec3(0.0f + cam_pos.x, -4.8f + cam_pos.y, -1.2f + cam_pos.z);
+    m_current_pos = glm::vec3(1.0f, 9000.0f, 1.0f);
 }
 
 Spaceship::~Spaceship()
@@ -43,25 +43,63 @@ Spaceship::~Spaceship()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* drawSpaceship *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Input input)
+void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Input input, glm::vec3 camPos)
 {
     
     if((m_spaceship_model != nullptr) && ((model_shader != nullptr)))
     {
-        this->positioningShip(input);
-        this->orientateShip(input);
-        this->scalingShip();
+        
+        this->move(input);
 
-        m_spaceship_model->draw(projection_view_mat, m_model_light_matrice, hdr, model_shader);
+        this->positioningShip();
+        this->scalingShip();
+        this->orientateShip(input);
+        
+
+        m_spaceship_model->draw(projection_view_mat, m_model_light_matrice, hdr, model_shader, camPos);
+
+        
+    }
+}
+
+/***********************************************************************************************************************************************************************/
+/*************************************************************************************** move **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Spaceship::move(Input input)
+{
+    if(input.getKey(SDL_SCANCODE_W))
+    {
+        m_current_pos += m_ship_orientation;
+    }
+    if(input.getKey(SDL_SCANCODE_S))
+    {
+        m_current_pos -= m_ship_orientation;
+    }
+
+    if(input.getKey(SDL_SCANCODE_A))
+    {
+       
+    }
+
+    if(input.getKey(SDL_SCANCODE_D))
+    {
+       
+    }
+    if(input.getKey(SDL_SCANCODE_LCTRL))
+    {
+       
+    }
+    if(input.getKey(SDL_SCANCODE_LSHIFT))
+    {
+        
     }
 }
 
 /***********************************************************************************************************************************************************************/
 /***************************************************************************** positioningShip *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::positioningShip(Input input)
+void Spaceship::positioningShip()
 {
-
     //it is important to reintitialise the model matrice, if not all the calculation are made by the ancient calculation and we loose the space ship
     m_model_light_matrice[0] = glm::mat4(1.0f);
 
@@ -71,6 +109,9 @@ void Spaceship::positioningShip(Input input)
     m_model_light_matrice[0] = glm::translate(m_model_light_matrice[0], m_current_pos);
     m_model_light_matrice[1] = glm::translate(m_model_light_matrice[1], m_current_pos);
 
+    m_model_light_matrice[0] *= (yaw_mat * pitch_mat);
+    m_model_light_matrice[1] *= (yaw_mat * pitch_mat);
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -78,28 +119,50 @@ void Spaceship::positioningShip(Input input)
 /***********************************************************************************************************************************************************************/
 void Spaceship::orientateShip(Input input)
 {
+    this->rotateFromPitch(input);
+    this->rotateFromYaw(input);
+
+    glm::vec3 dir;
+    dir.x = sin(glm::radians(m_yaw));
+    dir.y = -cos(glm::radians(m_yaw));
+    dir.z = cos(glm::radians(m_pitch));
+
+    // m_ship_orientation = glm::normalize(dir);
+    m_ship_orientation = dir;
+}
+
+void Spaceship::rotateFromPitch(Input input)
+{
+    pitch_mat = glm::mat4(1.0f);
+
     if( input.getMouseButton(SDL_BUTTON_LEFT) )
     {
-        m_yaw += input.getXRel() * 0.5f;
-        m_pitch += input.getYRel() * 0.5f;
+        m_pitch += input.getYRel() * 0.1f;
 
-        if(m_pitch > 89.0f)
+        if(m_pitch > 179.0f)
         {
-            m_pitch = 89.0f;
+            m_pitch = 179.0f;
         }
-        else if (m_pitch < -89.0f)
+        else if (m_pitch < -0.1f)
         {
-            m_pitch = -89.0f;
+            m_pitch = -0.1f;
         }
     }
 
-    m_model_light_matrice[0] = glm::rotate(m_model_light_matrice[0], glm::radians(90.0f - m_pitch), glm::vec3(1.0f, 0.0f, 0.0f));
-    m_model_light_matrice[1] = glm::rotate(m_model_light_matrice[1], glm::radians(90.0f - m_pitch), glm::vec3(1.0f, 0.0f, 0.0f));
+    pitch_mat = glm::rotate(pitch_mat, glm::radians(m_pitch), glm::vec3(1.0f, 0.0f, 0.0f));
+}
 
-    m_model_light_matrice[0] = glm::rotate(m_model_light_matrice[0], glm::radians(90.0f + m_yaw), glm::vec3(0.0f, 1.0f, 0.0f));
-    m_model_light_matrice[1] = glm::rotate(m_model_light_matrice[1], glm::radians(90.0f + m_yaw), glm::vec3(0.0f, 1.0f, 0.0f));
+void Spaceship::rotateFromYaw(Input input)
+{
+    yaw_mat = glm::mat4(1.0f);
+
+    if(input.getMouseButton(SDL_BUTTON_LEFT))
+    {
+        m_yaw += input.getXRel() * 0.1f;
+
+    }
     
-
+    yaw_mat = glm::rotate(yaw_mat, glm::radians(m_yaw), glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 /***********************************************************************************************************************************************************************/
@@ -119,7 +182,46 @@ glm::vec3 Spaceship::getPosition() const
     return m_current_pos;
 }
 
+glm::vec3 Spaceship::getOrientation() const
+{
+    return m_ship_orientation;
+}
+
+float Spaceship::getSpeed() const
+{
+    return m_speed;
+}
+
+void Spaceship::setSpeed(float speed)
+{
+    m_speed = m_speed + speed;
+    if(m_speed < 0.0f)
+    {
+        m_speed = 0.0f;
+    }
+
+    if(m_speed > 200.0f)
+    {
+        m_speed = 200.0f;
+    }
+}
+
+void Spaceship::setMinimumSpeed()
+{
+    m_speed = 0.6f;
+}
+
+void Spaceship::setMaximumSpeed()
+{
+    m_speed = 200.0f;
+}
+
 float Spaceship::getRotY() const
 {
     return m_pitch;
+}
+
+float Spaceship::getRotX() const
+{
+    return m_yaw;
 }

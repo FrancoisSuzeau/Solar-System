@@ -43,11 +43,11 @@ PURPOSE : header of the virtual SystemCreator class
 
                 virtual ~SystemCreator() {delete m_system;};
 
-                virtual System* FactoryMethod(std::string name_system, TTF_Font *police, int companion_count) = 0;
+                virtual System* FactoryMethod(std::string name_system, TTF_Font *police, int companion_count, Shader *model_shader = nullptr) = 0;
 
-                bool MakingSystem(std::string name_system, int companion_count, TTF_Font *police) 
+                bool MakingSystem(std::string name_system, int companion_count, TTF_Font *police, Shader *model_shader = nullptr) 
                 {
-                        m_system = this->FactoryMethod(name_system, police, companion_count);
+                        m_system = this->FactoryMethod(name_system, police, companion_count, model_shader);
                         return true;
                 }
 
@@ -82,9 +82,9 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->display(projection, modelview, camPos, hdr, sun_pos, shader_host, companion_shader, ring_shader);
                 }
 
-                void drawAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr)
+                void drawAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr, glm::vec3 camPos)
                 {
-                        m_system->displayAsteroidField(projection_view_mat, hdr);
+                        m_system->displayAsteroidField(projection_view_mat, hdr, camPos);
                 }
 
 

@@ -276,14 +276,14 @@ unsigned int Model::textureFromFile(const char *path, const std::string &directo
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Model::draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat4> model_light_mat, bool hdr, Shader *model_shader)
+void Model::draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat4> model_light_mat, bool hdr, Shader *model_shader, glm::vec3 camPos)
 {
     
     if(model_shader != nullptr)
     {
         for (unsigned int i(0); i < m_meshes.size(); i++)
         {
-            m_meshes[i].draw(projection_view_mat, model_light_mat, hdr, model_shader);
+            m_meshes[i].draw(projection_view_mat, model_light_mat, hdr, camPos, model_shader);
         }
         
     }

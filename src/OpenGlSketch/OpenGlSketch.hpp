@@ -81,7 +81,10 @@ PURPOSE : header of the OpenGlSketch class
 
                 Shader *screenShader;
                 Shader *text_shader;
+
+                Spaceship *ship;
                 Shader *square_shader;
+                Shader *m_model_shader;
 
                 bool hdr;
                 bool hdr_key_pressed;
