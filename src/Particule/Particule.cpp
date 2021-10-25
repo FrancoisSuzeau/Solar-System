@@ -80,7 +80,7 @@ void Particule::initParticles()
 /***********************************************************************************************************************************************************************/
 /***************************************************************************** drawParticles ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Particule::drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, float speed)
+void Particule::drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, float speed, bool is_moving)
 {
     glm::mat4 save = modelview;
 
@@ -94,8 +94,8 @@ void Particule::drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input
         for (int i(0); i < MAX_PARTICLES; i++)
         {
 
-            drawOneParticle(projection, modelview, m_particle_data1[i]);
-            drawOneParticle(projection, modelview, m_particle_data2[i]);
+            drawOneParticle(projection, modelview, m_particle_data1[i], is_moving);
+            drawOneParticle(projection, modelview, m_particle_data2[i], is_moving);
 
             moveParticleFandB(m_particle_data1[i]);
             moveParticleFandB(m_particle_data2[i]);
@@ -111,10 +111,12 @@ void Particule::drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input
 /***********************************************************************************************************************************************************************/
 /***************************************************************************** drawOneParticle ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Particule::drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle)
+void Particule::drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle, bool is_moving)
 {
     glm::mat4 save = modelview;
 
+    if(is_moving)
+    {
         modelview = translate(modelview, vec3(particle.x, particle.y, particle.z));
         modelview = scale(modelview, (vec3(0.002)));
 
@@ -123,9 +125,35 @@ void Particule::drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, par
             glm::mat4 light(1.0f);
             glm::vec3 campos(0.0f);
             m_sphere_particle->display(projection, modelview, light, campos, true, m_sphere_shader);
+
+            modelview = save;
+
+            modelview = glm::translate(modelview, glm::vec3(0.0f, 0.0f, 0.0f));
+            modelview = scale(modelview, (vec3(0.002)));
+            m_sphere_particle->display(projection, modelview, light, campos, true, m_sphere_shader);
+            modelview = save;
+
+        }
+    }
+
+    //TEMPORALY
+    if((m_sphere_particle != nullptr) && (m_sphere_shader != nullptr))
+        {
+            glm::mat4 light(1.0f);
+            glm::vec3 campos(0.0f);
+
+            modelview = save;
+
+            modelview = glm::translate(modelview, glm::vec3(0.0f, 0.0f, 0.0f));
+            modelview = scale(modelview, (vec3(0.002)));
+            m_sphere_particle->display(projection, modelview, light, campos, true, m_sphere_shader);
+            modelview = save;
+
         }
 
-        modelview = save;
+        
+
+        
 
     modelview = save;
 }

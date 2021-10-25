@@ -82,7 +82,7 @@ PURPOSE : header of the virtual SolarSystem class
                 void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader = nullptr) override;
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) override;
                 void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr, Shader *text_shader = nullptr, Shader *square_shader = nullptr) override;
-                void displayAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr, glm::vec3 camPos) override;
+                void displayAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr) override;
 
 
         };

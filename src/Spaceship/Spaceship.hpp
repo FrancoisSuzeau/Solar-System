@@ -65,6 +65,7 @@ PURPOSE : header of the Spaceship class
 
                 glm::vec3 m_current_pos;
                 glm::vec3 m_ship_orientation;
+                glm::vec3 m_lateral_move;
 
                 glm::mat4 yaw_mat;
                 glm::mat4 pitch_mat;
@@ -87,11 +88,12 @@ PURPOSE : header of the Spaceship class
                 Spaceship(std::string const path);
                 ~Spaceship();
 
-                void drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Input input, glm::vec3 camPos);
+                void drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Input input);
                 float getRotX() const;
                 float getRotY() const;
                 glm::vec3       getPosition() const;
                 glm::vec3       getOrientation() const;
+                glm::vec3       getLateralMove() const;
                 float getSpeed() const;
                 void setSpeed(float speed);
                 void setMinimumSpeed();

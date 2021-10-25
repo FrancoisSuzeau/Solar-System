@@ -61,7 +61,7 @@ PURPOSE : header of the Particule class
                 void moveParticleFandB(particles &particle); // forward and backward
                 void moveParticleLandR(particles &particle); //left and right
                 void initParticles();
-                void drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle);
+                void drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle, bool is_moving);
                 void determineOrientation(glm::mat4 &projection, glm::mat4 &modelview, Input input);
 
                 int             m_senseFandB;
@@ -74,7 +74,7 @@ PURPOSE : header of the Particule class
                 ~Particule();
 
                 
-                void drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, float speed);
+                void drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, float speed, bool is_moving);
                 
                 
 

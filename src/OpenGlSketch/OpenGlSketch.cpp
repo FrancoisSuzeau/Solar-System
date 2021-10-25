@@ -526,9 +526,6 @@ void OpenGlSketch::mainLoop()
         // aud->playMusic();
     }
 
-    
-    
-
     while(!m_terminate)
     {   
         start_loop = SDL_GetTicks();
@@ -585,10 +582,7 @@ void OpenGlSketch::mainLoop()
     //=======================================================================================================================================================
 
     /******************************************************************* RENDER PARTICLES ********************************************************************/
-        if(is_moving)
-        {
             renderParticles();
-        }
     //=======================================================================================================================================================
 
         save_model_view = model_view;
@@ -597,7 +591,7 @@ void OpenGlSketch::mainLoop()
             projection_view.push_back(projection);
             projection_view.push_back(model_view);
 
-            ship->drawSpaceship(projection_view, hdr, m_model_shader, m_input, camera->getPosition());
+            ship->drawSpaceship(projection_view, hdr, m_model_shader, m_input);
         
         model_view = save_model_view;
 
@@ -814,7 +808,7 @@ void OpenGlSketch::renderScene()
                 projection_view.push_back(projection);
                 projection_view.push_back(model_view);
 
-                solar_system->drawAsteroidField(projection_view, hdr, camPos);
+                solar_system->drawAsteroidField(projection_view, hdr);
                 
             //restaure the modelview matrix
             model_view = save_model_view;
@@ -1085,7 +1079,7 @@ void OpenGlSketch::renderParticles()
             }
             else
             {
-                m_particuleGenerator->drawParticles(projection, model_view, m_input, ship->getSpeed());
+                m_particuleGenerator->drawParticles(projection, model_view, m_input, ship->getSpeed(), is_moving);
             }
         }
 

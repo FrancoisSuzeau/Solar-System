@@ -39,6 +39,7 @@ PURPOSE : header of the Camera class
 
                 glm::vec3   m_position;
                 glm::vec3   m_target_point;
+                glm::vec3 AB;
 
                 float           distance_from_ship;
                 float           angle_around_player;
@@ -52,6 +53,8 @@ PURPOSE : header of the Camera class
                 float calculateHorizontalDistance(Input const &input);
                 float calculateVerticalDistance(Input const &input);
                 void calculateCameraPostion(float horizontal_distance, float vertical_distance, Input const &input);
+
+                void correctTarget(Input const &input);
                 
 
             public:

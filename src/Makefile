@@ -56,7 +56,7 @@ PlaneteInformation.o: PlaneteInformation/PlaneteInformation.hpp CelestialBody/Ge
 Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp
 Mesh.o: Model/Mesh.hpp Shader/Shader.hpp
 Model.o: Model/Model.hpp Model/Mesh.hpp Shader/Shader.hpp
-Spaceship.o : Spaceship/Spaceship.hpp Model/Model.hpp Shader/Shader.hpp Input/Input.hpp
+Spaceship.o : Spaceship/Spaceship.hpp Model/Model.hpp Shader/Shader.hpp Input/Input.hpp 
 
 %.o:%.cpp
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${LD_ASSIMP_MINGW32} ${CFLAGS}

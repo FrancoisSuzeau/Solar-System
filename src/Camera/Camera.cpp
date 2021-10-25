@@ -24,8 +24,8 @@ pitch(20.0f)
 
 Camera::Camera(glm::vec3 position, glm::vec3 target_point, glm::vec3 vertical_axe, Spaceship *ship) : 
  m_vertical_axe(vertical_axe),
-m_lateral_move(), m_position(position), m_target_point(target_point), distance_from_ship(5.0f), angle_around_player(90.0f),
-pitch(20.0f)
+m_lateral_move(), m_position(position), m_target_point(target_point), distance_from_ship(5.0f), angle_around_player(180.0f),
+pitch(0.0f)
 {
    if(ship != nullptr)
    {
@@ -79,7 +79,7 @@ void Camera::calculateAngleAroundShip(Input const &input)
 /***********************************************************************************************************************************************************************/
 float Camera::calculateHorizontalDistance(Input const &input)
 {
-    return (float) distance_from_ship * cos(glm::radians((m_ship->getRotY() - 90.0f + pitch)/2));
+    return (float) distance_from_ship * cos(glm::radians((m_ship->getRotY() - 90.0f + pitch)));
     // return (float) distance_from_ship * cos(glm::radians(pitch));
 }
 
@@ -88,7 +88,7 @@ float Camera::calculateHorizontalDistance(Input const &input)
 /***********************************************************************************************************************************************************************/
 float Camera::calculateVerticalDistance(Input const &input)
 {
-    return (float) distance_from_ship * sin(glm::radians((m_ship->getRotY() - 90.0f + pitch)/2));
+    return (float) distance_from_ship * sin(glm::radians((m_ship->getRotY() - 90.0f + pitch)));
     // return (float) distance_from_ship * sin(glm::radians(pitch));
 }
 
@@ -99,15 +99,17 @@ void Camera::calculateCameraPostion(float horizontal_distance, float vertical_di
 {
     if(m_ship != nullptr)
     {
-        std::cout << angle_around_player << std::endl;
+
+        // std::cout << "angle around : " << angle_around_player << std::endl;
+        // std::cout << "pitch : " << m_ship->getRotY() - 90.0f + pitch << std::endl;
         float theta =  angle_around_player + m_ship->getRotX();
-        float offset_x = (float) horizontal_distance * cos(glm::radians(theta));
-        float offset_y = (float) horizontal_distance * sin(glm::radians(theta));
+        float offset_x = (float) horizontal_distance * sin(glm::radians(theta));
+        float offset_y = (float) horizontal_distance * -cos(glm::radians(theta));
 
         m_position.x = m_ship->getPosition().x + offset_x;
         m_position.y = m_ship->getPosition().y + offset_y;
         m_position.z = m_ship->getPosition().z + vertical_distance;
-        
+
     }
     
 }
@@ -122,9 +124,56 @@ void Camera::move(Input const &input, bool move)
     float horizontal_distance = this->calculateHorizontalDistance(input);
     float vertical_distance = this->calculateVerticalDistance(input);
     this->calculateCameraPostion(horizontal_distance, vertical_distance, input);
-
+ 
     m_target_point = m_ship->getPosition();
-    
+
+    this->correctTarget(input);
+
+}
+
+/***********************************************************************************************************************************************************************/
+/*************************************************************************************** correctTarget **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Camera::correctTarget(Input const &input)
+{
+    float correct_value_y = m_ship->getSpeed() * -cos(glm::radians(m_ship->getRotX()));
+    float correct_value_x = m_ship->getSpeed() * sin(glm::radians(m_ship->getRotX()));
+    float correct_value_z = m_ship->getSpeed() * cos(glm::radians(m_ship->getRotY()));
+
+    if(input.getKey(SDL_SCANCODE_W))
+    {
+        m_target_point += glm::vec3(correct_value_x, correct_value_y, correct_value_z);
+        m_position += glm::vec3(correct_value_x, correct_value_y, correct_value_z);
+    }
+
+    if(input.getKey(SDL_SCANCODE_S))
+    {
+        m_target_point -= glm::vec3(correct_value_x, correct_value_y, correct_value_z);
+        m_position -= glm::vec3(correct_value_x, correct_value_y, correct_value_z);
+    }
+
+    if(input.getKey(SDL_SCANCODE_A))
+    {
+        m_target_point += glm::vec3(-correct_value_y, correct_value_x, 0.0f);
+        m_position += glm::vec3(-correct_value_y, correct_value_x, 0.0f);
+    }
+
+    if(input.getKey(SDL_SCANCODE_D))
+    {
+        m_target_point -= glm::vec3(-correct_value_y, correct_value_x, 0.0f);
+        m_position -= glm::vec3(-correct_value_y, correct_value_x, 0.0f);
+    }
+
+    if(input.getKey(SDL_SCANCODE_LSHIFT))
+    {
+        m_target_point += glm::vec3(0.0, 0.0, m_ship->getSpeed());
+        m_position += glm::vec3(0.0, 0.0, m_ship->getSpeed());
+    }
+    if(input.getKey(SDL_SCANCODE_LCTRL))
+    {
+        m_target_point += glm::vec3(0.0, 0.0, -m_ship->getSpeed());
+        m_position += glm::vec3(0.0, 0.0, -m_ship->getSpeed());
+    }
 }
 
 /***********************************************************************************************************************************************************************/
