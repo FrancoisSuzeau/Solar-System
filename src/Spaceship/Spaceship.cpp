@@ -15,7 +15,7 @@ PURPOSE : class Spaceship
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Spaceship::Spaceship(std::string const path) : m_yaw(0.0f), m_pitch(90.0f), m_speed(20.0f), m_sensibility(0.5f)
+Spaceship::Spaceship(std::string const path) : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.1f), m_sensibility(0.5f)
 {
     m_spaceship_model = new Model(path);
     if(m_spaceship_model == nullptr)
@@ -69,11 +69,20 @@ void Spaceship::move(Input input)
 {
     if(input.getKey(SDL_SCANCODE_W))
     {
-        m_current_pos += m_ship_orientation;
+        
+        m_current_pos += m_ship_orientation * m_speed;
+        if(m_speed < 1.0f)
+        {
+            m_speed += 0.1f;
+        }
     }
     if(input.getKey(SDL_SCANCODE_S))
     {
-        m_current_pos -= m_ship_orientation;
+        m_current_pos -= m_ship_orientation * m_speed;
+        if(m_speed < 1.0f)
+        {
+            m_speed += 0.1f;
+        }
     }
 
     if(input.getKey(SDL_SCANCODE_A))
@@ -92,6 +101,12 @@ void Spaceship::move(Input input)
     if(input.getKey(SDL_SCANCODE_LSHIFT))
     {
         
+    }
+
+    if(m_speed > 0.1 && input.getEvent().type == SDL_KEYUP)
+    {
+        m_current_pos += m_ship_orientation * m_speed;
+        m_speed -= 0.1;
     }
 }
 

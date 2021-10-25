@@ -99,7 +99,7 @@ void Camera::calculateCameraPostion(float horizontal_distance, float vertical_di
 {
     if(m_ship != nullptr)
     {
-        std::cout << angle_around_player + m_ship->getRotX() << std::endl;
+        std::cout << angle_around_player << std::endl;
         float theta =  angle_around_player + m_ship->getRotX();
         float offset_x = (float) horizontal_distance * cos(glm::radians(theta));
         float offset_y = (float) horizontal_distance * sin(glm::radians(theta));
@@ -107,17 +107,7 @@ void Camera::calculateCameraPostion(float horizontal_distance, float vertical_di
         m_position.x = m_ship->getPosition().x + offset_x;
         m_position.y = m_ship->getPosition().y + offset_y;
         m_position.z = m_ship->getPosition().z + vertical_distance;
-
         
-        // if(input.getKey(SDL_SCANCODE_W))
-        // {
-        //     m_position += m_ship->getOrientation();
-        // }
-        // if(input.getKey(SDL_SCANCODE_S))
-        // {
-        //     m_position -= m_ship->getOrientation();
-        // }
-
     }
     
 }
