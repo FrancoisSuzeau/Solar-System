@@ -18,7 +18,7 @@ CC=g++
 # SRC contient liste des fichier sources du projet 
 # on pourrait utiliser une construction automatique a l'aide du joker *.c et la commande wildcard mais il faudra gerer les dépendances vis a vis des .h
 # SRC=$(wildcard *.c)
-SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp Particule/Particule.cpp Model/Mesh.cpp Model/Model.cpp Spaceship/Spaceship.cpp
+SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp Particule/Particule.cpp Model/Mesh.cpp Model/Model.cpp Spaceship/Spaceship.cpp CelestialBody/AsteroidField/AsteroidField.cpp
 
 OBJET=$(SRC:.cpp=.o)
 
@@ -47,7 +47,7 @@ Text.o: Text/Text.hpp Texture/Texture.hpp Shader/Shader.hpp
 Skybox.o: CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp
 Star.o: CelestialBody/Star/Star.hpp CelestialBody/Geometry/Sphere.hpp Texture/Texture.hpp Atmosphere/Atmosphere.hpp
 PlanetarySystem.o: CelestialBody/System/PlanetarySystem.hpp CelestialBody/System/System.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp Atmosphere/Atmosphere.hpp Text/Text.hpp Shader/Shader.hpp PlaneteInformation/PlaneteInformation.hpp
-SolarSystem.o: CelestialBody/System/SolarSystem.hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp PlaneteInformation/PlaneteInformation.hpp Model/Mode.hpp
+SolarSystem.o: CelestialBody/System/SolarSystem.hpp CelestialBody/System/PlanetarySystem.hpp CelestialBody/Planete/PlaneteCreator.hpp CelestialBody/Planete/SimplePlaneteCreator.hpp CelestialBody/Planete/AtmoPlaneteCreator.hpp CelestialBody/Planete/PlaneteRingCreator.hpp CelestialBody/System/System.hpp CelestialBody/Star/Star.hpp CelestialBody/Skybox/Skybox.hpp Shader/Shader.hpp PlaneteInformation/PlaneteInformation.hpp CelestialBody/AsteroidField/AsteroidField.hpp
 StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp Shader/Shader.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/Geometry/Sphere.hpp Shader/Shader.hpp
 Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp
@@ -56,7 +56,8 @@ PlaneteInformation.o: PlaneteInformation/PlaneteInformation.hpp CelestialBody/Ge
 Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp Spaceship/Spaceship.hpp
 Mesh.o: Model/Mesh.hpp Shader/Shader.hpp
 Model.o: Model/Model.hpp Model/Mesh.hpp Shader/Shader.hpp
-Spaceship.o : Spaceship/Spaceship.hpp Model/Model.hpp Shader/Shader.hpp Input/Input.hpp 
+Spaceship.o : Spaceship/Spaceship.hpp Model/Model.hpp Shader/Shader.hpp Input/Input.hpp
+AsteroidField.o: CelestialBody/AsteroidField.hpp Model/Model.hpp Shader/Shader.hpp
 
 %.o:%.cpp
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${LD_ASSIMP_MINGW32} ${CFLAGS}

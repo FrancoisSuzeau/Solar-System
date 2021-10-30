@@ -30,7 +30,7 @@ PURPOSE : header of the virtual SolarSystem class
         #include "../../Shader/Shader.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
-        #include "../../Model/Model.hpp"
+        #include "../AsteroidField/AsteroidField.hpp"
 
         #include <SDL2/SDL.h>
         #include <SDL2/SDL_ttf.h>
@@ -48,7 +48,8 @@ PURPOSE : header of the virtual SolarSystem class
                 std::vector<SystemCreator*>     m_planetary_system;
                 Star                            *sun;
                 Skybox                          *skybox;
-                Model                           *asteroid;
+                AsteroidField                   *m_asteroid_field;
+                // Model                           *asteroid;
 
                 std::vector<PlaneteCreator*> m_planete_creator;
 
@@ -60,14 +61,14 @@ PURPOSE : header of the virtual SolarSystem class
                 Shader                          *m_sun_atmo_shader;
                 Shader                          *m_model_shader;
 
-                glm::mat4                       *modelMatrices;
-                glm::mat4                       *modelLights;
+                // glm::mat4                       *modelMatrices;
+                // glm::mat4                       *modelLights;
 
-                unsigned int                    m_amount;
+                // unsigned int                    m_amount;
 
 
 
-                void initModel();
+                // void initModel();
                 
             public:
 
