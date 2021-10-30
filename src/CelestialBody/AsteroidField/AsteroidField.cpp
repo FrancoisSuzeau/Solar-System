@@ -17,18 +17,21 @@ PURPOSE : class AsteroidField
 /***********************************************************************************************************************************************************************/
 AsteroidField::AsteroidField(Shader *model_shader)
 {
-    m_amount = 2500;
+    m_amount = 5000;
     asteroid = new Model("../assets/model/rock/rock.obj");
     if(asteroid == nullptr)
     {
         exit(EXIT_FAILURE);
     }
     this->initModel();
+    this->initInstanced(modelMatrices);
 
-    if(model_shader != nullptr)
+    m_model_shader = new Shader("../src/Shader/Shaders/modelInstanced.vert", "../src/Shader/Shaders/model.frag");
+    if(m_model_shader == nullptr)
     {
-        m_model_shader = model_shader;
+        exit(EXIT_FAILURE);
     }
+    m_model_shader->loadShader();
 }
 
 AsteroidField::~AsteroidField()
@@ -37,6 +40,19 @@ AsteroidField::~AsteroidField()
     {
         delete asteroid;
     }
+
+    if(m_model_shader != nullptr)
+    {
+        delete m_model_shader;
+    }
+
+    if(modelMatrices != nullptr)
+    {
+        delete modelMatrices;
+    }
+
+    glDeleteBuffers(1, &buffer1);
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -48,13 +64,26 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
 
         if((asteroid != nullptr) && (m_model_shader != nullptr))
         {
-            for (unsigned int i = 0; i < m_amount; i++)
+            glUseProgram(m_model_shader->getProgramID());
+
+            m_model_shader->setInt("texture_diffuse1", 0);
+            m_model_shader->setInt("hdr", hdr);
+            m_model_shader->setMat4("projection", projection_view_mat[0]);
+            m_model_shader->setMat4("view", projection_view_mat[1]);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, asteroid->getTextureLoadedID(0));
+
+            for (unsigned int i = 0; i < asteroid->getSizeMeshesVector(); i++)
             {
-                std::vector<glm::mat4> model_ligh_mat;
-                model_ligh_mat.push_back(modelMatrices[i]);
-                model_ligh_mat.push_back(modelLights[i]);
-                asteroid->draw(projection_view_mat, model_ligh_mat , hdr, m_model_shader);
+                glBindVertexArray(asteroid->getMeshVAO(i));
+                glDrawElementsInstanced(GL_TRIANGLES, asteroid->getMeshVectorIndiceSize(i), GL_UNSIGNED_INT, 0, m_amount);
+                glBindVertexArray(0);
             }
+            
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glUseProgram(0);
+
         }
         
     projection_view_mat[1] = save;
@@ -65,45 +94,86 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
 /***********************************************************************************************************************************************************************/
 void AsteroidField::initModel()
 {           
-    glm::vec3 sun_pos = glm::vec3(0.01f, 0.0f, 0.0f); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
-    glm::mat4 light_src = glm::lookAt(sun_pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    glm::mat4 save_light_src = light_src;
 
     modelMatrices = new glm::mat4[m_amount];
-    modelLights = new glm::mat4[m_amount];
 
-    float radius = 9000.0f;
-    float offset = 100.0f;
+    float radius = 42000.0f;
+    float offset = 1000.0f;
 
     for (unsigned int i = 0; i < m_amount; i++)
     {
         glm::mat4 model(1.0f);
 
+        float min = -offset;
+        float max = offset;
+
         float angle = (float) i / (float) m_amount * 360.0f;
-        float displacement = (rand() % (int)(2*offset * 100)) / 100.0f - offset;
+        float displacement = min + ((float) rand() / RAND_MAX * (max - min + 1.0));
         float x = cos(glm::radians(angle)) * radius + displacement;
 
-        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        displacement = min + ((float) rand() / RAND_MAX * (max - min + 1.0));
         float y = sin(glm::radians(angle)) * radius + displacement;
 
-        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        min = -500.0f;
+        max = 500.0f;
+        displacement = min + ((float) rand() / RAND_MAX * (max - min + 1.0));
         float z = displacement * 0.4f;
 
         model = glm::translate(model, glm::vec3(x, y, z));
-        light_src = glm::translate(light_src, glm::vec3(x, y, z));
 
         float rotAngle = (rand() % 360);
         model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
-        light_src = glm::rotate(light_src, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+        
 
-        float scaleM = (rand() % 20) / 100.0f + 5.0f;
+        min = 1.0f;
+        max = 20.0f;
+        float scaleM = min + ((float) rand() / RAND_MAX * (max - min));
         model = glm::scale(model, glm::vec3(scaleM));
-        light_src = glm::scale(light_src, glm::vec3(scaleM));
+        
 
         modelMatrices[i] = model;
-        modelLights[i] = light_src;
-
-        light_src = save_light_src;
 
     }
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************** initInstance **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void AsteroidField::initInstanced(glm::mat4 *matrice)
+{
+    // configure instanced array
+    // -------------------------
+    glGenBuffers(1, &buffer1);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer1);
+    glBufferData(GL_ARRAY_BUFFER, m_amount * sizeof(glm::mat4), &matrice[0], GL_STATIC_DRAW);
+
+    // set transformation matrices as an instance vertex attribute (with divisor 1)
+    // note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
+    // normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
+    // -----------------------------------------------------------------------------------------------------------------------------------
+    for (unsigned int i = 0; i < asteroid->getSizeMeshesVector(); i++)
+    {
+        unsigned int VAO = asteroid->getMeshVAO(i);
+        glBindVertexArray(VAO);
+        // set attribute pointers for matrix (4 times vec4)
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+        glEnableVertexAttribArray(5);
+        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+        glEnableVertexAttribArray(6);
+        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+        glVertexAttribDivisor(3, 1);
+        glVertexAttribDivisor(4, 1);
+        glVertexAttribDivisor(5, 1);
+        glVertexAttribDivisor(6, 1);
+
+        glBindVertexArray(0);
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
 }

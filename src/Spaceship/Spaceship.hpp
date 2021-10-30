@@ -49,8 +49,7 @@ PURPOSE : header of the Spaceship class
             private:
 
                 Model                   *m_spaceship_model;
-                std::vector<glm::mat4>  m_model_light_matrice; //Use a vector to avoid passing the two matrice in parameter list
-                                                                //there only will be two : model matrice of the ship and light matrice of the diffuse light
+                glm::mat4  m_model_light_matrice;
 
                 float m_pitch;
                 float m_yaw;

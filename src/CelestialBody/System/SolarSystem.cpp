@@ -237,7 +237,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(57900.0f, 0.0f, 0.0f), police);
+        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f), police);
     }
     
     if(count == 5)
@@ -247,7 +247,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -108200.0f, 0.0f), police);
+        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f), police);
     }
 
     if(count == 6)
@@ -257,7 +257,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 227900, 0), police);
+        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0), police);
     }
 
     if(count == 7)
@@ -267,7 +267,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-2870700.0f, 0.0f, 0.0f), police);
+        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f), police);
     }
     if(count == 8)
     {
@@ -276,7 +276,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         {
             exit(EXIT_FAILURE);
         }
-        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 4498400.0f, 0.0f), police);
+        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f), police);
     }
     //===================================================================================================================
 

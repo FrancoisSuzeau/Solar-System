@@ -591,6 +591,7 @@ void OpenGlSketch::mainLoop()
             std::vector<glm::mat4> projection_view;
             projection_view.push_back(projection);
             projection_view.push_back(model_view);
+            projection_view.push_back(glm::mat4(1.0f));
 
             ship->drawSpaceship(projection_view, hdr, m_model_shader, m_input);
         

@@ -73,7 +73,11 @@ PURPOSE : header of the Model class
                 Model(std::string const &path, bool gamma = false);
                 ~Model();
 
-                void draw(std::vector<glm::mat4> projection_view_mat, std::vector<glm::mat4> model_light_mat, bool hdr, Shader *model_shader);
+                void draw(std::vector<glm::mat4> projection_view_model_mat, bool hdr, Shader *model_shader);
+                unsigned int getMeshVAO(int index) const;
+                size_t getSizeMeshesVector() const;
+                unsigned int getTextureLoadedID(int index) const;
+                size_t getMeshVectorIndiceSize(int index) const;
                 
         };
 

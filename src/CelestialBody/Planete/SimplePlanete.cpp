@@ -38,8 +38,6 @@ m_name(name), m_name_renderer(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf
     m_inclinaison_angle = inclinaison_angle;
     m_speed_rotation = 0.1f;
 
-    // m_plan_info.setPosPlan(initial_pos);
-
     if(m_name == "Mars")
     {
         m_atmosphere = new Atmosphere(1.05f, m_name);

@@ -24,10 +24,8 @@ Spaceship::Spaceship(std::string const path) : m_yaw(0.0f), m_pitch(90.0f), m_sp
     }
 
     glm::mat4 model(1.0f);
-    glm::mat4 light_src(1.0f);
 
-    m_model_light_matrice.push_back(model);
-    m_model_light_matrice.push_back(light_src);
+    m_model_light_matrice = model;
 
     m_current_pos = glm::vec3(1.0f, 9000.0f, 1.0f);
 }
@@ -55,8 +53,8 @@ void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool h
         this->scalingShip();
         this->orientateShip(input);
         
-
-        m_spaceship_model->draw(projection_view_mat, m_model_light_matrice, hdr, model_shader);
+        projection_view_mat[2] = m_model_light_matrice;
+        m_spaceship_model->draw(projection_view_mat, hdr, model_shader);
 
         
     }
@@ -101,16 +99,11 @@ void Spaceship::move(Input input)
 void Spaceship::positioningShip()
 {
     //it is important to reintitialise the model matrice, if not all the calculation are made by the ancient calculation and we loose the space ship
-    m_model_light_matrice[0] = glm::mat4(1.0f);
+    m_model_light_matrice = glm::mat4(1.0f);
 
-    glm::vec3 sun_pos = glm::vec3(0.01f, 0.0f, 0.0f);
-    m_model_light_matrice[1] = glm::lookAt(sun_pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    m_model_light_matrice = glm::translate(m_model_light_matrice, m_current_pos);
 
-    m_model_light_matrice[0] = glm::translate(m_model_light_matrice[0], m_current_pos);
-    m_model_light_matrice[1] = glm::translate(m_model_light_matrice[1], m_current_pos);
-
-    m_model_light_matrice[0] *= (yaw_mat * pitch_mat);
-    m_model_light_matrice[1] *= (yaw_mat * pitch_mat);
+    m_model_light_matrice *= (yaw_mat * pitch_mat);
 
 }
 
@@ -181,8 +174,7 @@ void Spaceship::rotateFromYaw(Input input)
 /***********************************************************************************************************************************************************************/
 void Spaceship::scalingShip()
 {
-    m_model_light_matrice[0] = glm::scale(m_model_light_matrice[0], glm::vec3(0.3f));
-    m_model_light_matrice[1] = glm::scale(m_model_light_matrice[1], glm::vec3(1.0f));
+    m_model_light_matrice = glm::scale(m_model_light_matrice, glm::vec3(0.3f));
 }
 
 /***********************************************************************************************************************************************************************/

@@ -51,9 +51,12 @@ PURPOSE : header of the AsteroidField class
                 Shader                          *m_model_shader;
                 unsigned int                    m_amount;
                 glm::mat4                       *modelMatrices;
-                glm::mat4                       *modelLights;
+
+                unsigned int buffer1;
  
                 void initModel();
+                void initInstanced(glm::mat4 *Matrices);
+                void rotateAsteroid(glm::mat4 &view);
 
             public:
             
