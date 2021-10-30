@@ -99,9 +99,6 @@ void Camera::calculateCameraPostion(float horizontal_distance, float vertical_di
 {
     if(m_ship != nullptr)
     {
-
-        // std::cout << "angle around : " << angle_around_player << std::endl;
-        // std::cout << "pitch : " << m_ship->getRotY() - 90.0f + pitch << std::endl;
         float theta =  angle_around_player + m_ship->getRotX();
         float offset_x = (float) horizontal_distance * sin(glm::radians(theta));
         float offset_y = (float) horizontal_distance * -cos(glm::radians(theta));

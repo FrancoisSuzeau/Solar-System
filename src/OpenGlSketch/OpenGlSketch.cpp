@@ -361,7 +361,7 @@ void OpenGlSketch::startLoop()
         exit(EXIT_FAILURE);
     }
 
-    ship = new Spaceship("../assets/model/spaceship/number1/OBJ/untitled.obj");
+    ship = new Spaceship("../assets/model/spaceship/untitled.obj");
     if(ship == nullptr)
     {
         exit(EXIT_FAILURE);
