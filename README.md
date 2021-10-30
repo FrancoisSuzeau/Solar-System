@@ -15,7 +15,7 @@ At the launch, all the textures, audio, font files are loaded. You can follow th
 After a while the Solar System appears with all planets and moons (note that Mercury is on the other side of the Sun to test lights effects)
 For now, planets and moons are only rotating, I haven't merge the celestial mechanics on the main branch yet.
 
-The initial position of the view matrix (camera) is on the ````1, 9000, 1```` coordinates. You can move your sight with your keyboord and your mouse. Here is the list of all the move command following this shem : QWERTY/AZERTY.
+The initial position of the ship is on the ````1, 9000, 1```` coordinates. You can move the position with the keyboard, the ship orientation with the left button of the mouse and the camera position with the right button. Here is the list of all the move command following this shem : QWERTY/AZERTY.
 + W/Z : move forward
 + S : 	move backward
 + A/Q : move to the left
@@ -24,7 +24,8 @@ The initial position of the view matrix (camera) is on the ````1, 9000, 1```` co
 + E : set speed to maximum
 + LCTR : move up
 + LSHIFT : move down
-+ Left button mouse (maintain) : orient camera (up, down, right, left)
++ Left button mouse (maintain) : orient ship (up, down, right, left)
++ Right button mouse (maintain) : orient camera (all around the ship)
 + UP : increase the volume of the music (deprecated)
 + DOWN : decrease the volume (deprecated)
 + LEFT : decrease the camera velocity (deprecated)
@@ -64,8 +65,8 @@ Make sure that the executable file is in the ````bin```` directory.
 + Overlay : Now the application adapts with the screen size (recover the screen parameter with a system call function)
 
 ### 04/08/2021
-+ Settings window : a simple window where we can choose settings (hdr, exposure, speed navigation, music, music volume and if overlay is display or not)
-+ Cliking on a setting : It adatps on the screen dimension
++ Settings frame : a simple frame where we can choose settings (hdr, exposure, speed navigation, music, music volume and if overlay is display or not)
++ Cliking on a setting button : It adatps on the screen dimension
 
 ### 14/09/2021
 + We can now have a little window showing planete information (for now it is only displaying the name of the body)
@@ -93,6 +94,14 @@ Make sure that the executable file is in the ````bin```` directory.
 ### 30/09/2021
 + Perform design on settings display
 
+### 15/10/2021
++ adding the Assimp library to load model (.obj file)
++ Create a asteroid field display
+
+### 30/0/2021
++ Changing navigation by a third person camera with ship as moveable
++ undisplay particule (for now)
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
@@ -103,7 +112,13 @@ For the moment I am working on this following aspect :
 
 + After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
 
-+ try to use model file loading to add complex forme (like asteroid belt) using Assimp API (need to migrate on Visual Studio Community due to link editing not supported with g++)
++ Change particule class to a move effect by the ship orientation
+
++ Create an asteroid field class with Opengl Instanced Object to optimize the render
+
++ Big refactoring phase
+
++ Implement hit box to prevent to pass through body (have to extract method to calculate radius coming from body position)
 
 + Make a Linux version : Have to think twice because I have to change screen adaptation of the overlay
 

@@ -30,6 +30,7 @@ PURPOSE : header of the Particule class
         #include "../Shader/Shader.hpp"
         #include "../CelestialBody/Geometry/Sphere.hpp"
         #include "../Input/Input.hpp"
+        #include "../Spaceship/Spaceship.hpp"
 
         #define MAX_PARTICLES 1000
 
@@ -56,25 +57,30 @@ PURPOSE : header of the Particule class
 
                 Sphere      *m_sphere_particle;
                 Shader      *m_sphere_shader;
+                Spaceship       *m_ship;
+                float x_change;
+                float y_change;
+                float z_change;
+                glm::vec3 ship_pos;
 
                 double myRand(double const min, double const max);
                 void moveParticleFandB(particles &particle); // forward and backward
                 void moveParticleLandR(particles &particle); //left and right
-                void initParticles();
+                
                 void drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle, bool is_moving);
                 void determineOrientation(glm::mat4 &projection, glm::mat4 &modelview, Input input);
 
-                int             m_senseFandB;
-                int             m_senseLandR;
+                int             m_directionFandB;
+                int             m_directionLandR;
                 float           m_speed;
 
             public:
             
-                Particule();
+                Particule(Spaceship *ship);
                 ~Particule();
 
-                
-                void drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, float speed, bool is_moving);
+                void initParticles(glm::vec3 target_point);
+                void drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, bool is_moving, glm::vec3 target_point);
                 
                 
 

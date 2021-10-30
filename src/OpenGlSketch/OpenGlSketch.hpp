@@ -111,7 +111,7 @@ PURPOSE : header of the OpenGlSketch class
 
                 Overlay *m_overlay;
 
-                Particule *m_particuleGenerator;
+                // Particule *m_particuleGenerator;
 
                 bool is_moving;
                 

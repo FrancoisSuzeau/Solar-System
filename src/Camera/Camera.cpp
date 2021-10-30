@@ -80,7 +80,6 @@ void Camera::calculateAngleAroundShip(Input const &input)
 float Camera::calculateHorizontalDistance(Input const &input)
 {
     return (float) distance_from_ship * cos(glm::radians((m_ship->getRotY() - 90.0f + pitch)));
-    // return (float) distance_from_ship * cos(glm::radians(pitch));
 }
 
 /***********************************************************************************************************************************************************************/
@@ -89,7 +88,6 @@ float Camera::calculateHorizontalDistance(Input const &input)
 float Camera::calculateVerticalDistance(Input const &input)
 {
     return (float) distance_from_ship * sin(glm::radians((m_ship->getRotY() - 90.0f + pitch)));
-    // return (float) distance_from_ship * sin(glm::radians(pitch));
 }
 
 /***********************************************************************************************************************************************************************/
@@ -193,4 +191,9 @@ glm::vec3 Camera::getPosition() const
 glm::vec3 Camera::getVerticalaxe() const
 {
     return m_vertical_axe;
+}
+
+glm::vec3 Camera::getTargetPoint() const
+{
+    return m_target_point;
 }

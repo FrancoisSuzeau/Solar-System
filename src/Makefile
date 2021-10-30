@@ -53,7 +53,7 @@ Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/Geometry/Sphere.hpp Shader
 Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp
 Settings.o: Settings/Settings.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp Input/Input.hpp
 PlaneteInformation.o: PlaneteInformation/PlaneteInformation.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp
-Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp
+Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp Spaceship/Spaceship.hpp
 Mesh.o: Model/Mesh.hpp Shader/Shader.hpp
 Model.o: Model/Model.hpp Model/Mesh.hpp Shader/Shader.hpp
 Spaceship.o : Spaceship/Spaceship.hpp Model/Model.hpp Shader/Shader.hpp Input/Input.hpp 

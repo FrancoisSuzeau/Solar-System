@@ -355,17 +355,17 @@ void OpenGlSketch::startLoop()
         exit(EXIT_FAILURE);
     }
 
-    m_particuleGenerator = new Particule();
-    if(m_particuleGenerator == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-
     ship = new Spaceship("../assets/model/spaceship/untitled.obj");
     if(ship == nullptr)
     {
         exit(EXIT_FAILURE);
     }
+
+    // m_particuleGenerator = new Particule(ship);
+    // if(m_particuleGenerator == nullptr)
+    // {
+    //     exit(EXIT_FAILURE);
+    // }
 
     m_model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
     if(m_model_shader == nullptr)
@@ -488,6 +488,7 @@ void OpenGlSketch::mainLoop()
     time_past = 0;
 
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
+    // m_particuleGenerator->initParticles(camera->getTargetPoint());
     
     if(camera == nullptr)
     {
@@ -682,10 +683,10 @@ void OpenGlSketch::mainLoop()
         delete square_shader;
     }
 
-    if(m_particuleGenerator != nullptr)
-    {
-        delete m_particuleGenerator;
-    }
+    // if(m_particuleGenerator != nullptr)
+    // {
+    //     delete m_particuleGenerator;
+    // }
 
     for (int i(0); i < 2; i++)
     {
@@ -1069,19 +1070,20 @@ void OpenGlSketch::renderParticles()
 {
     glm::mat4 save = model_view;
 
-        model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+        // model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+        glm::vec3 target_point = camera->getTargetPoint();
         
-        if(m_particuleGenerator != nullptr)
-        {
-            if((m_input.getKey(SDL_SCANCODE_W)) && (m_input.getKey(SDL_SCANCODE_S)))
-            {
-                //do nothing
-            }
-            else
-            {
-                m_particuleGenerator->drawParticles(projection, model_view, m_input, ship->getSpeed(), is_moving);
-            }
-        }
+        // if(m_particuleGenerator != nullptr)
+        // {
+        //     if((m_input.getKey(SDL_SCANCODE_W)) && (m_input.getKey(SDL_SCANCODE_S)))
+        //     {
+        //         //do nothing
+        //     }
+        //     else
+        //     {
+        //         // m_particuleGenerator->drawParticles(projection, model_view, m_input, is_moving, target_point);
+        //     }
+        // }
 
     model_view = save;
 }
