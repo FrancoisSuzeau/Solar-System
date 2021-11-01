@@ -16,7 +16,7 @@ PURPOSE : class Camera
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 Camera::Camera() : m_vertical_axe(0.0f, 0.0f, 1.0f),
-m_lateral_move(), m_position(), m_target_point(), distance_from_ship(0.f), angle_around_player(0.0f),
+m_lateral_move(), m_position(), m_target_point(), distance_from_ship(5.0f), angle_around_player(0.0f),
 pitch(20.0f)
 {
 
@@ -131,43 +131,52 @@ void Camera::move(Input const &input, bool move)
 /***********************************************************************************************************************************************************************/
 void Camera::correctTarget(Input const &input)
 {
-    float correct_value_y = m_ship->getSpeed() * -cos(glm::radians(m_ship->getRotX()));
-    float correct_value_x = m_ship->getSpeed() * sin(glm::radians(m_ship->getRotX()));
-    float correct_value_z = m_ship->getSpeed() * cos(glm::radians(m_ship->getRotY()));
+    float correct_value_y = -cos(glm::radians(m_ship->getRotX()));
+    float correct_value_x = sin(glm::radians(m_ship->getRotX()));
+    float correct_value_z = cos(glm::radians(m_ship->getRotY()));
+    float speed = m_ship->getSpeed();
 
     if(input.getKey(SDL_SCANCODE_W))
     {
-        m_target_point += glm::vec3(correct_value_x, correct_value_y, correct_value_z);
-        m_position += glm::vec3(correct_value_x, correct_value_y, correct_value_z);
+        glm::vec3 to_add = glm::normalize(glm::vec3(correct_value_x, correct_value_y, correct_value_z));
+        m_target_point += to_add * speed;
+        m_position += to_add * speed;
     }
 
     if(input.getKey(SDL_SCANCODE_S))
     {
-        m_target_point -= glm::vec3(correct_value_x, correct_value_y, correct_value_z);
-        m_position -= glm::vec3(correct_value_x, correct_value_y, correct_value_z);
+        glm::vec3 to_add = glm::normalize(glm::vec3(correct_value_x, correct_value_y, correct_value_z));
+        m_target_point -= to_add * speed;
+        m_position -= to_add * speed;
     }
 
     if(input.getKey(SDL_SCANCODE_A))
     {
-        m_target_point += glm::vec3(-correct_value_y, correct_value_x, 0.0f);
-        m_position += glm::vec3(-correct_value_y, correct_value_x, 0.0f);
+        glm::vec3 to_cross = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(-correct_value_y, correct_value_x, 0.0f));
+        glm::vec3 to_add = glm::normalize(to_cross);
+        m_target_point += to_add * speed;
+        m_position += to_add * speed;
     }
 
     if(input.getKey(SDL_SCANCODE_D))
     {
-        m_target_point -= glm::vec3(-correct_value_y, correct_value_x, 0.0f);
-        m_position -= glm::vec3(-correct_value_y, correct_value_x, 0.0f);
+        glm::vec3 to_cross = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(-correct_value_y, correct_value_x, 0.0f));
+        glm::vec3 to_add = glm::normalize(to_cross);
+        m_target_point -= to_add * speed;
+        m_position -= to_add * speed;
     }
 
     if(input.getKey(SDL_SCANCODE_LSHIFT))
     {
-        m_target_point += glm::vec3(0.0, 0.0, m_ship->getSpeed());
-        m_position += glm::vec3(0.0, 0.0, m_ship->getSpeed());
+        glm::vec3 to_add = glm::normalize(glm::vec3(0.0f, 0.0f, m_ship->getSpeed()));
+        m_target_point += to_add * speed;
+        m_position += to_add * speed;
     }
     if(input.getKey(SDL_SCANCODE_LCTRL))
     {
-        m_target_point += glm::vec3(0.0, 0.0, -m_ship->getSpeed());
-        m_position += glm::vec3(0.0, 0.0, -m_ship->getSpeed());
+        glm::vec3 to_add = glm::normalize(glm::vec3(0.0f, 0.0f, -m_ship->getSpeed()));
+        m_target_point += to_add * speed;
+        m_position += to_add * speed;
     }
 }
 

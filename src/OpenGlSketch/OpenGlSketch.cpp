@@ -517,7 +517,7 @@ void OpenGlSketch::mainLoop()
     m_input.displayPointer(false);
     
     //initialize modelview and projection matrix
-    projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 9000000.0);
+    projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 900000.0);
     model_view = mat4(1.0f);
 
     //load and play the music
