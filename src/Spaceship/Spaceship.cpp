@@ -27,7 +27,7 @@ Spaceship::Spaceship(std::string const path) : m_yaw(0.0f), m_pitch(90.0f), m_sp
 
     m_model_light_matrice = model;
 
-    m_current_pos = glm::vec3(1.0f, 9000.0f, 1.0f);
+    m_current_pos = glm::vec3(1.0f, 449840.0f, 1.0f);
 }
 
 Spaceship::~Spaceship()
@@ -47,14 +47,14 @@ void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool h
     if((m_spaceship_model != nullptr) && ((model_shader != nullptr)))
     {
         
-        this->move(input);
+        // this->move(input);
 
         this->positioningShip();
         this->orientateShip(input);
         this->scalingShip();
         
         
-        projection_view_mat[2] = m_model_light_matrice;
+        // projection_view_mat[2] = m_model_light_matrice;
         m_spaceship_model->draw(projection_view_mat, hdr, model_shader);
 
         
