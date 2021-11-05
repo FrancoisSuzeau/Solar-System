@@ -26,13 +26,16 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) :
 Sphere(1, 70, 70),
-m_name(name), m_name_renderer(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police)
+m_name(name)
 {
     m_texture_surface = new Texture(texture);
     assert(m_texture_surface);
     assert(m_texture_surface->loadTexture());
     
-    m_name_renderer.loadTTF(m_name);
+    assert(police);
+    m_name_renderer = new Text(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police);
+    assert(m_name_renderer);
+    assert(m_name_renderer->loadTTF(m_name));
 
     //TODO : changing it to a special method
     m_inclinaison_angle = inclinaison_angle;
@@ -71,6 +74,11 @@ SimplePlanete::~SimplePlanete()
     if(m_texture_surface != nullptr)
     {
         delete m_texture_surface;
+    }
+
+    if(m_name_renderer != nullptr)
+    {
+        delete m_name_renderer;
     }
 }
 
@@ -133,7 +141,7 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, dou
     if(name_render_shader != nullptr)
     {
         translateCelestialBody(modelview, m_current_position);
-        m_name_renderer.renderText(projection, modelview, m_real_size, ratio, phi, theta, y, name_render_shader);
+        m_name_renderer->renderText(projection, modelview, m_real_size, ratio, phi, theta, y, name_render_shader);
     }
     
 }
