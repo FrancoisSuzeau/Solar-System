@@ -49,7 +49,7 @@ PURPOSE : header of the Spaceship class
             private:
 
                 Model                   *m_spaceship_model;
-                glm::mat4  m_model_light_matrice;
+                glm::mat4  m_model_matrice;
 
                 float m_pitch;
                 float m_yaw;
