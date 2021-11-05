@@ -20,7 +20,7 @@ PURPOSE : header of the Texture class
         #include <SDL2/SDL_image.h>
         #include <iostream>
         #include <string>
-
+        #include <assert.h>
         #include <GL/glew.h>
 
 /********************************************************************* class definition *********************************************************************/
@@ -33,12 +33,13 @@ PURPOSE : header of the Texture class
                 GLuint          m_id;
                 std::string     m_file_picture;
 
-                //for Color buffer
                 int             m_width;
                 int             m_height;
                 GLenum          m_format;
                 GLenum          m_internal_format;
                 bool            m_empty_texture;
+
+                SDL_Surface *pixelsInverter(SDL_Surface *src_img) const;
 
                 
             public:
@@ -53,7 +54,6 @@ PURPOSE : header of the Texture class
                 void loadEmptyTexture();
                 GLuint getID() const;
                 void setFilePicture(const std::string &file_image);
-                SDL_Surface *pixelsInverter(SDL_Surface *src_img) const;
                 std::string getFileName() const;
                 
         };
