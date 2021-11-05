@@ -112,7 +112,7 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
             
             //active and lock unit texture 1: surface
             glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
+            glBindTexture(GL_TEXTURE_2D, m_texture_surface->getID());
 
             //active and lock unit texture 0: cloud
             glActiveTexture(GL_TEXTURE0);

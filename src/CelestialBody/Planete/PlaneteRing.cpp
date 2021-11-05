@@ -86,7 +86,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
             plan_ring_shader->setInt("hdr", hdr);
             
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
+            glBindTexture(GL_TEXTURE_2D, m_texture_surface->getID());
 
             glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
