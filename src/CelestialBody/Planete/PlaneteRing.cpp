@@ -29,26 +29,17 @@ PlaneteRing::PlaneteRing(std::string const texture, std::string const name, floa
     if(name == "Saturn")
     {
         m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png");
-        if(m_ring == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_ring);
     }
     else if(name == "Uranus")
     {
         m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png");
-        if(m_ring == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_ring);
     }
     else if(name == "Neptune")
     {
         m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png");
-        if(m_ring == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_ring);
     }
 }
 
@@ -63,10 +54,6 @@ PlaneteRing::~PlaneteRing()
     {
         delete m_ring;
     }
-    // if( (m_name == "Uranus") || (m_name == "Neptune") )
-    // {
-    //     delete m_atmosphere;
-    // }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -88,15 +75,10 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            //send matrices to shader
-            // glUniformMatrix4fv(glGetUniformLocation(plan_ring_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-            // glUniformMatrix4fv(glGetUniformLocation(plan_ring_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-            // glUniformMatrix4fv(glGetUniformLocation(plan_ring_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
             plan_ring_shader->setMat4("modelview", modelview);
             plan_ring_shader->setMat4("projection", projection);
             plan_ring_shader->setMat4("light_src", light_src);
             
-            // glUniform1i(glGetUniformLocation(plan_ring_shader->getProgramID(), "texture0"), 0);
             plan_ring_shader->setTexture("texture0", 0);
 
             plan_ring_shader->setVec3("viewPos", camPos);
