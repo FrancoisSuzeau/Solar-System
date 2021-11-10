@@ -98,7 +98,7 @@ Make sure that the executable file is in the ````bin```` directory.
 + adding the Assimp library to load model (.obj file)
 + Create a asteroid field display
 
-### 30/0/2021
+### 30/10/2021
 + Changing navigation by a third person camera with ship as moveable
 + undisplay particule (for now)
 
