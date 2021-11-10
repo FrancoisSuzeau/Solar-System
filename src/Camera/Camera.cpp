@@ -152,7 +152,7 @@ void Camera::correctTarget(Input const &input)
 
     if(input.getKey(SDL_SCANCODE_A))
     {
-        glm::vec3 to_cross = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(-correct_value_y, correct_value_x, 0.0f));
+        glm::vec3 to_cross = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(correct_value_x, correct_value_y, correct_value_z));
         glm::vec3 to_add = glm::normalize(to_cross);
         m_target_point += to_add * speed;
         m_position += to_add * speed;
@@ -160,7 +160,7 @@ void Camera::correctTarget(Input const &input)
 
     if(input.getKey(SDL_SCANCODE_D))
     {
-        glm::vec3 to_cross = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(-correct_value_y, correct_value_x, 0.0f));
+        glm::vec3 to_cross = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(correct_value_x, correct_value_y, correct_value_z));
         glm::vec3 to_add = glm::normalize(to_cross);
         m_target_point -= to_add * speed;
         m_position -= to_add * speed;
