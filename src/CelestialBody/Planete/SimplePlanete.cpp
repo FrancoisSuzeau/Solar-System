@@ -25,11 +25,19 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) :
-Sphere(1, 70, 70), m_texture_surface(texture),
-m_name(name), m_name_renderer(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police)
+Sphere(1, 70, 70),
+m_name(name)
 {
-    m_texture_surface.loadTexture();
-    m_name_renderer.loadTTF(m_name);
+    m_texture_surface = new Texture(texture);
+    assert(m_texture_surface);
+    assert(m_texture_surface->loadTexture());
+    
+    assert(police);
+    m_name_renderer = new Text(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police);
+    assert(m_name_renderer);
+    assert(m_name_renderer->loadTTF(m_name));
+
+    //TODO : changing it to a special method
     m_inclinaison_angle = inclinaison_angle;
     m_real_size = real_size;
     m_initial_pos = initial_pos;
@@ -57,14 +65,21 @@ m_name(name), m_name_renderer(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf
 }
 
 SimplePlanete::SimplePlanete(): Sphere()
-// m_plan_info()
 {
 
 }
 
 SimplePlanete::~SimplePlanete()
 {
+    if(m_texture_surface != nullptr)
+    {
+        delete m_texture_surface;
+    }
 
+    if(m_name_renderer != nullptr)
+    {
+        delete m_name_renderer;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -88,17 +103,10 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-
-            //send matrices to shader
-            // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-            // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-            // glUniformMatrix4fv(glGetUniformLocation(simple_plan_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
             simple_plan_shader->setMat4("modelview", modelview);
             simple_plan_shader->setMat4("projection", projection);
             simple_plan_shader->setMat4("light_src", light_src);
         
-            //texture variable to shader
-            // glUniform1i(glGetUniformLocation(simple_plan_shader->getProgramID(), "texture0"), 0);
             simple_plan_shader->setTexture("texture0", 0);
 
             simple_plan_shader->setVec3("viewPos", camPos);
@@ -106,12 +114,9 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
             simple_plan_shader->setInt("hdr", hdr);
 
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, m_texture_surface.getID());
+            glBindTexture(GL_TEXTURE_2D, m_texture_surface->getID());
             
-            //draw all textured vertices
             glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
-
-            // std::cout << simple_plan_shader << " " << m_name << std::endl;
             
             glBindTexture(GL_TEXTURE_2D, 0);
             
@@ -136,7 +141,7 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, dou
     if(name_render_shader != nullptr)
     {
         translateCelestialBody(modelview, m_current_position);
-        m_name_renderer.renderText(projection, modelview, m_real_size, ratio, phi, theta, y, name_render_shader);
+        m_name_renderer->renderText(projection, modelview, m_real_size, ratio, phi, theta, y, name_render_shader);
     }
     
 }

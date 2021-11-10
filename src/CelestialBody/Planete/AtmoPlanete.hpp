@@ -21,6 +21,8 @@ PURPOSE : header of the AtmoPlanete class
         #include <string>
         #include <vector>
         #include <iostream>
+        #include <assert.h>
+
         #include <GL/glew.h>
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
@@ -36,7 +38,7 @@ PURPOSE : header of the AtmoPlanete class
             private:
 
                 
-                Texture         m_cloud_texture;
+                Texture         *m_cloud_texture;
                 float           m_oppacity;
                 
                 
