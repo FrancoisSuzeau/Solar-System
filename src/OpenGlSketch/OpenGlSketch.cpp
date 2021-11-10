@@ -1072,7 +1072,7 @@ void OpenGlSketch::renderParticles()
     glm::mat4 save = model_view;
 
         // model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-        glm::vec3 target_point = camera->getTargetPoint();
+        // glm::vec3 target_point = camera->getTargetPoint();
         
         // if(m_particuleGenerator != nullptr)
         // {
