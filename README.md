@@ -117,6 +117,8 @@ For the moment I am working on this following aspect :
 
 + Implement hit box to prevent to pass through body (have to extract method to calculate radius coming from body position)
 
++ rescaling object due to a high value error of floating point. Value of translation are too high so error are high to
+
 + Make a Linux version : Have to think twice because I have to change screen adaptation of the overlay
 
 Many of these ideas came to me while I am coding, so I hope more come too.
