@@ -304,17 +304,6 @@ void SolarSystem::displayAsteroidField(std::vector<glm::mat4> projection_view_ma
 {
     glm::mat4 save = projection_view_mat[1];
 
-    //     if((asteroid != nullptr) && (m_model_shader != nullptr))
-    //     {
-    //         for (unsigned int i = 0; i < m_amount; i++)
-    //         {
-    //             std::vector<glm::mat4> model_ligh_mat;
-    //             model_ligh_mat.push_back(modelMatrices[i]);
-    //             model_ligh_mat.push_back(modelLights[i]);
-    //             asteroid->draw(projection_view_mat, model_ligh_mat , hdr, m_model_shader);
-    //         }
-    //     }
-
     if(m_asteroid_field != nullptr)
     {
         m_asteroid_field->drawAsteroidField(projection_view_mat, hdr);
@@ -554,14 +543,14 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         glm::vec3 position_sun = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
         glm::mat4 light_src = glm::lookAt(position_sun, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f));
         
-        if(sun != nullptr)
-        {
-            if(m_sun_atmo_shader != nullptr)
-            {
-                sun->displayAtmo(projection, modelview, hdr, m_sun_atmo_shader);
-            }
+        // if(sun != nullptr)
+        // {
+        //     if(m_sun_atmo_shader != nullptr)
+        //     {
+        //         sun->displayAtmo(projection, modelview, hdr, m_sun_atmo_shader);
+        //     }
             
-        }
+        // }
 
     modelview = save;
     glm::mat4 save_light_src = light_src;
