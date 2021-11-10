@@ -5,15 +5,15 @@ bachelor's degree graduaded in computer science.
 ## Introduction
 This project is a Solar System simulation written in C++ using the OpenGL 3.3 and SDL2 librairy.
 I would like to make it the most accurate as possible using celestial mechanics theory.
-This program works with a front C++ application to load textures files, calculate  all the vertices of the objects and their orbit, and to capture keyboard/mouse events.
-The back end is the opengGL context that compile shader program written in GLSL and use it to represent object in the 3D world as well.
+This program works with a back C++ application to load textures files, calculate  all the vertices of the objects and their orbit, and to capture keyboard/mouse events.
+The front is the opengGL context that compile shader program written in GLSL and use it to represent object in the 3D world as well.
 
 I try to make it usable directly after the download of the source files but I suggest to re-compile it before. For that a Makefile for windows is available in the parent directory (I am still learning how to configure the build aspect of a project). For now it is only usable on Windows but I strongly consider to make it usable on Linux and Mac system.
 
 ## How to use
 At the launch, all the textures, audio, font files are loaded. You can follow this load on the terminal command if you had launch the program with it.
-After a while the Solar System appears with all planets and moons (note that Mercury is on the other side of the Sun to test lights effects)
-For now, planets and moons are only rotating, I haven't merge the celestial mechanics on the main branch yet.
+After a while the Solar System appears with all planets and moons.
+For now, planets and moons are only rotating, I haven't create orbital mechanics yet
 
 The initial position of the ship is on the ````1, 9000, 1```` coordinates. You can move the position with the keyboard, the ship orientation with the left button of the mouse and the camera position with the right button. Here is the list of all the move command following this shem : QWERTY/AZERTY.
 + W/Z : move forward
@@ -28,8 +28,6 @@ The initial position of the ship is on the ````1, 9000, 1```` coordinates. You c
 + Right button mouse (maintain) : orient camera (all around the ship)
 + UP : increase the volume of the music (deprecated)
 + DOWN : decrease the volume (deprecated)
-+ LEFT : decrease the camera velocity (deprecated)
-+ RIGHT : increase the camera velocity (deprecated)
 + ESCAPE : Quit the program
 + P : Display the settings menu
 + Mouse Wheel : Change the navigation speed by 10% the speed of the light
@@ -83,9 +81,8 @@ Make sure that the executable file is in the ````bin```` directory.
 + Name disapear dynamiquely with view sized of the body
 + Moon have now their name displaying
 + Speed navigation : with a percent of light speed as unit
-+ No more (x, y, z) coordinates
 + Setting : add option to show planete information or not
-+ Correcting cross machine : adapte GLSL script to OpenGL version installed on the host machine (Windows)
++ Correcting cross machine errors : adapte GLSL script to OpenGL version installed on the host machine (Windows)
 
 ### 29/07/2021
 + Adding particule effect when moving into scene
@@ -100,7 +97,7 @@ Make sure that the executable file is in the ````bin```` directory.
 
 ### 30/10/2021
 + Changing navigation by a third person camera with ship as moveable
-+ undisplay particule (for now)
++ undisplay particule (for now, to adapt it to new navigation)
 
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
