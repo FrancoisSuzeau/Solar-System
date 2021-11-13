@@ -142,7 +142,7 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     if(host_shader != nullptr)
     {
-        m_host_creator->UpdatePositionPlan(projection, modelview);
+        m_host_creator->UpdatePositionPlan();
         m_host_creator->drawPlanete(projection, modelview, camPos, hdr, host_shader, ring_shader);
 
     }
@@ -153,7 +153,7 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         for (int i(0); i < m_companion_count; i++)
         {
-            m_moons_creator[i]->UpdatePositionPlan(projection, modelview);
+            m_moons_creator[i]->UpdatePositionPlan();
             m_moons_creator[i]->drawPlanete(projection, modelview, camPos, hdr, companion_shader); 
 
             modelview = save;
@@ -217,7 +217,7 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
 
         if(m_host_creator != nullptr)
         {
-            m_host_creator->UpdatePositionPlan(projection, modelview);
+            m_host_creator->UpdatePositionPlan();
 
             if((m_atmosphere != nullptr) && (atmo_shader != nullptr))
             {

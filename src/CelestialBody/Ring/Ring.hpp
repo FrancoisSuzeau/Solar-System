@@ -50,6 +50,7 @@ PURPOSE : header of the Ring class
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *ring_shader = nullptr);
                 void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
                 void load();
+                void updatePosRing(glm::vec3 pos_plan, float size, float inclinaison);
                 
         };
 

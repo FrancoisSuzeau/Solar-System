@@ -258,7 +258,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         if(sun != nullptr)
         {
-            sun->updatePosition(projection, modelview, 0.0f);
+            sun->updatePosition();
         
             if(shaders[2] != nullptr)
             {
@@ -273,7 +273,7 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
     {
         if(it[0] != nullptr)
         {
-            it[0]->UpdatePositionPlan(projection, modelview);
+            it[0]->UpdatePositionPlan();
 
             if((shaders[0] != nullptr) && (shaders[3] != nullptr))
             {
@@ -423,7 +423,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         if(it[0] != nullptr)
         {
-            it[0]->UpdatePositionPlan(projection, modelview);
+            it[0]->UpdatePositionPlan();
 
             if((shaders[4] != nullptr) && (it[0] != nullptr))
             {

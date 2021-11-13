@@ -28,6 +28,9 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     
     assert(m_texture.loadTexture());
 
+    m_rotation_angle = 0.0f;
+    m_speed_rotation = 0.1f;
+
     float temp_coord[] = {0, 0,   1, 0,   1, 1,
                           0, 0,   0, 1,   1, 1,
                           
@@ -133,10 +136,6 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPo
         //lock VAO
         glBindVertexArray(m_vaoID);
 
-            //send matrices to shader
-            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
             ring_shader->setMat4("modelview", modelview);
             ring_shader->setMat4("projection", projection);
             ring_shader->setMat4("model", m_model_mat);
@@ -152,10 +151,6 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPo
 
             //unlock texture
             glBindTexture(GL_TEXTURE_2D, 0);
-
-
-            // glDisableVertexAttribArray(2);
-            // glDisableVertexAttribArray(0);
 
         //unlock VAO
         glBindVertexArray(0);

@@ -63,9 +63,9 @@ PURPOSE : header of the virtual PlaneteCreator class
                         m_planete->display(projection, modelview, camPos, hdr, m_plan_shader, ring_shader);
                 }
 
-                void UpdatePositionPlan(glm::mat4 &projection, glm::mat4 &modelview)
+                void UpdatePositionPlan()
                 {
-                        m_planete->updatePosition(projection, modelview);
+                        m_planete->updatePosition();
                 }
 
                 vec3 getPostion() const

@@ -82,6 +82,30 @@ PURPOSE : Interface CelestialBody
                     return m_real_size;
                 }
 
+                void updatePosition()
+                {
+                    m_model_mat = glm::mat4(1.0f);
+                    m_current_position = m_initial_pos;
+                    //postionning body
+                    translateCelestialBody(m_model_mat, m_current_position);
+
+                    //making the planete inclinaison
+                    inclineCelestialBody(m_model_mat, m_inclinaison_angle);
+
+                    //making the planete rotation
+                    m_rotation_angle += m_speed_rotation;
+                    if(m_rotation_angle >= 360)
+                    {
+                        m_rotation_angle -= 360;
+                    }
+                    rotateCelestialBody(m_model_mat, m_rotation_angle);
+
+                    //scaling on his real size
+                    scaleCelestialBody(m_model_mat, m_real_size);
+
+                    // std::cout << m_name << std::endl;
+                }
+
                 virtual ~CelestialBody() {}
                 
             

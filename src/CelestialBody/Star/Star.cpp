@@ -132,25 +132,25 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPo
     
 }
 
-/***********************************************************************************************************************************************************************/
-/**************************************************************************** updatePosition ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation)
-{
-    m_model_mat = glm::mat4(1.0f);
-    //postionning body
-    translateCelestialBody(m_model_mat, m_current_position);
+// /***********************************************************************************************************************************************************************/
+// /**************************************************************************** updatePosition ***************************************************************************/
+// /***********************************************************************************************************************************************************************/
+// void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation)
+// {
+//     m_model_mat = glm::mat4(1.0f);
+//     //postionning body
+//     translateCelestialBody(m_model_mat, m_current_position);
 
-    m_rotation_angle += m_speed_rotation;
-    if(m_rotation_angle >= 360)
-    {
-        m_rotation_angle -= 360;
-    }
-    rotateCelestialBody(m_model_mat, m_rotation_angle);
+//     m_rotation_angle += m_speed_rotation;
+//     if(m_rotation_angle >= 360)
+//     {
+//         m_rotation_angle -= 360;
+//     }
+//     rotateCelestialBody(m_model_mat, m_rotation_angle);
 
-    //scaling on his real size
-    scaleCelestialBody(m_model_mat, m_real_size);
-}
+//     //scaling on his real size
+//     scaleCelestialBody(m_model_mat, m_real_size);
+// }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/

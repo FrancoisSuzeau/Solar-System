@@ -56,7 +56,6 @@ PURPOSE : header of the Star class
                 Star();
                 ~Star();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *star_shader = nullptr);
-                void updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation);
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atmo_shader = nullptr);
                 
                 
