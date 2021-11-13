@@ -355,7 +355,6 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     modelview = save;
 
-
     for (int i(0); i < m_simple_planete_count; i++)
     {
        if(m_planete_creator[i] != nullptr)
@@ -404,13 +403,13 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     /************************************************* OTHER ATMO RENDER ********************************************************/
 
-    for(int i(0); i < m_planetarySYS_count; i++)
+    for(std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
     {
-        if(m_planetary_system[i] != nullptr)
+        if(it[0] != nullptr)
         {
             if(shaders[4] != nullptr)
             {
-                m_planetary_system[i]->drawAtmo(projection, modelview, camPos, hdr, shaders[4]);
+                it[0]->drawAtmo(projection, modelview, camPos, hdr, shaders[4]);
             }
             
         }
