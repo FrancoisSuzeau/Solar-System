@@ -36,6 +36,7 @@ PURPOSE : header of the virtual SolarSystem class
         #include <SDL2/SDL_ttf.h>
         #include <cassert>
         
+        
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -57,12 +58,13 @@ PURPOSE : header of the virtual SolarSystem class
 
                 std::vector<Shader*>            shaders;
                 Shader                          *m_model_shader;
+                
 
                 void initData() override;
                 
             public:
 
-                SolarSystem(std::string name_system, TTF_Font *police, int celestial_object_count = 0, Shader *model_shader = nullptr);
+                SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_shader = nullptr);
                 SolarSystem();
                 ~SolarSystem();
 

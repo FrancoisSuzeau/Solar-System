@@ -56,7 +56,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 void initData() override;
             public:
 
-                PlanetarySystem(std::string name_system, TTF_Font *police, int companion_count);
+                PlanetarySystem(sys_init_data data, TTF_Font *police);
                 PlanetarySystem();
                 ~PlanetarySystem();
 

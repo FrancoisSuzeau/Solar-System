@@ -40,6 +40,13 @@ PURPOSE : header of the virtual System class
                 glm::vec3 position;
 
         } init_data;
+
+        typedef struct sys_init_data {
+
+                std::string     name_sys;
+                int     companion_count;
+
+        } sys_init_data;
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -52,6 +59,7 @@ PURPOSE : header of the virtual System class
                 int                         m_companion_count;
 
                 std::vector<init_data>          m_data;
+                std::vector<sys_init_data>     sys_data;
 
                 virtual void initData() = 0;
                 

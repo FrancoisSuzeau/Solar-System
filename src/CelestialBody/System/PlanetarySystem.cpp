@@ -19,10 +19,10 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlanetarySystem::PlanetarySystem(std::string name_system, TTF_Font *police, int companion_count)
+PlanetarySystem::PlanetarySystem(sys_init_data data, TTF_Font *police)
 {
-    m_system_name = name_system;
-    m_companion_count = companion_count;
+    m_system_name = data.name_sys;
+    m_companion_count = data.companion_count;
 
     this->initData();
 }
@@ -99,22 +99,13 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
     }
     else if(m_system_name == "Jovian System")
     {
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        assert(m_moons_creator[0]);
-        assert(m_moons_creator[0]->MakingPlanete(m_data[2], police));
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        assert(m_moons_creator[1]);
-        assert(m_moons_creator[1]->MakingPlanete(m_data[3], police));
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        assert(m_moons_creator[2]);
-        assert(m_moons_creator[2]->MakingPlanete(m_data[4], police));
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        assert(m_moons_creator[3]);
-        assert(m_moons_creator[3]->MakingPlanete(m_data[5], police));
-
+        for (int i(2); i < 6; i++)
+        {
+            m_moons_creator.push_back(new SimplePlaneteCreator());
+            assert(m_moons_creator[i-2]);
+            assert(m_moons_creator[i-2]->MakingPlanete(m_data[i], police));
+        }
+        
         m_host_creator = new SimplePlaneteCreator();
         assert(m_host_creator);
         assert(m_host_creator->MakingPlanete(m_data[6], police));
@@ -122,17 +113,12 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
     }
     else if(m_system_name == "Saturnian System")
     {
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        assert(m_moons_creator[0]);
-        assert(m_moons_creator[0]->MakingPlanete(m_data[7], police));
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        assert(m_moons_creator[1]);
-        assert(m_moons_creator[1]->MakingPlanete(m_data[8], police));
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        assert(m_moons_creator[2]);
-        assert(m_moons_creator[2]->MakingPlanete(m_data[9], police));
+        for (int i(7); i < 10; i++)
+        {
+            m_moons_creator.push_back(new SimplePlaneteCreator());
+            assert(m_moons_creator[i-7]);
+            assert(m_moons_creator[i-7]->MakingPlanete(m_data[i], police));
+        }
 
         m_host_creator = new PlaneteRingCreator();
         assert(m_host_creator);

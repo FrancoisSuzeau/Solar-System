@@ -41,12 +41,12 @@ PURPOSE : header of the virtual PlanetarySystemCreator class
             public:
 
 
-                System* FactoryMethod(std::string name_system, TTF_Font *police, int companion_count, Shader *model_sader = nullptr) override
+                System* FactoryMethod(sys_init_data data, TTF_Font *police, Shader *model_sader = nullptr) override
                 {
                         puts("");
                         puts("");
-                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << name_system << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                        return new PlanetarySystem(name_system, police, companion_count);
+                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << data.name_sys << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
+                        return new PlanetarySystem(data, police);
                 }
 
 

@@ -393,7 +393,10 @@ void OpenGlSketch::startLoop()
         {
             if(solar_system != nullptr)
             {
-                assert(solar_system->MakingSystem("Solar System", 8, m_police[0], m_model_shader));
+                sys_init_data sol_data;
+                sol_data.name_sys = "Solar System";
+                sol_data.companion_count = 8;
+                assert(solar_system->MakingSystem(sol_data, m_police[0], m_model_shader));
                 nb_loaded++;
             }
             

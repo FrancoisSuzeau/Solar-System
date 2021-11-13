@@ -17,13 +17,13 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_object_count, Shader *model_shader)
+SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_shader)
 {
     m_planete_info = new PlaneteInformation("None", police);
     assert(m_planete_info);
 
-    m_system_name = name;
-    m_companion_count = celestial_object_count;
+    m_system_name = data.name_sys;
+    m_companion_count = data.companion_count;
     m_planetarySYS_count = 3;
     m_simple_planete_count = 5;
 
@@ -133,6 +133,10 @@ void SolarSystem::initData()
     m_data.push_back({"../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0)});
     m_data.push_back({"../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f)});
     m_data.push_back({"../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f)});
+
+    sys_data.push_back({"Earth System", 1});
+    sys_data.push_back({"Jovian System", 4});
+    sys_data.push_back({"Saturnian System", 3});
 }
 
 /***********************************************************************************************************************************************************************/
@@ -147,7 +151,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
     {
         m_planetary_system.push_back(new PlanetarySystemCreator());
         assert(m_planetary_system[0]);
-        assert(m_planetary_system[0]->MakingSystem("Earth System", 1, police));
+        assert(m_planetary_system[0]->MakingSystem(sys_data[0], police));
         m_planetary_system[0]->loadSystem(count, police);
     }
 
@@ -156,7 +160,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
     {
         m_planetary_system.push_back(new PlanetarySystemCreator());
         assert(m_planetary_system[1]);
-        assert(m_planetary_system[1]->MakingSystem("Jovian System", 4, police));
+        assert(m_planetary_system[1]->MakingSystem(sys_data[1], police));
         m_planetary_system[1]->loadSystem(count, police);
     }
 
@@ -165,7 +169,7 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
     {
         m_planetary_system.push_back(new PlanetarySystemCreator());
         assert(m_planetary_system[2]);
-        assert(m_planetary_system[2]->MakingSystem("Saturnian System", 3, police));
+        assert(m_planetary_system[2]->MakingSystem(sys_data[2], police));
         m_planetary_system[2]->loadSystem(count, police);
     }  
     //===================================================================================================================
@@ -301,41 +305,37 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
     modelview = save;
     light_src = save_light_src;
 
-        if(m_planetary_system[0] != nullptr)
-        {
-            if( (shaders[1] != nullptr) && (shaders[0] != nullptr) )
-            {
-                m_planetary_system[0]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[1], shaders[0]);
-            }
-        }
-        
-    /************************************************* JUPITER RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    int i(0);
+    for (std::vector<sys_init_data>::iterator it = sys_data.begin(); it != sys_data.end(); ++it)
+    {
 
-        if(m_planetary_system[1] != nullptr)
+        if(m_planetary_system[i] != nullptr)
         {
-            if( shaders[0] != nullptr )
+            if( (shaders[1] != nullptr) && (shaders[0] != nullptr) && (shaders[3] != nullptr))
             {
-                m_planetary_system[1]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[0], shaders[0]);
+                if(it[0].name_sys == "Earth System")
+                {
+                    m_planetary_system[i]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[1], shaders[0]);
+                    modelview = save;
+                    light_src = save_light_src;
+                }
+                else if(it[0].name_sys == "Jovian System")
+                {
+                    m_planetary_system[i]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[0], shaders[0]);
+                    modelview = save;
+                    light_src = save_light_src;
+                }
+                else if(it[0].name_sys == "Saturnian System")
+                {
+                    m_planetary_system[i]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[0], shaders[0], shaders[3]);
+                    modelview = save;
+                    light_src = save_light_src;
+                }
             }
+            i++;
         }
-        
-    /************************************************* SATURN RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
+    }
 
-        if(m_planetary_system[2] != nullptr)
-        {
-            if( (shaders[0] != nullptr) && (shaders[3] != nullptr) )
-            {
-                m_planetary_system[2]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[0], shaders[0], shaders[3]);
-            }
-        }
-        
-    
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
