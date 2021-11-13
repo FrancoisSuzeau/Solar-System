@@ -34,6 +34,7 @@ PURPOSE : header of the virtual SolarSystem class
 
         #include <SDL2/SDL.h>
         #include <SDL2/SDL_ttf.h>
+        #include <cassert>
         
        
 /********************************************************************* class definition *********************************************************************/

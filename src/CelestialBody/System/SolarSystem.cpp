@@ -20,82 +20,45 @@ using namespace glm;
 SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_object_count, Shader *model_shader)
 {
     m_planete_info = new PlaneteInformation("None", police);
-    if(m_planete_info == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_planete_info);
 
     m_system_name = name;
     m_companion_count = celestial_object_count;
     m_planetarySYS_count = 3;
     m_simple_planete_count = 5;
-    // m_amount = 2500;
 
     skybox = new Skybox();
-    if(skybox == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(skybox);
 
     sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
-    if(sun == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(sun);
 
     m_asteroid_field = new AsteroidField(model_shader);
-    if(m_asteroid_field == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    // asteroid = new Model("../assets/model/rock/rock.obj");
-    // if(asteroid == nullptr)
-    // {
-    //     exit(EXIT_FAILURE);
-    // }
-    // this->initModel();
+    assert(m_asteroid_field);
 
     m_body_shader.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"));
-    if(m_body_shader[0] == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_body_shader[0]->loadShader();
+    assert(m_body_shader[0]);
+    assert(m_body_shader[0]->loadShader());
 
     m_body_shader.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag"));
-    if(m_body_shader[1] == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_body_shader[1]->loadShader();
+    assert(m_body_shader[1]);
+    assert(m_body_shader[1]->loadShader());
 
     m_body_shader.push_back(new Shader("../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag"));
-    if(m_body_shader[2] == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_body_shader[2]->loadShader();
+    assert(m_body_shader[2]);
+    assert(m_body_shader[2]->loadShader());
 
     m_ring_shader = new Shader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
-    if(m_ring_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_ring_shader->loadShader();
+    assert(m_ring_shader);
+    assert(m_ring_shader->loadShader());
 
     m_sphere_shader = new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag");
-    if(m_sphere_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_sphere_shader->loadShader();
+    assert(m_sphere_shader);
+    assert(m_sphere_shader->loadShader());
 
     m_sun_atmo_shader = new Shader("../src/Shader/Shaders/sunAtmo.vert", "../src/Shader/Shaders/sunAtmo.frag");
-    if(m_sun_atmo_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_sun_atmo_shader->loadShader();
+    assert(m_sun_atmo_shader);
+    assert(m_sun_atmo_shader->loadShader());
 
     if(model_shader != nullptr)
     {
@@ -186,20 +149,14 @@ SolarSystem::~SolarSystem()
 /***********************************************************************************************************************************************************************/
 void SolarSystem::loadSystem(int count, TTF_Font *police)
 {
-    if(police == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(police);
     /************************************************* loading planetary system ********************************************************/
     //Earth System
     if(count == 1)
     {
         m_planetary_system.push_back(new PlanetarySystemCreator());
-        if(m_planetary_system[0] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_planetary_system[0]->MakingSystem("Earth System", 1, police);
+        assert(m_planetary_system[0]);
+        assert(m_planetary_system[0]->MakingSystem("Earth System", 1, police));
         m_planetary_system[0]->loadSystem(count, police);
     }
 
@@ -207,11 +164,8 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
     if(count == 2)
     {
         m_planetary_system.push_back(new PlanetarySystemCreator());
-        if(m_planetary_system[1] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_planetary_system[1]->MakingSystem("Jovian System", 4, police);
+        assert(m_planetary_system[1]);
+        assert(m_planetary_system[1]->MakingSystem("Jovian System", 4, police));
         m_planetary_system[1]->loadSystem(count, police);
     }
 
@@ -219,11 +173,8 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
     if(count == 3)
     {
         m_planetary_system.push_back(new PlanetarySystemCreator());
-        if(m_planetary_system[2] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_planetary_system[2]->MakingSystem("Saturnian System", 3, police);
+        assert(m_planetary_system[2]);
+        assert(m_planetary_system[2]->MakingSystem("Saturnian System", 3, police));
         m_planetary_system[2]->loadSystem(count, police);
     }  
     //===================================================================================================================
@@ -233,50 +184,35 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
     if(count == 4)
     {
         m_planete_creator.push_back(new SimplePlaneteCreator());
-        if(m_planete_creator[0] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f), police);
+        assert(m_planete_creator[0]);
+        assert(m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f), police));
     }
     
     if(count == 5)
     {
         m_planete_creator.push_back(new AtmoPlaneteCreator());
-        if(m_planete_creator[1] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f), police);
+        assert(m_planete_creator[1]);
+        assert(m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f), police));
     }
 
     if(count == 6)
     {
         m_planete_creator.push_back(new AtmoPlaneteCreator());
-        if(m_planete_creator[2] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0), police);
+        assert(m_planete_creator[2]);
+        assert(m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0), police));
     }
 
     if(count == 7)
     {
         m_planete_creator.push_back(new PlaneteRingCreator());
-        if(m_planete_creator[3] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f), police);
+        assert(m_planete_creator[3]);
+        assert(m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f), police));
     }
     if(count == 8)
     {
         m_planete_creator.push_back(new PlaneteRingCreator());
-        if(m_planete_creator[4] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f), police);
+        assert(m_planete_creator[4]);
+        assert(m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f), police));
     }
     //===================================================================================================================
 
