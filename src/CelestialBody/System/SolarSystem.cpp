@@ -36,29 +36,29 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
     m_asteroid_field = new AsteroidField(model_shader);
     assert(m_asteroid_field);
 
-    m_body_shader.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"));
-    assert(m_body_shader[0]);
-    assert(m_body_shader[0]->loadShader());
+    shaders.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"));
+    assert(shaders[0]);
+    assert(shaders[0]->loadShader());
 
-    m_body_shader.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag"));
-    assert(m_body_shader[1]);
-    assert(m_body_shader[1]->loadShader());
+    shaders.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag"));
+    assert(shaders[1]);
+    assert(shaders[1]->loadShader());
 
-    m_body_shader.push_back(new Shader("../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag"));
-    assert(m_body_shader[2]);
-    assert(m_body_shader[2]->loadShader());
+    shaders.push_back(new Shader("../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag"));
+    assert(shaders[2]);
+    assert(shaders[2]->loadShader());
 
-    m_ring_shader = new Shader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag");
-    assert(m_ring_shader);
-    assert(m_ring_shader->loadShader());
+    shaders.push_back(new Shader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag"));
+    assert(shaders[3]);
+    assert(shaders[3]->loadShader());
 
-    m_sphere_shader = new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag");
-    assert(m_sphere_shader);
-    assert(m_sphere_shader->loadShader());
+    shaders.push_back(new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag"));
+    assert(shaders[4]);
+    assert(shaders[4]->loadShader());
 
-    m_sun_atmo_shader = new Shader("../src/Shader/Shaders/sunAtmo.vert", "../src/Shader/Shaders/sunAtmo.frag");
-    assert(m_sun_atmo_shader);
-    assert(m_sun_atmo_shader->loadShader());
+    shaders.push_back(new Shader("../src/Shader/Shaders/sunAtmo.vert", "../src/Shader/Shaders/sunAtmo.frag"));
+    assert(shaders[5]);
+    assert(shaders[5]->loadShader());
 
     if(model_shader != nullptr)
     {
@@ -75,20 +75,20 @@ SolarSystem::SolarSystem() : sun()
 
 SolarSystem::~SolarSystem()
 {
-    for (int i(0); i < m_planetarySYS_count; i++)
+    for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
     {
-        if(m_planetary_system[i] != nullptr)
+        if(*it != nullptr)
         {
-            delete m_planetary_system[i];
+            delete *it;
         }
         
     }
 
-    for (int i(0); i < m_simple_planete_count; i++)
+    for (std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
     {
-        if(m_planete_creator[i] != nullptr)
+        if(*it != nullptr)
         {
-            delete m_planete_creator[i];
+            delete *it;
         }
         
     }
@@ -107,11 +107,6 @@ SolarSystem::~SolarSystem()
     {
         delete m_asteroid_field;
     }
-
-    // if(asteroid != nullptr)
-    // {
-    //     delete asteroid;
-    // }
     
 
     if(m_planete_info != nullptr)
@@ -119,29 +114,13 @@ SolarSystem::~SolarSystem()
         delete m_planete_info;
     }
 
-    for (int i(0); i < 3; i++)
+    for (std::vector<Shader*>::iterator it = shaders.begin(); it!= shaders.end(); ++it)
     {
-        if(m_body_shader[i] != nullptr)
+        if(*it != nullptr)
         {
-            delete m_body_shader[i];
+            delete *it;
         }
     }
-
-    if(m_ring_shader != nullptr)
-    {
-        delete m_ring_shader;
-    }
-
-    if(m_sphere_shader != nullptr)
-    {
-        delete m_sphere_shader;
-    }
-
-    if(m_sun_atmo_shader != nullptr)
-    {
-        delete m_sun_atmo_shader;
-    }
-    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -269,9 +248,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             sun->updatePosition(projection, modelview, 0.0f);
             sun->updatePositionLight(projection, light_src);
         
-            if(m_body_shader[2] != nullptr)
+            if(shaders[2] != nullptr)
             {
-                sun->display(projection, modelview, light_src, camPos, hdr, m_body_shader[2]);
+                sun->display(projection, modelview, light_src, camPos, hdr, shaders[2]);
             }
         }
         
@@ -285,9 +264,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[0]->updatePosLight(projection, light_src);
 
-            if(m_body_shader[0] != nullptr)
+            if(shaders[0] != nullptr)
             {
-                m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0]);
+                m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[0]);
             }
         }
         
@@ -301,9 +280,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             m_planete_creator[1]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[1]->updatePosLight(projection, light_src);
 
-            if(m_body_shader[1] != nullptr)
+            if(shaders[1] != nullptr)
             {
-                m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[1]);
+                m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[1]);
             }
         }
         
@@ -314,9 +293,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         if(m_planetary_system[0] != nullptr)
         {
-            if( (m_body_shader[1] != nullptr) && (m_body_shader[0] != nullptr) )
+            if( (shaders[1] != nullptr) && (shaders[0] != nullptr) )
             {
-                m_planetary_system[0]->drawSystem(projection, modelview, camPos, hdr, m_position, m_body_shader[1], m_body_shader[0]);
+                m_planetary_system[0]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[1], shaders[0]);
             }
         }
 
@@ -330,9 +309,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             m_planete_creator[2]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[2]->updatePosLight(projection, light_src);
     
-            if(m_body_shader[1] != nullptr)
+            if(shaders[1] != nullptr)
             {
-                m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[1]);
+                m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[1]);
             }
         }
         
@@ -343,9 +322,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         if(m_planetary_system[1] != nullptr)
         {
-            if( m_body_shader[0] != nullptr )
+            if( shaders[0] != nullptr )
             {
-                m_planetary_system[1]->drawSystem(projection, modelview, camPos, hdr, m_position, m_body_shader[0], m_body_shader[0]);
+                m_planetary_system[1]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[0], shaders[0]);
             }
         }
         
@@ -356,9 +335,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
         if(m_planetary_system[2] != nullptr)
         {
-            if( (m_body_shader[0] != nullptr) && (m_ring_shader != nullptr) )
+            if( (shaders[0] != nullptr) && (shaders[3] != nullptr) )
             {
-                m_planetary_system[2]->drawSystem(projection, modelview, camPos, hdr, m_position, m_body_shader[0], m_body_shader[0], m_ring_shader);
+                m_planetary_system[2]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[0], shaders[0], shaders[3]);
             }
         }
         
@@ -372,9 +351,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[3]->updatePosLight(projection, light_src);
             
-            if( (m_body_shader[0] != nullptr) && (m_ring_shader != nullptr) )
+            if( (shaders[0] != nullptr) && (shaders[3] != nullptr) )
             {
-                m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0], m_ring_shader);
+                m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[0], shaders[3]);
             }
         }
         
@@ -388,9 +367,9 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[4]->updatePosLight(projection, light_src);
 
-            if( (m_body_shader[0] != nullptr) && (m_ring_shader != nullptr) )
+            if( (shaders[0] != nullptr) && (shaders[3] != nullptr) )
             {
-                m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos, hdr, m_body_shader[0], m_ring_shader);
+                m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[0], shaders[3]);
             }
         }
         
@@ -461,9 +440,9 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         
         // if(sun != nullptr)
         // {
-        //     if(m_sun_atmo_shader != nullptr)
+        //     if(shaders[5] != nullptr)
         //     {
-        //         sun->displayAtmo(projection, modelview, hdr, m_sun_atmo_shader);
+        //         sun->displayAtmo(projection, modelview, hdr, shaders[5]);
         //     }
             
         // }
@@ -477,9 +456,9 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         if(m_planetary_system[i] != nullptr)
         {
-            if(m_sphere_shader != nullptr)
+            if(shaders[4] != nullptr)
             {
-                m_planetary_system[i]->drawAtmo(projection, modelview, camPos, hdr, m_sphere_shader);
+                m_planetary_system[i]->drawAtmo(projection, modelview, camPos, hdr, shaders[4]);
             }
             
         }
@@ -496,9 +475,9 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
             m_planete_creator[i]->UpdatePositionPlan(projection, modelview);
             m_planete_creator[i]->updatePosLight(projection, light_src);
 
-            if((m_sphere_shader != nullptr) && (m_planete_creator[i] != nullptr))
+            if((shaders[4] != nullptr) && (m_planete_creator[i] != nullptr))
             {
-                m_planete_creator[i]->drawAtmoPlanete(projection, modelview, light_src, camPos, hdr, m_sphere_shader);
+                m_planete_creator[i]->drawAtmoPlanete(projection, modelview, light_src, camPos, hdr, shaders[4]);
             }
             
         }

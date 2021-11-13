@@ -33,11 +33,12 @@ PlanetarySystem::PlanetarySystem()
 
 PlanetarySystem::~PlanetarySystem()
 {
-    for (int i(0); i < m_companion_count; i++)
+    for (std::vector<PlaneteCreator*>::iterator it = m_moons_creator.begin(); it != m_moons_creator.end(); ++it)
     {
-        if(m_moons_creator[i] != nullptr)
+        if(*it != nullptr)
         {
-            delete m_moons_creator[i];
+            std::cout << *it << std::endl;
+            delete *it;
         }
         
     }

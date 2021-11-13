@@ -50,16 +50,12 @@ PURPOSE : header of the virtual SolarSystem class
                 Star                            *sun;
                 Skybox                          *skybox;
                 AsteroidField                   *m_asteroid_field;
-                // Model                           *asteroid;
 
-                std::vector<PlaneteCreator*> m_planete_creator;
+                std::vector<PlaneteCreator*>    m_planete_creator;
 
                 PlaneteInformation              *m_planete_info;
 
-                std::vector<Shader*>            m_body_shader;
-                Shader*                         m_ring_shader;
-                Shader                          *m_sphere_shader;
-                Shader                          *m_sun_atmo_shader;
+                std::vector<Shader*>            shaders;
                 Shader                          *m_model_shader;
                 
             public:
