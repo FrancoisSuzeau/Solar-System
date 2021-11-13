@@ -70,24 +70,15 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         m_companion_name.push_back("Moon");
         
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[0] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0), police);
+        assert(m_moons_creator[0]);
+        assert(m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0), police));
 
         m_host_creator = new AtmoPlaneteCreator();
-        if(m_host_creator == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0), police);
+        assert(m_host_creator);
+        assert(m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0), police));
 
         m_atmosphere = new Atmosphere(1.05f, "Earth");
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_atmosphere);
     }
     else if(m_system_name == "Jovian System")
     {
@@ -97,40 +88,24 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         m_companion_name.push_back("Callisto");
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[0] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0), police);
+        assert(m_moons_creator[0]);
+        assert(m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0), police));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[1] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0), police);
+        assert(m_moons_creator[1]);
+        assert(m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0), police));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[2] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0), police);
+        assert(m_moons_creator[2]);
+        assert(m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0), police));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[3] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[3]->MakingPlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0), police);
+        assert(m_moons_creator[3]);
+        assert(m_moons_creator[3]->MakingPlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0), police));
 
         m_host_creator = new SimplePlaneteCreator();
-        if(m_host_creator == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0), police);
+        assert(m_host_creator);
+        assert(m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0), police));
 
     }
     else if(m_system_name == "Saturnian System")
@@ -140,32 +115,20 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         m_companion_name.push_back("Mimas");
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[0] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0), police);
+        assert(m_moons_creator[0]);
+        assert(m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0), police));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[1] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0), police);
+        assert(m_moons_creator[1]);
+        assert(m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0), police));
 
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[2] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0), police);
+        assert(m_moons_creator[2]);
+        assert(m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0), police));
 
         m_host_creator = new PlaneteRingCreator();
-        if(m_host_creator == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0), police);
+        assert(m_host_creator);
+        assert(m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0), police));
 
     }
     else

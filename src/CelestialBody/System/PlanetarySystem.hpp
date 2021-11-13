@@ -38,6 +38,8 @@ PURPOSE : header of the virtual PlanetarySystem class
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
+
+        #include <cassert>
        
 /********************************************************************* class definition *********************************************************************/
 
