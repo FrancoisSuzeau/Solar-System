@@ -226,14 +226,14 @@ void Text::rotateText(glm::mat4 &modelview, float const z, double ratio, float p
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ renderText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
+void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
 {
 
 	if(name_render_shader != nullptr)
 	{
 		
 		glm::mat4 save = modelview;
-		
+
 		this->rotateText(modelview, z, ratio, phi, theta, y);
 
 		//activate shader program
