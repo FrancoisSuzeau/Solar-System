@@ -147,6 +147,40 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, dou
 }
 
 /***********************************************************************************************************************************************************************/
+/******************************************************************************* displayName2 ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SimplePlanete::displayName2(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 camPos, Shader *name_render_shader)
+{
+    if(name_render_shader != nullptr)
+    {
+        /*
+            CamPos is the M point in spherical coordinate, so we already have his x, y, z coordinate
+            but this coordinate are relative to the world reference
+            so we add the planete position to the cam position to have the coordinate reference opposite to the planete
+            we only use the parametrical coordinate to find the r radius
+        */
+       
+        float x = camPos[0] - m_current_position[0];
+        float y = camPos[1] - m_current_position[1];
+        float z = camPos[2] - m_current_position[2];
+           
+        float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
+           
+        float r = std::sqrt(r_squarre);
+        float phi = atan(y/x);
+        float theta = acos(z/r);
+        
+        if(r >= 400 * m_real_size)
+        {
+            translateCelestialBody(modelview, m_current_position);
+            m_name_renderer->renderMovingText(projection, modelview, m_real_size, r, phi, theta, y, name_render_shader);
+        }
+        
+    }
+    
+}
+
+/***********************************************************************************************************************************************************************/
 /**************************************************************************** updatePosition ***************************************************************************/
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::updatePosition(glm::mat4 &projection, glm::mat4 &modelview)

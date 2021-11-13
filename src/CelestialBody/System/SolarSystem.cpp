@@ -489,35 +489,11 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     for (int i(0); i < m_simple_planete_count; i++)
     {
-
-      /*
-            CamPos is the M point in spherical coordinate, so we already have his x, y, z coordinate
-            but this coordinate are relative to the world reference
-            so we add the planete position to the cam position to have the coordinate reference opposite to the planete
-            we only use the parametrical coordinate to find the r radius
-        */
        if(m_planete_creator[i] != nullptr)
        {
-           glm::vec3 planete_pos = m_planete_creator[i]->getPostion();
-           float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
-           float y = camPos[1] - planete_pos[1];
-           float z = camPos[2] - planete_pos[2];
-           
-           float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-           
-           float r = std::sqrt(r_squarre);
-           float phi = atan(y/x);
-           float theta = acos(z/r);
-
-           float size_plan = m_planete_creator[i]->getSizePlan();
-        //    std::cout << m_planete_creator[i]->getName() << " : " << r << std::endl;
-           if(r >= 400 * size_plan)
-           {
-               if(name_render_shader != nullptr)
-               {
-                   m_planete_creator[i]->displayName(projection, modelview, r, phi, theta, y, name_render_shader);
-                   // std::cout << name_render_shader << std::endl;
-               }
+           if(name_render_shader != nullptr)
+            {
+                m_planete_creator[i]->displayName2(projection, modelview, camPos, name_render_shader);
             }
        }
 
