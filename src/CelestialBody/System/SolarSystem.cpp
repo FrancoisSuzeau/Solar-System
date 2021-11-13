@@ -65,7 +65,7 @@ SolarSystem::SolarSystem(std::string name, TTF_Font *police, int celestial_objec
         m_model_shader = model_shader;
     }
     
-
+    this->initData();
 }
 
 SolarSystem::SolarSystem() : sun()
@@ -124,6 +124,18 @@ SolarSystem::~SolarSystem()
 }
 
 /***********************************************************************************************************************************************************************/
+/******************************************************************************** initData *****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SolarSystem::initData()
+{
+    m_data.push_back({"../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f)});
+}
+
+/***********************************************************************************************************************************************************************/
 /******************************************************************************* loadSystem ****************************************************************************/
 /***********************************************************************************************************************************************************************/
 void SolarSystem::loadSystem(int count, TTF_Font *police)
@@ -159,42 +171,42 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
     //===================================================================================================================
 
     /************************************************* loading simple planete ********************************************************/
-
     if(count == 4)
     {
         m_planete_creator.push_back(new SimplePlaneteCreator());
         assert(m_planete_creator[0]);
-        assert(m_planete_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f), police));
+        assert(m_planete_creator[0]->MakingPlanete(m_data[0], police));
     }
     
     if(count == 5)
     {
         m_planete_creator.push_back(new AtmoPlaneteCreator());
         assert(m_planete_creator[1]);
-        assert(m_planete_creator[1]->MakingPlanete("../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f), police));
+        assert(m_planete_creator[1]->MakingPlanete(m_data[1], police));
     }
 
     if(count == 6)
     {
         m_planete_creator.push_back(new AtmoPlaneteCreator());
         assert(m_planete_creator[2]);
-        assert(m_planete_creator[2]->MakingPlanete("../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0), police));
+        assert(m_planete_creator[2]->MakingPlanete(m_data[2], police));
     }
 
     if(count == 7)
     {
         m_planete_creator.push_back(new PlaneteRingCreator());
         assert(m_planete_creator[3]);
-        assert(m_planete_creator[3]->MakingPlanete("../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f), police));
+        assert(m_planete_creator[3]->MakingPlanete(m_data[3], police));
     }
     if(count == 8)
     {
         m_planete_creator.push_back(new PlaneteRingCreator());
         assert(m_planete_creator[4]);
-        assert(m_planete_creator[4]->MakingPlanete("../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f), police));
+        assert(m_planete_creator[4]->MakingPlanete(m_data[4], police));
     }
     //===================================================================================================================
 
+    
 }
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** displaySkybox *********************************************************************/

@@ -25,6 +25,7 @@ PURPOSE : header of the virtual PlaneteCreator class
 
         #include "SimplePlanete.hpp"
         #include "../../Shader/Shader.hpp"
+        #include "../System/System.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -39,11 +40,11 @@ PURPOSE : header of the virtual PlaneteCreator class
 
                 virtual ~PlaneteCreator() {delete m_planete;};
 
-                virtual SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) = 0;
+                virtual SimplePlanete* FactoryMethod(init_data data, TTF_Font *police) = 0;
 
-                bool MakingPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) 
+                bool MakingPlanete(init_data data, TTF_Font *police) 
                 {
-                        m_planete = this->FactoryMethod(texture, name, real_size, inclinaison_angle, initial_pos, police);
+                        m_planete = this->FactoryMethod(data, police);
                         return true;
                 }
 

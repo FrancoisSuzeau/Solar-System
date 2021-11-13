@@ -57,6 +57,8 @@ PURPOSE : header of the virtual SolarSystem class
 
                 std::vector<Shader*>            shaders;
                 Shader                          *m_model_shader;
+
+                void initData() override;
                 
             public:
 

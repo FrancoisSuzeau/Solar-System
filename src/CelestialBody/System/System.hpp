@@ -30,6 +30,16 @@ PURPOSE : header of the virtual System class
         #include "../../Shader/Shader.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
+
+        typedef struct init_data {
+
+                std::string texture_path;
+                std::string name;
+                float   size;
+                float   inclinaison_angle;
+                glm::vec3 position;
+
+        } init_data;
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -39,10 +49,11 @@ PURPOSE : header of the virtual System class
             protected:
 
                 std::string                 m_system_name;
-                std::vector<std::string>    m_companion_name;
                 int                         m_companion_count;
 
-                
+                std::vector<init_data>          m_data;
+
+                virtual void initData() = 0;
                 
             public:
 

@@ -41,12 +41,12 @@ PURPOSE : header of the virtual PlaneteRingCreator class
             public:
 
 
-                SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) override
+                SimplePlanete* FactoryMethod(init_data data, TTF_Font *police) override
                 {
                         puts("");
                         puts("");
-                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Planete Creator : " << name << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                        return new PlaneteRing(texture, name, real_size, inclinaison_angle, initial_pos, police);
+                        std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Planete Creator : " << data.name << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
+                        return new PlaneteRing(data, police);
                 }
 
 

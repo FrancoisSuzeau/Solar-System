@@ -24,19 +24,19 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlaneteRing::PlaneteRing(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos, police)
+PlaneteRing::PlaneteRing(init_data data, TTF_Font *police) : SimplePlanete(data, police)
 {
-    if(name == "Saturn")
+    if(data.name == "Saturn")
     {
         m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png");
         assert(m_ring);
     }
-    else if(name == "Uranus")
+    else if(data.name == "Uranus")
     {
         m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png");
         assert(m_ring);
     }
-    else if(name == "Neptune")
+    else if(data.name == "Neptune")
     {
         m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png");
         assert(m_ring);

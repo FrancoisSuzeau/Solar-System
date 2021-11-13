@@ -53,7 +53,7 @@ PURPOSE : header of the virtual PlanetarySystem class
 
                 Atmosphere      *m_atmosphere;
 
-                
+                void initData() override;
             public:
 
                 PlanetarySystem(std::string name_system, TTF_Font *police, int companion_count);

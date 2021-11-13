@@ -24,11 +24,11 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SimplePlanete::SimplePlanete( std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) :
+SimplePlanete::SimplePlanete(init_data data, TTF_Font *police) :
 Sphere(1, 70, 70),
-m_name(name)
+m_name(data.name)
 {
-    m_texture_surface = new Texture(texture);
+    m_texture_surface = new Texture(data.texture_path);
     assert(m_texture_surface);
     assert(m_texture_surface->loadTexture());
     
@@ -38,12 +38,12 @@ m_name(name)
     assert(m_name_renderer->loadTTF(m_name));
 
     //TODO : changing it to a special method
-    m_inclinaison_angle = inclinaison_angle;
-    m_real_size = real_size;
-    m_initial_pos = initial_pos;
+    m_inclinaison_angle = data.inclinaison_angle;
+    m_real_size = data.size;
+    m_initial_pos = data.position;
     m_current_position = m_initial_pos;
     m_rotation_angle = 0.0f;
-    m_inclinaison_angle = inclinaison_angle;
+    m_inclinaison_angle = data.inclinaison_angle;
     m_speed_rotation = 0.1f;
 
     if(m_name == "Mars")
