@@ -105,52 +105,7 @@ bool Text::loadTTF(std::string const text)
     
     //===================================================================================================================
 
-    /************************************************* create surface and invert pixel ********************************************************/
-    m_colorText = {192, 192, 192};
-    SDL_Surface *tmp = TTF_RenderText_Blended(m_police, text.c_str(), m_colorText);
-    if(tmp == nullptr)
-    {
-        std::cout << ">> Creating blended surface : ERROR : " << TTF_GetError() << std::endl;
-        return false;
-    }
-    std::cout << ">> Creating blended surface : SUCCESS" << std::endl;
-    SDL_Surface *surface = this->reversePixels(tmp);
-    SDL_FreeSurface(tmp);
-    //===================================================================================================================
-
-	//activate blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    //creating ID for OpenGL Texture
-	if(glIsTexture(m_id) == GL_TRUE)
-	{
-		glDeleteTextures(1, &m_id);
-	}
-	glGenTextures(1, &m_id);
-
-	//lock OpenGL Texture
-	glBindTexture(GL_TEXTURE_2D, m_id);
-
-	//copying pixels
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, surface->w, surface->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
-	//applying filter
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //texture proche -> GL_TEXTURE_MIN_FILTER
-																		//lissage -> GL_LINEAR
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //texture lointaine -> GL_TEXTURE_MAG_FILTER
-																		//pixlisation -> GL_NEAREST
-
-	glBegin(GL_QUADS);
-	glTexCoord2d(0, 0); glVertex2d(150, 150);
-	glTexCoord2d(1, 0); glVertex2d(surface->w, 150);
-	glTexCoord2d(1, 1); glVertex2d(surface->w, surface->h);
-	glTexCoord2d(0, 1); glVertex2d(150, surface->h);
-	glEnd();
-
-	//unlock OpenGL Texture
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	SDL_FreeSurface(surface);
+	this->setText(text);
 
 	return true;
 }
