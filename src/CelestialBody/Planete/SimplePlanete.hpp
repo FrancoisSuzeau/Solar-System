@@ -61,6 +61,8 @@ PURPOSE : header of the SimplePlanete class
                 
                 std::string getName() const;
                 float getRadiusFromCam(glm::vec3 camPos);
+                float getPhiFromCam(glm::vec3 camPos);
+                float getThetaFromCam(glm::vec3 camPos, float r);
                 
         };
 

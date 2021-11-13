@@ -146,16 +146,11 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm
             so we add the planete position to the cam position to have the coordinate reference opposite to the planete
             we only use the parametrical coordinate to find the r radius
         */
-       
-        float x = camPos[0] - m_current_position[0];
+           
+        float r = this->getRadiusFromCam(camPos);
+        float phi = this->getPhiFromCam(camPos);
+        float theta = this->getThetaFromCam(camPos, r);
         float y = camPos[1] - m_current_position[1];
-        float z = camPos[2] - m_current_position[2];
-           
-        float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-           
-        float r = std::sqrt(r_squarre);
-        float phi = atan(y/x);
-        float theta = acos(z/r);
         
         if(r >= threshold * m_real_size)
         {
@@ -254,4 +249,19 @@ float SimplePlanete::getRadiusFromCam(glm::vec3 camPos)
             
     return std::sqrt(r_squarre);
 
+}
+
+float SimplePlanete::getPhiFromCam(glm::vec3 camPos)
+{
+    float x = camPos[0] - m_current_position[0];
+    float y = camPos[1] - m_current_position[1];
+
+    return atan(y/x);
+}
+
+float SimplePlanete::getThetaFromCam(glm::vec3 camPos, float r)
+{
+    float z = camPos[2] - m_current_position[2];
+
+    return acos(z/r);
 }
