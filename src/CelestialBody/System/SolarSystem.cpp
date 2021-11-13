@@ -585,23 +585,12 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         if( (m_planete_creator[i] != nullptr) && (m_planete_info != nullptr))
         {
-            glm::vec3 planete_pos = m_planete_creator[i]->getPostion();
+            float r = m_planete_creator[i]->getRadius(camPos);
             float size_plan = m_planete_creator[i]->getSizePlan();
-    
-
-            float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
-            float y = camPos[1] - planete_pos[1];
-            float z = camPos[2] - planete_pos[2];
-                
-                
-            float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-                
-            float r = std::sqrt(r_squarre);
 
             if(r <= 10 * size_plan)
             {
                 modelview = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-                //m_planete_creator[i]->drawInfoPlan(projection, modelview, hdr);
                 std::string tmp_name = m_planete_creator[i]->getName();
                 
                 if(tmp_name != m_planete_info->getInfoName())
@@ -616,11 +605,8 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
                 }
             }
         }
-        
         modelview = save;
-    
     }
-
     modelview = save;
 
     //display information of planetof the planetary system
@@ -640,56 +626,3 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     modelview = save;
     
 }
-
-/***********************************************************************************************************************************************************************/
-/********************************************************************************** initModel **************************************************************************/
-/***********************************************************************************************************************************************************************/
-// void SolarSystem::initModel()
-// {
-//     if(sun == nullptr)
-//     {
-//         exit(EXIT_FAILURE);
-//     }
-                        
-//     glm::vec3 m_position = sun->getCurrentPos(); //cannot postioning to {0.0, 0.0, 0.0} so this the closest
-//     glm::mat4 light_src = glm::lookAt(m_position, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f));
-//     glm::mat4 save_light_src = light_src;
-
-//     modelMatrices = new glm::mat4[m_amount];
-//     modelLights = new glm::mat4[m_amount];
-
-//     float radius = 9000.0f;
-//     float offset = 100.0f;
-
-//     for (unsigned int i = 0; i < m_amount; i++)
-//     {
-//         glm::mat4 model(1.0f);
-
-//         float angle = (float) i / (float) m_amount * 360.0f;
-//         float displacement = (rand() % (int)(2*offset * 100)) / 100.0f - offset;
-//         float x = cos(glm::radians(angle)) * radius + displacement;
-
-//         displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
-//         float y = sin(glm::radians(angle)) * radius + displacement;
-
-//         displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
-//         float z = displacement * 0.4f;
-
-//         model = glm::translate(model, glm::vec3(x, y, z));
-//         light_src = glm::translate(light_src, glm::vec3(x, y, z));
-
-//         float rotAngle = (rand() % 360);
-//         model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
-//         light_src = glm::rotate(light_src, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
-
-//         float scaleM = (rand() % 20) / 100.0f + 5.0f;
-//         model = glm::scale(model, glm::vec3(scaleM));
-//         light_src = glm::scale(light_src, glm::vec3(scaleM));
-
-//         modelMatrices[i] = model;
-//         modelLights[i] = light_src;
-
-//         light_src = save_light_src;
-
-//     }
-// }

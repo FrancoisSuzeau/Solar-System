@@ -60,15 +60,6 @@ PURPOSE : header of the virtual SolarSystem class
                 Shader                          *m_sphere_shader;
                 Shader                          *m_sun_atmo_shader;
                 Shader                          *m_model_shader;
-
-                // glm::mat4                       *modelMatrices;
-                // glm::mat4                       *modelLights;
-
-                // unsigned int                    m_amount;
-
-
-
-                // void initModel();
                 
             public:
 

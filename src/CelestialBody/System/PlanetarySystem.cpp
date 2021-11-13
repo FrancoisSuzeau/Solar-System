@@ -298,23 +298,12 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, g
 {
     glm::mat4 save = modelview;
 
-    glm::vec3 planete_pos = m_host_creator->getPostion();
+    float r = m_host_creator->getRadius(camPos);
     float size_plan = m_host_creator->getSizePlan();
-    
-
-        float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
-        float y = camPos[1] - planete_pos[1];
-        float z = camPos[2] - planete_pos[2];
-            
-            
-        float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-            
-        float r = std::sqrt(r_squarre);
 
         if(r <= 10 * size_plan)
         {
             modelview = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-            //m_host_creator[i]->drawInfoPlan(projection, modelview, hdr);
 
             if(m_host_creator == nullptr) //exceptionnaly we exit the program because without 
             {
@@ -324,7 +313,7 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, g
             
             if(planete_info != nullptr)
             {
-                 if(tmp_name != planete_info->getInfoName())
+                if(tmp_name != planete_info->getInfoName())
                 {
                     planete_info->changeNamePlan(tmp_name);
                 }
