@@ -19,6 +19,7 @@ PURPOSE : header of the Ring class
         #include "../../Texture/Texture.hpp"
         #include "../Geometry/Disk.hpp"
         #include "../../Shader/Shader.hpp"
+        #include "../System/System.hpp"
 
         #include <string>
         #include <cassert>
@@ -43,14 +44,14 @@ PURPOSE : header of the Ring class
 
             public:
             
-                Ring(float size, std::string const texture);
+                Ring(float size, std::string const texture, init_data data);
                 Ring();
                 ~Ring();
 
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *ring_shader = nullptr);
                 void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
                 void load();
-                void updatePosRing(glm::vec3 pos_plan, float size, float inclinaison);
+                void updatePosRing(glm::vec3 pos_plan);
                 
         };
 

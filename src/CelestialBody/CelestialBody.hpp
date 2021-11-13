@@ -85,7 +85,7 @@ PURPOSE : Interface CelestialBody
                 void updatePosition()
                 {
                     m_model_mat = glm::mat4(1.0f);
-                    m_current_position = m_initial_pos;
+                    // m_current_position = m_initial_pos;
                     //postionning body
                     translateCelestialBody(m_model_mat, m_current_position);
 

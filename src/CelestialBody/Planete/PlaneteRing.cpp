@@ -28,17 +28,17 @@ PlaneteRing::PlaneteRing(init_data data, TTF_Font *police) : SimplePlanete(data,
 {
     if(data.name == "Saturn")
     {
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png");
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png", data);
         assert(m_ring);
     }
     else if(data.name == "Uranus")
     {
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png");
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png", data);
         assert(m_ring);
     }
     else if(data.name == "Neptune")
     {
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png");
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png", data);
         assert(m_ring);
     }
 }
@@ -94,6 +94,8 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
             if((m_ring != nullptr) && (ring_shader != nullptr))
             {
+                m_ring->updatePosRing(m_current_position);
+                m_ring->updatePosition();
                 m_ring->display(projection, modelview, camPos, hdr, ring_shader);
             }
 
