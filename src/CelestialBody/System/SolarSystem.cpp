@@ -419,16 +419,16 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
     modelview = save;
 
-    for(int i(0); i < m_simple_planete_count; i++)
+    for(std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
     {
-        if(m_planete_creator[i] != nullptr)
+        if(it[0] != nullptr)
         {
-            m_planete_creator[i]->UpdatePositionPlan(projection, modelview);
-            m_planete_creator[i]->updatePosLight(projection, light_src);
+            it[0]->UpdatePositionPlan(projection, modelview);
+            it[0]->updatePosLight(projection, light_src);
 
-            if((shaders[4] != nullptr) && (m_planete_creator[i] != nullptr))
+            if((shaders[4] != nullptr) && (it[0] != nullptr))
             {
-                m_planete_creator[i]->drawAtmoPlanete(projection, modelview, light_src, camPos, hdr, shaders[4]);
+                it[0]->drawAtmoPlanete(projection, modelview, light_src, camPos, hdr, shaders[4]);
             }
             
         }
@@ -451,17 +451,17 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     
     glm::mat4 save = modelview;
 
-    for(int i(0); i < m_simple_planete_count; i++)
+    for(std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
     {
-        if( (m_planete_creator[i] != nullptr) && (m_planete_info != nullptr))
+        if( (it[0] != nullptr) && (m_planete_info != nullptr))
         {
-            float r = m_planete_creator[i]->getRadius(camPos);
-            float size_plan = m_planete_creator[i]->getSizePlan();
+            float r = it[0]->getRadius(camPos);
+            float size_plan = it[0]->getSizePlan();
 
             if(r <= 10 * size_plan)
             {
                 modelview = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-                std::string tmp_name = m_planete_creator[i]->getName();
+                std::string tmp_name = it[0]->getName();
                 
                 if(tmp_name != m_planete_info->getInfoName())
                 {
@@ -481,13 +481,13 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     modelview = save;
 
     //display information of planetof the planetary system
-    for (int i(0); i < m_planetarySYS_count; i++)
+    for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
     {
-        if(m_planetary_system[i] != nullptr)
+        if(it[0] != nullptr)
         {
             if((shaders[0] != nullptr) && (shaders[1] != nullptr))
             {
-                m_planetary_system[i]->drawInfo(projection, modelview, camPos, hdr, shaders, m_planete_info);
+                it[0]->drawInfo(projection, modelview, camPos, hdr, shaders, m_planete_info);
                 modelview = save;
             }
         }
