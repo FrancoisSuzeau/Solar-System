@@ -58,7 +58,7 @@ PURPOSE : header of the Text class
                 bool loadTTF(std::string const text);
                 
                 void            renderMovingText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
-                void            renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader = nullptr);
+                void            renderText(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader = nullptr);
                 void            setText(std::string const text);
                 
         };

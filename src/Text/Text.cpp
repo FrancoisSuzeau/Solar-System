@@ -236,7 +236,7 @@ void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &modelview, float c
 
 		this->rotateText(modelview, z, ratio, phi, theta, y);
 
-		this->renderTextOverlay(projection, modelview, name_render_shader);
+		this->renderText(projection, modelview, name_render_shader);
 
 		modelview = save;
 	}
@@ -247,7 +247,7 @@ void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &modelview, float c
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* renderTextoverlay *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
+void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
 {
 	if(text_shader != nullptr)
 	{
