@@ -31,6 +31,7 @@ PURPOSE : header of the Star class
         #include <string>
         #include <cstring>
         #include <vector>
+        #include <cassert>
         
 
 /********************************************************************* class definition *********************************************************************/

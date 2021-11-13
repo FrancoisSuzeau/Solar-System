@@ -26,7 +26,7 @@ Ring::Ring(float size, std::string const texture): Disk(size),
 m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
 {
     
-    m_texture.loadTexture();
+    assert(m_texture.loadTexture());
 
     float temp_coord[] = {0, 0,   1, 0,   1, 1,
                           0, 0,   0, 1,   1, 1,

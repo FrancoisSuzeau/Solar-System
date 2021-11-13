@@ -26,7 +26,7 @@ PURPOSE : header of the PlaneteRing class
         #include <string>
         #include <vector>
         #include <iostream>
-        #include <assert.h>
+        #include <cassert>
 
         #include <GL/glew.h>
         #include <glm/glm.hpp>

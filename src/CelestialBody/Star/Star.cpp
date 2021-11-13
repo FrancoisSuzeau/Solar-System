@@ -28,7 +28,7 @@ Star::Star(const float radius, const unsigned int longSegs, const unsigned int l
 Sphere(radius, longSegs, latSegs), m_cloud_texture(texture),
 m_name(name), m_light_vao(0)
 {
-    m_cloud_texture.loadTexture();
+    assert(m_cloud_texture.loadTexture());
 
     m_real_size = real_size;
     m_initial_pos = vec3(0.01f, 0.0f, 0.0f);
@@ -37,10 +37,7 @@ m_name(name), m_light_vao(0)
     m_rotation_angle = 0.0f;
 
     m_atmosphere = new Atmosphere(1.05f, m_name);
-    if(m_atmosphere == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_atmosphere);
 
     /************************************************* VAO management ********************************************************/
     if(glIsVertexArray(m_light_vao) == GL_TRUE)

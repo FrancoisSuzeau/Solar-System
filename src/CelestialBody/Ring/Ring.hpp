@@ -21,6 +21,7 @@ PURPOSE : header of the Ring class
         #include "../../Shader/Shader.hpp"
 
         #include <string>
+        #include <cassert>
         #include <vector>
         #include <iostream>
         #include <GL/glew.h>

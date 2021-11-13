@@ -26,6 +26,8 @@ PURPOSE : header of the SimplePlanete class
         #include <string>
         #include <vector>
         #include <iostream>
+        #include <cassert>
+
         #include <GL/glew.h>
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
