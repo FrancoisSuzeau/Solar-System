@@ -451,10 +451,7 @@ void OpenGlSketch::mainLoop()
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
     // m_particuleGenerator->initParticles(camera->getTargetPoint());
     
-    if(camera == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(camera);
 
     //hdr variables
     exposure = 5.0f;
@@ -484,7 +481,7 @@ void OpenGlSketch::mainLoop()
     //load and play the music
     if(aud != nullptr)
     {
-        aud->loadMusic();
+        assert(aud->loadMusic());
         aud->playMusic();
     }
 
