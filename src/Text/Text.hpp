@@ -44,7 +44,8 @@ PURPOSE : header of the Text class
                 float           m_texture_coord[12];
                 GLuint          m_id;
                 
-
+                SDL_Surface *reversePixels(SDL_Surface *src) const;
+                void rotateText(glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y);
                 
             public:
 
@@ -55,8 +56,8 @@ PURPOSE : header of the Text class
                 ~Text();
 
                 bool loadTTF(std::string const text);
-                SDL_Surface *reversePixels(SDL_Surface *src) const;
-                void            renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double size, float phi, float theta, float y, Shader *name_render_shader = nullptr);
+                
+                void            renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
                 void            renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader = nullptr);
                 void            setText(std::string const text);
                 

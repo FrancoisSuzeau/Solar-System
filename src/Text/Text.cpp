@@ -192,6 +192,38 @@ SDL_Surface *Text::reversePixels(SDL_Surface *src) const
 }
 
 /***********************************************************************************************************************************************************************/
+/************************************************************************************** rotateText *********************************************************************/
+/***********************************************************************************************************************************************************************/
+void Text::rotateText(glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y)
+{
+	float sizet = 4.0f;
+	phi = (float) (phi * 180 / M_PI);
+	theta = (float) (theta * 180 / M_PI);
+		
+	modelview = translate(modelview, vec3(0.0f, sizet - 4.0f, z + 4.0f));
+	if((phi < 0.0f) && (y > 0.0f))
+	{
+		modelview = rotate(modelview, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+	}
+	else if( (phi > 0.0f) && (y < 0.0f) )
+	{
+		modelview = rotate(modelview, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+	}
+	else if( (phi > 0.0f) && (y > 0.0f) )
+	{
+		modelview = rotate(modelview, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+	}
+	else if( (phi < 0.0f) && (y < 0.0f) )
+	{
+		modelview = rotate(modelview, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+	}
+
+	modelview = rotate(modelview, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
+		
+	modelview = scale(modelview, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
+}
+
+/***********************************************************************************************************************************************************************/
 /************************************************************************************ renderText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
 void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
@@ -199,36 +231,10 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z
 
 	if(name_render_shader != nullptr)
 	{
-		/************************************************* positionning text **************************************************************/
-		float sizet = 4.0f;
-		phi = (float) (phi * 180 / M_PI);
-		theta = (float) (theta * 180 / M_PI);
 		
 		glm::mat4 save = modelview;
 		
-		modelview = translate(modelview, vec3(0.0f, sizet - 4.0f, z + 4.0f));
-		if((phi < 0.0f) && (y > 0.0f))
-		{
-			modelview = rotate(modelview, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
-		}
-		else if( (phi > 0.0f) && (y < 0.0f) )
-		{
-			modelview = rotate(modelview, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
-		}
-		else if( (phi > 0.0f) && (y > 0.0f) )
-		{
-			modelview = rotate(modelview, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
-		}
-		else if( (phi < 0.0f) && (y < 0.0f) )
-		{
-			modelview = rotate(modelview, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
-
-		}
-
-		modelview = rotate(modelview, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
-		
-		modelview = scale(modelview, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
-		//==============================================================================================================================
+		this->rotateText(modelview, z, ratio, phi, theta, y);
 
 		//activate shader program
 		glUseProgram(name_render_shader->getProgramID());
@@ -242,8 +248,6 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z
 		glEnableVertexAttribArray(2);
 
 		//send matrices
-		// glUniformMatrix4fv(glGetUniformLocation(name_render_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-		// glUniformMatrix4fv(glGetUniformLocation(name_render_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
 		name_render_shader->setMat4("projection", projection);
 		name_render_shader->setMat4("modelview", modelview);
 
