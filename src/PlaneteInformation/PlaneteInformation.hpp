@@ -26,6 +26,7 @@ PURPOSE : header of the PlaneteInformation class
         #include <string>
         #include <Windows.h>
         #include <vector>
+        #include <cassert>
 
         #include <SDL2/SDL_ttf.h>
         

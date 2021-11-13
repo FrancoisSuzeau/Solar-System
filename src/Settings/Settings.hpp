@@ -34,7 +34,8 @@ PURPOSE : header of the Settings class
         #include <cmath>
         #include <ctime>
         #include <Windows.h>
-        
+        #include <cassert>
+
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
         #include "../Input/Input.hpp"

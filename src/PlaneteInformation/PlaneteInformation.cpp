@@ -23,14 +23,11 @@ m_text_name(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
     screen_h = GetSystemMetrics(SM_CXSCREEN);
     screen_w = GetSystemMetrics(SM_CYSCREEN);
 
-    m_text_name.loadTTF(m_name_plan);
+    assert(m_text_name.loadTTF(m_name_plan));
     m_name_plan = "None";
 
     m_rect = new Square(0.05, 0.7);
-    if(m_rect == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_rect);
 
     colorGrey = vec3(0.7);
     colorBlack = vec3(0.1);
@@ -155,7 +152,7 @@ void PlaneteInformation::setPosPlan(glm::vec3 const &planPos)
 /***********************************************************************************************************************************************************************/
 void PlaneteInformation::changeNamePlan(std::string const name)
 {
-    m_text_name.setText(name);
+    assert(m_text_name.setText(name));
     m_name_plan = name;
 }
 

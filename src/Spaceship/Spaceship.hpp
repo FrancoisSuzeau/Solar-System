@@ -33,6 +33,7 @@ PURPOSE : header of the Spaceship class
         #include <math.h>
         #include <vector>
         #include <Windows.h>
+        #include <cassert>
         
 
         #include "../Shader/Shader.hpp"

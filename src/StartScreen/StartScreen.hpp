@@ -22,6 +22,7 @@ PURPOSE : header of the virtual StartScreen class
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
+        #include <cassert>
 
         #include <SDL2/SDL_ttf.h>
 

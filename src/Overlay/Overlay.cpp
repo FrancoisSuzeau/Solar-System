@@ -194,7 +194,7 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, b
         if(track != m_ancient_track)
         {
             //std::string tmp = "Music :\n" + track;
-            m_track_music.setText(track);
+            assert(m_track_music.setText(track));
             m_ancient_track = track;
             setMusicInformation(track);
         }
@@ -424,26 +424,26 @@ void Overlay::setMusicInformation(std::string const track)
 {
     if(track == "Mass Effect - Vigil")
     {
-        m_Author_music.setText("Jack Wall");
-        m_studio_music.setText("EA Games Soundtrack");
+        assert(m_Author_music.setText("Jack Wall"));
+        assert(m_studio_music.setText("EA Games Soundtrack"));
     }
 
     if(track == "Natural Splendor") 
     {
-        m_Author_music.setText("Gerald M. Dorai");
-        m_studio_music.setText("Le Phonarium - Nantes");
+        assert(m_Author_music.setText("Gerald M. Dorai"));
+        assert(m_studio_music.setText("Le Phonarium - Nantes"));
     }
 
     if(track == "Dying Star") 
     {
-        m_Author_music.setText("Utho Riley");
-        m_studio_music.setText("Symphonic Orchestral Music");
+        assert(m_Author_music.setText("Utho Riley"));
+        assert(m_studio_music.setText("Symphonic Orchestral Music"));
     }
 
     if(track == "Orizon Theme") 
     {
-        m_Author_music.setText("Pedro Camacho");
-        m_studio_music.setText("Star Citizen Soundtrack");
+        assert(m_Author_music.setText("Pedro Camacho"));
+        assert(m_studio_music.setText("Star Citizen Soundtrack"));
     }
     
 }
@@ -468,7 +468,7 @@ void Overlay::setSpeedInformation(float const speed)
         oss_x << std::setprecision(3) << value_perc;
         std::string tmp = oss_x.str() + " time light speed";
 
-        m_speed.setText(tmp);
+        assert(m_speed.setText(tmp));
         m_ancient_speed = speed;
     }
 
@@ -489,7 +489,7 @@ void Overlay::setTimeInformation()
         
         if(ltm->tm_sec >= m_sec + 8) //reduce updating refresh
         {
-            m_time_info.setText(time);
+            assert(m_time_info.setText(time));
             m_ancient_time = time;
             m_sec = ltm->tm_sec;
         }

@@ -29,16 +29,16 @@ m_overlay_display(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
 m_info_planete(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
 display_name_plan(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police)
 {
-    m_titre.loadTTF("Settings");
-    m_quit.loadTTF("Quit Simulation");
-    m_hdr.loadTTF("HDR : ON / OFF");
-    m_exposure.loadTTF("Exposure : - / +");
-    m_speed.loadTTF("Speed : - / +");
-    m_music_playing.loadTTF("Music : ON / OFF");
-    m_music_volume.loadTTF("Music : - / +");
-    m_overlay_display.loadTTF("Overlay : ON / OFF");
-    m_info_planete.loadTTF("Planete information : ON / OFF");
-    display_name_plan.loadTTF("Show body name : ON / OFF");
+    assert(m_titre.loadTTF("Settings"));
+    assert(m_quit.loadTTF("Quit Simulation"));
+    assert(m_hdr.loadTTF("HDR : ON / OFF"));
+    assert(m_exposure.loadTTF("Exposure : - / +"));
+    assert(m_speed.loadTTF("Speed : - / +"));
+    assert(m_music_playing.loadTTF("Music : ON / OFF"));
+    assert(m_music_volume.loadTTF("Music : - / +"));
+    assert(m_overlay_display.loadTTF("Overlay : ON / OFF"));
+    assert(m_info_planete.loadTTF("Planete information : ON / OFF"));
+    assert(display_name_plan.loadTTF("Show body name : ON / OFF"));
     m_mouse_button_pressed = false;
 
     screen_width = GetSystemMetrics(SM_CXSCREEN);
@@ -48,10 +48,7 @@ display_name_plan(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police)
     colorBlack = vec3(0.1f);
 
     m_grey_rect = new Square(0.05f, 0.7f);
-    if(m_grey_rect == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_grey_rect);
 
     initButtonCoord();
 

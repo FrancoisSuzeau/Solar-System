@@ -70,11 +70,7 @@ m_file_path(file_path)
     //===================================================================================================================
 
 	m_police = police;
-	if(m_police == nullptr)
-	{
-		
-		exit(EXIT_FAILURE);
-	}
+	assert(m_police);
 
 }
 
@@ -105,7 +101,7 @@ bool Text::loadTTF(std::string const text)
     
     //===================================================================================================================
 
-	this->setText(text);
+	assert(this->setText(text));
 
 	return true;
 }
@@ -243,7 +239,7 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** setText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::setText(std::string const text)
+bool Text::setText(std::string const text)
 {
 	/************************************************* create surface and invert pixel ********************************************************/
     m_colorText = {192, 192, 192};
@@ -251,6 +247,7 @@ void Text::setText(std::string const text)
     if(tmp == nullptr)
     {
         std::cout << ">> Creating blended surface : ERROR : " << TTF_GetError() << std::endl;
+		return false;
     }
     std::cout << ">> Creating blended surface : SUCCESS" << std::endl;
     SDL_Surface *surface = this->reversePixels(tmp);
@@ -290,4 +287,6 @@ void Text::setText(std::string const text)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	SDL_FreeSurface(surface);
+
+	return true;
 }
