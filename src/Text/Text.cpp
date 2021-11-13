@@ -236,36 +236,7 @@ void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &modelview, float c
 
 		this->rotateText(modelview, z, ratio, phi, theta, y);
 
-		//activate shader program
-		glUseProgram(name_render_shader->getProgramID());
-
-		//send vertices coordinates
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
-		glEnableVertexAttribArray(0);
-
-		//send texture coordinates
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
-		glEnableVertexAttribArray(2);
-
-		//send matrices
-		name_render_shader->setMat4("projection", projection);
-		name_render_shader->setMat4("modelview", modelview);
-
-		//lock texture
-		glBindTexture(GL_TEXTURE_2D, m_id);
-
-		//render
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		//unlock texture
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		//deactivate array
-		glDisableVertexAttribArray(2);
-		glDisableVertexAttribArray(0);
-
-		//deactivate shader program
-		glUseProgram(0);
+		this->renderTextOverlay(projection, modelview, name_render_shader);
 
 		modelview = save;
 	}
