@@ -79,18 +79,14 @@ void Square::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 colo
             glBindVertexArray(m_vaoID);
 
             //send matrices to shader
-            glUniformMatrix4fv(glGetUniformLocation(square_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-            glUniformMatrix4fv(glGetUniformLocation(square_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+            square_shader->setMat4("projection", projection);
+            square_shader->setMat4("modelview", modelview);
 
             square_shader->setInt("hdr", hdr);
             square_shader->setVec3("color2", color);
 
             //display the form
             glDrawArrays(GL_TRIANGLES, 0, 6);
-
-            // glDisableVertexAttribArray(1);
-            // glDisableVertexAttribArray(0);
-
 
             //unlock vao
             glBindVertexArray(0);

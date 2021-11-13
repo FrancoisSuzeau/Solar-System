@@ -123,7 +123,7 @@ void Ring::load()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayCrate **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *ring_shader)
+void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *ring_shader)
 {
     if(ring_shader != nullptr)
     {
@@ -139,7 +139,7 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
             // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
             ring_shader->setMat4("modelview", modelview);
             ring_shader->setMat4("projection", projection);
-            ring_shader->setMat4("light_src", light_src);
+            ring_shader->setMat4("model", m_model_mat);
 
             ring_shader->setVec3("viewPos", camPos);
             ring_shader->setInt("hdr", hdr);

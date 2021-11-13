@@ -85,7 +85,7 @@ SimplePlanete::~SimplePlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader, Shader *ring_shader)
+void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader, Shader *ring_shader)
 {
     if(simple_plan_shader != nullptr)
     {
@@ -105,7 +105,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
 
             simple_plan_shader->setMat4("modelview", modelview);
             simple_plan_shader->setMat4("projection", projection);
-            simple_plan_shader->setMat4("light_src", light_src);
+            simple_plan_shader->setMat4("model", m_model_mat);
         
             simple_plan_shader->setTexture("texture0", 0);
 
@@ -167,12 +167,13 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::updatePosition(glm::mat4 &projection, glm::mat4 &modelview)
 {
+    m_model_mat = glm::mat4(1.0f);
     m_current_position = m_initial_pos;
     //postionning body
-    translateCelestialBody(modelview, m_current_position);
+    translateCelestialBody(m_model_mat, m_current_position);
 
     //making the planete inclinaison
-    inclineCelestialBody(modelview, m_inclinaison_angle);
+    inclineCelestialBody(m_model_mat, m_inclinaison_angle);
 
     //making the planete rotation
     m_rotation_angle += m_speed_rotation;
@@ -180,40 +181,18 @@ void SimplePlanete::updatePosition(glm::mat4 &projection, glm::mat4 &modelview)
     {
         m_rotation_angle -= 360;
     }
-    rotateCelestialBody(modelview, m_rotation_angle);
+    rotateCelestialBody(m_model_mat, m_rotation_angle);
 
     //scaling on his real size
-    scaleCelestialBody(modelview, m_real_size);
-}
+    scaleCelestialBody(m_model_mat, m_real_size);
 
-/***********************************************************************************************************************************************************************/
-/************************************************************************* updatePositionLight *************************************************************************/
-/***********************************************************************************************************************************************************************/
-void SimplePlanete::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src)
-{
-    m_current_position = m_initial_pos;
-    //postionning body
-    translateCelestialBody(light_src, m_current_position);
-
-    //making the planete inclinaison
-    inclineCelestialBody(light_src, m_inclinaison_angle);
-
-    //making the planete rotation
-    m_rotation_angle += m_speed_rotation;
-    if(m_rotation_angle >= 360)
-    {
-        m_rotation_angle -= 360;
-    }
-    rotateCelestialBody(light_src, m_rotation_angle);
-
-    //scaling on his real size
-    scaleCelestialBody(light_src, m_real_size);
+    // std::cout << m_name << std::endl;
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
     if( (m_name == "Mars") || (m_name == "Venus")) 
     {
@@ -222,7 +201,7 @@ void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm
             
             if(m_atmosphere != nullptr)
             {
-                m_atmosphere->display(projection, modelview,  light_src, camPos, hdr, atmo_shader);
+                m_atmosphere->display(projection, modelview, camPos, hdr, atmo_shader);
             }
             
         }

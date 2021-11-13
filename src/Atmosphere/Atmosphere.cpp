@@ -69,7 +69,7 @@ Atmosphere::~Atmosphere()
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader, Shader *ring_shader)
+void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader, Shader *ring_shader)
 {
     if(atmo_shader != nullptr)
     {
@@ -84,7 +84,7 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 
             
             if(sphere_atmosphere != nullptr)
             {
-                sphere_atmosphere->display(projection, modelview, light_src, camPos, hdr, atmo_shader);
+                sphere_atmosphere->display(projection, modelview, camPos, hdr, atmo_shader);
             }
             
         glUseProgram(0);

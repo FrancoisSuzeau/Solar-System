@@ -99,10 +99,4 @@ void main()
     //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     
     FragColor = trans;
-
-   
-
-    
-
-    //FragColor = trans;
 }

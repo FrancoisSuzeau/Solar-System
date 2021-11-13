@@ -135,43 +135,32 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
+void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
 {
     
     glm::mat4 save = modelview;
-    glm::vec3 target_point(0.0f, 0.0f, 0.0f);
-    glm::vec3 vertical_axe(0.0f, 0.0f, 1.0f);
-    glm::mat4 light_src = glm::lookAt(sun_pos, target_point, vertical_axe);
-    glm::mat4 save_light_src = light_src;
 
     if(host_shader != nullptr)
     {
         m_host_creator->UpdatePositionPlan(projection, modelview);
-        m_host_creator->updatePosLight(projection, light_src);
-        m_host_creator->drawPlanete(projection, modelview, light_src, camPos, hdr, host_shader, ring_shader);
+        m_host_creator->drawPlanete(projection, modelview, camPos, hdr, host_shader, ring_shader);
 
     }
 
     modelview = save;
-    light_src = save_light_src;
 
     if(companion_shader != nullptr)
     {
         for (int i(0); i < m_companion_count; i++)
         {
             m_moons_creator[i]->UpdatePositionPlan(projection, modelview);
-            m_moons_creator[i]->updatePosLight(projection, light_src);
-            m_moons_creator[i]->drawPlanete(projection, modelview, light_src, camPos, hdr, companion_shader); 
+            m_moons_creator[i]->drawPlanete(projection, modelview, camPos, hdr, companion_shader); 
 
             modelview = save;
-            light_src = save_light_src;
-
         }
     }
     
-        
     modelview = save;
-    light_src = save_light_src;
 
 }
 
@@ -222,28 +211,21 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
-    if((m_system_name == "Earth System")) //|| (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
+    if((m_system_name == "Earth System"))
     {
         glm::mat4 save = modelview;
-        glm::vec3 position(0.1f, 0.0f, 0.0f);
-        glm::vec3 target_point(0.0f, 0.0f, 0.0f);
-        glm::vec3 vertical_axe(0.0f, 0.0f, 1.0f);
-        glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
-        glm::mat4 save_light_src = light_src;
 
         if(m_host_creator != nullptr)
         {
             m_host_creator->UpdatePositionPlan(projection, modelview);
-            m_host_creator->updatePosLight(projection, light_src);
 
             if((m_atmosphere != nullptr) && (atmo_shader != nullptr))
             {
-                m_atmosphere->display(projection, modelview, light_src, camPos, hdr, atmo_shader);
+                m_atmosphere->display(projection, modelview, camPos, hdr, atmo_shader);
             }
         }
                
         modelview = save;
-        light_src = save_light_src;
     }
     
 }

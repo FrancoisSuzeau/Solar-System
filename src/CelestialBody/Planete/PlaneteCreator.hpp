@@ -53,24 +53,19 @@ PURPOSE : header of the virtual PlaneteCreator class
                         m_planete->displayName(projection, modelview, camPos, threshold, name_render_shader);
                 }
 
-                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
+                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
                 {
-                       m_planete->displayAtmo(projection, modelview, light_src, camPos, hdr, atmo_shader);
+                       m_planete->displayAtmo(projection, modelview, camPos, hdr, atmo_shader);
                 }
 
-                void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *m_plan_shader = nullptr, Shader *ring_shader = nullptr)
+                void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *m_plan_shader = nullptr, Shader *ring_shader = nullptr)
                 {
-                        m_planete->display(projection, modelview, light_src, camPos, hdr, m_plan_shader, ring_shader);
+                        m_planete->display(projection, modelview, camPos, hdr, m_plan_shader, ring_shader);
                 }
 
                 void UpdatePositionPlan(glm::mat4 &projection, glm::mat4 &modelview)
                 {
                         m_planete->updatePosition(projection, modelview);
-                }
-
-                void updatePosLight(glm::mat4 &projection, glm::mat4 &modelview)
-                {
-                        m_planete->updatePositionLight(projection, modelview);
                 }
 
                 vec3 getPostion() const

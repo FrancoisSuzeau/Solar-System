@@ -7,7 +7,6 @@ attribute vec3 in_Vertex;
 
 uniform mat4 projection;
 uniform mat4 modelview;
-uniform mat4 light_src;
 
 
 

@@ -41,31 +41,30 @@ PURPOSE : Interface CelestialBody
                 float       m_speed_rotation;
                 glm::vec3   m_current_position;
                 glm::vec3   m_initial_pos;
+                glm::mat4   m_model_mat;
 
             public:
 
-                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *body_shader = nullptr, Shader *ring_shader = nullptr) = 0;
-                
-                //virtual void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
+                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *body_shader = nullptr, Shader *ring_shader = nullptr) = 0;
 
-                void rotateCelestialBody(glm::mat4 &modelview, float angle)
+                void rotateCelestialBody(glm::mat4 &model, float angle)
                 {
-                    modelview = rotate(modelview, glm::radians(angle), vec3(0.0, 0.0, 1.0));
+                    model = rotate(model, glm::radians(angle), vec3(0.0, 0.0, 1.0));
                 }
 
-                void inclineCelestialBody(glm::mat4 &modelview, float angle)
+                void inclineCelestialBody(glm::mat4 &model, float angle)
                 {
-                    modelview = rotate(modelview, glm::radians(angle), vec3(0.0, 1.0, 0.0));
+                    model = rotate(model, glm::radians(angle), vec3(0.0, 1.0, 0.0));
                 }
 
-                void translateCelestialBody(glm::mat4 &modelview, glm::vec3 new_position)
+                void translateCelestialBody(glm::mat4 &model, glm::vec3 new_position)
                 {
-                    modelview = translate(modelview, new_position);
+                    model = translate(model, new_position);
                 }
 
-                void scaleCelestialBody(glm::mat4 &modelview, float size)
+                void scaleCelestialBody(glm::mat4 &model, float size)
                 {
-                    modelview = scale(modelview, vec3(size, size, size));
+                    model = scale(model, vec3(size, size, size));
                 }
 
                 float getInclineAngle() const

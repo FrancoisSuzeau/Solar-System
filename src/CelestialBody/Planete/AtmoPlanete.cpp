@@ -79,7 +79,7 @@ AtmoPlanete::~AtmoPlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader, Shader *ring_shader)
+void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader, Shader *ring_shader)
 {
     if(atmo_plan_shader != nullptr)
     {
@@ -99,7 +99,7 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
             atmo_plan_shader->setMat4("modelview", modelview);
             atmo_plan_shader->setMat4("projection", projection);
-            atmo_plan_shader->setMat4("light_src", light_src);
+            atmo_plan_shader->setMat4("model", m_model_mat);
             
             atmo_plan_shader->setTexture("texture0", 0);
             atmo_plan_shader->setTexture("texture1", 1);
@@ -110,7 +110,7 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
             atmo_plan_shader->setInt("hdr", hdr);
             
-            //active and lock unit texture 1: surface
+            // active and lock unit texture 1: surface
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, m_texture_surface->getID());
 

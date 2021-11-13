@@ -48,7 +48,7 @@ PURPOSE : header of the AtmoPlanete class
                 AtmoPlanete(init_data data, TTF_Font *police);
                 AtmoPlanete();
                 ~AtmoPlanete();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader = nullptr, Shader *ring_shader = nullptr);
+                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader = nullptr, Shader *ring_shader = nullptr);
 
         };
 
