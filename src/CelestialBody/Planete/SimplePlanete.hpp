@@ -60,6 +60,7 @@ PURPOSE : header of the SimplePlanete class
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr);
                 
                 std::string getName() const;
+                float getRadiusFromCam(glm::vec3 camPos);
                 
         };
 

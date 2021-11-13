@@ -233,42 +233,18 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 
     if(name_render_shader != nullptr)
     {
-        
-
-        /*
-            CamPos is the M point in spherical coordinate, so we already have his x, y, z coordinate
-            but this coordinate are relative to the world reference
-            so we add the planete position to the cam position to have the coordinate reference opposite to the planete
-            we only use the parametrical coordinate to find the r radius
-        */
-        if(m_host_creator == nullptr) //exceptionnaly we exit the program because without light it can be a solar position
-        {
-            exit(EXIT_FAILURE);
-        }
-        glm::vec3 host_pos = m_host_creator->getPostion();
-        
-        if(m_host_creator == nullptr) //exceptionnaly we exit the program because without light it can be a solar size
+        if(m_host_creator == nullptr)
         {
             exit(EXIT_FAILURE);
         }
         float size_plan = m_host_creator->getSizePlan();
+        float r = m_host_creator->getRadius(camPos);
 
-        double x = camPos[0] - host_pos[0]; //doesn't know why I have to use the reverse value
-        double y = camPos[1] - host_pos[1];
-        double z = camPos[2] - host_pos[2];
-        double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-            
-        double r = std::sqrt(r_squarre);
-
-        float phi = atan(y/x);
-        float theta = acos(z/r);
-
-        if( r >= 400 * size_plan )
+        if( r >= 400 * size_plan ) // juste to allow the application to display host name or moon name depends on the posiiton of the camera
         {
             if( name_render_shader != nullptr )
             {
-                modelview = translate(modelview, host_pos);
-                m_name_renderer.renderMovingText(projection, modelview, size_plan, r, phi, theta, y, name_render_shader);
+                m_host_creator->displayName(projection, modelview, camPos, 400, name_render_shader);
                 modelview = save;
             }
         }
@@ -280,15 +256,12 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
                 {
                     m_moons_creator[i]->displayName(projection, modelview, camPos, 10, name_render_shader);
                     modelview = save;
-                }
-                
+                }  
                 modelview = save;
             }
         }
-
         modelview = save;
     }
-    
     modelview = save;
 }
 

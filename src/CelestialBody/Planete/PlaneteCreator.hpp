@@ -87,6 +87,11 @@ PURPOSE : header of the virtual PlaneteCreator class
                         return m_planete->getName();
                 }
 
+                float getRadius(glm::vec3 camPos)
+                {
+                        return m_planete->getRadiusFromCam(camPos);
+                }
+
 
         };
 
