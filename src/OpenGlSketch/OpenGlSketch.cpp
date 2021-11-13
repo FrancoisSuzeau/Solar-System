@@ -269,12 +269,9 @@ void OpenGlSketch::initFrameBuffer()
 
 
     screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
-    if(screenShader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(screenShader);
 
-    screenShader->loadShader();
+    assert(screenShader->loadShader());
 }
 
 /***********************************************************************************************************************************************************************/
@@ -299,80 +296,44 @@ void OpenGlSketch::startLoop()
     std::cout << ">> Loading font file  " << "../assets/font/aAtmospheric.ttf" << " : SUCCESS" << std::endl;
 
     StartScreen *startScreen = new StartScreen(m_police[0]);
-    if(startScreen == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(startScreen);
 
     Camera      *startScreen_cam = new Camera(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-    if(startScreen_cam == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(startScreen_cam);
 
     text_shader = new Shader("../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag");
-    if(text_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    text_shader->loadShader();
+    assert(text_shader);
+    assert(text_shader->loadShader());
 
     m_overlay = new Overlay(m_police[1]);
-    if(m_overlay == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_overlay);
 
     m_settings = new Settings(m_police[1]);
-    if(m_settings == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_settings);
 
     aud = new Audio();
-    if(aud == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(aud);
 
     solar_system = new SolarSystemCreator();
-    if(solar_system == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(solar_system);
 
     square_shader = new Shader("../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag");
-    if(square_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    square_shader->loadShader();
+    assert(square_shader);
+    assert(square_shader->loadShader());
 
     Square      *square = new Square(0.05f, 0.500f);
     vec3 color = vec3(0.5f);
-    if(square == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(square);
 
     ship = new Spaceship("../assets/model/spaceship/untitled.obj");
-    if(ship == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(ship);
 
     // m_particuleGenerator = new Particule(ship);
-    // if(m_particuleGenerator == nullptr)
-    // {
-    //     exit(EXIT_FAILURE);
-    // }
+    // assert(m_particuleGenerator);
 
     m_model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
-    if(m_model_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_model_shader->loadShader();
+    assert(m_model_shader);
+    assert(m_model_shader->loadShader());
 
     int nb_loaded(0);
 
@@ -432,7 +393,7 @@ void OpenGlSketch::startLoop()
         {
             if(solar_system != nullptr)
             {
-                solar_system->MakingSystem("Solar System", 8, m_police[0], m_model_shader);
+                assert(solar_system->MakingSystem("Solar System", 8, m_police[0], m_model_shader));
                 nb_loaded++;
             }
             
