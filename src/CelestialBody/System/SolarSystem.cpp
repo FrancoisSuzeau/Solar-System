@@ -605,7 +605,7 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 
                 if((shaders[0] != nullptr) && (shaders[1] != nullptr))
                 {
-                    m_planete_info->renderInfo(projection, modelview, hdr, shaders[0], shaders[1]);
+                    m_planete_info->renderInfo(projection, modelview, hdr, shaders);
                     modelview = save;
                 }
             }

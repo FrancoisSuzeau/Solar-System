@@ -320,7 +320,7 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, g
 
                 if((shaders[0] != nullptr) && (shaders[1] != nullptr))
                 {
-                    planete_info->renderInfo(projection, modelview, hdr, shaders[0], shaders[1]);
+                    planete_info->renderInfo(projection, modelview, hdr, shaders);
                     modelview = save;
                 }
                 

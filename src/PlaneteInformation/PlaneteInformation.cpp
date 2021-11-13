@@ -52,7 +52,7 @@ PlaneteInformation::~PlaneteInformation()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* renderInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader, Shader *square_shader)
+void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::vector<Shader *> shaders)
 {
     glm::mat4 save = modelview;
     float constance = 0.05;
@@ -60,7 +60,7 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
     float start_x_black = -0.8;
     float start_y = 0.5;
 
-    if((square_shader != nullptr) && (m_rect != nullptr))
+    if((shaders[1] != nullptr) && (m_rect != nullptr))
     {
         //black fill
         for (size_t i(0); i < 11; i++)
@@ -68,7 +68,7 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
             for (size_t j(0); j < 9; j++)
             {
                     modelview = translate(modelview, vec3(start_x_black, start_y, 0.0));
-                    m_rect->display(projection, modelview, colorBlack, hdr, square_shader);
+                    m_rect->display(projection, modelview, colorBlack, hdr, shaders[1]);
                 
                 modelview = save;
                 start_x_black = start_x_black + constance;
@@ -84,12 +84,12 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
         for (size_t i(0); i < 9; i++)
         {
                 modelview = translate(modelview, vec3(start_x_white, 0.51, 0.0));
-                m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                m_rect->display(projection, modelview, colorGrey, hdr, shaders[1]);
                 
             modelview = save;
 
                 modelview = translate(modelview, vec3(start_x_white, -0.01, 0.0));
-                m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                m_rect->display(projection, modelview, colorGrey, hdr, shaders[1]);
 
             modelview = save;
 
@@ -102,12 +102,12 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
         for (size_t i(0); i < 11; i++)
         {
                 modelview = translate(modelview, vec3(-0.81, start_y_white, 0.0));
-                m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                m_rect->display(projection, modelview, colorGrey, hdr, shaders[1]);
                 
             modelview = save;
 
                 modelview = translate(modelview, vec3(-0.39, start_y_white, 0.0));
-                m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                m_rect->display(projection, modelview, colorGrey, hdr, shaders[1]);
                 
             modelview = save;
 
@@ -117,24 +117,24 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
         //the last to white on the bottom corner left and right
 
             modelview = translate(modelview, vec3(-0.81, -0.01, 0.0));
-            m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+            m_rect->display(projection, modelview, colorGrey, hdr, shaders[1]);
                 
         modelview = save;
 
             modelview = translate(modelview, vec3(-0.39, -0.01, 0.0));
-            m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+            m_rect->display(projection, modelview, colorGrey, hdr, shaders[1]);
     }
 
     
 
     modelview = save;
 
-    if(text_shader != nullptr)
+    if(shaders[0] != nullptr)
     {
             //Diplay text information
             modelview = translate(modelview, vec3(-0.585, 0.49, -0.0));
             modelview = scale(modelview, vec3(0.03, 0.05, 0.0));
-            m_text_name.renderText(projection, modelview, text_shader);
+            m_text_name.renderText(projection, modelview, shaders[0]);
 
         modelview = save;
     }
