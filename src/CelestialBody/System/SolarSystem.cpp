@@ -478,6 +478,8 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
             if(name_render_shader != nullptr)
             {
                 m_planetary_system[i]->drawName(projection, modelview, camPos, name_render_shader);
+                modelview = save;
+
             }
         }
 
@@ -494,6 +496,8 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
            if(name_render_shader != nullptr)
             {
                 m_planete_creator[i]->displayName(projection, modelview, camPos, 400, name_render_shader);
+                modelview = save;
+
             }
        }
 
@@ -576,7 +580,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *plan_info, Shader *text_shader, Shader *square_shader)
+void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *plan_info)
 {
     
     glm::mat4 save = modelview;
@@ -599,9 +603,10 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
                 }
 
 
-                if((text_shader != nullptr) && (square_shader != nullptr))
+                if((shaders[0] != nullptr) && (shaders[1] != nullptr))
                 {
-                    m_planete_info->renderInfo(projection, modelview, hdr, text_shader, square_shader);
+                    m_planete_info->renderInfo(projection, modelview, hdr, shaders[0], shaders[1]);
+                    modelview = save;
                 }
             }
         }
@@ -614,9 +619,10 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::
     {
         if(m_planetary_system[i] != nullptr)
         {
-            if((text_shader != nullptr) && (square_shader != nullptr))
+            if((shaders[0] != nullptr) && (shaders[1] != nullptr))
             {
-                m_planetary_system[i]->drawInfo(projection, modelview, camPos, hdr, m_planete_info, text_shader, square_shader);
+                m_planetary_system[i]->drawInfo(projection, modelview, camPos, hdr, shaders, m_planete_info);
+                modelview = save;
             }
         }
         

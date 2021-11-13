@@ -834,10 +834,13 @@ void OpenGlSketch::renderInfo()
 
                 if(text_shader != nullptr)
                 {
-                    solar_system->drawInfo(projection, model_view, camPos, hdr, nullptr, text_shader, square_shader);
+                    std::vector<Shader*> shaders;
+                    shaders.push_back(text_shader);
+                    shaders.push_back(square_shader);
+
+                    solar_system->drawInfo(projection, model_view, camPos, hdr, shaders);
                 }
                 
-
             //restaure the modelview matrix
             model_view = save_model_view;
         }

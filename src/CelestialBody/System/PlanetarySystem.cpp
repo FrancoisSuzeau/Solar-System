@@ -294,7 +294,7 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info, Shader *text_shader, Shader *square_shader)
+void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info)
 {
     glm::mat4 save = modelview;
 
@@ -318,9 +318,10 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, g
                     planete_info->changeNamePlan(tmp_name);
                 }
 
-                if((text_shader != nullptr) && (square_shader != nullptr))
+                if((shaders[0] != nullptr) && (shaders[1] != nullptr))
                 {
-                    planete_info->renderInfo(projection, modelview, hdr, text_shader, square_shader);
+                    planete_info->renderInfo(projection, modelview, hdr, shaders[0], shaders[1]);
+                    modelview = save;
                 }
                 
             }
