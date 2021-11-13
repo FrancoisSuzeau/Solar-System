@@ -19,15 +19,10 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlanetarySystem::PlanetarySystem(std::string name_system, TTF_Font *police, int companion_count) : m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
+PlanetarySystem::PlanetarySystem(std::string name_system, TTF_Font *police, int companion_count)
 {
     m_system_name = name_system;
     m_companion_count = companion_count;
-
-    m_name_renderer.loadTTF(m_system_name);
-
-    //No need to create a planete info pointer because we use Only one
-    
 
 }
 
@@ -226,14 +221,13 @@ void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayName **************************************************************************/
 /***********************************************************************************************************************************************************************/
-
 void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader)
 {
     glm::mat4 save = modelview;
 
     if(name_render_shader != nullptr)
     {
-        if(m_host_creator == nullptr)
+        if(m_host_creator == nullptr) 
         {
             exit(EXIT_FAILURE);
         }
@@ -247,6 +241,7 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
                 m_host_creator->displayName(projection, modelview, camPos, 400, name_render_shader);
                 modelview = save;
             }
+            modelview = save;
         }
         else
         {

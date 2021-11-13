@@ -24,7 +24,6 @@ PURPOSE : header of the virtual PlanetarySystem class
         #include "../Planete/PlaneteRingCreator.hpp"
 
         #include "../../Atmosphere/Atmosphere.hpp"
-        #include "../../Text/Text.hpp"
         #include "../../Shader/Shader.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
@@ -50,7 +49,6 @@ PURPOSE : header of the virtual PlanetarySystem class
                 std::vector<PlaneteCreator*>            m_moons_creator;
                 PlaneteCreator                          *m_host_creator;
 
-                Text            m_name_renderer;
                 Atmosphere      *m_atmosphere;
 
                 
