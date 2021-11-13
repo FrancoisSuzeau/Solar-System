@@ -33,17 +33,17 @@ m_speed_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
 m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 {
-    m_track_music.loadTTF("None");
-    m_Author_music.loadTTF("None");
-    m_studio_music.loadTTF("None");
+    assert(m_track_music.loadTTF("None"));
+    assert(m_Author_music.loadTTF("None"));
+    assert(m_studio_music.loadTTF("None"));
 
-    m_move_info.loadTTF("Navigation");
-    m_position.loadTTF("Position :");
-    m_speed_info.loadTTF("Speed :");
-    m_speed.loadTTF("None");
+    assert(m_move_info.loadTTF("Navigation"));
+    assert(m_position.loadTTF("Position :"));
+    assert(m_speed_info.loadTTF("Speed :"));
+    assert(m_speed.loadTTF("None"));
 
 
-    m_time_info.loadTTF("None");
+    assert(m_time_info.loadTTF("None"));
     setTimeInformation();
 
     m_ancient_track = "None";
