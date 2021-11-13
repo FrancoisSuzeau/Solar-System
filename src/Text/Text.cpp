@@ -168,7 +168,7 @@ SDL_Surface *Text::reversePixels(SDL_Surface *src) const
         std::cout << ">> RGB surface : ERROR : " << SDL_GetError() << std::endl;
         return src;
     }
-    //std::cout << ">> RGB surface : SUCCESS" << std::endl;
+    std::cout << ">> RGB surface : SUCCESS" << std::endl;
     //==============================================================================================================================
 
     /************************************************* intermediate array  **************************************************************/
@@ -242,8 +242,10 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z
 		glEnableVertexAttribArray(2);
 
 		//send matrices
-		glUniformMatrix4fv(glGetUniformLocation(name_render_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(name_render_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+		// glUniformMatrix4fv(glGetUniformLocation(name_render_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+		// glUniformMatrix4fv(glGetUniformLocation(name_render_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+		name_render_shader->setMat4("projection", projection);
+		name_render_shader->setMat4("modelview", modelview);
 
 		//lock texture
 		glBindTexture(GL_TEXTURE_2D, m_id);
@@ -268,47 +270,6 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, float const z
 }
 
 /***********************************************************************************************************************************************************************/
-/************************************************************************************ renderTextStartScreen ************************************************************/
-/***********************************************************************************************************************************************************************/
-void Text::renderTextStartScreen(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
-{
-	if(text_shader != nullptr)
-	{
-		//activate shader program
-		glUseProgram(text_shader->getProgramID());
-
-		//send vertices coordinates
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
-		glEnableVertexAttribArray(0);
-
-		//send texture coordinates
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, m_texture_coord);
-		glEnableVertexAttribArray(2);
-
-		//send matrices
-		glUniformMatrix4fv(glGetUniformLocation(text_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(text_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-
-		//lock texture
-		glBindTexture(GL_TEXTURE_2D, m_id);
-
-		//render
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		//unlock texture
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		//deactivate array
-		glDisableVertexAttribArray(2);
-		glDisableVertexAttribArray(0);
-
-		//deactivate shader program
-		glUseProgram(0);
-	}
-	
-}
-
-/***********************************************************************************************************************************************************************/
 /******************************************************************************* renderTextoverlay *********************************************************************/
 /***********************************************************************************************************************************************************************/
 void Text::renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
@@ -327,8 +288,8 @@ void Text::renderTextOverlay(glm::mat4 &projection, glm::mat4 &modelview, Shader
 		glEnableVertexAttribArray(2);
 
 		//send matrices
-		glUniformMatrix4fv(glGetUniformLocation(text_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(text_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+		text_shader->setMat4("projection", projection);
+		text_shader->setMat4("modelview", modelview);
 
 		//lock texture
 		glBindTexture(GL_TEXTURE_2D, m_id);
@@ -361,7 +322,7 @@ void Text::setText(std::string const text)
     {
         std::cout << ">> Creating blended surface : ERROR : " << TTF_GetError() << std::endl;
     }
-    //std::cout << ">> Creating blended surface : SUCCESS" << std::endl;
+    std::cout << ">> Creating blended surface : SUCCESS" << std::endl;
     SDL_Surface *surface = this->reversePixels(tmp);
     SDL_FreeSurface(tmp);
     //===================================================================================================================

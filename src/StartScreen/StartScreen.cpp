@@ -40,7 +40,7 @@ void StartScreen::drawStartScreen(glm::mat4 &projection, glm::mat4 &modelview, S
 
     if(text_shader != nullptr)
     {
-        m_text_loadScreen.renderTextStartScreen(projection, modelview, text_shader);
+        m_text_loadScreen.renderTextOverlay(projection, modelview, text_shader);
     }
 
 	modelview = save;
