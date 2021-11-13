@@ -54,8 +54,7 @@ PURPOSE : header of the SimplePlanete class
                 SimplePlanete();
                 ~SimplePlanete();
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader = nullptr, Shader *ring_shader = nullptr);
-                void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
-                void displayName2(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 camPos, Shader *name_render_shader = nullptr);
+                void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 camPos, int threshold, Shader *name_render_shader = nullptr);
                 void updatePosition(glm::mat4 &projection, glm::mat4 &modelview);
                 void updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src);
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr);

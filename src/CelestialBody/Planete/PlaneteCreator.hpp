@@ -47,14 +47,9 @@ PURPOSE : header of the virtual PlaneteCreator class
                         return true;
                 }
 
-                void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr)
+                void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 camPos, int threshold, Shader *name_render_shader = nullptr)
                 {
-                        m_planete->displayName(projection, modelview, ratio, phi, theta, y, name_render_shader);
-                }
-
-                void displayName2(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 camPos, Shader *name_render_shader = nullptr)
-                {
-                        m_planete->displayName2(projection, modelview, camPos, name_render_shader);
+                        m_planete->displayName(projection, modelview, camPos, threshold, name_render_shader);
                 }
 
                 void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)

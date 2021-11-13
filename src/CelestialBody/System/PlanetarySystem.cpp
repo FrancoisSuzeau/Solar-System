@@ -265,34 +265,21 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
 
         if( r >= 400 * size_plan )
         {
-            modelview = translate(modelview, host_pos);
-            m_name_renderer.renderMovingText(projection, modelview, size_plan, r, phi, theta, y, name_render_shader);
-            // std::cout << name_render_shader << std::endl;
-            modelview = save;
+            if( name_render_shader != nullptr )
+            {
+                modelview = translate(modelview, host_pos);
+                m_name_renderer.renderMovingText(projection, modelview, size_plan, r, phi, theta, y, name_render_shader);
+                modelview = save;
+            }
         }
         else
         {
             for (int i(0); i < m_companion_count; i++)
             {
-                glm::vec3 moon_pos = m_moons_creator[i]->getPostion();
-                float size_moon = m_host_creator->getSizePlan();
-
-                x = camPos[0] - moon_pos[0]; //doesn't know why I have to use the reverse value
-                y = camPos[1] - moon_pos[1];
-                z = camPos[2] - moon_pos[2];
-                r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-                    
-                r = std::sqrt(r_squarre);
-
-                phi = atan(y/x);
-                theta = acos(z/r);
-                if(r >= 10 * size_moon)
+                if(name_render_shader != nullptr)
                 {
-                    if(name_render_shader != nullptr)
-                    {
-                        m_moons_creator[i]->displayName(projection, modelview, r, phi, theta, y, name_render_shader);
-                        // std::cout << name_render_shader << std::endl;
-                    }
+                    m_moons_creator[i]->displayName(projection, modelview, camPos, 10, name_render_shader);
+                    modelview = save;
                 }
                 
                 modelview = save;

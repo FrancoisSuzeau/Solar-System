@@ -134,22 +134,9 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ma
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************************* displayName ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y, Shader *name_render_shader)
-{
-    if(name_render_shader != nullptr)
-    {
-        translateCelestialBody(modelview, m_current_position);
-        m_name_renderer->renderMovingText(projection, modelview, m_real_size, ratio, phi, theta, y, name_render_shader);
-    }
-    
-}
-
-/***********************************************************************************************************************************************************************/
 /******************************************************************************* displayName2 ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayName2(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 camPos, Shader *name_render_shader)
+void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 camPos, int threshold, Shader *name_render_shader)
 {
     if(name_render_shader != nullptr)
     {
@@ -170,7 +157,7 @@ void SimplePlanete::displayName2(glm::mat4 &projection, glm::mat4 &modelview, gl
         float phi = atan(y/x);
         float theta = acos(z/r);
         
-        if(r >= 400 * m_real_size)
+        if(r >= threshold * m_real_size)
         {
             translateCelestialBody(modelview, m_current_position);
             m_name_renderer->renderMovingText(projection, modelview, m_real_size, r, phi, theta, y, name_render_shader);

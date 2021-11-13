@@ -493,7 +493,7 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::
        {
            if(name_render_shader != nullptr)
             {
-                m_planete_creator[i]->displayName2(projection, modelview, camPos, name_render_shader);
+                m_planete_creator[i]->displayName(projection, modelview, camPos, 400, name_render_shader);
             }
        }
 
