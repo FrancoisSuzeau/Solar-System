@@ -37,7 +37,6 @@ PlanetarySystem::~PlanetarySystem()
     {
         if(*it != nullptr)
         {
-            std::cout << *it << std::endl;
             delete *it;
         }
         

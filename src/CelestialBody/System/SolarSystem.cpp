@@ -253,38 +253,36 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
                 sun->display(projection, modelview, light_src, camPos, hdr, shaders[2]);
             }
         }
-        
-    /************************************************* MERCURY RENDER ********************************************************/
+
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
 
-        if(m_planete_creator[0] != nullptr)
+    for (std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
+    {
+        if(it[0] != nullptr)
         {
-            m_planete_creator[0]->UpdatePositionPlan(projection, modelview);
-            m_planete_creator[0]->updatePosLight(projection, light_src);
+            it[0]->UpdatePositionPlan(projection, modelview);
+            it[0]->updatePosLight(projection, light_src);
 
-            if(shaders[0] != nullptr)
+            if((shaders[0] != nullptr) && (shaders[3] != nullptr))
             {
-                m_planete_creator[0]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[0]);
+                if((it[0]->getName() == "Uranus") || (it[0]->getName() == "Neptune"))
+                {
+                    it[0]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[0], shaders[3]);
+                }
+                else
+                {
+                    it[0]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[0]);
+                }
+                
+
+                //restaure the modelview matrix
+                modelview = save;
+                light_src = save_light_src;
             }
         }
-        
-    /************************************************* VENUS RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
-
-        if(m_planete_creator[1] != nullptr)
-        {
-            m_planete_creator[1]->UpdatePositionPlan(projection, modelview);
-            m_planete_creator[1]->updatePosLight(projection, light_src);
-
-            if(shaders[1] != nullptr)
-            {
-                m_planete_creator[1]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[1]);
-            }
-        }
+    }
         
     /************************************************* EARTH RENDER ********************************************************/
     //restaure the modelview matrix
@@ -296,22 +294,6 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             if( (shaders[1] != nullptr) && (shaders[0] != nullptr) )
             {
                 m_planetary_system[0]->drawSystem(projection, modelview, camPos, hdr, m_position, shaders[1], shaders[0]);
-            }
-        }
-
-    /************************************************* MARS RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
-
-        if(m_planete_creator[2] != nullptr)
-        {
-            m_planete_creator[2]->UpdatePositionPlan(projection, modelview);
-            m_planete_creator[2]->updatePosLight(projection, light_src);
-    
-            if(shaders[1] != nullptr)
-            {
-                m_planete_creator[2]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[1]);
             }
         }
         
@@ -341,40 +323,10 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             }
         }
         
-    /************************************************* URANUS RENDER ********************************************************/
+    
     //restaure the modelview matrix
     modelview = save;
     light_src = save_light_src;
-
-        if(m_planete_creator[3] != nullptr)
-        {
-            m_planete_creator[3]->UpdatePositionPlan(projection, modelview);
-            m_planete_creator[3]->updatePosLight(projection, light_src);
-            
-            if( (shaders[0] != nullptr) && (shaders[3] != nullptr) )
-            {
-                m_planete_creator[3]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[0], shaders[3]);
-            }
-        }
-        
-    /************************************************* NEPTUNE RENDER ********************************************************/
-    //restaure the modelview matrix
-    modelview = save;
-    light_src = save_light_src;
-
-        if(m_planete_creator[4] != nullptr)
-        {
-            m_planete_creator[4]->UpdatePositionPlan(projection, modelview);
-            m_planete_creator[4]->updatePosLight(projection, light_src);
-
-            if( (shaders[0] != nullptr) && (shaders[3] != nullptr) )
-            {
-                m_planete_creator[4]->drawPlanete(projection, modelview, light_src, camPos, hdr, shaders[0], shaders[3]);
-            }
-        }
-        
-    //restaure the modelview matrix
-    modelview = save;
 
 }
 
