@@ -200,61 +200,61 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
         {
                 modelview = translate(modelview, vec3(0.0, 0.34, -0.0));
                 modelview = scale(modelview, vec3(0.075, 0.09, 0.0));
-                m_titre.renderTextOverlay(projection, modelview, text_shader);
+                m_titre.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, -0.345, -0.0));
                 modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_quit.renderTextOverlay(projection, modelview, text_shader);
+                m_quit.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, 0.25, -0.0));
                 modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_hdr.renderTextOverlay(projection, modelview, text_shader);
+                m_hdr.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, 0.18, -0.0));
                 modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_exposure.renderTextOverlay(projection, modelview, text_shader);
+                m_exposure.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, 0.11, -0.0));
                 modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_speed.renderTextOverlay(projection, modelview, text_shader);
+                m_speed.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, 0.04, -0.0));
                 modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_music_playing.renderTextOverlay(projection, modelview, text_shader);
+                m_music_playing.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, -0.03, -0.0));
                 modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_music_volume.renderTextOverlay(projection, modelview, text_shader);
+                m_music_volume.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, -0.1, -0.0));
                 modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_overlay_display.renderTextOverlay(projection, modelview, text_shader);
+                m_overlay_display.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, -0.17, -0.0));
                 modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
-                m_info_planete.renderTextOverlay(projection, modelview, text_shader);
+                m_info_planete.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.0, -0.24, -0.0));
                 modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
-                display_name_plan.renderTextOverlay(projection, modelview, text_shader);
+                display_name_plan.renderText(projection, modelview, text_shader);
             modelview = save;
         }
         

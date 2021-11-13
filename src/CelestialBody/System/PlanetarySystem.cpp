@@ -266,7 +266,7 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, g
         if( r >= 400 * size_plan )
         {
             modelview = translate(modelview, host_pos);
-            m_name_renderer.renderText(projection, modelview, size_plan, r, phi, theta, y, name_render_shader);
+            m_name_renderer.renderMovingText(projection, modelview, size_plan, r, phi, theta, y, name_render_shader);
             // std::cout << name_render_shader << std::endl;
             modelview = save;
         }

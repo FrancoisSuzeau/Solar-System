@@ -203,19 +203,19 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, b
         {
             modelview = translate(modelview, vec3(0.91f, -0.61f, -0.0f));
                 modelview = scale(modelview, vec3(0.04f, 0.035f, 0.0f));
-                m_track_music.renderTextOverlay(projection, modelview, text_shader);
+                m_track_music.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.85f, -0.64f, -0.0f));
                 modelview = scale(modelview, vec3(0.02f, 0.035f, 0.0f));
-                m_Author_music.renderTextOverlay(projection, modelview, text_shader);
+                m_Author_music.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(0.91f, -0.67f, -0.0f));
                 modelview = scale(modelview, vec3(0.04f, 0.035f, 0.0f));
-                m_studio_music.renderTextOverlay(projection, modelview, text_shader);
+                m_studio_music.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
@@ -311,20 +311,20 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
         {
                 modelview = translate(modelview, vec3(-1.03f, -0.515f, -0.0f));
                 modelview = scale(modelview, vec3(0.05f, 0.05f, 0.0f));
-                m_move_info.renderTextOverlay(projection, modelview, text_shader);
+                m_move_info.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
 
                 modelview = translate(modelview, vec3(-1.15f, -0.564f, -0.0f));
                 modelview = scale(modelview, vec3(0.02f, 0.045f, 0.0f));
-                m_position.renderTextOverlay(projection, modelview, text_shader);
+                m_position.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
                 modelview = translate(modelview, vec3(-1.15f, -0.650f, -0.0f));
                 modelview = scale(modelview, vec3(0.02f, 0.038f, 0.0f));
-                m_speed_info.renderTextOverlay(projection, modelview, text_shader);
+                m_speed_info.renderText(projection, modelview, text_shader);
 
             modelview = save;
 
@@ -332,7 +332,7 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
                 modelview = translate(modelview, vec3(-0.95f, -0.650f, -0.0f));
                 modelview = scale(modelview, vec3(0.04f, 0.04f, 0.0f));
-                m_speed.renderTextOverlay(projection, modelview, text_shader);
+                m_speed.renderText(projection, modelview, text_shader);
 
             modelview = save;
         }
@@ -410,7 +410,7 @@ void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview
 
                 modelview = translate(modelview, vec3(0.0f, 0.658f, -0.0f));
                 modelview = scale(modelview, vec3(0.039f, 0.050f, 0.0f));
-                m_time_info.renderTextOverlay(projection, modelview, text_shader);
+                m_time_info.renderText(projection, modelview, text_shader);
 
             modelview = save;
         }

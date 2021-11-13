@@ -141,7 +141,7 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, dou
     if(name_render_shader != nullptr)
     {
         translateCelestialBody(modelview, m_current_position);
-        m_name_renderer->renderText(projection, modelview, m_real_size, ratio, phi, theta, y, name_render_shader);
+        m_name_renderer->renderMovingText(projection, modelview, m_real_size, ratio, phi, theta, y, name_render_shader);
     }
     
 }

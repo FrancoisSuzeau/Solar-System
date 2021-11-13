@@ -134,7 +134,7 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
             //Diplay text information
             modelview = translate(modelview, vec3(-0.585, 0.49, -0.0));
             modelview = scale(modelview, vec3(0.03, 0.05, 0.0));
-            m_text_name.renderTextOverlay(projection, modelview, text_shader);
+            m_text_name.renderText(projection, modelview, text_shader);
 
         modelview = save;
     }
