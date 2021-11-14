@@ -67,17 +67,27 @@ void Framebuffer::initVertices()
 }
 
 /***********************************************************************************************************************************************************************/
-/****************************************************************** manageFramebuffer **********************************************************************************/
+/****************************************************************** manageColorBuffer **********************************************************************************/
 /***********************************************************************************************************************************************************************/
-bool Framebuffer::manageFramebuffer(int width, int height)
+void Framebuffer::manageColorBuffer(int width, int height)
 {
-    glGenFramebuffers(1, &fb);
-    glBindFramebuffer(GL_FRAMEBUFFER, fb);
-
     // Create a texture to render to
-    glGenTextures(1, &fb_texture);
+    glGenTextures(1, &colorBuffer);
+    // glGenTextures(2, colorBuffer);
+    // for (unsigned int i = 0; i < 2; i++)
+    // {
+    //     glBindTexture(GL_TEXTURE_2D, colorBuffer[i]);
+    //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        
+    //     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorBuffer[i], 0);
+    // }
+    
 
-    glBindTexture(GL_TEXTURE_2D, fb_texture);
+    glBindTexture(GL_TEXTURE_2D, colorBuffer);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -85,12 +95,31 @@ bool Framebuffer::manageFramebuffer(int width, int height)
     // NULL means reserve texture memory
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
     // Attach the texture to the framebuffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_texture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
+}
 
+/***********************************************************************************************************************************************************************/
+/****************************************************************** manageDepthBuffer **********************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::manageDepthBuffer(int width, int height)
+{
     glGenRenderbuffers(1, &depth_rb);
     glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************** manageFramebuffer **********************************************************************************/
+/***********************************************************************************************************************************************************************/
+bool Framebuffer::manageFramebuffer(int width, int height)
+{
+    glGenFramebuffers(1, &fb);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb);
+
+    this->manageColorBuffer(width, height);
+    this->manageDepthBuffer(width, height);
+    
     // finally check if framebuffer is complete
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
@@ -197,7 +226,7 @@ void Framebuffer::renderFrame(float exposure, bool hdr)
                 screenShader->setFloat("exposure", exposure);
                 screenShader->setInt("hdr", hdr);
 
-                glBindTexture(GL_TEXTURE_2D, fb_texture);	// use the color attachment texture as the texture of the quad plane
+                glBindTexture(GL_TEXTURE_2D, colorBuffer);	// use the color attachment texture as the texture of the quad plane
                 glDrawArrays(GL_TRIANGLES, 0, 6);
                 glBindTexture(GL_TEXTURE_2D, 0);
 

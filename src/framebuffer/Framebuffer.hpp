@@ -34,7 +34,8 @@ PURPOSE : header of the Framebuffer class
             private:
 
                 unsigned int quadVAO, quadVBO;
-                unsigned int fb_texture;
+                unsigned int colorBuffer;
+                // unsigned int colorBuffer[2];
                 unsigned int fb;
                 unsigned int depth_rb;
 
@@ -48,6 +49,8 @@ PURPOSE : header of the Framebuffer class
 
                 void initVertices();
                 bool manageFramebuffer(int width, int height);
+                void manageColorBuffer(int width, int height);
+                void manageDepthBuffer(int width, int height);
 
             public:
 
