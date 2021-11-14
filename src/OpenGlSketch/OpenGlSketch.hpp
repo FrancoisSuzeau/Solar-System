@@ -46,6 +46,7 @@ PURPOSE : header of the OpenGlSketch class
         #include "../Particule/Particule.hpp"
 
         #include "../Spaceship/Spaceship.hpp"
+        #include "../Framebuffer/Framebuffer.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -75,12 +76,8 @@ PURPOSE : header of the OpenGlSketch class
 
                 SystemCreator   *solar_system;
 
-                unsigned int quadVAO, quadVBO;
-                unsigned int fb_texture;
-                unsigned int fb;
-                unsigned int depth_rb;
+                Framebuffer     *m_framebuffer;
 
-                Shader *screenShader;
                 Shader *text_shader;
 
                 Spaceship *ship;
@@ -125,6 +122,8 @@ PURPOSE : header of the OpenGlSketch class
 
                 bool    initWindow();
                 bool    initGL();
+                void    initFrameBuffer();
+
                 void    mainLoop();
                 void    startLoop();
                 void    windowProcess();
@@ -133,7 +132,7 @@ PURPOSE : header of the OpenGlSketch class
                 void    renderOverlay();
                 void    renderParticles();
 
-                void initFrameBuffer();
+                
                 void renderSettings();
 
         };
