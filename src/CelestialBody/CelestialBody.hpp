@@ -51,6 +51,11 @@ PURPOSE : Interface CelestialBody
                 {
                     m_current_position = new_position;
                 }
+
+                void setInclinaisonAngle(float inclinaison)
+                {
+                    m_inclinaison_angle = inclinaison;
+                }
                 
                 void rotateCelestialBody(glm::mat4 &model, float angle)
                 {
