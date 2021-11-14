@@ -47,6 +47,11 @@ PURPOSE : Interface CelestialBody
 
                 virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *body_shader = nullptr, Shader *ring_shader = nullptr) = 0;
 
+                void setPosition(glm::vec3 new_position)
+                {
+                    m_current_position = new_position;
+                }
+                
                 void rotateCelestialBody(glm::mat4 &model, float angle)
                 {
                     model = rotate(model, glm::radians(angle), vec3(0.0, 0.0, 1.0));

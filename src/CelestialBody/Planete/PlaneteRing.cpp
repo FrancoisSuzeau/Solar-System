@@ -94,7 +94,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
 
             if((m_ring != nullptr) && (ring_shader != nullptr))
             {
-                m_ring->updatePosRing(m_current_position);
+                m_ring->setPosition(m_current_position);
                 m_ring->updatePosition();
                 m_ring->display(projection, modelview, camPos, hdr, ring_shader);
             }
