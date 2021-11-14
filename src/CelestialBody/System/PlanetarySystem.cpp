@@ -217,10 +217,11 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
 
         if(m_host_creator != nullptr)
         {
-            m_host_creator->UpdatePositionPlan();
+            // m_host_creator->UpdatePositionPlan();
 
             if((m_atmosphere != nullptr) && (atmo_shader != nullptr))
             {
+                m_atmosphere->updatePosAtmo(m_host_creator->getPostion());
                 m_atmosphere->display(projection, modelview, camPos, hdr, atmo_shader);
             }
         }

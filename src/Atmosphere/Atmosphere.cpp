@@ -40,7 +40,7 @@ Atmosphere::Atmosphere(float size, std::string const name)
         //! m_apparent_size = glm::vec3(m_size, m_size, m_size);
         sphere_atmosphere->setInclinaisonAngle(23.26f);
         sphere_atmosphere->setSpeedRot(0.05);
-        sphere_atmosphere->setSize(35.0f);
+        sphere_atmosphere->setSize(31.0f);
     }
     else if(name == "Venus")
     {
@@ -48,7 +48,7 @@ Atmosphere::Atmosphere(float size, std::string const name)
         //! m_apparent_size = glm::vec3(m_size, m_size, m_size);
         sphere_atmosphere->setInclinaisonAngle(177.3);
         sphere_atmosphere->setSpeedRot(0.05f);
-        sphere_atmosphere->setSize(30.0f);
+        sphere_atmosphere->setSize(29.47f);
     }
     else if (name == "Mars")
     {
@@ -56,7 +56,7 @@ Atmosphere::Atmosphere(float size, std::string const name)
         //! m_apparent_size = glm::vec3(m_size, m_size, m_size);
         sphere_atmosphere->setInclinaisonAngle(25.19f);
         sphere_atmosphere->setSpeedRot(0.05f);
-        sphere_atmosphere->setSize(17.0f);
+        sphere_atmosphere->setSize(16.99f);
     }
     
 }

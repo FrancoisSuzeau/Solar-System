@@ -409,7 +409,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::
         {
             if(shaders[4] != nullptr)
             {
-                // it[0]->drawAtmo(projection, modelview, camPos, hdr, shaders[4]);
+                it[0]->drawAtmo(projection, modelview, camPos, hdr, shaders[4]);
             }
             
         }
