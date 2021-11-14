@@ -50,7 +50,7 @@ PURPOSE : header of the PlaneteRing class
                 PlaneteRing(init_data data, TTF_Font *police);
                 PlaneteRing();
                 ~PlaneteRing();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader = nullptr, Shader *ring_shader = nullptr);
+                void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader = nullptr, Shader *ring_shader = nullptr);
         };
 
 

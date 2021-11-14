@@ -85,7 +85,7 @@ SimplePlanete::~SimplePlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader, Shader *ring_shader)
+void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader, Shader *ring_shader)
 {
     if(simple_plan_shader != nullptr)
     {
@@ -103,7 +103,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ve
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            simple_plan_shader->setMat4("modelview", modelview);
+            simple_plan_shader->setMat4("view", view);
             simple_plan_shader->setMat4("projection", projection);
             simple_plan_shader->setMat4("model", m_model_mat);
         
@@ -136,7 +136,7 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::ve
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayName2 ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 camPos, int threshold, Shader *name_render_shader)
+void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 camPos, int threshold, Shader *name_render_shader)
 {
     if(name_render_shader != nullptr)
     {
@@ -154,8 +154,8 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm
         
         if(r >= threshold * m_real_size)
         {
-            translateCelestialBody(modelview, m_current_position);
-            m_name_renderer->renderMovingText(projection, modelview, m_real_size, r, phi, theta, y, name_render_shader);
+            translateCelestialBody(view, m_current_position);
+            m_name_renderer->renderMovingText(projection, view, m_real_size, r, phi, theta, y, name_render_shader);
         }
         
     }
@@ -165,7 +165,7 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
     if( (m_name == "Mars") || (m_name == "Venus")) 
     {
@@ -175,7 +175,7 @@ void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm
             if(m_atmosphere != nullptr)
             {
                 m_atmosphere->updatePosAtmo(m_current_position);
-                m_atmosphere->display(projection, modelview, camPos, hdr, atmo_shader);
+                m_atmosphere->display(projection, view, camPos, hdr, atmo_shader);
             }
             
         }

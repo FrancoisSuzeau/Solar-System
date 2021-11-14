@@ -83,7 +83,7 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *star_shader)
+void Star::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *star_shader)
 {
     if(star_shader != nullptr)
     {
@@ -101,7 +101,7 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPo
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            star_shader->setMat4("modelview", modelview);
+            star_shader->setMat4("view", view);
             star_shader->setMat4("projection", projection);
             star_shader->setMat4("model", m_model_mat);
 
@@ -135,7 +135,7 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPo
 // /***********************************************************************************************************************************************************************/
 // /**************************************************************************** updatePosition ***************************************************************************/
 // /***********************************************************************************************************************************************************************/
-// void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation)
+// void Star::updatePosition(glm::mat4 &projection, glm::mat4 &view, float const rotation)
 // {
 //     m_model_mat = glm::mat4(1.0f);
 //     //postionning body
@@ -155,16 +155,16 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPo
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atmo_shader)
+void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *atmo_shader)
 {
     if(atmo_shader != nullptr)
     {
-        translateCelestialBody(modelview, m_current_position);
+        translateCelestialBody(view, m_current_position);
         if(m_atmosphere != nullptr)
         {
             //HACK : in fact we don't need this, have to change some parameter to pass them with default value
             glm::vec3 campos(0.0f);
-            m_atmosphere->display(projection, modelview, campos, hdr, atmo_shader);
+            m_atmosphere->display(projection, view, campos, hdr, atmo_shader);
         }
            
     }

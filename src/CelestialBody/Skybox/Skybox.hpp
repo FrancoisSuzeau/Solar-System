@@ -57,7 +57,7 @@ PURPOSE : header of the Skybox class
                 ~Skybox();
 
                 unsigned int            loadSybox();
-                void            display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
+                void            display(glm::mat4 &projection, glm::mat4 &view, bool hdr);
                 
         };
 

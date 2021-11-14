@@ -45,7 +45,7 @@ PURPOSE : header of the Text class
                 GLuint          m_id;
                 
                 SDL_Surface *reversePixels(SDL_Surface *src) const;
-                void rotateText(glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y);
+                void rotateText(glm::mat4 &view, float const z, double ratio, float phi, float theta, float y);
                 
             public:
 
@@ -57,8 +57,8 @@ PURPOSE : header of the Text class
 
                 bool loadTTF(std::string const text);
                 
-                void            renderMovingText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
-                void            renderText(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader = nullptr);
+                void            renderMovingText(glm::mat4 &projection, glm::mat4 &view, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
+                void            renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shader = nullptr);
                 bool            setText(std::string const text);
                 
         };

@@ -79,7 +79,7 @@ AtmoPlanete::~AtmoPlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader, Shader *ring_shader)
+void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader, Shader *ring_shader)
 {
     if(atmo_plan_shader != nullptr)
     {
@@ -97,7 +97,7 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            atmo_plan_shader->setMat4("modelview", modelview);
+            atmo_plan_shader->setMat4("view", view);
             atmo_plan_shader->setMat4("projection", projection);
             atmo_plan_shader->setMat4("model", m_model_mat);
             

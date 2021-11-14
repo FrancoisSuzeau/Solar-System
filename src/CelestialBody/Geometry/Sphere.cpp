@@ -179,7 +179,7 @@ Sphere::~Sphere()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** display ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *sphere_shader, Shader *ring_shader)
+void Sphere::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *sphere_shader, Shader *ring_shader)
 {
     if(sphere_shader != nullptr)
     {
@@ -196,7 +196,7 @@ void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &cam
         //===================================================================================================================================
 
 
-        sphere_shader->setMat4("modelview", modelview);
+        sphere_shader->setMat4("view", view);
         sphere_shader->setMat4("projection", projection);
         sphere_shader->setMat4("model", m_model_mat);
 

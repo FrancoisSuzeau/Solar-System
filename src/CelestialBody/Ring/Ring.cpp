@@ -150,7 +150,7 @@ void Ring::updatePosRing(glm::vec3 planPos)
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *ring_shader)
+void Ring::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *ring_shader)
 {
     if(ring_shader != nullptr)
     {
@@ -160,7 +160,7 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPo
         //lock VAO
         glBindVertexArray(m_vaoID);
 
-            ring_shader->setMat4("modelview", modelview);
+            ring_shader->setMat4("view", view);
             ring_shader->setMat4("projection", projection);
             ring_shader->setMat4("model", m_model_mat);
 
@@ -185,7 +185,7 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPo
 }
 
 //NOT CONCERN 
-void Ring::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+void Ring::displayInfo(glm::mat4 &projection, glm::mat4 &view, bool hdr)
 {
     
 }

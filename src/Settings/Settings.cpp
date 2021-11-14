@@ -111,9 +111,9 @@ void Settings::initButtonCoord()
 /***********************************************************************************************************************************************************************/
 /********************************************************************* displayFrameSettings ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader, Shader *square_shader)
+void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *text_shader, Shader *square_shader)
 {
-    glm::mat4 save = modelview;
+    glm::mat4 save = view;
     float constance = 0.05;
 
     float start_x_black = -0.3;
@@ -126,34 +126,34 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
         {
             for (size_t j(0); j < 13; j++)
             {
-                    modelview = translate(modelview, vec3(start_x_black, start_y, 0.0));
-                    m_grey_rect->display(projection, modelview, colorBlack, hdr, square_shader);
+                    view = translate(view, vec3(start_x_black, start_y, 0.0));
+                    m_grey_rect->display(projection, view, colorBlack, hdr, square_shader);
                 
-                modelview = save;
+                view = save;
                 start_x_black = start_x_black + constance;
             }
 
             start_y = start_y - constance;
             start_x_black = -0.3;
 
-            modelview = save;
+            view = save;
         }
-        modelview = save;
+        view = save;
 
         //white border top and bottom
         float start_x_white = -0.3;
 
         for (size_t i(0); i < 13; i++)
         {
-                modelview = translate(modelview, vec3(start_x_white, 0.36, 0.0));
-                m_grey_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                view = translate(view, vec3(start_x_white, 0.36, 0.0));
+                m_grey_rect->display(projection, view, colorGrey, hdr, square_shader);
                 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(start_x_white, -0.36, 0.0));
-                m_grey_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                view = translate(view, vec3(start_x_white, -0.36, 0.0));
+                m_grey_rect->display(projection, view, colorGrey, hdr, square_shader);
 
-            modelview = save;
+            view = save;
 
             start_x_white = start_x_white + constance;
         }
@@ -163,96 +163,96 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview,
 
         for (size_t i(0); i < 15; i++)
         {
-                modelview = translate(modelview, vec3(-0.31, start_y_white, 0.0));
-                m_grey_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                view = translate(view, vec3(-0.31, start_y_white, 0.0));
+                m_grey_rect->display(projection, view, colorGrey, hdr, square_shader);
                 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.31, start_y_white, 0.0));
-                m_grey_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                view = translate(view, vec3(0.31, start_y_white, 0.0));
+                m_grey_rect->display(projection, view, colorGrey, hdr, square_shader);
                 
-            modelview = save;
+            view = save;
 
             start_y_white = start_y_white - constance;
         }
 
         //the last to white on the bottom corner left and right
 
-            modelview = translate(modelview, vec3(-0.31, -0.36, 0.0));
-            m_grey_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+            view = translate(view, vec3(-0.31, -0.36, 0.0));
+            m_grey_rect->display(projection, view, colorGrey, hdr, square_shader);
                 
-        modelview = save;
+        view = save;
 
-            modelview = translate(modelview, vec3(0.31, -0.36, 0.0));
-            m_grey_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+            view = translate(view, vec3(0.31, -0.36, 0.0));
+            m_grey_rect->display(projection, view, colorGrey, hdr, square_shader);
     }
     
             
-    modelview = save;
+    view = save;
 
 
     //******************************************************************* render titre settings ***********************************************************************
 
         if(text_shader != nullptr)
         {
-                modelview = translate(modelview, vec3(0.0, 0.34, -0.0));
-                modelview = scale(modelview, vec3(0.075, 0.09, 0.0));
-                m_titre.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, 0.34, -0.0));
+                view = scale(view, vec3(0.075, 0.09, 0.0));
+                m_titre.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, -0.345, -0.0));
-                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_quit.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, -0.345, -0.0));
+                view = scale(view, vec3(0.05, 0.060, 0.0));
+                m_quit.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, 0.25, -0.0));
-                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_hdr.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, 0.25, -0.0));
+                view = scale(view, vec3(0.05, 0.060, 0.0));
+                m_hdr.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, 0.18, -0.0));
-                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_exposure.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, 0.18, -0.0));
+                view = scale(view, vec3(0.05, 0.060, 0.0));
+                m_exposure.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, 0.11, -0.0));
-                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_speed.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, 0.11, -0.0));
+                view = scale(view, vec3(0.05, 0.060, 0.0));
+                m_speed.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, 0.04, -0.0));
-                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_music_playing.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, 0.04, -0.0));
+                view = scale(view, vec3(0.05, 0.060, 0.0));
+                m_music_playing.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, -0.03, -0.0));
-                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_music_volume.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, -0.03, -0.0));
+                view = scale(view, vec3(0.05, 0.060, 0.0));
+                m_music_volume.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, -0.1, -0.0));
-                modelview = scale(modelview, vec3(0.05, 0.060, 0.0));
-                m_overlay_display.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, -0.1, -0.0));
+                view = scale(view, vec3(0.05, 0.060, 0.0));
+                m_overlay_display.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, -0.17, -0.0));
-                modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
-                m_info_planete.renderText(projection, modelview, text_shader);
+                view = translate(view, vec3(0.0, -0.17, -0.0));
+                view = scale(view, vec3(0.07, 0.090, 0.0));
+                m_info_planete.renderText(projection, view, text_shader);
 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(0.0, -0.24, -0.0));
-                modelview = scale(modelview, vec3(0.07, 0.090, 0.0));
-                display_name_plan.renderText(projection, modelview, text_shader);
-            modelview = save;
+                view = translate(view, vec3(0.0, -0.24, -0.0));
+                view = scale(view, vec3(0.07, 0.090, 0.0));
+                display_name_plan.renderText(projection, view, text_shader);
+            view = save;
         }
         
     

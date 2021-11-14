@@ -12,7 +12,7 @@ in vec2 in_TexCoord0;
 // Uniform
 
 uniform mat4 projection;
-uniform mat4 modelview;
+uniform mat4 view;
 uniform mat4 model;
 
 out vec3 Normal;
@@ -30,7 +30,7 @@ void main()
 {
     // Position finale du vertex en 3D
 
-    gl_Position = projection * modelview * model * vec4(in_Vertex, 1.0);
+    gl_Position = projection * view * model * vec4(in_Vertex, 1.0);
 
 
     // Envoi des coordonn�es de texture au Fragment Shader

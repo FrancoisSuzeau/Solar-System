@@ -145,51 +145,51 @@ SDL_Surface *Text::reversePixels(SDL_Surface *src) const
 /***********************************************************************************************************************************************************************/
 /************************************************************************************** rotateText *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::rotateText(glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y)
+void Text::rotateText(glm::mat4 &view, float const z, double ratio, float phi, float theta, float y)
 {
 	float sizet = 4.0f;
 	phi = (float) (phi * 180 / M_PI);
 	theta = (float) (theta * 180 / M_PI);
 		
-	modelview = translate(modelview, vec3(0.0f, sizet - 4.0f, z + 4.0f));
+	view = translate(view, vec3(0.0f, sizet - 4.0f, z + 4.0f));
 	if((phi < 0.0f) && (y > 0.0f))
 	{
-		modelview = rotate(modelview, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		view = rotate(view, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi > 0.0f) && (y < 0.0f) )
 	{
-		modelview = rotate(modelview, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		view = rotate(view, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi > 0.0f) && (y > 0.0f) )
 	{
-		modelview = rotate(modelview, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		view = rotate(view, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi < 0.0f) && (y < 0.0f) )
 	{
-		modelview = rotate(modelview, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		view = rotate(view, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 
-	modelview = rotate(modelview, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
+	view = rotate(view, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
 		
-	modelview = scale(modelview, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
+	view = scale(view, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
 }
 
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ renderText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &modelview, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
+void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &view, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
 {
 
 	if(name_render_shader != nullptr)
 	{
 		
-		glm::mat4 save = modelview;
+		glm::mat4 save = view;
 
-		this->rotateText(modelview, z, ratio, phi, theta, y);
+		this->rotateText(view, z, ratio, phi, theta, y);
 
-		this->renderText(projection, modelview, name_render_shader);
+		this->renderText(projection, view, name_render_shader);
 
-		modelview = save;
+		view = save;
 	}
 	
 
@@ -198,7 +198,7 @@ void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &modelview, float c
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* renderTextoverlay *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
+void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shader)
 {
 	if(text_shader != nullptr)
 	{
@@ -215,7 +215,7 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_
 
 		//send matrices
 		text_shader->setMat4("projection", projection);
-		text_shader->setMat4("modelview", modelview);
+		text_shader->setMat4("view", view);
 
 		//lock texture
 		glBindTexture(GL_TEXTURE_2D, m_id);

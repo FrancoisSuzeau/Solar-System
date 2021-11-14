@@ -72,17 +72,17 @@ PURPOSE : header of the Overlay class
                 glm::vec3 m_colorBlack;
                 glm::vec3 m_colorGrey;
 
-                void displaySquares(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::vector<glm::vec3> coordinates, Shader *square_shader = nullptr);
+                void displaySquares(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::vector<glm::vec3> coordinates, Shader *square_shader = nullptr);
 
             public:
             
                 Overlay(TTF_Font *police);
                 ~Overlay();
 
-                void displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *square_shader = nullptr);
-                void displayMusicOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, std::string const track, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
-                void displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, glm::vec3 &position, float const speed, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
-                void displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *square_shader = nullptr);
+                void displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::string const track, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, glm::vec3 &position, float const speed, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
 
                 void setMusicInformation(std::string const track);
                 void setSpeedInformation(float const speed);

@@ -59,7 +59,7 @@ PlaneteRing::~PlaneteRing()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader, Shader *ring_shader)
+void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader, Shader *ring_shader)
 {
     if(plan_ring_shader != nullptr)
     {
@@ -75,7 +75,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            plan_ring_shader->setMat4("modelview", modelview);
+            plan_ring_shader->setMat4("view", view);
             plan_ring_shader->setMat4("projection", projection);
             plan_ring_shader->setMat4("model", m_model_mat);
             
@@ -96,7 +96,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3
             {
                 m_ring->setPosition(m_current_position);
                 m_ring->updatePosition();
-                m_ring->display(projection, modelview, camPos, hdr, ring_shader);
+                m_ring->display(projection, view, camPos, hdr, ring_shader);
             }
 
         /************************************************* unbind VBO and IBO ********************************************************/

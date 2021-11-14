@@ -57,29 +57,29 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
-                void drawName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader = nullptr)
+                void drawName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader = nullptr)
                 {
-                        m_system->displayName(projection, modelview, camPos, name_render_shader);
+                        m_system->displayName(projection, view, camPos, name_render_shader);
                 }
 
-                void drawAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
+                void drawAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
                 {
-                        m_system->displayAtmo(projection, modelview, camPos, hdr, atmo_shader);
+                        m_system->displayAtmo(projection, view, camPos, hdr, atmo_shader);
                 }
 
-                void drawInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr)
+                void drawInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr)
                 {
-                        m_system->displayInfo(projection, modelview, camPos, hdr, shaders, planete_info);
+                        m_system->displayInfo(projection, view, camPos, hdr, shaders, planete_info);
                 }
 
-                void drawSkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+                void drawSkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr)
                 {
-                        m_system->displaySkybox(projection, modelview, hdr);
+                        m_system->displaySkybox(projection, view, hdr);
                 }
 
-                void drawSystem(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *shader_host = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr)
+                void drawSystem(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *shader_host = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr)
                 {
-                        m_system->display(projection, modelview, camPos, hdr, shader_host, companion_shader, ring_shader);
+                        m_system->display(projection, view, camPos, hdr, shader_host, companion_shader, ring_shader);
                 }
 
                 void drawAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr)

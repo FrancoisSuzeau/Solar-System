@@ -17,7 +17,6 @@ PURPOSE : class Atmosphere
 /***********************************************************************************************************************************************************************/
 Atmosphere::Atmosphere(float size, std::string const name)
 {
-
     name_planete_host = name;
     m_size = size;
 
@@ -89,13 +88,13 @@ void Atmosphere::updatePosAtmo(glm::vec3 pos_plan)
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader, Shader *ring_shader)
+void Atmosphere::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader, Shader *ring_shader)
 {
     if(atmo_shader != nullptr)
     {
         
-        glm::mat4 save = modelview;
-        //! modelview = scale(modelview, m_apparent_size);
+        glm::mat4 save = view;
+        //! view = scale(view, m_apparent_size);
 
         //==============================================================================================================================
         glUseProgram(atmo_shader->getProgramID());
@@ -104,11 +103,11 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 
             
             if(sphere_atmosphere != nullptr)
             {
-                sphere_atmosphere->display(projection, modelview, camPos, hdr, atmo_shader);
+                sphere_atmosphere->display(projection, view, camPos, hdr, atmo_shader);
             }
             
         glUseProgram(0);
         
-        modelview = save;
+        view = save;
     }
 }
