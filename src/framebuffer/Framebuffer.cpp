@@ -39,22 +39,85 @@ Framebuffer::~Framebuffer()
 }
 
 /***********************************************************************************************************************************************************************/
-/*********************************************************************** initFramebuffer *******************************************************************************/
+/*********************************************************************** initVertices **********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::initFramebuffer(int width, int height)
+void Framebuffer::initVertices()
 {
-    float quadVertices[] = {-1.0f, -1.0f, -1.0f,   1.0f, -1.0f, -1.0f,   1.0f, 1.0f, -1.0f,   
+    float vertices[] = {-1.0f, -1.0f, -1.0f,   1.0f, -1.0f, -1.0f,   1.0f, 1.0f, -1.0f,   
                         -1.0f, -1.0f, -1.0f,   -1.0f, 1.0f, -1.0f,   1.0f, 1.0f, -1.0f   
-
     };
 
-    float temp_coord[] = {0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,
+    float coord[] = {0.0f, 0.0f,   1.0f, 0.0f,   1.0f, 1.0f,
                           0.0f, 0.0f,   0.0f, 1.0f,   1.0f, 1.0f
-                          
                           };
 
-    int m_bytes_vertices_size = 18 * sizeof(float);
-    int m_bytes_coord_size = 12 * sizeof(float);
+    m_bytes_vertices_size = 18 * sizeof(float);
+    m_bytes_coord_size = 12 * sizeof(float);
+
+    for (int i = 0; i < 18; i++)
+    {
+        quadVertices[i] = vertices[i];
+    }
+
+    for (int i = 0; i < 12; i++)
+    {
+        tex_coord[i] = coord[i];
+    }
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************** manageFramebuffer **********************************************************************************/
+/***********************************************************************************************************************************************************************/
+bool Framebuffer::manageFramebuffer(int width, int height)
+{
+    glGenFramebuffers(1, &fb);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb);
+
+    // Create a texture to render to
+    glGenTextures(1, &fb_texture);
+
+    glBindTexture(GL_TEXTURE_2D, fb_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // NULL means reserve texture memory
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+    // Attach the texture to the framebuffer
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_texture, 0);
+
+    glGenRenderbuffers(1, &depth_rb);
+    glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+    // finally check if framebuffer is complete
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+        return false;
+    }
+        
+        
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //===================================================================================================================
+
+    screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
+    assert(screenShader);
+
+    assert(screenShader->loadShader());
+
+    return true;
+}
+
+/***********************************************************************************************************************************************************************/
+/*********************************************************************** initFramebuffer *******************************************************************************/
+/***********************************************************************************************************************************************************************/
+bool Framebuffer::initFramebuffer(int width, int height)
+{
+    this->initVertices();
 
     /************************************************* VBO management ********************************************************/
     //destroy a possible ancient VBO
@@ -70,7 +133,7 @@ void Framebuffer::initFramebuffer(int width, int height)
     glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
 
         //memory allocation
-        glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_coord_size, 0, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_coord_size, 0, GL_STATIC_DRAW);
         /*
             - GL_STATIC_DRAW : data with few updating
             - GL_DYNAMIC_DRAW : data with frequently updating (many times per second but not each frame
@@ -80,7 +143,7 @@ void Framebuffer::initFramebuffer(int width, int height)
 
        //vertices transfert$
        glBufferSubData(GL_ARRAY_BUFFER, 0, m_bytes_vertices_size, quadVertices);
-       glBufferSubData(GL_ARRAY_BUFFER, m_bytes_vertices_size, m_bytes_coord_size, temp_coord);
+       glBufferSubData(GL_ARRAY_BUFFER, m_bytes_vertices_size, m_bytes_coord_size, tex_coord);
 
        //unlock VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -116,44 +179,7 @@ void Framebuffer::initFramebuffer(int width, int height)
     glBindVertexArray(0);
     //===================================================================================================================
 
-    /************************************************* Framebuffer management ********************************************************/
-    
-    glGenFramebuffers(1, &fb);
-    glBindFramebuffer(GL_FRAMEBUFFER, fb);
-
-    //ONLY HDR THAT WORKS !
-    // Create a texture to render to
-    glGenTextures(1, &fb_texture);
-
-    glBindTexture(GL_TEXTURE_2D, fb_texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // NULL means reserve texture memory
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-    // Attach the texture to the framebuffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb_texture, 0);
-
-    glGenRenderbuffers(1, &depth_rb);
-    glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
-    // finally check if framebuffer is complete
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-        
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //===================================================================================================================
-
-
-    screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
-    assert(screenShader);
-
-    assert(screenShader->loadShader());
-
+    return this->manageFramebuffer(width, height);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -173,12 +199,41 @@ void Framebuffer::renderFrame(float exposure, bool hdr)
 
                 glBindTexture(GL_TEXTURE_2D, fb_texture);	// use the color attachment texture as the texture of the quad plane
                 glDrawArrays(GL_TRIANGLES, 0, 6);
-
                 glBindTexture(GL_TEXTURE_2D, 0);
 
             glBindVertexArray(0);
         glUseProgram(0);
     }
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************** bindFramebuffer ************************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::bindFramebuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, this->getFB());
+
+    glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
+
+    ///make sure we clear the framebuffer's content
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+    //cleaning the screen
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+/***********************************************************************************************************************************************************************/
+/**************************************************************** unbindFramebuffer ************************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::unbindFramebuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
+    // clear all relevant buffers
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 /***********************************************************************************************************************************************************************/

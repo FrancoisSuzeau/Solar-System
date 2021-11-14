@@ -122,6 +122,8 @@ PURPOSE : header of the OpenGlSketch class
 
                 bool    initWindow();
                 bool    initGL();
+                void    initFrameBuffer();
+
                 void    mainLoop();
                 void    startLoop();
                 void    windowProcess();
@@ -130,7 +132,7 @@ PURPOSE : header of the OpenGlSketch class
                 void    renderOverlay();
                 void    renderParticles();
 
-                void initFrameBuffer();
+                
                 void renderSettings();
 
         };

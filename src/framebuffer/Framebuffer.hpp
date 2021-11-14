@@ -38,20 +38,28 @@ PURPOSE : header of the Framebuffer class
                 unsigned int fb;
                 unsigned int depth_rb;
 
+                float quadVertices[18];
+                float tex_coord[12];
+
+                int m_bytes_vertices_size;
+                int m_bytes_coord_size;
+
                 Shader *screenShader;
 
-                
+                void initVertices();
+                bool manageFramebuffer(int width, int height);
 
             public:
 
                 Framebuffer();
                 ~Framebuffer();
 
-                void initFramebuffer(int width, int height);
+                bool initFramebuffer(int width, int height);
+                void renderFrame(float exposure, bool hdr);
+                void bindFramebuffer();
+                void unbindFramebuffer();
 
                 unsigned int getFB() const;
-
-                void renderFrame(float exposure, bool hdr);
 
         };
 

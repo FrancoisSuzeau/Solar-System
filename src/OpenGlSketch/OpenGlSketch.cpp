@@ -162,7 +162,7 @@ bool OpenGlSketch::initGL()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::initFrameBuffer()
 {
-    m_framebuffer->initFramebuffer(m_window_width, m_window_height);
+    assert(m_framebuffer->initFramebuffer(m_window_width, m_window_height));
 }
 
 /***********************************************************************************************************************************************************************/
@@ -408,16 +408,7 @@ void OpenGlSketch::mainLoop()
         }
 
     /********************************************************************** Framebuffer activation ******************************************************************/
-
-            glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer->getFB());
-
-            glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
-
-            ///make sure we clear the framebuffer's content
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-            //cleaning the screen
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            m_framebuffer->bindFramebuffer();
 
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene();
@@ -452,14 +443,8 @@ void OpenGlSketch::mainLoop()
 
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
-        
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
-        // clear all relevant buffers
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        m_framebuffer->unbindFramebuffer();
 
         m_framebuffer->renderFrame(exposure, hdr);
         
