@@ -22,6 +22,7 @@ PURPOSE : header of the virtual StartScreen class
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
+        #include <cassert>
 
         #include <SDL2/SDL_ttf.h>
 
@@ -45,7 +46,7 @@ PURPOSE : header of the virtual StartScreen class
                 StartScreen(TTF_Font *police);
                 ~StartScreen();
 
-                void drawStartScreen(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader = nullptr);
+                void drawStartScreen(glm::mat4 &projection, glm::mat4 &view, Shader *text_shader = nullptr);
 
         };
 

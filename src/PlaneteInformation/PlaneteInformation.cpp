@@ -23,14 +23,11 @@ m_text_name(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
     screen_h = GetSystemMetrics(SM_CXSCREEN);
     screen_w = GetSystemMetrics(SM_CYSCREEN);
 
-    m_text_name.loadTTF(m_name_plan);
+    assert(m_text_name.loadTTF(m_name_plan));
     m_name_plan = "None";
 
     m_rect = new Square(0.05, 0.7);
-    if(m_rect == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_rect);
 
     colorGrey = vec3(0.7);
     colorBlack = vec3(0.1);
@@ -52,25 +49,25 @@ PlaneteInformation::~PlaneteInformation()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* renderInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader, Shader *square_shader)
+void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::vector<Shader *> shaders)
 {
-    glm::mat4 save = modelview;
+    glm::mat4 save = view;
     float constance = 0.05;
 
     float start_x_black = -0.8;
     float start_y = 0.5;
 
-    if((square_shader != nullptr) && (m_rect != nullptr))
+    if((shaders[1] != nullptr) && (m_rect != nullptr))
     {
         //black fill
         for (size_t i(0); i < 11; i++)
         {
             for (size_t j(0); j < 9; j++)
             {
-                    modelview = translate(modelview, vec3(start_x_black, start_y, 0.0));
-                    m_rect->display(projection, modelview, colorBlack, hdr, square_shader);
+                    view = translate(view, vec3(start_x_black, start_y, 0.0));
+                    m_rect->display(projection, view, colorBlack, hdr, shaders[1]);
                 
-                modelview = save;
+                view = save;
                 start_x_black = start_x_black + constance;
             }
 
@@ -83,15 +80,15 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
 
         for (size_t i(0); i < 9; i++)
         {
-                modelview = translate(modelview, vec3(start_x_white, 0.51, 0.0));
-                m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                view = translate(view, vec3(start_x_white, 0.51, 0.0));
+                m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
                 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(start_x_white, -0.01, 0.0));
-                m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                view = translate(view, vec3(start_x_white, -0.01, 0.0));
+                m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
 
-            modelview = save;
+            view = save;
 
             start_x_white = start_x_white + constance;
         }
@@ -101,42 +98,42 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &modelview,
 
         for (size_t i(0); i < 11; i++)
         {
-                modelview = translate(modelview, vec3(-0.81, start_y_white, 0.0));
-                m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                view = translate(view, vec3(-0.81, start_y_white, 0.0));
+                m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
                 
-            modelview = save;
+            view = save;
 
-                modelview = translate(modelview, vec3(-0.39, start_y_white, 0.0));
-                m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+                view = translate(view, vec3(-0.39, start_y_white, 0.0));
+                m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
                 
-            modelview = save;
+            view = save;
 
             start_y_white = start_y_white - constance;
         }
 
         //the last to white on the bottom corner left and right
 
-            modelview = translate(modelview, vec3(-0.81, -0.01, 0.0));
-            m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+            view = translate(view, vec3(-0.81, -0.01, 0.0));
+            m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
                 
-        modelview = save;
+        view = save;
 
-            modelview = translate(modelview, vec3(-0.39, -0.01, 0.0));
-            m_rect->display(projection, modelview, colorGrey, hdr, square_shader);
+            view = translate(view, vec3(-0.39, -0.01, 0.0));
+            m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
     }
 
     
 
-    modelview = save;
+    view = save;
 
-    if(text_shader != nullptr)
+    if(shaders[0] != nullptr)
     {
             //Diplay text information
-            modelview = translate(modelview, vec3(-0.585, 0.49, -0.0));
-            modelview = scale(modelview, vec3(0.03, 0.05, 0.0));
-            m_text_name.renderTextOverlay(projection, modelview, text_shader);
+            view = translate(view, vec3(-0.585, 0.49, -0.0));
+            view = scale(view, vec3(0.03, 0.05, 0.0));
+            m_text_name.renderText(projection, view, shaders[0]);
 
-        modelview = save;
+        view = save;
     }
 
     
@@ -155,7 +152,7 @@ void PlaneteInformation::setPosPlan(glm::vec3 const &planPos)
 /***********************************************************************************************************************************************************************/
 void PlaneteInformation::changeNamePlan(std::string const name)
 {
-    m_text_name.setText(name);
+    assert(m_text_name.setText(name));
     m_name_plan = name;
 }
 

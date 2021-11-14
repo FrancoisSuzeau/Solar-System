@@ -25,6 +25,7 @@ PURPOSE : header of the virtual PlaneteCreator class
 
         #include "SimplePlanete.hpp"
         #include "../../Shader/Shader.hpp"
+        #include "../System/System.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -39,37 +40,32 @@ PURPOSE : header of the virtual PlaneteCreator class
 
                 virtual ~PlaneteCreator() {delete m_planete;};
 
-                virtual SimplePlanete* FactoryMethod(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) = 0;
+                virtual SimplePlanete* FactoryMethod(init_data data, TTF_Font *police) = 0;
 
-                bool MakingPlanete(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) 
+                bool MakingPlanete(init_data data, TTF_Font *police) 
                 {
-                        m_planete = this->FactoryMethod(texture, name, real_size, inclinaison_angle, initial_pos, police);
+                        m_planete = this->FactoryMethod(data, police);
                         return true;
                 }
 
-                void displayName(glm::mat4 &projection, glm::mat4 &modelview, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr)
+                void displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 camPos, int threshold, Shader *name_render_shader = nullptr)
                 {
-                        m_planete->displayName(projection, modelview, ratio, phi, theta, y, name_render_shader);
+                        m_planete->displayName(projection, view, camPos, threshold, name_render_shader);
                 }
 
-                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
+                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
                 {
-                       m_planete->displayAtmo(projection, modelview, light_src, camPos, hdr, atmo_shader);
+                       m_planete->displayAtmo(projection, view, camPos, hdr, atmo_shader);
                 }
 
-                void drawPlanete(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *m_plan_shader = nullptr, Shader *ring_shader = nullptr)
+                void drawPlanete(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *m_plan_shader = nullptr, Shader *ring_shader = nullptr)
                 {
-                        m_planete->display(projection, modelview, light_src, camPos, hdr, m_plan_shader, ring_shader);
+                        m_planete->display(projection, view, camPos, hdr, m_plan_shader, ring_shader);
                 }
 
-                void UpdatePositionPlan(glm::mat4 &projection, glm::mat4 &modelview)
+                void UpdatePositionPlan()
                 {
-                        m_planete->updatePosition(projection, modelview);
-                }
-
-                void updatePosLight(glm::mat4 &projection, glm::mat4 &modelview)
-                {
-                        m_planete->updatePositionLight(projection, modelview);
+                        m_planete->updatePosition();
                 }
 
                 vec3 getPostion() const
@@ -85,6 +81,11 @@ PURPOSE : header of the virtual PlaneteCreator class
                 std::string getName() const
                 {
                         return m_planete->getName();
+                }
+
+                float getRadius(glm::vec3 camPos)
+                {
+                        return m_planete->getRadiusFromCam(camPos);
                 }
 
 

@@ -28,7 +28,7 @@ Star::Star(const float radius, const unsigned int longSegs, const unsigned int l
 Sphere(radius, longSegs, latSegs), m_cloud_texture(texture),
 m_name(name), m_light_vao(0)
 {
-    m_cloud_texture.loadTexture();
+    assert(m_cloud_texture.loadTexture());
 
     m_real_size = real_size;
     m_initial_pos = vec3(0.01f, 0.0f, 0.0f);
@@ -37,10 +37,7 @@ m_name(name), m_light_vao(0)
     m_rotation_angle = 0.0f;
 
     m_atmosphere = new Atmosphere(1.05f, m_name);
-    if(m_atmosphere == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_atmosphere);
 
     /************************************************* VAO management ********************************************************/
     if(glIsVertexArray(m_light_vao) == GL_TRUE)
@@ -86,7 +83,7 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *star_shader)
+void Star::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *star_shader)
 {
     if(star_shader != nullptr)
     {
@@ -104,9 +101,9 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            star_shader->setMat4("modelview", modelview);
+            star_shader->setMat4("view", view);
             star_shader->setMat4("projection", projection);
-            star_shader->setMat4("light_src", light_src);
+            star_shader->setMat4("model", m_model_mat);
 
             star_shader->setTexture("texture0", 0);
 
@@ -135,63 +132,39 @@ void Star::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
     
 }
 
-/***********************************************************************************************************************************************************************/
-/**************************************************************************** updatePosition ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Star::updatePosition(glm::mat4 &projection, glm::mat4 &modelview, float const rotation)
-{
-    //postionning body
-    translateCelestialBody(modelview, m_current_position);
+// /***********************************************************************************************************************************************************************/
+// /**************************************************************************** updatePosition ***************************************************************************/
+// /***********************************************************************************************************************************************************************/
+// void Star::updatePosition(glm::mat4 &projection, glm::mat4 &view, float const rotation)
+// {
+//     m_model_mat = glm::mat4(1.0f);
+//     //postionning body
+//     translateCelestialBody(m_model_mat, m_current_position);
 
-    m_rotation_angle += m_speed_rotation;
-    if(m_rotation_angle >= 360)
-    {
-        m_rotation_angle -= 360;
-    }
-    rotateCelestialBody(modelview, m_rotation_angle);
+//     m_rotation_angle += m_speed_rotation;
+//     if(m_rotation_angle >= 360)
+//     {
+//         m_rotation_angle -= 360;
+//     }
+//     rotateCelestialBody(m_model_mat, m_rotation_angle);
 
-    //scaling on his real size
-    scaleCelestialBody(modelview, m_real_size);
-}
-
-/***********************************************************************************************************************************************************************/
-/************************************************************************* updatePositionLight *************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Star::updatePositionLight(glm::mat4 &projection, glm::mat4 &light_src)
-{
-    m_current_position = m_initial_pos;
-    //postionning body
-    translateCelestialBody(light_src, m_current_position);
-
-    //making the planete inclinaison
-    inclineCelestialBody(light_src, m_inclinaison_angle);
-
-    //making the planete rotation
-    m_rotation_angle += m_speed_rotation;
-    if(m_rotation_angle >= 360)
-    {
-        m_rotation_angle -= 360;
-    }
-    rotateCelestialBody(light_src, m_rotation_angle);
-
-    //scaling on his real size
-    scaleCelestialBody(light_src, m_real_size);
-}
+//     //scaling on his real size
+//     scaleCelestialBody(m_model_mat, m_real_size);
+// }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *atmo_shader)
+void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *atmo_shader)
 {
     if(atmo_shader != nullptr)
     {
-        translateCelestialBody(modelview, m_current_position);
+        translateCelestialBody(view, m_current_position);
         if(m_atmosphere != nullptr)
         {
             //HACK : in fact we don't need this, have to change some parameter to pass them with default value
-            glm::mat4 light(1.0f);
             glm::vec3 campos(0.0f);
-            m_atmosphere->display(projection, modelview, light, campos, hdr, atmo_shader);
+            m_atmosphere->display(projection, view, campos, hdr, atmo_shader);
         }
            
     }

@@ -19,16 +19,12 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlanetarySystem::PlanetarySystem(std::string name_system, TTF_Font *police, int companion_count) : m_name_renderer(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
+PlanetarySystem::PlanetarySystem(sys_init_data data, TTF_Font *police)
 {
-    m_system_name = name_system;
-    m_companion_count = companion_count;
+    m_system_name = data.name_sys;
+    m_companion_count = data.companion_count;
 
-    m_name_renderer.loadTTF(m_system_name);
-
-    //No need to create a planete info pointer because we use Only one
-    
-
+    this->initData();
 }
 
 PlanetarySystem::PlanetarySystem()
@@ -38,11 +34,11 @@ PlanetarySystem::PlanetarySystem()
 
 PlanetarySystem::~PlanetarySystem()
 {
-    for (int i(0); i < m_companion_count; i++)
+    for (std::vector<PlaneteCreator*>::iterator it = m_moons_creator.begin(); it != m_moons_creator.end(); ++it)
     {
-        if(m_moons_creator[i] != nullptr)
+        if(*it != nullptr)
         {
-            delete m_moons_creator[i];
+            delete *it;
         }
         
     }
@@ -65,6 +61,24 @@ PlanetarySystem::~PlanetarySystem()
 }
 
 /***********************************************************************************************************************************************************************/
+/******************************************************************************** initData *****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void PlanetarySystem::initData()
+{
+    m_data.push_back({"../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/IoMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0)});
+}
+
+/***********************************************************************************************************************************************************************/
 /******************************************************************************** loadSystem ***************************************************************************/
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::loadSystem(int count, TTF_Font *police)
@@ -72,105 +86,43 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
     /************************************************* loading companion ********************************************************/
     if(m_system_name == "Earth System")
     {
-        m_companion_name.push_back("Moon");
-        
         m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[0] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0), police);
+        assert(m_moons_creator[0]);
+        assert(m_moons_creator[0]->MakingPlanete(m_data[0], police));
 
         m_host_creator = new AtmoPlaneteCreator();
-        if(m_host_creator == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0), police);
+        assert(m_host_creator);
+        assert(m_host_creator->MakingPlanete(m_data[1], police));
 
         m_atmosphere = new Atmosphere(1.05f, "Earth");
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_atmosphere);
     }
     else if(m_system_name == "Jovian System")
     {
-        m_companion_name.push_back("Europa");
-        m_companion_name.push_back("Ganymede");
-        m_companion_name.push_back("Io");
-        m_companion_name.push_back("Callisto");
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[0] == nullptr)
+        for (int i(2); i < 6; i++)
         {
-            exit(EXIT_FAILURE);
+            m_moons_creator.push_back(new SimplePlaneteCreator());
+            assert(m_moons_creator[i-2]);
+            assert(m_moons_creator[i-2]->MakingPlanete(m_data[i], police));
         }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0), police);
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[1] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0), police);
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[2] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/IoMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0), police);
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[3] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[3]->MakingPlanete("../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0), police);
-
+        
         m_host_creator = new SimplePlaneteCreator();
-        if(m_host_creator == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0), police);
+        assert(m_host_creator);
+        assert(m_host_creator->MakingPlanete(m_data[6], police));
 
     }
     else if(m_system_name == "Saturnian System")
     {
-        m_companion_name.push_back("Titan");
-        m_companion_name.push_back("Enceladus");
-        m_companion_name.push_back("Mimas");
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[0] == nullptr)
+        for (int i(7); i < 10; i++)
         {
-            exit(EXIT_FAILURE);
+            m_moons_creator.push_back(new SimplePlaneteCreator());
+            assert(m_moons_creator[i-7]);
+            assert(m_moons_creator[i-7]->MakingPlanete(m_data[i], police));
         }
-        m_moons_creator[0]->MakingPlanete("../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0), police);
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[1] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[1]->MakingPlanete("../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0), police);
-
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        if(m_moons_creator[2] == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_moons_creator[2]->MakingPlanete("../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0), police);
 
         m_host_creator = new PlaneteRingCreator();
-        if(m_host_creator == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
-        m_host_creator->MakingPlanete("../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0), police);
+        assert(m_host_creator);
+        assert(m_host_creator->MakingPlanete(m_data[10], police));
 
     }
     else
@@ -183,155 +135,98 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
+void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
 {
     
-    glm::mat4 save = modelview;
-    glm::vec3 target_point(0.0f, 0.0f, 0.0f);
-    glm::vec3 vertical_axe(0.0f, 0.0f, 1.0f);
-    glm::mat4 light_src = glm::lookAt(sun_pos, target_point, vertical_axe);
-    glm::mat4 save_light_src = light_src;
+    glm::mat4 save = view;
 
     if(host_shader != nullptr)
     {
-        m_host_creator->UpdatePositionPlan(projection, modelview);
-        m_host_creator->updatePosLight(projection, light_src);
-        m_host_creator->drawPlanete(projection, modelview, light_src, camPos, hdr, host_shader, ring_shader);
+        m_host_creator->UpdatePositionPlan();
+        m_host_creator->drawPlanete(projection, view, camPos, hdr, host_shader, ring_shader);
 
     }
 
-    modelview = save;
-    light_src = save_light_src;
+    view = save;
 
     if(companion_shader != nullptr)
     {
         for (int i(0); i < m_companion_count; i++)
         {
-            m_moons_creator[i]->UpdatePositionPlan(projection, modelview);
-            m_moons_creator[i]->updatePosLight(projection, light_src);
-            m_moons_creator[i]->drawPlanete(projection, modelview, light_src, camPos, hdr, companion_shader); 
+            m_moons_creator[i]->UpdatePositionPlan();
+            m_moons_creator[i]->drawPlanete(projection, view, camPos, hdr, companion_shader); 
 
-            modelview = save;
-            light_src = save_light_src;
-
+            view = save;
         }
     }
     
-        
-    modelview = save;
-    light_src = save_light_src;
+    view = save;
 
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayName **************************************************************************/
 /***********************************************************************************************************************************************************************/
-
-void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader)
+void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader)
 {
-    glm::mat4 save = modelview;
+    glm::mat4 save = view;
 
     if(name_render_shader != nullptr)
     {
-        
-
-        /*
-            CamPos is the M point in spherical coordinate, so we already have his x, y, z coordinate
-            but this coordinate are relative to the world reference
-            so we add the planete position to the cam position to have the coordinate reference opposite to the planete
-            we only use the parametrical coordinate to find the r radius
-        */
-        if(m_host_creator == nullptr) //exceptionnaly we exit the program because without light it can be a solar position
-        {
-            exit(EXIT_FAILURE);
-        }
-        glm::vec3 host_pos = m_host_creator->getPostion();
-        
-        if(m_host_creator == nullptr) //exceptionnaly we exit the program because without light it can be a solar size
+        if(m_host_creator == nullptr) 
         {
             exit(EXIT_FAILURE);
         }
         float size_plan = m_host_creator->getSizePlan();
+        float r = m_host_creator->getRadius(camPos);
 
-        double x = camPos[0] - host_pos[0]; //doesn't know why I have to use the reverse value
-        double y = camPos[1] - host_pos[1];
-        double z = camPos[2] - host_pos[2];
-        double r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-            
-        double r = std::sqrt(r_squarre);
-
-        float phi = atan(y/x);
-        float theta = acos(z/r);
-
-        if( r >= 400 * size_plan )
+        if( r >= 400 * size_plan ) // juste to allow the application to display host name or moon name depends on the posiiton of the camera
         {
-            modelview = translate(modelview, host_pos);
-            m_name_renderer.renderText(projection, modelview, size_plan, r, phi, theta, y, name_render_shader);
-            // std::cout << name_render_shader << std::endl;
-            modelview = save;
+            if( name_render_shader != nullptr )
+            {
+                m_host_creator->displayName(projection, view, camPos, 400, name_render_shader);
+                view = save;
+            }
+            view = save;
         }
         else
         {
             for (int i(0); i < m_companion_count; i++)
             {
-                glm::vec3 moon_pos = m_moons_creator[i]->getPostion();
-                float size_moon = m_host_creator->getSizePlan();
-
-                x = camPos[0] - moon_pos[0]; //doesn't know why I have to use the reverse value
-                y = camPos[1] - moon_pos[1];
-                z = camPos[2] - moon_pos[2];
-                r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-                    
-                r = std::sqrt(r_squarre);
-
-                phi = atan(y/x);
-                theta = acos(z/r);
-                if(r >= 10 * size_moon)
+                if(name_render_shader != nullptr)
                 {
-                    if(name_render_shader != nullptr)
-                    {
-                        m_moons_creator[i]->displayName(projection, modelview, r, phi, theta, y, name_render_shader);
-                        // std::cout << name_render_shader << std::endl;
-                    }
-                }
-                
-                modelview = save;
+                    m_moons_creator[i]->displayName(projection, view, camPos, 10, name_render_shader);
+                    view = save;
+                }  
+                view = save;
             }
         }
-
-        modelview = save;
+        view = save;
     }
-    
-    modelview = save;
+    view = save;
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
-    if((m_system_name == "Earth System")) //|| (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
+    if((m_system_name == "Earth System"))
     {
-        glm::mat4 save = modelview;
-        glm::vec3 position(0.1f, 0.0f, 0.0f);
-        glm::vec3 target_point(0.0f, 0.0f, 0.0f);
-        glm::vec3 vertical_axe(0.0f, 0.0f, 1.0f);
-        glm::mat4 light_src = glm::lookAt(position, target_point, vertical_axe);
-        glm::mat4 save_light_src = light_src;
+        glm::mat4 save = view;
 
         if(m_host_creator != nullptr)
         {
-            m_host_creator->UpdatePositionPlan(projection, modelview);
-            m_host_creator->updatePosLight(projection, light_src);
+            // m_host_creator->UpdatePositionPlan();
 
             if((m_atmosphere != nullptr) && (atmo_shader != nullptr))
             {
-                m_atmosphere->display(projection, modelview, light_src, camPos, hdr, atmo_shader);
+                m_atmosphere->updatePosAtmo(m_host_creator->getPostion());
+                m_atmosphere->display(projection, view, camPos, hdr, atmo_shader);
             }
         }
                
-        modelview = save;
-        light_src = save_light_src;
+        view = save;
     }
     
 }
@@ -339,27 +234,16 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, g
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info, Shader *text_shader, Shader *square_shader)
+void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info)
 {
-    glm::mat4 save = modelview;
+    glm::mat4 save = view;
 
-    glm::vec3 planete_pos = m_host_creator->getPostion();
+    float r = m_host_creator->getRadius(camPos);
     float size_plan = m_host_creator->getSizePlan();
-    
-
-        float x = camPos[0] - planete_pos[0]; //doesn't know why I have to use the reverse value
-        float y = camPos[1] - planete_pos[1];
-        float z = camPos[2] - planete_pos[2];
-            
-            
-        float r_squarre = std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2);
-            
-        float r = std::sqrt(r_squarre);
 
         if(r <= 10 * size_plan)
         {
-            modelview = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
-            //m_host_creator[i]->drawInfoPlan(projection, modelview, hdr);
+            view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
 
             if(m_host_creator == nullptr) //exceptionnaly we exit the program because without 
             {
@@ -369,27 +253,28 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, g
             
             if(planete_info != nullptr)
             {
-                 if(tmp_name != planete_info->getInfoName())
+                if(tmp_name != planete_info->getInfoName())
                 {
                     planete_info->changeNamePlan(tmp_name);
                 }
 
-                if((text_shader != nullptr) && (square_shader != nullptr))
+                if((shaders[0] != nullptr) && (shaders[1] != nullptr))
                 {
-                    planete_info->renderInfo(projection, modelview, hdr, text_shader, square_shader);
+                    planete_info->renderInfo(projection, view, hdr, shaders);
+                    view = save;
                 }
                 
             }
             
         }
 
-        modelview = save;
+        view = save;
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** NOT CONCERN **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr)
 {
     //do nothing and doesn't have
 }

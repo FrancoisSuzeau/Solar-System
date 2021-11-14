@@ -26,7 +26,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Sphere::Sphere() : m_vbo(0), m_ibo(0), m_radius(0)
 {
-
+    m_model_mat = glm::mat4(1.0f);
 }
 
 Sphere::Sphere(const float radius, const unsigned int longSegs, const unsigned int latSegs) : 
@@ -179,7 +179,7 @@ Sphere::~Sphere()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** display ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *sphere_shader, Shader *ring_shader)
+void Sphere::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *sphere_shader, Shader *ring_shader)
 {
     if(sphere_shader != nullptr)
     {
@@ -196,9 +196,9 @@ void Sphere::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &lig
         //===================================================================================================================================
 
 
-        sphere_shader->setMat4("modelview", modelview);
+        sphere_shader->setMat4("view", view);
         sphere_shader->setMat4("projection", projection);
-        sphere_shader->setMat4("light_src", light_src);
+        sphere_shader->setMat4("model", m_model_mat);
 
         sphere_shader->setVec3("viewPos", camPos);
         sphere_shader->setFloat("transparency", 1.0f);

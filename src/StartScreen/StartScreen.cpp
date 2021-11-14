@@ -22,7 +22,7 @@ using namespace glm;
 StartScreen::StartScreen(TTF_Font *police) : 
 m_text_loadScreen(3.0f, 0.2f, 6.0f, "../assets/font/venus rising rg.ttf", police)
 {
-    m_text_loadScreen.loadTTF(" Solar System");
+    assert(m_text_loadScreen.loadTTF(" Solar System"));
     std::cout << ">> Start Screen initiated" << std::endl;
 }
 
@@ -34,14 +34,14 @@ StartScreen::~StartScreen()
 /***********************************************************************************************************************************************************************/
 /***************************************************************************** DrawStartScreen *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void StartScreen::drawStartScreen(glm::mat4 &projection, glm::mat4 &modelview, Shader *text_shader)
+void StartScreen::drawStartScreen(glm::mat4 &projection, glm::mat4 &view, Shader *text_shader)
 {
-    glm::mat4 save = modelview;
+    glm::mat4 save = view;
 
     if(text_shader != nullptr)
     {
-        m_text_loadScreen.renderTextStartScreen(projection, modelview, text_shader);
+        m_text_loadScreen.renderText(projection, view, text_shader);
     }
 
-	modelview = save;
+	view = save;
 }

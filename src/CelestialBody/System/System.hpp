@@ -30,6 +30,23 @@ PURPOSE : header of the virtual System class
         #include "../../Shader/Shader.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
+
+        typedef struct init_data {
+
+                std::string texture_path;
+                std::string name;
+                float   size;
+                float   inclinaison_angle;
+                glm::vec3 position;
+
+        } init_data;
+
+        typedef struct sys_init_data {
+
+                std::string     name_sys;
+                int     companion_count;
+
+        } sys_init_data;
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -39,21 +56,23 @@ PURPOSE : header of the virtual System class
             protected:
 
                 std::string                 m_system_name;
-                std::vector<std::string>    m_companion_name;
                 int                         m_companion_count;
 
-                
+                std::vector<init_data>          m_data;
+                std::vector<sys_init_data>     sys_data;
+
+                virtual void initData() = 0;
                 
             public:
 
                 
                 virtual ~System() {};
                 virtual void loadSystem(int count, TTF_Font *police) = 0;
-                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, glm::vec3 sun_pos = glm::vec3(0.0, 0.0, 0.0), Shader *host_shader = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr) = 0;
-                virtual void displaySkybox(glm::mat4 &projection, glm::mat4 &modelview, bool hdr) = 0;
-                virtual void displayName(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, Shader *name_render_shader = nullptr) = 0;
-                virtual void displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) = 0;
-                virtual void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, PlaneteInformation *planete_info = nullptr, Shader *text_shader = nullptr, Shader *square_shader = nullptr) = 0;
+                virtual void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *host_shader = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr) = 0;
+                virtual void displaySkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr) = 0;
+                virtual void displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader = nullptr) = 0;
+                virtual void displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) = 0;
+                virtual void displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr) = 0;
                 virtual void displayAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr) = 0;
                 
         };

@@ -34,7 +34,8 @@ PURPOSE : header of the Settings class
         #include <cmath>
         #include <ctime>
         #include <Windows.h>
-        
+        #include <cassert>
+
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
         #include "../Input/Input.hpp"
@@ -116,7 +117,7 @@ PURPOSE : header of the Settings class
                 Settings(TTF_Font *police);
                 ~Settings();
 
-                void displayFrameSettings(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayFrameSettings(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
                 int manageButton(Input const &intput);
         };
 

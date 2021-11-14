@@ -24,21 +24,21 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlaneteRing::PlaneteRing(std::string const texture, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police) : SimplePlanete(texture, name, real_size, inclinaison_angle, initial_pos, police)
+PlaneteRing::PlaneteRing(init_data data, TTF_Font *police) : SimplePlanete(data, police)
 {
-    if(name == "Saturn")
+    if(data.name == "Saturn")
     {
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png");
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png", data);
         assert(m_ring);
     }
-    else if(name == "Uranus")
+    else if(data.name == "Uranus")
     {
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png");
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png", data);
         assert(m_ring);
     }
-    else if(name == "Neptune")
+    else if(data.name == "Neptune")
     {
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png");
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png", data);
         assert(m_ring);
     }
 }
@@ -59,7 +59,7 @@ PlaneteRing::~PlaneteRing()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader, Shader *ring_shader)
+void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader, Shader *ring_shader)
 {
     if(plan_ring_shader != nullptr)
     {
@@ -75,9 +75,9 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            plan_ring_shader->setMat4("modelview", modelview);
+            plan_ring_shader->setMat4("view", view);
             plan_ring_shader->setMat4("projection", projection);
-            plan_ring_shader->setMat4("light_src", light_src);
+            plan_ring_shader->setMat4("model", m_model_mat);
             
             plan_ring_shader->setTexture("texture0", 0);
 
@@ -94,7 +94,9 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4
 
             if((m_ring != nullptr) && (ring_shader != nullptr))
             {
-                m_ring->display(projection, modelview, light_src, camPos, hdr, ring_shader);
+                m_ring->setPosition(m_current_position);
+                m_ring->updatePosition();
+                m_ring->display(projection, view, camPos, hdr, ring_shader);
             }
 
         /************************************************* unbind VBO and IBO ********************************************************/

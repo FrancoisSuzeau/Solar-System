@@ -27,6 +27,7 @@ PURPOSE : header of the OpenGlSketch class
         #include <iostream>
         #include <string>
         #include <math.h>
+        #include <cassert>
         
         #include "../CelestialBody/System/SystemCreator.hpp"
         #include "../CelestialBody/System/SolarSystemCreator.hpp"
@@ -64,8 +65,8 @@ PURPOSE : header of the OpenGlSketch class
                 Camera	*camera;
 
                 mat4 projection;
-                mat4 model_view;
-                mat4 save_model_view;
+                mat4 view;
+                mat4 save_view;
                 
                 SDL_Window      *m_window;
                 SDL_GLContext   m_openGL_context;

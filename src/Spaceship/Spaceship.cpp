@@ -18,10 +18,7 @@ PURPOSE : class Spaceship
 Spaceship::Spaceship(std::string const path) : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f), m_sensibility(0.3f)
 {
     m_spaceship_model = new Model(path);
-    if(m_spaceship_model == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_spaceship_model);
 
     glm::mat4 model(1.0f);
 

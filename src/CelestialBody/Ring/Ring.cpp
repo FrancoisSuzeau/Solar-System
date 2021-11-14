@@ -22,11 +22,30 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Ring::Ring(float size, std::string const texture): Disk(size),
+Ring::Ring(float size, std::string const texture, init_data data): Disk(size),
 m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
 {
     
-    m_texture.loadTexture();
+    assert(m_texture.loadTexture());
+
+    m_rotation_angle = 0.0f;
+    m_speed_rotation = 0.1f;
+
+    if(data.name == "Saturn")
+    {
+        m_inclinaison_angle = 26.73f;
+        m_real_size = 300.0f;
+    }
+    else if(data.name == "Uranus")
+    {
+        m_inclinaison_angle = 97.77f;
+        m_real_size = 100.0f;
+    }
+    else if(data.name == "Neptune")
+    {
+        m_inclinaison_angle = 26.32f;
+        m_real_size = 100.0f;
+    }
 
     float temp_coord[] = {0, 0,   1, 0,   1, 1,
                           0, 0,   0, 1,   1, 1,
@@ -121,9 +140,17 @@ void Ring::load()
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************************* displayCrate **************************************************************************/
+/****************************************************************************** updatePosRing **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *ring_shader)
+void Ring::updatePosRing(glm::vec3 planPos)
+{
+    m_current_position = planPos;
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************************ display **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Ring::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *ring_shader)
 {
     if(ring_shader != nullptr)
     {
@@ -133,13 +160,9 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
         //lock VAO
         glBindVertexArray(m_vaoID);
 
-            //send matrices to shader
-            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
-            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-            // glUniformMatrix4fv(glGetUniformLocation(ring_shader->getProgramID(), "light_src"), 1, GL_FALSE, value_ptr(light_src));
-            ring_shader->setMat4("modelview", modelview);
+            ring_shader->setMat4("view", view);
             ring_shader->setMat4("projection", projection);
-            ring_shader->setMat4("light_src", light_src);
+            ring_shader->setMat4("model", m_model_mat);
 
             ring_shader->setVec3("viewPos", camPos);
             ring_shader->setInt("hdr", hdr);
@@ -153,10 +176,6 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
             //unlock texture
             glBindTexture(GL_TEXTURE_2D, 0);
 
-
-            // glDisableVertexAttribArray(2);
-            // glDisableVertexAttribArray(0);
-
         //unlock VAO
         glBindVertexArray(0);
 
@@ -166,7 +185,7 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light
 }
 
 //NOT CONCERN 
-void Ring::displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+void Ring::displayInfo(glm::mat4 &projection, glm::mat4 &view, bool hdr)
 {
     
 }

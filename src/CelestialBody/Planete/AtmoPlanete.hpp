@@ -21,7 +21,7 @@ PURPOSE : header of the AtmoPlanete class
         #include <string>
         #include <vector>
         #include <iostream>
-        #include <assert.h>
+        #include <cassert>
 
         #include <GL/glew.h>
         #include <glm/glm.hpp>
@@ -45,10 +45,10 @@ PURPOSE : header of the AtmoPlanete class
                 
             public:
 
-                AtmoPlanete(std::string const texture_surf, std::string const name, float const real_size, float inclinaison_angle, glm::vec3 initial_pos, TTF_Font *police);
+                AtmoPlanete(init_data data, TTF_Font *police);
                 AtmoPlanete();
                 ~AtmoPlanete();
-                void display(glm::mat4 &projection, glm::mat4 &modelview, glm::mat4 &light_src, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader = nullptr, Shader *ring_shader = nullptr);
+                void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader = nullptr, Shader *ring_shader = nullptr);
 
         };
 

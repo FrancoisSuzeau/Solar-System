@@ -20,7 +20,7 @@ PURPOSE : header of the Texture class
         #include <SDL2/SDL_image.h>
         #include <iostream>
         #include <string>
-        #include <assert.h>
+        #include <cassert>
         #include <GL/glew.h>
 
 /********************************************************************* class definition *********************************************************************/

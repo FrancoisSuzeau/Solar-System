@@ -165,7 +165,7 @@ unsigned int Skybox::loadSybox()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Skybox::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
+void Skybox::display(glm::mat4 &projection, glm::mat4 &view, bool hdr)
 {   
     
     glDepthFunc(GL_LEQUAL);
@@ -175,13 +175,13 @@ void Skybox::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
     //lock vao
         glBindVertexArray(m_vaoID);
 
-        glm::mat4 save = modelview;
+        glm::mat4 save = view;
 
-        modelview = glm::mat4(glm::mat3(modelview));
+        view = glm::mat4(glm::mat3(view));
         //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "modelview"), 1, GL_FALSE, value_ptr(modelview));
+        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "view"), 1, GL_FALSE, value_ptr(view));
         // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
-        m_shader.setMat4("modelview", modelview);
+        m_shader.setMat4("view", view);
         m_shader.setMat4("projection", projection);
 
         //Send texture unit to shader
@@ -211,6 +211,6 @@ void Skybox::display(glm::mat4 &projection, glm::mat4 &modelview, bool hdr)
     glDepthFunc(GL_LESS);
     
 
-    modelview = save;
+    view = save;
 }
 

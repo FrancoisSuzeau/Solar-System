@@ -269,12 +269,9 @@ void OpenGlSketch::initFrameBuffer()
 
 
     screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
-    if(screenShader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(screenShader);
 
-    screenShader->loadShader();
+    assert(screenShader->loadShader());
 }
 
 /***********************************************************************************************************************************************************************/
@@ -299,86 +296,50 @@ void OpenGlSketch::startLoop()
     std::cout << ">> Loading font file  " << "../assets/font/aAtmospheric.ttf" << " : SUCCESS" << std::endl;
 
     StartScreen *startScreen = new StartScreen(m_police[0]);
-    if(startScreen == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(startScreen);
 
     Camera      *startScreen_cam = new Camera(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-    if(startScreen_cam == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(startScreen_cam);
 
     text_shader = new Shader("../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag");
-    if(text_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    text_shader->loadShader();
+    assert(text_shader);
+    assert(text_shader->loadShader());
 
     m_overlay = new Overlay(m_police[1]);
-    if(m_overlay == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_overlay);
 
     m_settings = new Settings(m_police[1]);
-    if(m_settings == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(m_settings);
 
     aud = new Audio();
-    if(aud == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(aud);
 
     solar_system = new SolarSystemCreator();
-    if(solar_system == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(solar_system);
 
     square_shader = new Shader("../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag");
-    if(square_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    square_shader->loadShader();
+    assert(square_shader);
+    assert(square_shader->loadShader());
 
     Square      *square = new Square(0.05f, 0.500f);
     vec3 color = vec3(0.5f);
-    if(square == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(square);
 
     ship = new Spaceship("../assets/model/spaceship/untitled.obj");
-    if(ship == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(ship);
 
     // m_particuleGenerator = new Particule(ship);
-    // if(m_particuleGenerator == nullptr)
-    // {
-    //     exit(EXIT_FAILURE);
-    // }
+    // assert(m_particuleGenerator);
 
     m_model_shader = new Shader("../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag");
-    if(m_model_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_model_shader->loadShader();
+    assert(m_model_shader);
+    assert(m_model_shader->loadShader());
 
     int nb_loaded(0);
 
     mat4 projection;
-    mat4 model_view;
-    mat4 save_model_view;     
+    mat4 view;
+    mat4 save_view;     
     //===================================================================================================================
 
     m_input.capturePointer(true);
@@ -386,7 +347,7 @@ void OpenGlSketch::startLoop()
 
     //initialize modelview and projection matrix
     projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 120.0);
-    model_view = mat4(1.0f);
+    view = mat4(1.0f);
 
     //loading system and making start screen
     while(nb_loaded < 9)
@@ -397,33 +358,33 @@ void OpenGlSketch::startLoop()
 
         if(startScreen_cam != nullptr)
         {
-            startScreen_cam->lookAt(model_view);
+            startScreen_cam->lookAt(view);
         }
         
 
         //save the modelview matrix
-        save_model_view = model_view;
+        save_view = view;
 
-            model_view = translate(model_view, vec3(0.0f, 0.5f, 0.0f));
+            view = translate(view, vec3(0.0f, 0.5f, 0.0f));
             if(startScreen != nullptr)
             {
                 if(text_shader != nullptr)
                 {
-                    startScreen->drawStartScreen(projection, model_view, text_shader);
+                    startScreen->drawStartScreen(projection, view, text_shader);
                 }
             }
             
 
         //restaure the modelview matrix
-        model_view = save_model_view;
+        view = save_view;
         
             if(square != nullptr)
             {
-                square->drawLoad(nb_loaded, projection, model_view, color, square_shader);
+                square->drawLoad(nb_loaded, projection, view, color, square_shader);
             }
             
         //restaure the modelview matrix
-        model_view = save_model_view;
+        view = save_view;
 
         //actualising the window
         SDL_GL_SwapWindow(m_window);
@@ -432,7 +393,10 @@ void OpenGlSketch::startLoop()
         {
             if(solar_system != nullptr)
             {
-                solar_system->MakingSystem("Solar System", 8, m_police[0], m_model_shader);
+                sys_init_data sol_data;
+                sol_data.name_sys = "Solar System";
+                sol_data.companion_count = 8;
+                assert(solar_system->MakingSystem(sol_data, m_police[0], m_model_shader));
                 nb_loaded++;
             }
             
@@ -490,10 +454,7 @@ void OpenGlSketch::mainLoop()
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
     // m_particuleGenerator->initParticles(camera->getTargetPoint());
     
-    if(camera == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
+    assert(camera);
 
     //hdr variables
     exposure = 5.0f;
@@ -518,13 +479,15 @@ void OpenGlSketch::mainLoop()
     
     //initialize modelview and projection matrix
     projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 900000.0);
-    model_view = mat4(1.0f);
+
+    //TODO : change name by view
+    view = mat4(1.0f);
 
     //load and play the music
     if(aud != nullptr)
     {
-        aud->loadMusic();
-        aud->playMusic();
+        assert(aud->loadMusic());
+        // aud->playMusic();
     }
 
     while(!m_terminate)
@@ -544,7 +507,7 @@ void OpenGlSketch::mainLoop()
             aud->volume(volume);
             aud->pause(pause_music);
             volume = 0;
-            aud->updateTrack();
+            // aud->updateTrack();
         }
         
     //===========================================================================================================================================
@@ -552,7 +515,7 @@ void OpenGlSketch::mainLoop()
         {
             camera->move(m_input, !menu);
 
-            camera->lookAt(model_view);
+            camera->lookAt(view);
         }
 
     /********************************************************************** Framebuffer activation ******************************************************************/
@@ -586,16 +549,16 @@ void OpenGlSketch::mainLoop()
             renderParticles();
     //=======================================================================================================================================================
 
-        save_model_view = model_view;
+        save_view = view;
 
             std::vector<glm::mat4> projection_view;
             projection_view.push_back(projection);
-            projection_view.push_back(model_view);
+            projection_view.push_back(view);
             projection_view.push_back(glm::mat4(1.0f));
 
             ship->drawSpaceship(projection_view, hdr, m_model_shader, m_input);
         
-        model_view = save_model_view;
+        view = save_view;
 
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
@@ -727,33 +690,33 @@ void OpenGlSketch::renderOverlay()
             glm::vec3 position = camera->getPosition();
             float speed = ship->getSpeed();
 
-                model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayGeneralOverlay(projection, model_view, hdr, square_shader);
-
-                //restaure the modelview matrix
-                model_view = save_model_view;
-
-                model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-
-                    m_overlay->displayMusicOverlay(projection, model_view, hdr, track, text_shader, square_shader);
+                    m_overlay->displayGeneralOverlay(projection, view, hdr, square_shader);
 
                 //restaure the modelview matrix
-                model_view = save_model_view;
+                view = save_view;
 
-                model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayMoveInfoOverlay(projection, model_view, hdr, position, speed, text_shader, square_shader);
-
-                //restaure the modelview matrix
-                model_view = save_model_view;
-
-                model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-
-                    m_overlay->displayTimeInfoOverlay(projection, model_view, hdr, text_shader, square_shader);
+                    m_overlay->displayMusicOverlay(projection, view, hdr, track, text_shader, square_shader);
 
                 //restaure the modelview matrix
-                model_view = save_model_view;
+                view = save_view;
+
+                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+                    m_overlay->displayMoveInfoOverlay(projection, view, hdr, position, speed, text_shader, square_shader);
+
+                //restaure the modelview matrix
+                view = save_view;
+
+                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+                    m_overlay->displayTimeInfoOverlay(projection, view, hdr, text_shader, square_shader);
+
+                //restaure the modelview matrix
+                view = save_view;
         }
         
     }
@@ -770,50 +733,50 @@ void OpenGlSketch::renderScene()
         glm::vec3 camPos = camera->getPosition();
 
             //save the modelview matrix
-            save_model_view = model_view;
+            save_view = view;
 
             /****************************************** skybox render **************************************************/
 
-                solar_system->drawSkybox(projection, model_view, hdr);
+                solar_system->drawSkybox(projection, view, hdr);
 
             //restaure the modelview matrix
-            model_view = save_model_view;
+            view = save_view;
 
             /****************************************** bodys render ****************************************************/
             
-                solar_system->drawSystem(projection, model_view, camPos, hdr);
+                solar_system->drawSystem(projection, view, camPos, hdr);
 
             //restaure the modelview matrix
-            model_view = save_model_view;
+            view = save_view;
 
             /****************************************** atmosphere render *************************************************/
 
-                solar_system->drawAtmo(projection, model_view, camPos, hdr);
+                solar_system->drawAtmo(projection, view, camPos, hdr);
 
             //restaure the modelview matrix
-            model_view = save_model_view;
+            view = save_view;
 
             /******************************************* name render *****************************************************/
 
                 if((text_shader != nullptr) && (m_name_display == true))
                 {
-                    solar_system->drawName(projection, model_view, camPos, text_shader);
+                    solar_system->drawName(projection, view, camPos, text_shader);
                 }
                 
 
             //restaure the modelview matrix
-            model_view = save_model_view;
+            view = save_view;
 
             /******************************************* asteroid field render *****************************************************/
 
                 std::vector<glm::mat4> projection_view;
                 projection_view.push_back(projection);
-                projection_view.push_back(model_view);
+                projection_view.push_back(view);
 
                 solar_system->drawAsteroidField(projection_view, hdr);
                 
             //restaure the modelview matrix
-            model_view = save_model_view;
+            view = save_view;
     }
     
 }
@@ -828,18 +791,21 @@ void OpenGlSketch::renderInfo()
         if(info_render)
         {
             //save the modelview matrix
-            save_model_view = model_view;
+            save_view = view;
 
             glm::vec3 camPos = camera->getPosition();
 
                 if(text_shader != nullptr)
                 {
-                    solar_system->drawInfo(projection, model_view, camPos, hdr, nullptr, text_shader, square_shader);
+                    std::vector<Shader*> shaders;
+                    shaders.push_back(text_shader);
+                    shaders.push_back(square_shader);
+
+                    solar_system->drawInfo(projection, view, camPos, hdr, shaders);
                 }
                 
-
             //restaure the modelview matrix
-            model_view = save_model_view;
+            view = save_view;
         }
     }
     
@@ -944,11 +910,11 @@ void OpenGlSketch::renderSettings()
             m_input.capturePointer(false);
             m_input.displayPointer(true);
 
-            model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+            view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                m_settings->displayFrameSettings(projection, model_view, hdr, text_shader, square_shader);
+                m_settings->displayFrameSettings(projection, view, hdr, text_shader, square_shader);
 
-            model_view = save_model_view;
+            view = save_view;
 
             int button_type = m_settings->manageButton(m_input);
 
@@ -1069,9 +1035,9 @@ void OpenGlSketch::renderSettings()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::renderParticles()
 {
-    glm::mat4 save = model_view;
+    glm::mat4 save = view;
 
-        // model_view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+        // view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
         // glm::vec3 target_point = camera->getTargetPoint();
         
         // if(m_particuleGenerator != nullptr)
@@ -1082,9 +1048,9 @@ void OpenGlSketch::renderParticles()
         //     }
         //     else
         //     {
-        //         // m_particuleGenerator->drawParticles(projection, model_view, m_input, is_moving, target_point);
+        //         // m_particuleGenerator->drawParticles(projection, view, m_input, is_moving, target_point);
         //     }
         // }
 
-    model_view = save;
+    view = save;
 }

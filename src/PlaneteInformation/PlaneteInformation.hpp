@@ -25,6 +25,8 @@ PURPOSE : header of the PlaneteInformation class
         #include <iostream>
         #include <string>
         #include <Windows.h>
+        #include <vector>
+        #include <cassert>
 
         #include <SDL2/SDL_ttf.h>
         
@@ -59,7 +61,7 @@ PURPOSE : header of the PlaneteInformation class
                 PlaneteInformation();
                 ~PlaneteInformation();
 
-                void renderInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void renderInfo(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::vector<Shader *> shaders);
                 void setPosPlan(glm::vec3 const &posPlan);
                 void changeNamePlan(std::string const name);
                 std::string getInfoName() const;
