@@ -21,34 +21,42 @@ Atmosphere::Atmosphere(float size, std::string const name)
     name_planete_host = name;
     m_size = size;
 
+    //HACK : go to sphere class declaration to change number of parameters
+    sphere_atmosphere = new Sphere(1, 70, 70);
+    assert(sphere_atmosphere);
+
     /*Because atmosphere objects will use the same shader, color is initiate by the instance and will be used later in the shader*/
     if(name == "Sun")
     {
         m_color_atmo = glm::vec3(255.0/255.0, 255.0/255.0, 224.0/255.0);
-        m_apparent_size = glm::vec3(3500 , 3500, 3500);
+        //! m_apparent_size = glm::vec3(3500 , 3500, 3500);
+        sphere_atmosphere->setInclinaisonAngle(0.0f);
+        sphere_atmosphere->setSpeedRot(0.0f);
+        sphere_atmosphere->setSize(3500.0f);
     }
     else if(name == "Earth")
     {
         m_color_atmo = glm::vec3(147.0/255.0, 188.0/255.0, 251.0/255.0);
-        m_apparent_size = glm::vec3(m_size, m_size, m_size);
+        //! m_apparent_size = glm::vec3(m_size, m_size, m_size);
+        sphere_atmosphere->setInclinaisonAngle(23.26f);
+        sphere_atmosphere->setSpeedRot(0.05);
+        sphere_atmosphere->setSize(35.0f);
     }
     else if(name == "Venus")
     {
         m_color_atmo = glm::vec3(1.0, 1.0, 224.0/255.0);
-        m_apparent_size = glm::vec3(m_size, m_size, m_size);
+        //! m_apparent_size = glm::vec3(m_size, m_size, m_size);
+        sphere_atmosphere->setInclinaisonAngle(177.3);
+        sphere_atmosphere->setSpeedRot(0.05f);
+        sphere_atmosphere->setSize(30.0f);
     }
     else if (name == "Mars")
     {
         m_color_atmo = glm::vec3(178.0/255.0, 100.0/255.0, 100.0/255.0);
-        m_apparent_size = glm::vec3(m_size, m_size, m_size);
-    }
-
-
-    //HACK : go to sphere class declaration to change number of parameters
-    sphere_atmosphere = new Sphere(1, 70, 70);
-    if(sphere_atmosphere == nullptr)
-    {
-        exit(EXIT_FAILURE);
+        //! m_apparent_size = glm::vec3(m_size, m_size, m_size);
+        sphere_atmosphere->setInclinaisonAngle(25.19f);
+        sphere_atmosphere->setSpeedRot(0.05f);
+        sphere_atmosphere->setSize(17.0f);
     }
     
 }

@@ -62,7 +62,10 @@ PURPOSE : Interface CelestialBody
                     m_speed_rotation = speed_rot;
                 }
 
-                
+                void setSize(float size)
+                {
+                    m_real_size = size;
+                }
                 
                 void rotateCelestialBody(glm::mat4 &model, float angle)
                 {
