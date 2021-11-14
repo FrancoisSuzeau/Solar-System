@@ -55,6 +55,7 @@ PURPOSE : header of the Atmosphere class
                 ~Atmosphere();
 
                 void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr, Shader *ring_shader = nullptr);
+                void updatePosAtmo(glm::vec3 pos_plan);
         };
 
 

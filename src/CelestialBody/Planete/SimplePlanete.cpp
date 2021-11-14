@@ -174,6 +174,7 @@ void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &modelview, glm
             
             if(m_atmosphere != nullptr)
             {
+                m_atmosphere->updatePosAtmo(m_current_position);
                 m_atmosphere->display(projection, modelview, camPos, hdr, atmo_shader);
             }
             
