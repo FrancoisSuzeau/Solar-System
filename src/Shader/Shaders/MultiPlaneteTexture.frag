@@ -81,7 +81,7 @@ void main(void) {
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     
-    vec3 result = (ambiant + diffuse);
+    vec3 result = ambiant + diffuse;
     float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0)
         BrightColor = vec4(result, 1.0);
