@@ -46,6 +46,7 @@ PURPOSE : header of the OpenGlSketch class
         #include "../Particule/Particule.hpp"
 
         #include "../Spaceship/Spaceship.hpp"
+        // #include "../Framebuffer/Framebuffer.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -79,6 +80,8 @@ PURPOSE : header of the OpenGlSketch class
                 unsigned int fb_texture;
                 unsigned int fb;
                 unsigned int depth_rb;
+
+                // Framebuffer     m_framebuffer;
 
                 Shader *screenShader;
                 Shader *text_shader;

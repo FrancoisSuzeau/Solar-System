@@ -25,14 +25,15 @@ using namespace ButtonChoice;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-
 OpenGlSketch::OpenGlSketch(): m_window_title("No name"), m_window_width(800), m_window_height(600), m_input()
+// m_framebuffer()
 //m_openGL_context(0), m_window(0), m_initiGLEW(0), m_input()
 {
     
 }
 
 OpenGlSketch::OpenGlSketch(std::string window_title, int width, int height): m_window_title(window_title), m_window_width(width), m_window_height(height), m_input()
+// m_framebuffer(width, height)
 //m_openGL_context(0), m_window(0), m_initiGLEW(0), m_input()
 {
 
@@ -437,8 +438,6 @@ void OpenGlSketch::startLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::mainLoop()
 {
-    
-    
     /************************************************* Variables ********************************************************/
     pause_music = false;
     speed_key_pressed = false;
@@ -590,6 +589,7 @@ void OpenGlSketch::mainLoop()
             glUseProgram(0);
         }
 
+        // m_framebuffer.renderFrame(exposure, hdr);
         
 
     /************************************************* SWAPPING WINDOWS ********************************************************/
@@ -622,10 +622,10 @@ void OpenGlSketch::mainLoop()
         delete aud;
     }
     
-    if(screenShader != nullptr)
-    {
-        delete screenShader;
-    }
+    // if(screenShader != nullptr)
+    // {
+    //     delete screenShader;
+    // }
 
     if(m_overlay != nullptr)
     {
@@ -670,10 +670,10 @@ void OpenGlSketch::mainLoop()
         delete ship;
     }
     
-    glDeleteVertexArrays(1, &quadVAO);
-    glDeleteBuffers(1, &quadVBO);
-    glDeleteFramebuffers(1, &fb);
-    glDeleteRenderbuffers(1, &depth_rb);
+    // glDeleteVertexArrays(1, &quadVAO);
+    // glDeleteBuffers(1, &quadVBO);
+    // glDeleteFramebuffers(1, &fb);
+    // glDeleteRenderbuffers(1, &depth_rb);
     
 }
 
