@@ -40,13 +40,14 @@ PURPOSE : header of the Framebuffer class
 
                 Shader *screenShader;
 
-                void initFramebuffer(int width, int height);
+                
 
             public:
 
-                Framebuffer(int width, int height);
                 Framebuffer();
                 ~Framebuffer();
+
+                void initFramebuffer(int width, int height);
 
                 unsigned int getFB() const;
 
