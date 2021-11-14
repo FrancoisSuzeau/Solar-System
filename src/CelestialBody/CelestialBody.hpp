@@ -56,6 +56,13 @@ PURPOSE : Interface CelestialBody
                 {
                     m_inclinaison_angle = inclinaison;
                 }
+
+                void setSpeedRot(float speed_rot)
+                {
+                    m_speed_rotation = speed_rot;
+                }
+
+                
                 
                 void rotateCelestialBody(glm::mat4 &model, float angle)
                 {
