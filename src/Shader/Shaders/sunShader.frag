@@ -27,8 +27,20 @@ void main(void) {
 
     vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
 
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor * objectColor;
+
+    vec3 ambiant = 0.0 * objectColor;
+
+    vec3 result = diffuse;
+    // float dist = length(FragPos - lightPos);
+    // result *= 1.0 / (dist * dist);
+
+    FragColor = vec4(ambiant + result, 1.0);
     // FragColor = vec4(objectColor, 1.0);
-    FragColor = vec4(1.0f);
+    // FragColor = vec4(1.0f);
 
     // *********************************************** for bloom effect ***************************************************
     float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
