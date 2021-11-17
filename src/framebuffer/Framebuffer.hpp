@@ -42,6 +42,7 @@ PURPOSE : header of the Framebuffer class
                 unsigned int colorBuffer;
                 unsigned int fb;
                 unsigned int depth_rb;
+                
 
                 float quadVertices[18];
                 float tex_coord[12];
@@ -57,6 +58,9 @@ PURPOSE : header of the Framebuffer class
                 void manageColorBuffer(int width, int height);
                 void manageDepthBuffer(int width, int height);
                 void managePinPongFBO(int width, int height);
+
+                void drawBlur(float exposure, bool hdr, bool &horizontal);
+                void drawScreenTexture(float exposure, bool hdr, bool &horizontal);
 
             public:
 

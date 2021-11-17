@@ -275,10 +275,40 @@ bool Framebuffer::initFramebuffer(int width, int height)
 /***********************************************************************************************************************************************************************/
 void Framebuffer::renderFrame(float exposure, bool hdr)
 {
-    //TODO : use this later in windowProcess
-    // bool bloom = true;
+    
+    // bool horizontal = true;
+    // this->drawBlur(exposure, hdr, horizontal);
+    // this->drawScreenTexture(exposure, hdr, horizontal);
+    
+    if(screenShader != nullptr)
+    {
+        glUseProgram(screenShader->getProgramID());
 
-    // bool horizontal = true, first_it = true;
+            glBindVertexArray(quadVAO);
+
+                screenShader->setTexture("screenTexture", 0);
+                
+                screenShader->setFloat("exposure", exposure);
+                screenShader->setInt("hdr", hdr);
+
+                glBindTexture(GL_TEXTURE_2D, colorBuffer);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                glBindTexture(GL_TEXTURE_2D, 0);
+
+            glBindVertexArray(0);
+        glUseProgram(0);
+    }
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************* drawBlur ************************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::drawBlur(float exposure, bool hdr, bool &horizontal)
+{
+    //TODO : use this later in windowProcess
+    
+
+    // bool first_it = true;
 
     // if(shaderBlur != nullptr)
     // {
@@ -312,6 +342,15 @@ void Framebuffer::renderFrame(float exposure, bool hdr)
     //         glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
     // }
+}
+
+/***********************************************************************************************************************************************************************/
+/**************************************************************** drawScreenTexture ************************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::drawScreenTexture(float exposure, bool hdr, bool &horizontal)
+{
+    // bool bloom = true;
+    
 
     // if(screenShader != nullptr)
     // {
@@ -336,25 +375,6 @@ void Framebuffer::renderFrame(float exposure, bool hdr)
 
     //     glUseProgram(0);
     // }
-
-    if(screenShader != nullptr)
-    {
-        glUseProgram(screenShader->getProgramID());
-
-            glBindVertexArray(quadVAO);
-
-                screenShader->setTexture("screenTexture", 0);
-                
-                screenShader->setFloat("exposure", exposure);
-                screenShader->setInt("hdr", hdr);
-
-                glBindTexture(GL_TEXTURE_2D, colorBuffer);
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-                glBindTexture(GL_TEXTURE_2D, 0);
-
-            glBindVertexArray(0);
-        glUseProgram(0);
-    }
 }
 
 /***********************************************************************************************************************************************************************/
