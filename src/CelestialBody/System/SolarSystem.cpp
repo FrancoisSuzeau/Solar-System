@@ -30,7 +30,7 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_sha
     skybox = new Skybox();
     assert(skybox);
 
-    sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 10);
+    sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
     assert(sun);
 
     m_asteroid_field = new AsteroidField(model_shader);
