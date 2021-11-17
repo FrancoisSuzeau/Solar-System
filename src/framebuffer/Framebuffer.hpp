@@ -70,7 +70,7 @@ PURPOSE : header of the Framebuffer class
                 bool initFramebuffer(int width, int height);
                 void renderFrame(float exposure, bool hdr);
                 void bindFramebuffer();
-                void unbindFramebuffer();
+                void unbindFramebuffer(bool have_to_clear);
 
                 unsigned int getFB() const;
 

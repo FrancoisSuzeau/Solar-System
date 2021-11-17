@@ -72,135 +72,6 @@ void Framebuffer::initVertices()
 }
 
 /***********************************************************************************************************************************************************************/
-/****************************************************************** manageColorBuffer **********************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Framebuffer::manageColorBuffer(int width, int height)
-{
-    // Create a texture to render to
-    
-    // glGenTextures(2, colorBuffer);
-    // for (unsigned int i = 0; i < 2; i++)
-    // {
-    //     glBindTexture(GL_TEXTURE_2D, colorBuffer[i]);
-    //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        
-    //     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorBuffer[i], 0);
-    // }
-    
-    glGenTextures(1, &colorBuffer);
-    glBindTexture(GL_TEXTURE_2D, colorBuffer);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // NULL means reserve texture memory
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-    // Attach the texture to the framebuffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
-}
-
-/***********************************************************************************************************************************************************************/
-/****************************************************************** manageDepthBuffer **********************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Framebuffer::manageDepthBuffer(int width, int height)
-{
-    // glGenRenderbuffers(1, &depth_rb);
-    // glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
-    // glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-    // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
-
-    glGenRenderbuffers(1, &depth_rb);
-    glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
-}
-
-/***********************************************************************************************************************************************************************/
-/****************************************************************** managePingPongFBO **********************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Framebuffer::managePinPongFBO(int width, int height)
-{
-    // glGenFramebuffers(2, pingpongFBO);
-    // glGenFramebuffers(2, pinpongColorBuffers);
-
-    // for (int i = 0; i < 2; i++)
-    // {
-    //     glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
-    //     glBindTexture(GL_TEXTURE_2D, pinpongColorBuffers[i]);
-    //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // we clamp to the edge as the blur filter would otherwise sample repeated texture values!
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    //     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pinpongColorBuffers[i], 0);
-    // }
-    
-}
-
-/***********************************************************************************************************************************************************************/
-/****************************************************************** manageFramebuffer **********************************************************************************/
-/***********************************************************************************************************************************************************************/
-bool Framebuffer::manageFramebuffer(int width, int height)
-{
-    glGenFramebuffers(1, &fb);
-    glBindFramebuffer(GL_FRAMEBUFFER, fb);
-
-    this->manageColorBuffer(width, height);
-    this->manageDepthBuffer(width, height);
-
-    unsigned int attachement[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-    glDrawBuffers(2, attachement);
-    
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-    {
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-        return false;
-    }
-
-    // this->managePinPongFBO(width, height);
-
-    // if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-    // {
-    //     std::cout << "ERROR::FRAMEBUFFER:: PINGPONGBUFFER is not complete!" << std::endl;
-    //     return false;
-    // }
-        
-        
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //===================================================================================================================
-
-    screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
-    assert(screenShader);
-    assert(screenShader->loadShader());
-
-    // shaderBlur = new Shader("../src/Shader/Shaders/blur.vert", "../src/Shader/Shaders/blur.frag");
-    // assert(shaderBlur);
-    // assert(shaderBlur->loadShader());
-
-    // glUseProgram(shaderBlur->getProgramID());
-
-    //     shaderBlur->setTexture("image", 0);
-
-    // glUseProgram(0);
-
-    // glUseProgram(screenShader->getProgramID());
-
-    //     screenShader->setTexture("bloomBlur", 1);
-
-    // glUseProgram(0);
-
-    
-
-    return true;
-}
-
-/***********************************************************************************************************************************************************************/
 /*********************************************************************** initFramebuffer *******************************************************************************/
 /***********************************************************************************************************************************************************************/
 bool Framebuffer::initFramebuffer(int width, int height)
@@ -268,6 +139,136 @@ bool Framebuffer::initFramebuffer(int width, int height)
     //===================================================================================================================
 
     return this->manageFramebuffer(width, height);
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************** manageColorBuffer **********************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::manageColorBuffer(int width, int height)
+{
+    // Create a texture to render to
+    
+    // glGenTextures(2, colorBuffer);
+    // for (unsigned int i = 0; i < 2; i++)
+    // {
+    //     glBindTexture(GL_TEXTURE_2D, colorBuffer[i]);
+    //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        
+    //     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorBuffer[i], 0);
+    // }
+    
+    glGenTextures(1, &colorBuffer);
+    glBindTexture(GL_TEXTURE_2D, colorBuffer);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // NULL means reserve texture memory
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+    // Attach the texture to the framebuffer
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************** manageDepthBuffer **********************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::manageDepthBuffer(int width, int height)
+{
+    // glGenRenderbuffers(1, &depth_rb);
+    // glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
+    // glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+    // unsigned int attachement[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+    // glDrawBuffers(2, attachement);
+
+    glGenRenderbuffers(1, &depth_rb);
+    glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************** managePingPongFBO **********************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::managePinPongFBO(int width, int height)
+{
+    // glGenFramebuffers(2, pingpongFBO);
+    // glGenFramebuffers(2, pinpongColorBuffers);
+
+    // for (int i = 0; i < 2; i++)
+    // {
+    //     glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
+    //     glBindTexture(GL_TEXTURE_2D, pinpongColorBuffers[i]);
+    //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // we clamp to the edge as the blur filter would otherwise sample repeated texture values!
+    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    //     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pinpongColorBuffers[i], 0);
+    // }
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************** manageFramebuffer **********************************************************************************/
+/***********************************************************************************************************************************************************************/
+bool Framebuffer::manageFramebuffer(int width, int height)
+{
+    glGenFramebuffers(1, &fb);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb);
+
+    this->manageColorBuffer(width, height);
+    this->manageDepthBuffer(width, height);
+    
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+        return false;
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // this->managePinPongFBO(width, height);
+
+    // if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    // {
+    //     std::cout << "ERROR::FRAMEBUFFER:: PINGPONGBUFFER is not complete!" << std::endl;
+    //     return false;
+    // }
+        
+        
+    // glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    // glBindTexture(GL_TEXTURE_2D, 0);    
+    // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //===================================================================================================================
+
+    screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
+    assert(screenShader);
+    assert(screenShader->loadShader());
+
+    // shaderBlur = new Shader("../src/Shader/Shaders/blur.vert", "../src/Shader/Shaders/blur.frag");
+    // assert(shaderBlur);
+    // assert(shaderBlur->loadShader());
+
+    // glUseProgram(shaderBlur->getProgramID());
+
+    //     shaderBlur->setTexture("image", 0);
+
+    // glUseProgram(0);
+
+    // glUseProgram(screenShader->getProgramID());
+
+    //     screenShader->setTexture("bloomBlur", 1);
+
+    // glUseProgram(0);
+
+    
+
+    return true;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -382,29 +383,31 @@ void Framebuffer::drawScreenTexture(float exposure, bool hdr, bool &horizontal)
 /***********************************************************************************************************************************************************************/
 void Framebuffer::bindFramebuffer()
 {
+    ///make sure we clear the framebuffer's content
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    //cleaning the screen
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     glBindFramebuffer(GL_FRAMEBUFFER, this->getFB());
 
     glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 
-    ///make sure we clear the framebuffer's content
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-    //cleaning the screen
+     //cleaning the screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 /***********************************************************************************************************************************************************************/
 /**************************************************************** unbindFramebuffer ************************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::unbindFramebuffer()
+void Framebuffer::unbindFramebuffer(bool have_to_clear)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
-    // clear all relevant buffers
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    if(have_to_clear)
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
 }
 
 /***********************************************************************************************************************************************************************/

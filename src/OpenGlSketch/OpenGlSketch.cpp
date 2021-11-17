@@ -444,7 +444,7 @@ void OpenGlSketch::mainLoop()
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
 
-        m_framebuffer->unbindFramebuffer();
+        m_framebuffer->unbindFramebuffer(false);
 
         m_framebuffer->renderFrame(exposure, hdr);
         
