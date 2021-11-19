@@ -625,7 +625,7 @@ void OpenGlSketch::renderScene()
                 projection_view.push_back(projection);
                 projection_view.push_back(view);
 
-                solar_system->drawAsteroidField(projection_view, hdr);
+                solar_system->drawAsteroidField(projection_view, camPos, hdr);
                 
             //restaure the modelview matrix
             view = save_view;

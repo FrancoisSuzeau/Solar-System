@@ -82,9 +82,9 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->display(projection, view, camPos, hdr, shader_host, companion_shader, ring_shader);
                 }
 
-                void drawAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr)
+                void drawAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
                 {
-                        m_system->displayAsteroidField(projection_view_mat, hdr);
+                        m_system->displayAsteroidField(projection_view_mat, camPos, hdr);
                 }
 
 

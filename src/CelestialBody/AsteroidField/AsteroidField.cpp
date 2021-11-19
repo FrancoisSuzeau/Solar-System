@@ -58,7 +58,7 @@ AsteroidField::~AsteroidField()
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** drawAsteroidField **********************************************************************/
 /***********************************************************************************************************************************************************************/
-void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr)
+void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
 {
     glm::mat4 save = projection_view_mat[1];
 
@@ -70,6 +70,7 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
             m_model_shader->setInt("hdr", hdr);
             m_model_shader->setMat4("projection", projection_view_mat[0]);
             m_model_shader->setMat4("view", projection_view_mat[1]);
+            m_model_shader->setVec3("viewPos", camPos);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, asteroid->getTextureLoadedID(0));
 

@@ -25,6 +25,14 @@ void main()
 
     vec3 objectColor = texture(texture_diffuse1, TexCoords).rgb;
 
+    // *********************************************** mitigation ***************************************************
+    //mitigation
+    float lightConst = 1.0f;
+    float lightLin = 0.35f;
+    float lightQuad = 0.44f;
+    float distance = length(lightPos - FragPos);
+    float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
+
     // *********************************************** diffuse light ***************************************************
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
@@ -35,7 +43,7 @@ void main()
     float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
@@ -50,6 +58,12 @@ void main()
     }
 
     vec3 ambiant = ambiantStrength * lightColor;
+
+    // *********************************************** adding mitigation effect ***************************************************
+    ambiant *= mitigation;
+    diffuse *= mitigation;
+    specular *= mitigation;
+    
     vec3 result = (ambiant + diffuse + specular) * objectColor;
     
     FragColor = vec4(result, 1.0);
