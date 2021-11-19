@@ -1,7 +1,7 @@
 #version 330 core
 in vec4 texCoords;
-uniform sampler2D texture0;
-uniform sampler2D texture1;
+// uniform sampler2D texture0;
+// uniform sampler2D texture1;
 uniform float oppacity;
 uniform vec3 viewPos;
 in vec3 Normal;
@@ -11,6 +11,14 @@ uniform bool hdr;
 
 layout (location = 1) out vec4 BrightColor;
 layout (location = 0) out vec4 FragColor;
+
+struct Material {
+    sampler2D diffuse;
+    sampler2D specular;
+    int shininess;
+};
+
+uniform Material material;
 
 void main(void) {
 
@@ -24,7 +32,7 @@ void main(void) {
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
-    vec3 objectColor = mix(texture(texture0, longitudeLatitude), texture(texture1, longitudeLatitude), oppacity).rgb;
+    vec3 objectColor = mix(texture(material.diffuse, longitudeLatitude), texture(material.specular, longitudeLatitude), oppacity).rgb;
 
     vec3 lightColor;
     if(hdr)
@@ -56,7 +64,7 @@ void main(void) {
     float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
