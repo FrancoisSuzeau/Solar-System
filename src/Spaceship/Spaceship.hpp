@@ -82,7 +82,7 @@ PURPOSE : header of the Spaceship class
                 Spaceship(std::string const path);
                 ~Spaceship();
 
-                void drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Input input);
+                void drawSpaceship(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr, Shader *model_shader, Input input);
                 float getRotX() const;
                 float getRotY() const;
                 glm::vec3       getPosition() const;

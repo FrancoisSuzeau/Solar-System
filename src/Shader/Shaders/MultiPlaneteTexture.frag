@@ -50,13 +50,13 @@ void main(void) {
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor * objectColor;
+    vec3 diffuse = diff * lightColor;
 
     // *********************************************** specular light ***************************************************
     float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
@@ -72,16 +72,16 @@ void main(void) {
         ambiantStrength = 0.1;
     }
 
-    vec3 ambiant = ambiantStrength * lightColor * objectColor;
+    vec3 ambiant = ambiantStrength * lightColor;
 
     // *********************************************** adding mitigation effect ***************************************************
-    //ambiant *= mitigation;
-    //diffuse *= mitigation;
-    //specular *= mitigation;
+    ambiant *= mitigation;
+    diffuse *= mitigation;
+    specular *= mitigation;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     
-    vec3 result = ambiant + diffuse;
+    vec3 result = (ambiant + diffuse + specular) * objectColor;
     float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0)
         BrightColor = vec4(result, 1.0);

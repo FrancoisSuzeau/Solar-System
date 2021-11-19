@@ -383,17 +383,14 @@ void Framebuffer::drawScreenTexture(float exposure, bool hdr, bool &horizontal)
 /***********************************************************************************************************************************************************************/
 void Framebuffer::bindFramebuffer()
 {
-    ///make sure we clear the framebuffer's content
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    //cleaning the screen
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glBindFramebuffer(GL_FRAMEBUFFER, this->getFB());
 
     glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 
-     //cleaning the screen
+    ///make sure we clear the framebuffer's content
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+    //cleaning the screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -403,6 +400,8 @@ void Framebuffer::bindFramebuffer()
 void Framebuffer::unbindFramebuffer(bool have_to_clear)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    glDisable(GL_DEPTH_TEST); 
     
     if(have_to_clear)
     {
