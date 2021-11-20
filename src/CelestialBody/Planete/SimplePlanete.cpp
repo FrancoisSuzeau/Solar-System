@@ -121,16 +121,24 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &c
             simple_plan_shader->setMat4("projection", projection);
             simple_plan_shader->setMat4("model", m_model_mat);
         
-            simple_plan_shader->setTexture("texture0", 0);
+            simple_plan_shader->setTexture("material.diffuse", 0);
 
             simple_plan_shader->setVec3("viewPos", camPos);
 
             simple_plan_shader->setInt("hdr", hdr);
-
+            if(m_name == "Jupiter")
+            {
+                simple_plan_shader->setInt("material.shininess", 8);
+            }
+            else
+            {
+                simple_plan_shader->setInt("material.shininess", 32);
+            }
+            
             if(m_normal_surface != nullptr)
             {
                 simple_plan_shader->setInt("has_normal", true);
-                simple_plan_shader->setTexture("normalMap", 1);
+                simple_plan_shader->setTexture("material.normalMap", 1);
 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());

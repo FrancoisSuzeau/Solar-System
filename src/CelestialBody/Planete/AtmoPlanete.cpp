@@ -103,7 +103,15 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             
             atmo_plan_shader->setTexture("material.diffuse", 0);
             atmo_plan_shader->setTexture("material.specular", 1);
-            atmo_plan_shader->setInt("material.shininess", 32);
+            
+            if(m_name == "Venus")
+            {
+                atmo_plan_shader->setInt("material.shininess", 16);
+            }
+            else
+            {
+                atmo_plan_shader->setInt("material.shininess", 32);
+            }
 
             atmo_plan_shader->setFloat("oppacity", m_oppacity);
 

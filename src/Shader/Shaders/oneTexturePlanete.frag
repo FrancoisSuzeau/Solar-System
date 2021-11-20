@@ -1,13 +1,19 @@
 #version 330 core
 in vec4 texCoords;
-uniform sampler2D texture0;
-uniform sampler2D normalMap;
+// uniform sampler2D texture0;
+// uniform sampler2D normalMap;
 uniform vec3 viewPos;
 in vec3 Normal;
 in vec3 FragPos;
 
 uniform bool hdr;
 uniform bool has_normal;
+
+struct Material {
+    sampler2D diffuse;
+    sampler2D normalMap;
+    int shininess;
+};
 
 layout (location = 0) out vec4 FragColor;
 layout (location = 1) out vec4 BrightColor;
@@ -17,6 +23,8 @@ in VS_OUT {
     vec3 TangentViewPos;
     vec3 TangentFragPos;
 } fs_in;
+
+uniform Material material;
 
 void main(void) {
 
@@ -43,14 +51,14 @@ void main(void) {
 
     vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
 
-    vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
+    vec3 objectColor = texture(material.diffuse, longitudeLatitude).rgb;
     vec3 norm;
     vec3 lightDir;
     vec3 viewDir;
 
     if(has_normal)
     {
-        norm = texture(normalMap, longitudeLatitude).rgb;
+        norm = texture(material.normalMap, longitudeLatitude).rgb;
         norm = normalize(norm * 2.0 - 1.0);
         lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
         viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
@@ -79,7 +87,7 @@ void main(void) {
     float specularStrength = 0.5;
     
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
