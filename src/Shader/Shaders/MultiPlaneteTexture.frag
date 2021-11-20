@@ -8,6 +8,7 @@ in vec3 Normal;
 in vec3 FragPos;
 
 uniform bool hdr;
+uniform bool has_normal;
 
 layout (location = 1) out vec4 BrightColor;
 layout (location = 0) out vec4 FragColor;
@@ -15,8 +16,15 @@ layout (location = 0) out vec4 FragColor;
 struct Material {
     sampler2D diffuse;
     sampler2D specular;
+    sampler2D normalMap;
     int shininess;
 };
+
+in VS_OUT {
+    vec3 TangentLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
+} fs_in;
 
 uniform Material material;
 
@@ -46,6 +54,24 @@ void main(void) {
 
     vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
 
+    vec3 norm;
+    vec3 lightDir;
+    vec3 viewDir;
+
+    if(has_normal)
+    {
+        norm = texture(material.normalMap, longitudeLatitude).rgb;
+        norm = normalize(norm * 2.0 - 1.0);
+        lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
+        viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
+    }
+    else
+    {
+        norm = normalize(Normal);
+        lightDir = normalize(lightPos - FragPos);
+        viewDir = normalize(viewPos - FragPos);
+    }
+
     // *********************************************** mitigation ***************************************************
     //mitigation
     float lightConst = 1.0f;
@@ -55,14 +81,14 @@ void main(void) {
     float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
 
     // *********************************************** diffuse light ***************************************************
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lightPos - FragPos);
+    // vec3 norm = normalize(Normal);
+    // vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
     // *********************************************** specular light ***************************************************
     float specularStrength = 0.5;
-    vec3 viewDir = normalize(viewPos - FragPos);
+    // vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = specularStrength * spec * lightColor;

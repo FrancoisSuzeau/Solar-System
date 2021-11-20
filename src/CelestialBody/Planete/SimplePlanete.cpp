@@ -49,42 +49,48 @@ m_name(data.name)
         assert(m_normal_surface);
         assert(m_normal_surface->loadTexture());
     }
-    // else if(m_name == "Earth")
-    // {
-    //     m_normal_surface = new Texture("../assets/textures/normalMap/earth_normalMap.jpg");
-    //     assert(m_normal_surface);
-    //     assert(m_normal_surface->loadTexture());
-    // }
+    else if(m_name == "Earth")
+    {
+        m_normal_surface = new Texture("../assets/textures/normalMap/earth_normalMap.jpg");
+        assert(m_normal_surface);
+        assert(m_normal_surface->loadTexture());
+    }
+    else if(m_name == "Mars")
+    {
+        m_normal_surface = new Texture("../assets/textures/normalMap/mars_normalMap.jpg");
+        assert(m_normal_surface);
+        assert(m_normal_surface->loadTexture());
+    }
     else if(m_name == "Jupiter")
     {
         m_normal_surface = new Texture("../assets/textures/normalMap/jupiter_normalMap.jpg");
         assert(m_normal_surface);
         assert(m_normal_surface->loadTexture());
     }
-    // else if(m_name == "Saturn")
-    // {
-    //     m_normal_surface = new Texture("../assets/textures/normalMap/saturn_normalMap.jpg");
-    //     assert(m_normal_surface);
-    //     assert(m_normal_surface->loadTexture());
-    // }
-    // else if(m_name == "Uranus")
-    // {
-    //     m_normal_surface = new Texture("../assets/textures/normalMap/uranus_normalMap.jpg");
-    //     assert(m_normal_surface);
-    //     assert(m_normal_surface->loadTexture());
-    // }
-    // else if(m_name == "Neptune")
-    // {
-    //     m_normal_surface = new Texture("../assets/textures/normalMap/neptune_normalMap.jpg");
-    //     assert(m_normal_surface);
-    //     assert(m_normal_surface->loadTexture());
-    // }
-    // else if(m_name == "Moon")
-    // {
-    //     m_normal_surface = new Texture("../assets/textures/normalMap/moon_normalMap.jpg");
-    //     assert(m_normal_surface);
-    //     assert(m_normal_surface->loadTexture());
-    // }
+    else if(m_name == "Saturn")
+    {
+        m_normal_surface = new Texture("../assets/textures/normalMap/saturn_normalMap.jpg");
+        assert(m_normal_surface);
+        assert(m_normal_surface->loadTexture());
+    }
+    else if(m_name == "Uranus")
+    {
+        m_normal_surface = new Texture("../assets/textures/normalMap/uranus_normalMap.jpg");
+        assert(m_normal_surface);
+        assert(m_normal_surface->loadTexture());
+    }
+    else if(m_name == "Neptune")
+    {
+        m_normal_surface = new Texture("../assets/textures/normalMap/neptune_normalMap.jpg");
+        assert(m_normal_surface);
+        assert(m_normal_surface->loadTexture());
+    }
+    else if(m_name == "Moon")
+    {
+        m_normal_surface = new Texture("../assets/textures/normalMap/moon_normalMap.jpg");
+        assert(m_normal_surface);
+        assert(m_normal_surface->loadTexture());
+    }
     else
     {
         m_normal_surface = nullptr;

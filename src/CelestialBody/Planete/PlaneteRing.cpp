@@ -84,6 +84,20 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             plan_ring_shader->setVec3("viewPos", camPos);
             
             plan_ring_shader->setInt("hdr", hdr);
+
+            if(m_normal_surface != nullptr)
+            {
+                plan_ring_shader->setInt("has_normal", true);
+                plan_ring_shader->setTexture("normalMap", 1);
+
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
+            }
+            else
+            {
+                plan_ring_shader->setInt("has_normal", false);
+
+            }
             
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m_texture_surface->getID());

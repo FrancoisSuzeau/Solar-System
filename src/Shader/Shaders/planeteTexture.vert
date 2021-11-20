@@ -38,7 +38,7 @@ void main(void) {
     vec3 Tangent = v - k * Normal;
 
     vec3 T = normalize(normalMatrice * Tangent);
-    vec3 N = normalize(normalMatrice * Normal);
+    vec3 N = normalize(normalMatrice * in_Vertex);
     T = normalize(T - dot(T, N) * N);
     vec3 B = cross(N, T);
     

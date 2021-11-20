@@ -110,6 +110,19 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             atmo_plan_shader->setVec3("viewPos", camPos);
 
             atmo_plan_shader->setInt("hdr", hdr);
+
+            if(m_normal_surface != nullptr)
+            {
+                atmo_plan_shader->setInt("has_normal", true);
+                atmo_plan_shader->setTexture("material.normalMap", 2);
+
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
+            }
+            else
+            {
+                atmo_plan_shader->setInt("has_normal", false);
+            }
             
             // active and lock unit texture 1: surface
             glActiveTexture(GL_TEXTURE1);
