@@ -50,6 +50,8 @@ AtmoPlanete::AtmoPlanete(init_data data, TTF_Font *police) : SimplePlanete(data,
         assert(m_cloud_texture);
         assert(m_cloud_texture->loadTexture());
     }
+
+    heighhtScale = 0.1;
     
     //===================================================================================================================================
     
@@ -101,14 +103,49 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             atmo_plan_shader->setMat4("projection", projection);
             atmo_plan_shader->setMat4("model", m_model_mat);
             
-            atmo_plan_shader->setTexture("texture0", 0);
-            atmo_plan_shader->setTexture("texture1", 1);
+            atmo_plan_shader->setTexture("material.diffuse", 0);
+            atmo_plan_shader->setTexture("material.specular", 1);
+            
+            if(m_name == "Venus")
+            {
+                atmo_plan_shader->setInt("material.shininess", 16);
+            }
+            else
+            {
+                atmo_plan_shader->setInt("material.shininess", 32);
+            }
 
             atmo_plan_shader->setFloat("oppacity", m_oppacity);
 
             atmo_plan_shader->setVec3("viewPos", camPos);
 
             atmo_plan_shader->setInt("hdr", hdr);
+
+            if(m_normal_surface != nullptr)
+            {
+                if( heighhtScale > 0.0)
+                {
+                    heighhtScale -= 0.0005f;
+                }
+                else
+                {
+                    heighhtScale = 0.0f;
+                }
+                atmo_plan_shader->setInt("has_normal", true);
+                atmo_plan_shader->setTexture("material.normalMap", 2);
+                atmo_plan_shader->setTexture("material.depthMap", 3);
+                atmo_plan_shader->setFloat("heightScale", heighhtScale);
+
+                glActiveTexture(GL_TEXTURE3);
+                glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
+                
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
+            }
+            else
+            {
+                atmo_plan_shader->setInt("has_normal", false);
+            }
             
             // active and lock unit texture 1: surface
             glActiveTexture(GL_TEXTURE1);
@@ -118,9 +155,19 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m_cloud_texture->getID());
             
-            //draw all textured vertices
-            glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
+                //draw all textured vertices
+                glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, 0);
             
         /************************************************* unbind VBO and IBO ********************************************************/

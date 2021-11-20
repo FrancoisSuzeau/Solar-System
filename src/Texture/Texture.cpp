@@ -82,6 +82,7 @@ void Texture::loadEmptyTexture()
     //===================================================================================================================
 
     // lock texture
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_id);
 
         glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, GL_UNSIGNED_BYTE, 0);
@@ -92,6 +93,7 @@ void Texture::loadEmptyTexture()
         //=====================================================================================================================
 
     //unlock texture
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
 }

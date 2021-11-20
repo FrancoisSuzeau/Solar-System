@@ -36,6 +36,8 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_sha
     m_asteroid_field = new AsteroidField(model_shader);
     assert(m_asteroid_field);
 
+    
+
     shaders.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"));
     assert(shaders[0]);
     assert(shaders[0]->loadShader());
@@ -128,11 +130,11 @@ SolarSystem::~SolarSystem()
 /***********************************************************************************************************************************************************************/
 void SolarSystem::initData()
 {
-    m_data.push_back({"../assets/textures/CelestialBody/MercuryMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f)});
-    m_data.push_back({"../assets/textures/CelestialBody/VenusMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f)});
-    m_data.push_back({"../assets/textures/CelestialBody/MarsMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/UranusCloud.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f)});
-    m_data.push_back({"../assets/textures/CelestialBody/NeptuneCloud.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/MercuryMap.jpg", "../assets/textures/normalMap/mercury_normalMap.jpg", "../assets/textures/displacementMap/mercury_dispMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/VenusMap.jpg", "../assets/textures/normalMap/venus_normalMap.jpg", "../assets/textures/displacementMap/venus_dispMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/MarsMap.jpg", "../assets/textures/normalMap/mars_normalMap.jpg", "../assets/textures/displacementMap/mars_dispMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/UranusCloud.jpg", "../assets/textures/normalMap/uranus_normalMap.jpg", "../assets/textures/displacementMap/uranus_dispMap.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/NeptuneCloud.jpg", "../assets/textures/normalMap/neptune_normalMap.jpg", "../assets/textures/displacementMap/neptune_dispMap.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f)});
 
     sys_data.push_back({"Earth System", 1});
     sys_data.push_back({"Jovian System", 4});
@@ -231,13 +233,13 @@ void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAsteroidField ******************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr)
+void SolarSystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
 {
     glm::mat4 save = projection_view_mat[1];
 
     if(m_asteroid_field != nullptr)
     {
-        m_asteroid_field->drawAsteroidField(projection_view_mat, hdr);
+        m_asteroid_field->drawAsteroidField(projection_view_mat, camPos, hdr);
     }
         
     projection_view_mat[1] = save;

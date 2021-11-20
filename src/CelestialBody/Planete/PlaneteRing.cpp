@@ -41,6 +41,16 @@ PlaneteRing::PlaneteRing(init_data data, TTF_Font *police) : SimplePlanete(data,
         m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png", data);
         assert(m_ring);
     }
+
+    m_normal_surface = new Texture(data.normal_path);
+    assert(m_normal_surface);
+    assert(m_normal_surface->loadTexture());
+
+    m_disp_surface = new Texture(data.disp_path);
+    assert(m_disp_surface);
+    assert(m_disp_surface->loadTexture());
+
+    heighhtScale = 0.1;
 }
 
 PlaneteRing::PlaneteRing() : SimplePlanete(), m_ring()
@@ -79,17 +89,54 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             plan_ring_shader->setMat4("projection", projection);
             plan_ring_shader->setMat4("model", m_model_mat);
             
-            plan_ring_shader->setTexture("texture0", 0);
+            plan_ring_shader->setTexture("material.diffuse", 0);
 
             plan_ring_shader->setVec3("viewPos", camPos);
             
             plan_ring_shader->setInt("hdr", hdr);
+            plan_ring_shader->setInt("material.shininess", 16);
+
+
+            if(m_normal_surface != nullptr)
+            {
+                if( heighhtScale > 0.0)
+                {
+                    heighhtScale -= 0.0005f;
+                }
+                else
+                {
+                    heighhtScale = 0.0f;
+                }
+                plan_ring_shader->setInt("has_normal", true);
+                plan_ring_shader->setTexture("material.normalMap", 1);
+                plan_ring_shader->setTexture("material.depthMap", 2);
+                plan_ring_shader->setFloat("heightScale", heighhtScale);
+
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
+                
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
+
+            }
+            else
+            {
+                plan_ring_shader->setInt("has_normal", false);
+
+            }
             
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m_texture_surface->getID());
 
-            glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
+                glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, 0);
 
             if((m_ring != nullptr) && (ring_shader != nullptr))

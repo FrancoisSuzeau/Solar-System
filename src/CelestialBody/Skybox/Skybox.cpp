@@ -124,6 +124,7 @@ unsigned int Skybox::loadSybox()
     //===================================================================================================================
 
     /************************************************* lock object ********************************************************/
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textID);
     //=====================================================================================================================
     
@@ -154,6 +155,7 @@ unsigned int Skybox::loadSybox()
     //=====================================================================================================================
 
     /************************************************* unlock object ********************************************************/
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     //=====================================================================================================================
 
@@ -190,13 +192,15 @@ void Skybox::display(glm::mat4 &projection, glm::mat4 &view, bool hdr)
         m_shader.setInt("hdr", hdr);
 
         //lock texture
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture_id);
 
         //display the form
-        glActiveTexture(GL_TEXTURE0);
+        
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //unlock texture
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
 

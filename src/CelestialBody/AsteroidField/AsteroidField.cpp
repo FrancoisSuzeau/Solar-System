@@ -26,12 +26,22 @@ AsteroidField::AsteroidField(Shader *model_shader)
     this->initModel();
     this->initInstanced(modelMatrices);
 
-    m_model_shader = new Shader("../src/Shader/Shaders/modelInstanced.vert", "../src/Shader/Shaders/model.frag");
+    m_model_shader = new Shader("../src/Shader/Shaders/modelInstanced.vert", "../src/Shader/Shaders/modelInstanced.frag");
     if(m_model_shader == nullptr)
     {
         exit(EXIT_FAILURE);
     }
     m_model_shader->loadShader();
+
+    m_noramal_surface = new Texture("../assets/textures/normalMap/rock_normalMap.jpg");
+    assert(m_noramal_surface);
+    assert(m_noramal_surface->loadTexture());
+
+    m_disp_surface = new Texture("../assets/textures/displacementMap/rock_dispMap.jpg");
+    assert(m_disp_surface);
+    assert(m_disp_surface->loadTexture());
+
+    heighhtScale = 0.1;
 }
 
 AsteroidField::~AsteroidField()
@@ -53,12 +63,22 @@ AsteroidField::~AsteroidField()
 
     glDeleteBuffers(1, &buffer1);
 
+    if(m_noramal_surface != nullptr)
+    {
+        delete m_noramal_surface;
+    }
+
+    if(m_disp_surface != nullptr)
+    {
+        delete m_disp_surface;
+    }
+
 }
 
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** drawAsteroidField **********************************************************************/
 /***********************************************************************************************************************************************************************/
-void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr)
+void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
 {
     glm::mat4 save = projection_view_mat[1];
 
@@ -66,10 +86,38 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
         {
             glUseProgram(m_model_shader->getProgramID());
 
-            m_model_shader->setInt("texture_diffuse1", 0);
+            m_model_shader->setTexture("texture_diffuse1", 0);
             m_model_shader->setInt("hdr", hdr);
             m_model_shader->setMat4("projection", projection_view_mat[0]);
             m_model_shader->setMat4("view", projection_view_mat[1]);
+            m_model_shader->setVec3("viewPos", camPos);
+
+            if(m_noramal_surface != nullptr)
+            {
+                if( heighhtScale > 0.0)
+                {
+                    heighhtScale -= 0.0005f;
+                }
+                else
+                {
+                    heighhtScale = 0.0f;
+                }
+
+                m_model_shader->setInt("has_normal", true);
+                m_model_shader->setTexture("normalMap", 1);
+                m_model_shader->setTexture("depthMap", 2);
+
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
+
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, m_noramal_surface->getID());
+            }
+            else
+            {
+                m_model_shader->setInt("has_normal", false);
+
+            }
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, asteroid->getTextureLoadedID(0));
 
@@ -79,7 +127,14 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
                 glDrawElementsInstanced(GL_TRIANGLES, asteroid->getMeshVectorIndiceSize(i), GL_UNSIGNED_INT, 0, m_amount);
                 glBindVertexArray(0);
             }
+
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, 0);
             
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, 0);
 
             glUseProgram(0);

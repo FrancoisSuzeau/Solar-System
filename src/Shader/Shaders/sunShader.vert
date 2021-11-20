@@ -9,6 +9,8 @@ uniform mat4 model;
 out vec3 Normal;
 out vec3 FragPos;
 
+uniform bool inverse_normals;
+
 
 void main(void) {
     mat4 mp = projection * view * model;
@@ -16,5 +18,9 @@ void main(void) {
     texCoords = vec4(in_Vertex, 1.0);
 
     FragPos = vec3(model * vec4(in_Vertex, 1.0));
-    Normal = mat3(transpose(inverse(model))) * in_Vertex;
+    mat3 normalMatrice = mat3(transpose(inverse(model)));
+
+    vec3 n = inverse_normals ? - in_Vertex : in_Vertex;
+    Normal = normalize(normalMatrice * n);
+    // Normal = mat3(transpose(inverse(model))) * in_Vertex;
 }

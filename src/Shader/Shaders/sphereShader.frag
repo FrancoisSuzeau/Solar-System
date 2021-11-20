@@ -10,6 +10,8 @@ uniform bool hdr;
 
 
 layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
+
 void main()
 {
     vec3 objectColor = atmoColor;
@@ -37,13 +39,13 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor * objectColor;
+    vec3 diffuse = diff * lightColor;
 
     // *********************************************** specular light ***************************************************
     float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 1);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16);
     vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
@@ -60,7 +62,6 @@ void main()
     }
 
     float min_Transparency;
-    //vec4 trans = max(vec4(0.0), ((vec4(objectColor, 1.0)) - min_Transparency));
     
     if(hdr)
     {
@@ -71,7 +72,7 @@ void main()
         min_Transparency = 0.001;
     }
 
-    vec3 ambiant = ambiantStrength * lightColor * objectColor;
+    vec3 ambiant = ambiantStrength * lightColor;
 
     // *********************************************** adding mitigation effect ***************************************************
     //ambiant *= mitigation;
@@ -79,7 +80,7 @@ void main()
     //specular *= mitigation;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    vec3 result = (ambiant + diffuse);
+    vec3 result = (ambiant + diffuse + specular) * objectColor;
 
     float trans_strenght;
     if(hdr)
@@ -92,11 +93,11 @@ void main()
     }
     vec4 trans = max(vec4(0.0), ((vec4(result, trans_strenght)) - min_Transparency));
 
-    // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
-    // if(brightness > 1.0)
-    //     BrightColor = vec4(result, 1.0);
-    // else
-    //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0)
+        BrightColor = vec4(result, 1.0);
+    else
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     
     FragColor = trans;
 }

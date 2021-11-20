@@ -8,7 +8,7 @@ in vec3 FragPos;
 uniform vec3 viewPos;
 
 layout (location = 0) out vec4 FragColor;
-// layout (location = 1) out vec4 BrightColor;
+layout (location = 1) out vec4 BrightColor;
 
 void main(void) {
 
@@ -26,30 +26,27 @@ void main(void) {
     vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
 
     vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
+    // vec3 objectColor = vec3(1.0);
 
-    // *********************************************** ambiant light ***************************************************
-    //float ambiantStrength = 0.1;
-    //vec3 ambiant = ambiantStrength * objectColor;
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor * objectColor;
 
-    
-    
-    // *********************************************** only bind texture unit to fragment coordinate ***************************************************
-    //FragColor = texture(texture0, longitudeLatitude);
-    FragColor = vec4(objectColor, 1.0);
+    vec3 ambiant = 0.0 * objectColor;
+
+    vec3 result = diffuse;
+    // float dist = length(FragPos - lightPos);
+    // result *= 1.0 / (dist * dist);
+
+    FragColor = vec4(ambiant + result, 1.0);
+    // FragColor = vec4(objectColor, 1.0);
+    // FragColor = vec4(1.0f);
 
     // *********************************************** for bloom effect ***************************************************
-    // float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-    // if(brightness > 1.0)
-    //     BrightColor = vec4(FragColor.rgb, 1.0);
-	// else
-	// 	BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-
-    //FragColor = vec4(ambiant + lighting, 1.0);
-
-
-    
-    // *********************************************** or a white ball ***************************************************
-    //gl_FragColor = vec4(1.0);
-    
-        
+    float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0)
+        BrightColor = vec4(FragColor.rgb, 1.0);
+	else
+		BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
 }

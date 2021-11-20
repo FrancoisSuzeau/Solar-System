@@ -436,15 +436,16 @@ void OpenGlSketch::mainLoop()
             projection_view.push_back(projection);
             projection_view.push_back(view);
             projection_view.push_back(glm::mat4(1.0f));
+            glm::vec3 camPos = camera->getPosition();
 
-            ship->drawSpaceship(projection_view, hdr, m_model_shader, m_input);
+            ship->drawSpaceship(projection_view, camPos, hdr, m_model_shader, m_input);
         
         view = save_view;
 
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
 
-        m_framebuffer->unbindFramebuffer();
+        m_framebuffer->unbindFramebuffer(true);
 
         m_framebuffer->renderFrame(exposure, hdr);
         
@@ -624,7 +625,7 @@ void OpenGlSketch::renderScene()
                 projection_view.push_back(projection);
                 projection_view.push_back(view);
 
-                solar_system->drawAsteroidField(projection_view, hdr);
+                solar_system->drawAsteroidField(projection_view, camPos, hdr);
                 
             //restaure the modelview matrix
             view = save_view;

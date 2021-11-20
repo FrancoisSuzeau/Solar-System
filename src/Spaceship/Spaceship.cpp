@@ -38,7 +38,7 @@ Spaceship::~Spaceship()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* drawSpaceship *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool hdr, Shader *model_shader, Input input)
+void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr, Shader *model_shader, Input input)
 {
     
     if((m_spaceship_model != nullptr) && ((model_shader != nullptr)))
@@ -54,7 +54,7 @@ void Spaceship::drawSpaceship(std::vector<glm::mat4> projection_view_mat, bool h
         
         
         projection_view_mat[2] = m_model_matrice;
-        m_spaceship_model->draw(projection_view_mat, hdr, model_shader);
+        m_spaceship_model->draw(projection_view_mat, camPos, hdr, model_shader);
 
         
     }

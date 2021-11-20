@@ -216,14 +216,17 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shade
 		//send matrices
 		text_shader->setMat4("projection", projection);
 		text_shader->setMat4("view", view);
+		text_shader->setTexture("texture0", 0);
 
 		//lock texture
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_id);
 
 		//render
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		//unlock texture
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		//deactivate array
@@ -266,6 +269,7 @@ bool Text::setText(std::string const text)
 	glGenTextures(1, &m_id);
 
 	//lock OpenGL Texture
+    glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_id);
 
 	//copying pixels
@@ -284,6 +288,7 @@ bool Text::setText(std::string const text)
 	glEnd();
 
 	//unlock OpenGL Texture
+    glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	SDL_FreeSurface(surface);

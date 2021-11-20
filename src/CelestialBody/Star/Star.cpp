@@ -104,6 +104,7 @@ void Star::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bo
             star_shader->setMat4("view", view);
             star_shader->setMat4("projection", projection);
             star_shader->setMat4("model", m_model_mat);
+            star_shader->setInt("inverse_normals", true);
 
             star_shader->setTexture("texture0", 0);
 
@@ -116,7 +117,7 @@ void Star::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bo
             //draw all textured vertices
             glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
-            
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, 0);
 
         /************************************************* unbind VBO and IBO ********************************************************/

@@ -89,7 +89,7 @@ void Mesh::setupMesh()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Mesh::draw(std::vector<glm::mat4> projection_view_model_mat, bool hdr, Shader *mesh_shader)
+void Mesh::draw(std::vector<glm::mat4> projection_view_model_mat, glm::vec3 camPos, bool hdr, Shader *mesh_shader)
 {
     if(mesh_shader != nullptr)
     {
@@ -98,6 +98,7 @@ void Mesh::draw(std::vector<glm::mat4> projection_view_model_mat, bool hdr, Shad
         mesh_shader->setMat4("projection", projection_view_model_mat[0]);
         mesh_shader->setMat4("view", projection_view_model_mat[1]);
         mesh_shader->setMat4("model", projection_view_model_mat[2]);
+        mesh_shader->setVec3("viewPos", camPos);
 
         mesh_shader->setInt("hdr", hdr);
         
@@ -136,10 +137,9 @@ void Mesh::draw(std::vector<glm::mat4> projection_view_model_mat, bool hdr, Shad
             }
 
             glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
-            //glDrawElementsInstanced(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0, 1000);
 
             glBindVertexArray(0);
-            
+
             for (unsigned int i(0); i < m_textures.size(); i++)
             {
                 glActiveTexture(GL_TEXTURE0 + i);

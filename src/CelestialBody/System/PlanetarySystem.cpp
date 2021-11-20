@@ -65,17 +65,17 @@ PlanetarySystem::~PlanetarySystem()
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::initData()
 {
-    m_data.push_back({"../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/IoMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/MoonMap.jpg", "../assets/textures/normalMap/moon_normalMap.jpg", "../assets/textures/displacementMap/moon_dispMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EarthDayMap.jpg", "../assets/textures/normalMap/earth_normalMap.jpg", "../assets/textures/displacementMap/earth_dispMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EuropaMap.jpg", "../assets/textures/normalMap/europa_normalMap.jpg", "../assets/textures/displacementMap/europa_dispMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/GanymedeMap.jpg", "../assets/textures/normalMap/ganymede_normalMap.jpg", "../assets/textures/displacementMap/ganymede_dispMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/IoMap.jpg", "../assets/textures/normalMap/io_normalMap.jpg", "../assets/textures/displacementMap/io_dispMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/CallistoMap.jpg", "../assets/textures/normalMap/callisto_normalMap.jpg", "../assets/textures/displacementMap/callisto_dispMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/JupiterCloud.jpg", "../assets/textures/normalMap/jupiter_normalMap.jpg", "../assets/textures/displacementMap/jupiter_dispMap.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/MimasMap.jpg", "../assets/textures/normalMap/mimas_normalMap.jpg", "../assets/textures/displacementMap/mimas_dispMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EnceladusMap.jpg", "../assets/textures/normalMap/enceladus_normalMap.jpg", "../assets/textures/displacementMap/enceladus_dispMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/TitanMap.jpg", "../assets/textures/normalMap/titan_normalMap.jpg", "../assets/textures/displacementMap/titan_dispMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/SaturnCloud.jpg", "../assets/textures/normalMap/saturn_normalMap.jpg", "../assets/textures/displacementMap/uranus_dispMap.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0)});
 }
 
 /***********************************************************************************************************************************************************************/
@@ -279,7 +279,7 @@ void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &view, bool
     //do nothing and doesn't have
 }
 
-void PlanetarySystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr)
+void PlanetarySystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
 {
     //do nothing and doesn't have
 }

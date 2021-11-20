@@ -34,6 +34,8 @@ PURPOSE : header of the virtual System class
         typedef struct init_data {
 
                 std::string texture_path;
+                std::string normal_path;
+                std::string disp_path;
                 std::string name;
                 float   size;
                 float   inclinaison_angle;
@@ -73,7 +75,7 @@ PURPOSE : header of the virtual System class
                 virtual void displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader = nullptr) = 0;
                 virtual void displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) = 0;
                 virtual void displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr) = 0;
-                virtual void displayAsteroidField(std::vector<glm::mat4> projection_view_mat, bool hdr) = 0;
+                virtual void displayAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr) = 0;
                 
         };
 
