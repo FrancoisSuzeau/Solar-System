@@ -37,6 +37,7 @@ PURPOSE : header of the AsteroidField class
 
         #include "../../Shader/Shader.hpp"
         #include "../../Model/Model.hpp"
+        #include "../../Texture/Texture.hpp"
 
        
 
@@ -51,6 +52,7 @@ PURPOSE : header of the AsteroidField class
                 Shader                          *m_model_shader;
                 unsigned int                    m_amount;
                 glm::mat4                       *modelMatrices;
+                Texture                         *m_noramal_surface;
 
                 unsigned int buffer1;
  

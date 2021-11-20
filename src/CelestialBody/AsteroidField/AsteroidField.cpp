@@ -26,12 +26,16 @@ AsteroidField::AsteroidField(Shader *model_shader)
     this->initModel();
     this->initInstanced(modelMatrices);
 
-    m_model_shader = new Shader("../src/Shader/Shaders/modelInstanced.vert", "../src/Shader/Shaders/model.frag");
+    m_model_shader = new Shader("../src/Shader/Shaders/modelInstanced.vert", "../src/Shader/Shaders/modelInstanced.frag");
     if(m_model_shader == nullptr)
     {
         exit(EXIT_FAILURE);
     }
     m_model_shader->loadShader();
+
+    m_noramal_surface = new Texture("../assets/textures/normalMap/rock_normalMap.jpg");
+    assert(m_noramal_surface);
+    assert(m_noramal_surface->loadTexture());
 }
 
 AsteroidField::~AsteroidField()
@@ -53,6 +57,11 @@ AsteroidField::~AsteroidField()
 
     glDeleteBuffers(1, &buffer1);
 
+    if(m_noramal_surface != nullptr)
+    {
+
+    }
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -66,11 +75,25 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
         {
             glUseProgram(m_model_shader->getProgramID());
 
-            m_model_shader->setInt("texture_diffuse1", 0);
+            m_model_shader->setTexture("texture_diffuse1", 0);
             m_model_shader->setInt("hdr", hdr);
             m_model_shader->setMat4("projection", projection_view_mat[0]);
             m_model_shader->setMat4("view", projection_view_mat[1]);
             m_model_shader->setVec3("viewPos", camPos);
+
+            if(m_noramal_surface != nullptr)
+            {
+                m_model_shader->setInt("has_normal", true);
+                m_model_shader->setTexture("normalMap", 1);
+
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, m_noramal_surface->getID());
+            }
+            else
+            {
+                m_model_shader->setInt("has_normal", false);
+
+            }
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, asteroid->getTextureLoadedID(0));
 
