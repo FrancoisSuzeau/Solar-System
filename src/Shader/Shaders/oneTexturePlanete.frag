@@ -1,7 +1,5 @@
 #version 330 core
 in vec4 texCoords;
-// uniform sampler2D texture0;
-// uniform sampler2D normalMap;
 uniform vec3 viewPos;
 in vec3 Normal;
 in vec3 FragPos;
@@ -9,9 +7,12 @@ in vec3 FragPos;
 uniform bool hdr;
 uniform bool has_normal;
 
+uniform float heightScale;
+
 struct Material {
     sampler2D diffuse;
     sampler2D normalMap;
+    sampler2D depthMap;
     int shininess;
 };
 
@@ -25,6 +26,48 @@ in VS_OUT {
 } fs_in;
 
 uniform Material material;
+
+vec2 parallaxMapping(vec2 texCoord, vec3 viewDir)
+{
+    // number of depth layers
+    const float minLayers = 8;
+    const float maxLayers = 32;
+    float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));  
+    // calculate the size of each layer
+    float layerDepth = 1.0 / numLayers;
+    // depth of current layer
+    float currentLayerDepth = 0.0;
+    // the amount to shift the texture coordinates per layer (from vector P)
+    vec2 P = viewDir.xy / viewDir.z * heightScale; 
+    vec2 deltaTexCoords = P / numLayers;
+  
+    // get initial values
+    vec2  currentTexCoords     = texCoord;
+    float currentDepthMapValue = texture(material.depthMap, currentTexCoords).r;
+      
+    while(currentLayerDepth < currentDepthMapValue)
+    {
+        // shift texture coordinates along direction of P
+        currentTexCoords -= deltaTexCoords;
+        // get depthmap value at current texture coordinates
+        currentDepthMapValue = texture(material.depthMap, currentTexCoords).r;  
+        // get depth of next layer
+        currentLayerDepth += layerDepth;  
+    }
+    
+    // get texture coordinates before collision (reverse operations)
+    vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+
+    // get depth after and before collision for linear interpolation
+    float afterDepth  = currentDepthMapValue - currentLayerDepth;
+    float beforeDepth = texture(material.depthMap, prevTexCoords).r - currentLayerDepth + layerDepth;
+ 
+    // interpolation of texture coordinates
+    float weight = afterDepth / (afterDepth - beforeDepth);
+    vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+
+    return finalTexCoords;   
+}
 
 void main(void) {
 
@@ -51,10 +94,11 @@ void main(void) {
 
     vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
 
-    vec3 objectColor = texture(material.diffuse, longitudeLatitude).rgb;
+    vec3 objectColor;
     vec3 norm;
     vec3 lightDir;
     vec3 viewDir;
+    vec2 texCoord = longitudeLatitude;
 
     if(has_normal)
     {
@@ -62,6 +106,8 @@ void main(void) {
         norm = normalize(norm * 2.0 - 1.0);
         lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
         viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
+        texCoord = parallaxMapping(longitudeLatitude, viewDir);
+        
     }
     else
     {
@@ -69,6 +115,8 @@ void main(void) {
         lightDir = normalize(lightPos - FragPos);
         viewDir = normalize(viewPos - FragPos);
     }
+
+    objectColor = texture(material.diffuse, texCoord).rgb;
     
     // *********************************************** mitigation ***************************************************
     float lightConst = 1.0f;
