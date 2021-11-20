@@ -39,7 +39,7 @@ void main(void) {
     // float dist = length(FragPos - lightPos);
     // result *= 1.0 / (dist * dist);
 
-    FragColor = vec4(ambiant + result, 1.0);
+    FragColor = vec4(ambiant + diffuse, 1.0);
     // FragColor = vec4(objectColor, 1.0);
     // FragColor = vec4(1.0f);
 
