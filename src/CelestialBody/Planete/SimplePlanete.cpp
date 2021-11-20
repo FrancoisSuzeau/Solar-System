@@ -43,19 +43,14 @@ m_name(data.name)
         assert(m_normal_surface);
         assert(m_normal_surface->loadTexture());
 
-        m_disp_surface = new Texture(data.disp_path);
+        m_disp_surface = new Texture("../assets/textures/displacementMap/mercury_dispMap.jpg");
         assert(m_disp_surface);
         assert(m_disp_surface->loadTexture());
 
         heighhtScale = 0.1;
        
     }
-    // else
-    // {
-    //     m_disp_surface = nullptr;
-    // }
     
-
     //TODO : changing it to a special method
     m_inclinaison_angle = data.inclinaison_angle;
     m_real_size = data.size;

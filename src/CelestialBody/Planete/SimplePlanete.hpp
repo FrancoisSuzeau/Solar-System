@@ -52,7 +52,7 @@ PURPOSE : header of the SimplePlanete class
                 Text            *m_name_renderer;
                 int             nb_moon;
                 Atmosphere      *m_atmosphere;
-                float heighhtScale;
+                float           heighhtScale;
                 
             public:
 

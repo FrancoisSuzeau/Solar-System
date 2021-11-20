@@ -128,11 +128,11 @@ SolarSystem::~SolarSystem()
 /***********************************************************************************************************************************************************************/
 void SolarSystem::initData()
 {
-    m_data.push_back({"../assets/textures/CelestialBody/MercuryMap.jpg", "../assets/textures/normalMap/mercury_normalMap.jpg", "../assets/textures/displacementMap/mercury_dispMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f)});
-    m_data.push_back({"../assets/textures/CelestialBody/VenusMap.jpg", "../assets/textures/normalMap/venus_normalMap.jpg", "../assets/textures/displacementMap/venus_dispMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f)});
-    m_data.push_back({"../assets/textures/CelestialBody/MarsMap.jpg", "../assets/textures/normalMap/mars_normalMap.jpg", "../assets/textures/displacementMap/mars_dispMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/UranusCloud.jpg", "../assets/textures/normalMap/uranus_normalMap.jpg", "../assets/textures/displacementMap/uranus_dispMap.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f)});
-    m_data.push_back({"../assets/textures/CelestialBody/NeptuneCloud.jpg", "../assets/textures/normalMap/neptune_normalMap.jpg", "../assets/textures/displacementMap/neptune_dispMap.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/MercuryMap.jpg", "../assets/textures/normalMap/mercury_normalMap.jpg", "Mercury", 11.49f, 0.01f, glm::vec3(5790.0f, 0.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/VenusMap.jpg", "../assets/textures/normalMap/venus_normalMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/MarsMap.jpg", "../assets/textures/normalMap/mars_normalMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/UranusCloud.jpg", "../assets/textures/normalMap/uranus_normalMap.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-287070.0f, 0.0f, 0.0f)});
+    m_data.push_back({"../assets/textures/CelestialBody/NeptuneCloud.jpg", "../assets/textures/normalMap/neptune_normalMap.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 449840.0f, 0.0f)});
 
     sys_data.push_back({"Earth System", 1});
     sys_data.push_back({"Jovian System", 4});
