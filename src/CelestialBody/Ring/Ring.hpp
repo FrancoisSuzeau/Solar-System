@@ -39,6 +39,7 @@ PURPOSE : header of the Ring class
             private:
 
                 Texture         m_texture;
+                Texture         *m_normal_surf;
                 float           m_coord[12];
                 int             m_bytes_coord_size;
 

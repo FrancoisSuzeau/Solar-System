@@ -35,16 +35,28 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     {
         m_inclinaison_angle = 26.73f;
         m_real_size = 300.0f;
+
+        m_normal_surf = new Texture("../assets/textures/normalMap/ring_sat_normalMap.jpg");
+        assert(m_normal_surf);
+        assert(m_normal_surf->loadTexture());
     }
     else if(data.name == "Uranus")
     {
         m_inclinaison_angle = 97.77f;
         m_real_size = 100.0f;
+
+        m_normal_surf = new Texture("../assets/textures/normalMap/ring_ur_normalMap.jpg");
+        assert(m_normal_surf);
+        assert(m_normal_surf->loadTexture());
     }
     else if(data.name == "Neptune")
     {
         m_inclinaison_angle = 26.32f;
         m_real_size = 100.0f;
+
+        m_normal_surf = new Texture("../assets/textures/normalMap/ring_nep_normalMap.jpg");
+        assert(m_normal_surf);
+        assert(m_normal_surf->loadTexture());
     }
 
     float temp_coord[] = {0, 0,   1, 0,   1, 1,
@@ -68,7 +80,10 @@ Ring::Ring() : Disk()
 
 Ring::~Ring()
 {
-    
+    if(m_normal_surf != nullptr)
+    {
+        delete m_normal_surf;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -167,7 +182,19 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bo
             ring_shader->setVec3("viewPos", camPos);
             ring_shader->setInt("hdr", hdr);
 
-            //lock texture
+            ring_shader->setTexture("texture0", 0);
+
+            if(m_normal_surf != nullptr)
+            {
+                ring_shader->setTexture("normalMap", 1);
+                ring_shader->setInt("has_normal", true);
+
+
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, m_normal_surf->getID());
+            }
+
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m_texture.getID());
 
             //display the form
