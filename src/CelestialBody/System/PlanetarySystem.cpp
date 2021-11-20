@@ -65,17 +65,17 @@ PlanetarySystem::~PlanetarySystem()
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::initData()
 {
-    m_data.push_back({"../assets/textures/CelestialBody/MoonMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EarthDayMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EuropaMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/GanymedeMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/IoMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/CallistoMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/JupiterCloud.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/MimasMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EnceladusMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/TitanMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/SaturnCloud.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/MoonMap.jpg", "../assets/textures/normalMap/moon_normalMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EarthDayMap.jpg", "../assets/textures/normalMap/earth_normalMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EuropaMap.jpg", "../assets/textures/normalMap/europa_normalMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/GanymedeMap.jpg", "../assets/textures/normalMap/ganymede_normalMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/IoMap.jpg", "../assets/textures/normalMap/io_normalMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/CallistoMap.jpg", "../assets/textures/normalMap/callisto_normalMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/JupiterCloud.jpg", "../assets/textures/normalMap/jupiter_normalMap.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/MimasMap.jpg", "../assets/textures/normalMap/mimas_normalMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EnceladusMap.jpg", "../assets/textures/normalMap/enceladus_normalMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/TitanMap.jpg", "../assets/textures/normalMap/titan_normalMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/SaturnCloud.jpg", "../assets/textures/normalMap/saturn_normalMap.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0)});
 }
 
 /***********************************************************************************************************************************************************************/

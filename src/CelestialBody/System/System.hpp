@@ -34,6 +34,7 @@ PURPOSE : header of the virtual System class
         typedef struct init_data {
 
                 std::string texture_path;
+                std::string normal_path;
                 std::string name;
                 float   size;
                 float   inclinaison_angle;

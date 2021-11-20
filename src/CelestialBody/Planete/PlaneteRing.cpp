@@ -41,6 +41,10 @@ PlaneteRing::PlaneteRing(init_data data, TTF_Font *police) : SimplePlanete(data,
         m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png", data);
         assert(m_ring);
     }
+
+    m_normal_surface = new Texture(data.normal_path);
+    assert(m_normal_surface);
+    assert(m_normal_surface->loadTexture());
 }
 
 PlaneteRing::PlaneteRing() : SimplePlanete(), m_ring()
@@ -90,6 +94,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
                 plan_ring_shader->setInt("has_normal", true);
                 plan_ring_shader->setTexture("normalMap", 1);
 
+                
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
             }

@@ -37,64 +37,13 @@ m_name(data.name)
     assert(m_name_renderer);
     assert(m_name_renderer->loadTTF(m_name));
 
-    if(m_name == "Mercury")
+    if((m_name != "Saturn") && (m_name != "Uranus") && (m_name != "Neptune"))
     {
-        m_normal_surface = new Texture("../assets/textures/normalMap/mercury_normalMap.jpg");
+        m_normal_surface = new Texture(data.normal_path);
         assert(m_normal_surface);
         assert(m_normal_surface->loadTexture());
     }
-    else if(m_name == "Venus")
-    {
-        m_normal_surface = new Texture("../assets/textures/normalMap/venus_normalMap.jpg");
-        assert(m_normal_surface);
-        assert(m_normal_surface->loadTexture());
-    }
-    else if(m_name == "Earth")
-    {
-        m_normal_surface = new Texture("../assets/textures/normalMap/earth_normalMap.jpg");
-        assert(m_normal_surface);
-        assert(m_normal_surface->loadTexture());
-    }
-    else if(m_name == "Mars")
-    {
-        m_normal_surface = new Texture("../assets/textures/normalMap/mars_normalMap.jpg");
-        assert(m_normal_surface);
-        assert(m_normal_surface->loadTexture());
-    }
-    else if(m_name == "Jupiter")
-    {
-        m_normal_surface = new Texture("../assets/textures/normalMap/jupiter_normalMap.jpg");
-        assert(m_normal_surface);
-        assert(m_normal_surface->loadTexture());
-    }
-    else if(m_name == "Saturn")
-    {
-        m_normal_surface = new Texture("../assets/textures/normalMap/saturn_normalMap.jpg");
-        assert(m_normal_surface);
-        assert(m_normal_surface->loadTexture());
-    }
-    else if(m_name == "Uranus")
-    {
-        m_normal_surface = new Texture("../assets/textures/normalMap/uranus_normalMap.jpg");
-        assert(m_normal_surface);
-        assert(m_normal_surface->loadTexture());
-    }
-    else if(m_name == "Neptune")
-    {
-        m_normal_surface = new Texture("../assets/textures/normalMap/neptune_normalMap.jpg");
-        assert(m_normal_surface);
-        assert(m_normal_surface->loadTexture());
-    }
-    else if(m_name == "Moon")
-    {
-        m_normal_surface = new Texture("../assets/textures/normalMap/moon_normalMap.jpg");
-        assert(m_normal_surface);
-        assert(m_normal_surface->loadTexture());
-    }
-    else
-    {
-        m_normal_surface = nullptr;
-    }
+    
 
     //TODO : changing it to a special method
     m_inclinaison_angle = data.inclinaison_angle;
@@ -143,6 +92,7 @@ SimplePlanete::~SimplePlanete()
     if(m_normal_surface != nullptr)
     {
         delete m_normal_surface;
+
     }
 }
 
