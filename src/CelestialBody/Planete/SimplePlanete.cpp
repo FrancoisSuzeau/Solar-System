@@ -50,6 +50,11 @@ m_name(data.name)
         heighhtScale = 0.1;
        
     }
+    else
+    {
+        m_disp_surface = nullptr;
+        m_normal_surface = nullptr;
+    }
     
     //TODO : changing it to a special method
     m_inclinaison_angle = data.inclinaison_angle;

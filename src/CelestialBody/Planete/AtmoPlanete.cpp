@@ -50,6 +50,8 @@ AtmoPlanete::AtmoPlanete(init_data data, TTF_Font *police) : SimplePlanete(data,
         assert(m_cloud_texture);
         assert(m_cloud_texture->loadTexture());
     }
+
+    heighhtScale = 0.1;
     
     //===================================================================================================================================
     

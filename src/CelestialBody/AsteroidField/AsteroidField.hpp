@@ -52,7 +52,7 @@ PURPOSE : header of the AsteroidField class
                 Shader                          *m_model_shader;
                 unsigned int                    m_amount;
                 glm::mat4                       *modelMatrices;
-                // Texture                         *m_noramal_surface;
+                Texture                         *m_noramal_surface;
                 // Texture                         *m_disp_surface;
 
                 float                           heighhtScale;
