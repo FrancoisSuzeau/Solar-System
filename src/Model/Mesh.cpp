@@ -137,10 +137,9 @@ void Mesh::draw(std::vector<glm::mat4> projection_view_model_mat, glm::vec3 camP
             }
 
             glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
-            //glDrawElementsInstanced(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0, 1000);
 
             glBindVertexArray(0);
-            
+
             for (unsigned int i(0); i < m_textures.size(); i++)
             {
                 glActiveTexture(GL_TEXTURE0 + i);

@@ -46,8 +46,8 @@ PURPOSE : header of the SimplePlanete class
             protected:
 
                 Texture         *m_texture_surface;
-                Texture         *m_normal_surface;
-                Texture         *m_disp_surface;
+                // Texture         *m_normal_surface;
+                // Texture         *m_disp_surface;
                 std::string     m_name;
                 Text            *m_name_renderer;
                 int             nb_moon;

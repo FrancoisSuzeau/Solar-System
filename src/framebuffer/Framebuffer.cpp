@@ -162,7 +162,10 @@ void Framebuffer::manageColorBuffer(int width, int height)
     // }
     
     glGenTextures(1, &colorBuffer);
+
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, colorBuffer);
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -171,6 +174,9 @@ void Framebuffer::manageColorBuffer(int width, int height)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
     // Attach the texture to the framebuffer
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -241,9 +247,9 @@ bool Framebuffer::manageFramebuffer(int width, int height)
     // }
         
         
-    // glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    // glBindTexture(GL_TEXTURE_2D, 0);    
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
     // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
     //===================================================================================================================
 
     screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
@@ -292,8 +298,12 @@ void Framebuffer::renderFrame(float exposure, bool hdr)
                 screenShader->setFloat("exposure", exposure);
                 screenShader->setInt("hdr", hdr);
 
+                glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, colorBuffer);
-                glDrawArrays(GL_TRIANGLES, 0, 6);
+
+                    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+                glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, 0);
 
             glBindVertexArray(0);
@@ -325,6 +335,7 @@ void Framebuffer::drawBlur(float exposure, bool hdr, bool &horizontal)
     //                 glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);
     //                 shaderBlur->setInt("horizontal", horizontal);
 
+    //TODO : think of to unbind texture with glActiveTexture
     //                 glBindTexture(GL_TEXTURE_2D, first_it ? colorBuffer[1] : pinpongColorBuffers[!horizontal]);
 
     //                     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -364,6 +375,7 @@ void Framebuffer::drawScreenTexture(float exposure, bool hdr, bool &horizontal)
     //             screenShader->setFloat("exposure", exposure);
     //             screenShader->setInt("hdr", hdr);
     //             screenShader->setInt("bloom", bloom);
+    //TODO : think of to unbind texture with glActiveTexture
 
     //             glActiveTexture(GL_TEXTURE0);
     //             glBindTexture(GL_TEXTURE_2D, colorBuffer[0]);
