@@ -37,6 +37,17 @@ m_name(data.name)
     assert(m_name_renderer);
     assert(m_name_renderer->loadTTF(m_name));
 
+    if(m_name == "Mercury")
+    {
+        m_normal_surface = new Texture("../assets/textures/normalMap/mercury_normalMap.jpg");
+        assert(m_normal_surface);
+        assert(m_normal_surface->loadTexture());
+    }
+    else
+    {
+        m_normal_surface = nullptr;
+    }
+
     //TODO : changing it to a special method
     m_inclinaison_angle = data.inclinaison_angle;
     m_real_size = data.size;
@@ -79,6 +90,11 @@ SimplePlanete::~SimplePlanete()
     if(m_name_renderer != nullptr)
     {
         delete m_name_renderer;
+    }
+
+    if(m_normal_surface != nullptr)
+    {
+        delete m_normal_surface;
     }
 }
 
