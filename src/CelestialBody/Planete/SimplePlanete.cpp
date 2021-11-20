@@ -129,6 +129,20 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &c
 
             simple_plan_shader->setInt("hdr", hdr);
 
+            if(m_normal_surface != nullptr)
+            {
+                simple_plan_shader->setInt("has_normal", true);
+                simple_plan_shader->setTexture("normalMap", 1);
+
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
+            }
+            else
+            {
+                simple_plan_shader->setInt("has_normal", false);
+
+            }
+
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m_texture_surface->getID());
             
