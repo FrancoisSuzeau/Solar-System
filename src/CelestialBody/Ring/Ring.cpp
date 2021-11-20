@@ -42,9 +42,9 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
         assert(m_normal_surf);
         assert(m_normal_surf->loadTexture());
 
-        // m_disp_surf = new Texture("../assets/textures/displacementMap/sat_ring_dispMap.jpg");
-        // assert(m_disp_surf);
-        // assert(m_disp_surf->loadTexture());
+        m_disp_surf = new Texture("../assets/textures/displacementMap/sat_ring_dispMap.jpg");
+        assert(m_disp_surf);
+        assert(m_disp_surf->loadTexture());
     }
     else if(data.name == "Uranus")
     {
@@ -55,9 +55,9 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
         assert(m_normal_surf);
         assert(m_normal_surf->loadTexture());
 
-        // m_disp_surf = new Texture("../assets/textures/displacementMap/ur_ring_dispMap.jpg");
-        // assert(m_disp_surf);
-        // assert(m_disp_surf->loadTexture());
+        m_disp_surf = new Texture("../assets/textures/displacementMap/ur_ring_dispMap.jpg");
+        assert(m_disp_surf);
+        assert(m_disp_surf->loadTexture());
     }
     else if(data.name == "Neptune")
     {
@@ -68,9 +68,9 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
         assert(m_normal_surf);
         assert(m_normal_surf->loadTexture());
 
-        // m_disp_surf = new Texture("../assets/textures/displacementMap/nep_ring_dispMap.jpg");
-        // assert(m_disp_surf);
-        // assert(m_disp_surf->loadTexture());
+        m_disp_surf = new Texture("../assets/textures/displacementMap/nep_ring_dispMap.jpg");
+        assert(m_disp_surf);
+        assert(m_disp_surf->loadTexture());
     }
 
     float temp_coord[] = {0, 0,   1, 0,   1, 1,
@@ -99,10 +99,10 @@ Ring::~Ring()
         delete m_normal_surf;
     }
 
-    // if(m_disp_surf != nullptr)
-    // {
-    //     delete m_disp_surf;
-    // }
+    if(m_disp_surf != nullptr)
+    {
+        delete m_disp_surf;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -220,8 +220,8 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bo
                 ring_shader->setTexture("depthMap", 2);
                 ring_shader->setFloat("heightScale", heighhtScale);
 
-                // glActiveTexture(GL_TEXTURE2);
-                // glBindTexture(GL_TEXTURE_2D, m_disp_surf->getID());
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, m_disp_surf->getID());
 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surf->getID());
@@ -236,6 +236,9 @@ void Ring::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bo
 
             //display the form
             glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, 0);
 
             //unlock texture
             glActiveTexture(GL_TEXTURE1);

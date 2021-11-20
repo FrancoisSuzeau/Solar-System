@@ -40,7 +40,7 @@ PURPOSE : header of the Ring class
 
                 Texture         m_texture;
                 Texture         *m_normal_surf;
-                // Texture         *m_disp_surf;
+                Texture         *m_disp_surf;
                 float           m_coord[12];
                 int             m_bytes_coord_size;
                 float heighhtScale;
