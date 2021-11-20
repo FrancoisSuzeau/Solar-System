@@ -94,7 +94,6 @@ void main()
     }
     vec3 lightPos = vec3(1.0f, 0.0f, 0.0f);
 
-    // vec3 objectColor;
     vec3 norm;
     vec3 lightDir;
     vec3 viewDir;
@@ -105,7 +104,7 @@ void main()
         norm = normalize(norm * 2.0 - 1.0);
         lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
         viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
-        texCoord = parallaxMapping(texCoord, viewDir);
+        // texCoord = parallaxMapping(texCoord, viewDir);
     }
     else
     {

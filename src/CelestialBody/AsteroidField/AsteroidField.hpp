@@ -53,7 +53,7 @@ PURPOSE : header of the AsteroidField class
                 unsigned int                    m_amount;
                 glm::mat4                       *modelMatrices;
                 Texture                         *m_noramal_surface;
-                // Texture                         *m_disp_surface;
+                Texture                         *m_disp_surface;
 
                 float                           heighhtScale;
 
