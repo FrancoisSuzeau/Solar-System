@@ -43,7 +43,7 @@ m_name(data.name)
         assert(m_normal_surface);
         assert(m_normal_surface->loadTexture());
 
-        m_disp_surface = new Texture("../assets/textures/displacementMap/mercury_dispMap.jpg");
+        m_disp_surface = new Texture(data.disp_path);
         assert(m_disp_surface);
         assert(m_disp_surface->loadTexture());
 

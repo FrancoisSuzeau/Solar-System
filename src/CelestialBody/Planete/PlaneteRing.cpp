@@ -46,7 +46,7 @@ PlaneteRing::PlaneteRing(init_data data, TTF_Font *police) : SimplePlanete(data,
     assert(m_normal_surface);
     assert(m_normal_surface->loadTexture());
 
-    m_disp_surface = new Texture("../assets/textures/displacementMap/mercury_dispMap.jpg");
+    m_disp_surface = new Texture(data.disp_path);
     assert(m_disp_surface);
     assert(m_disp_surface->loadTexture());
 
@@ -117,6 +117,8 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
                 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
+
+                std::cout << m_name << std::endl;
             }
             else
             {
