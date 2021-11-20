@@ -35,6 +35,7 @@ PURPOSE : header of the virtual System class
 
                 std::string texture_path;
                 std::string normal_path;
+                std::string disp_path;
                 std::string name;
                 float   size;
                 float   inclinaison_angle;

@@ -43,17 +43,17 @@ m_name(data.name)
         assert(m_normal_surface);
         assert(m_normal_surface->loadTexture());
 
-        m_disp_surface = new Texture("../assets/textures/displacementMap/mercury_dispMap.jpg");
+        m_disp_surface = new Texture(data.disp_path);
         assert(m_disp_surface);
         assert(m_disp_surface->loadTexture());
 
         heighhtScale = 0.1;
        
     }
-    else
-    {
-        m_disp_surface = nullptr;
-    }
+    // else
+    // {
+    //     m_disp_surface = nullptr;
+    // }
     
 
     //TODO : changing it to a special method
@@ -168,14 +168,9 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &c
                 simple_plan_shader->setTexture("material.depthMap", 2);
                 simple_plan_shader->setFloat("heightScale", heighhtScale);
 
-                if(m_disp_surface != nullptr)
-                {
-                    glActiveTexture(GL_TEXTURE2);
-                    glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
-                }
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
                 
-                
-
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
             }
