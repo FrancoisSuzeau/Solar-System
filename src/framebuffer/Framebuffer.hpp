@@ -35,10 +35,6 @@ PURPOSE : header of the Framebuffer class
 
                 unsigned int quadVAO, quadVBO;
 
-                // unsigned int colorBuffer[2];
-                // unsigned int pingpongFBO[2];
-                // unsigned int pinpongColorBuffers[2];
-
                 unsigned int colorBuffer;
                 unsigned int fb;
                 unsigned int depth_rb;
@@ -51,7 +47,6 @@ PURPOSE : header of the Framebuffer class
                 int m_bytes_coord_size;
 
                 Shader *screenShader;
-                // Shader *shaderBlur;
 
                 void initVertices();
                 bool manageFramebuffer(int width, int height);
@@ -60,7 +55,7 @@ PURPOSE : header of the Framebuffer class
                 void managePinPongFBO(int width, int height);
 
                 void drawBlur(float exposure, bool hdr, bool &horizontal);
-                void drawScreenTexture(float exposure, bool hdr, bool &horizontal);
+                void drawScreenTexture(float exposure, bool hdr);
 
             public:
 
@@ -70,7 +65,7 @@ PURPOSE : header of the Framebuffer class
                 bool initFramebuffer(int width, int height);
                 void renderFrame(float exposure, bool hdr);
                 void bindFramebuffer();
-                void unbindFramebuffer(bool have_to_clear);
+                void unbindFramebuffer();
 
                 unsigned int getFB() const;
 
