@@ -206,6 +206,7 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shade
 {
 	if(text_shader != nullptr)
 	{
+		glm::mat4 save = view;
 		//activate shader program
 		glUseProgram(text_shader->getProgramID());
 
@@ -239,6 +240,8 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shade
 
 		//deactivate shader program
 		glUseProgram(0);
+
+		view = save;
 	}
 	
 }

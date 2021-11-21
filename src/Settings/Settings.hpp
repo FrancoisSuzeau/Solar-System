@@ -77,6 +77,13 @@ PURPOSE : header of the Settings class
                 int     button_type;
 
         } button_coord;
+
+        typedef struct data_render {
+
+                glm::vec3 position;
+                glm::vec3 scale;
+
+        } data_render;
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -90,16 +97,8 @@ PURPOSE : header of the Settings class
 
                 Square          *m_grey_rect;
 
-                Text            m_titre;
-                Text            m_quit;
-                Text            m_hdr;
-                Text            m_exposure;
-                Text            m_speed;
-                Text            m_music_playing;
-                Text            m_music_volume;
-                Text            m_overlay_display;
-                Text            m_info_planete;
-                Text            display_name_plan;
+                std::vector<Text*>      m_texts;
+                std::vector<data_render> datas_renders;
 
                 bool            m_mouse_button_pressed;
 
@@ -111,6 +110,10 @@ PURPOSE : header of the Settings class
 
                 void initButtonCoord();
                 int checkCoordButton(Input const &input, button_coord coordinate);
+
+                void initRender();
+
+                void renderAllTexts(glm::mat4 &projection, glm::mat4 &view, Shader *text_shader = nullptr);
 
             public:
             
