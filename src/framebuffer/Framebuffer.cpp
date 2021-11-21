@@ -36,6 +36,16 @@ Framebuffer::~Framebuffer()
     glDeleteBuffers(1, &quadVBO);
     glDeleteFramebuffers(1, &fb);
     glDeleteRenderbuffers(1, &depth_rb);
+    glDeleteTextures(1, &colorBuffer);
+
+    if((glIsRenderbuffer(depth_rb) == GL_FALSE) && 
+    (glIsFramebuffer(fb) == GL_FALSE) &&
+    (glIsTexture(colorBuffer) == GL_FALSE) && 
+    (glIsBuffer(quadVBO) == GL_FALSE) && 
+    (glIsVertexArray(quadVAO) == GL_FALSE))
+    {
+        std::cout << "FRAMEBUFFER :: delete >>> SUCESS" << std::endl;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -146,14 +156,14 @@ void Framebuffer::manageColorBuffer(int width, int height)
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, colorBuffer);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // NULL means reserve texture memory
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-    // Attach the texture to the framebuffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        // NULL means reserve texture memory
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+        // Attach the texture to the framebuffer
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -166,8 +176,11 @@ void Framebuffer::manageDepthBuffer(int width, int height)
 {
     glGenRenderbuffers(1, &depth_rb);
     glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -186,18 +199,19 @@ bool Framebuffer::manageFramebuffer(int width, int height)
     glGenFramebuffers(1, &fb);
     glBindFramebuffer(GL_FRAMEBUFFER, fb);
 
-    this->manageColorBuffer(width, height);
-    this->manageDepthBuffer(width, height);
-    
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-    {
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-        return false;
-    }
+        this->manageColorBuffer(width, height);
+        this->manageDepthBuffer(width, height);
+        
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        {
+            std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+            return false;
+        }
 
-    std::cout << "FRAMEBUFFER:: Framebuffer is complete!" << std::endl;
+        std::cout << "FRAMEBUFFER:: Framebuffer is complete!" << std::endl;
 
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 
     //===================================================================================================================
 
@@ -249,6 +263,7 @@ void Framebuffer::drawScreenTexture(float exposure, bool hdr)
                 glBindTexture(GL_TEXTURE_2D, 0);
 
             glBindVertexArray(0);
+            
         glUseProgram(0);
     }
 }

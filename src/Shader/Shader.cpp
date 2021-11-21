@@ -53,6 +53,11 @@ Shader::~Shader()
     glDeleteShader(m_fragment_ID);
     glDeleteShader(m_program_ID);
 
+    if( (glIsShader(m_vertex_ID) == GL_FALSE) && (glIsShader(m_fragment_ID) == GL_FALSE) && (glIsShader(m_program_ID) == GL_FALSE) )
+    {
+        std::cout << "SHADER :: delete >>> SUCCESS" << std::endl;
+    }
+
 }
 
 /***********************************************************************************************************************************************************************/

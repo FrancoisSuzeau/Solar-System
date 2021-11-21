@@ -79,6 +79,10 @@ Text::~Text()
 	//no need to close font because it is made in the mainLoop method
 	
 	glDeleteTextures(1, &m_id);
+	if(glIsTexture(m_id) == GL_FALSE)
+    {
+        std::cout << "TEXT :: delete >>> SUCESS" << std::endl;
+    }
 }
 
 /***********************************************************************************************************************************************************************/

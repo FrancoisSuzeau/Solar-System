@@ -58,6 +58,10 @@ Disk::~Disk()
     
     //destroy VAO
     glDeleteVertexArrays(1, &m_vaoID);
+    if( (glIsBuffer(m_vboID) == GL_FALSE) && (glIsVertexArray(m_vaoID) == GL_FALSE))
+    {
+        std::cout << "DISK :: delete >>> SUCESS" << std::endl;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
