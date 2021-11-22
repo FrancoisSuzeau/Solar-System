@@ -90,7 +90,7 @@ void main(void) {
     vec3 lightColor;
     if(hdr)
     {
-        lightColor = vec3(0.3, 0.3, 0.3);
+        lightColor = vec3(0.2, 0.2, 0.2);
     }
     else
     {
@@ -111,7 +111,7 @@ void main(void) {
         norm = normalize(norm * 2.0 - 1.0);
         lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
         viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
-        texCoord = parallaxMapping(longitudeLatitude, viewDir);
+        // texCoord = parallaxMapping(longitudeLatitude, viewDir);
         
     }
     else
@@ -149,7 +149,7 @@ void main(void) {
 
     if(hdr)
     {
-        ambiantStrength = 0.008;
+        ambiantStrength = 0.005;
     }
     else
     {

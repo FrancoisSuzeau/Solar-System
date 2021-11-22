@@ -17,7 +17,7 @@ PURPOSE : class AsteroidField
 /***********************************************************************************************************************************************************************/
 AsteroidField::AsteroidField(Shader *model_shader)
 {
-    m_amount = 5000;
+    m_amount = 3500;
     asteroid = new Model("../assets/model/rock/rock.obj");
     if(asteroid == nullptr)
     {

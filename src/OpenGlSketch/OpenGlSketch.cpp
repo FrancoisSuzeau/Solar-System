@@ -346,7 +346,7 @@ void OpenGlSketch::mainLoop()
     assert(camera);
 
     //hdr variables
-    exposure = 5.0f;
+    exposure = 1.0f;
     hdr = true;
     hdr_key_pressed = false;
 
@@ -379,6 +379,8 @@ void OpenGlSketch::mainLoop()
         // aud->playMusic();
     }
 
+    bool bloom = true;
+
     while(!m_terminate)
     {   
         start_loop = SDL_GetTicks();
@@ -398,6 +400,9 @@ void OpenGlSketch::mainLoop()
             volume = 0;
             // aud->updateTrack();
         }
+
+         /********************************************************************** Framebuffer activation ******************************************************************/
+            m_framebuffer->bindFramebuffer();
         
     //===========================================================================================================================================
         if(camera != nullptr)
@@ -407,8 +412,7 @@ void OpenGlSketch::mainLoop()
             camera->lookAt(view);
         }
 
-    /********************************************************************** Framebuffer activation ******************************************************************/
-            m_framebuffer->bindFramebuffer();
+   
 
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene();
@@ -442,12 +446,20 @@ void OpenGlSketch::mainLoop()
         
         view = save_view;
 
+        if((m_input.getKey(SDL_SCANCODE_B)) && (!menu_app_key_pressed))
+        {
+            bloom = !bloom;
+            menu_app_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_B)) == false)
+        {
+            menu_app_key_pressed = false;
+        }
+
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
 
-        m_framebuffer->unbindFramebuffer();
-
-        m_framebuffer->renderFrame(exposure, hdr);
+        m_framebuffer->renderFrame(exposure, hdr, bloom);
         
 
     /************************************************* SWAPPING WINDOWS ********************************************************/
@@ -780,7 +792,7 @@ void OpenGlSketch::renderSettings()
                     hdr = true;
                     if(exposure == 0.0f)
                     {
-                        exposure = 5.0f;
+                        exposure = 1.0f;
                     }
                     break;
 
@@ -789,9 +801,9 @@ void OpenGlSketch::renderSettings()
                     break;
 
                 case EXPOSURE_DEC:
-                    if( (exposure >= 0.0f) && (exposure <= 5.0f))
+                    if( (exposure >= 0.0f) && (exposure <= 1.0f))
                     {
-                        exposure = exposure - 1.0f;
+                        exposure = exposure - 0.1f;
                     }
                     if(exposure == 0.0f)
                     {
@@ -800,13 +812,13 @@ void OpenGlSketch::renderSettings()
                     break;
 
                 case EXPOSURE_INC:
-                    if( (exposure >= 0.0f) && (exposure <= 5.0f))
+                    if( (exposure >= 0.0f) && (exposure <= 1.0f))
                     {
-                        exposure = exposure + 1.0f;
+                        exposure = exposure + 0.1f;
                     }
-                    if(exposure > 5.0f)
+                    if(exposure > 1.0f)
                     {
-                        exposure = 5.0f;
+                        exposure = 1.0f;
                     }
                     if(exposure == 1.0f)
                     {
