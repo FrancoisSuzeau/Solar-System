@@ -34,8 +34,7 @@ PURPOSE : header of the Framebuffer class
             private:
 
                 unsigned int quadVAO, quadVBO;
-
-                // unsigned int colorBuffer;
+                
                 unsigned int fb;
                 unsigned int depth_rb;
                 
@@ -58,8 +57,8 @@ PURPOSE : header of the Framebuffer class
                 void manageDepthBuffer(int width, int height);
                 void managePinPongFBO(int width, int height);
 
-                void drawBlur(float exposure, bool hdr, bool bloom);
-                void drawScreenTexture(float exposure, bool hdr);
+                void drawBlur(float exposure, bool hdr, bool bloom, bool &horizontal);
+                void drawScreenTexture(float exposure, bool hdr, bool bloom, bool &horizontal);
 
             public:
 
