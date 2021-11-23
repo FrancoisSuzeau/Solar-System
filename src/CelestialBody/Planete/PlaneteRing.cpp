@@ -89,7 +89,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             plan_ring_shader->setVec3("viewPos", camPos);
             
             plan_ring_shader->setInt("hdr", hdr);
-            plan_ring_shader->setInt("material.shininess", 16);
+            plan_ring_shader->setInt("material.shininess", 32);
 
 
             if(m_normal_surface != nullptr)

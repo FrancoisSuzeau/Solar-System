@@ -24,7 +24,7 @@ Spaceship::Spaceship(std::string const path) : m_yaw(0.0f), m_pitch(90.0f), m_sp
 
     m_model_matrice = model;
 
-    m_current_pos = glm::vec3(1.0f, 9000.0f, 1.0f);
+    m_current_pos = glm::vec3(0.0f, 9000.0f, 0.0f);
 }
 
 Spaceship::~Spaceship()

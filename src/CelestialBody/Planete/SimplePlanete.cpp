@@ -73,6 +73,22 @@ m_name(data.name)
             exit(EXIT_FAILURE);
         }
     }
+    else if(m_name == "Uranus")
+    {
+        m_atmosphere = new Atmosphere(1.05f, m_name);
+        if(m_atmosphere == nullptr)
+        {
+            exit(EXIT_FAILURE);
+        }
+    }
+    else if(m_name == "Neptune")
+    {
+        m_atmosphere = new Atmosphere(1.05f, m_name);
+        if(m_atmosphere == nullptr)
+        {
+            exit(EXIT_FAILURE);
+        }
+    }
 }
 
 SimplePlanete::SimplePlanete(): Sphere()
@@ -211,7 +227,7 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec
 /***********************************************************************************************************************************************************************/
 void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
-    if( (m_name == "Mars") || (m_name == "Venus")) 
+    if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune")) 
     {
         if(atmo_shader != nullptr)
         {
