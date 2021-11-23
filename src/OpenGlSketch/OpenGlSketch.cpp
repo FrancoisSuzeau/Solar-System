@@ -346,7 +346,7 @@ void OpenGlSketch::mainLoop()
     assert(camera);
 
     //hdr variables
-    exposure = 1.0f;
+    exposure = 0.8;
     hdr = true;
     hdr_key_pressed = false;
 
@@ -445,17 +445,6 @@ void OpenGlSketch::mainLoop()
             ship->drawSpaceship(projection_view, camPos, hdr, m_model_shader, m_input);
         
         view = save_view;
-
-        if((m_input.getKey(SDL_SCANCODE_B)) && (!menu_app_key_pressed))
-        {
-            bloom = !bloom;
-            menu_app_key_pressed = true;
-        }
-        if ((m_input.getKey(SDL_SCANCODE_B)) == false)
-        {
-            menu_app_key_pressed = false;
-        }
-
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
 
@@ -615,7 +604,7 @@ void OpenGlSketch::renderScene()
 
             /****************************************** atmosphere render *************************************************/
 
-                solar_system->drawAtmo(projection, view, camPos, hdr);
+                // solar_system->drawAtmo(projection, view, camPos, hdr);
 
             //restaure the modelview matrix
             view = save_view;
@@ -637,7 +626,7 @@ void OpenGlSketch::renderScene()
                 projection_view.push_back(projection);
                 projection_view.push_back(view);
 
-                solar_system->drawAsteroidField(projection_view, camPos, hdr);
+                // solar_system->drawAsteroidField(projection_view, camPos, hdr);
                 
             //restaure the modelview matrix
             view = save_view;
@@ -792,7 +781,7 @@ void OpenGlSketch::renderSettings()
                     hdr = true;
                     if(exposure == 0.0f)
                     {
-                        exposure = 1.0f;
+                        exposure = 0.8f;
                     }
                     break;
 
@@ -801,7 +790,7 @@ void OpenGlSketch::renderSettings()
                     break;
 
                 case EXPOSURE_DEC:
-                    if( (exposure >= 0.0f) && (exposure <= 1.0f))
+                    if( (exposure >= 0.0f) && (exposure <= 0.8f))
                     {
                         exposure = exposure - 0.1f;
                     }
@@ -812,15 +801,15 @@ void OpenGlSketch::renderSettings()
                     break;
 
                 case EXPOSURE_INC:
-                    if( (exposure >= 0.0f) && (exposure <= 1.0f))
+                    if( (exposure >= 0.0f) && (exposure <= 0.8f))
                     {
                         exposure = exposure + 0.1f;
                     }
-                    if(exposure > 1.0f)
+                    if(exposure > 0.8f)
                     {
-                        exposure = 1.0f;
+                        exposure = 0.8f;
                     }
-                    if(exposure == 1.0f)
+                    if(exposure == 0.8f)
                     {
                         hdr = true;
                     }

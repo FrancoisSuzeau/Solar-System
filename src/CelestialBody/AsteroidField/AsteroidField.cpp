@@ -36,12 +36,6 @@ AsteroidField::AsteroidField(Shader *model_shader)
     m_noramal_surface = new Texture("../assets/textures/normalMap/rock_normalMap.jpg");
     assert(m_noramal_surface);
     assert(m_noramal_surface->loadTexture());
-
-    m_disp_surface = new Texture("../assets/textures/displacementMap/rock_dispMap.jpg");
-    assert(m_disp_surface);
-    assert(m_disp_surface->loadTexture());
-
-    heighhtScale = 0.1;
 }
 
 AsteroidField::~AsteroidField()
@@ -68,11 +62,6 @@ AsteroidField::~AsteroidField()
         delete m_noramal_surface;
     }
 
-    if(m_disp_surface != nullptr)
-    {
-        delete m_disp_surface;
-    }
-
 }
 
 /***********************************************************************************************************************************************************************/
@@ -94,21 +83,9 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
 
             if(m_noramal_surface != nullptr)
             {
-                if( heighhtScale > 0.0)
-                {
-                    heighhtScale -= 0.0005f;
-                }
-                else
-                {
-                    heighhtScale = 0.0f;
-                }
 
                 m_model_shader->setInt("has_normal", true);
                 m_model_shader->setTexture("normalMap", 1);
-                m_model_shader->setTexture("depthMap", 2);
-
-                glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_noramal_surface->getID());
@@ -127,9 +104,6 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
                 glDrawElementsInstanced(GL_TRIANGLES, asteroid->getMeshVectorIndiceSize(i), GL_UNSIGNED_INT, 0, m_amount);
                 glBindVertexArray(0);
             }
-
-            glActiveTexture(GL_TEXTURE2);
-            glBindTexture(GL_TEXTURE_2D, 0);
 
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, 0);

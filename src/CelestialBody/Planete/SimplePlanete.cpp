@@ -42,17 +42,9 @@ m_name(data.name)
         m_normal_surface = new Texture(data.normal_path);
         assert(m_normal_surface);
         assert(m_normal_surface->loadTexture());
-
-        m_disp_surface = new Texture(data.disp_path);
-        assert(m_disp_surface);
-        assert(m_disp_surface->loadTexture());
-
-        heighhtScale = 0.1;
-       
     }
     else
     {
-        m_disp_surface = nullptr;
         m_normal_surface = nullptr;
     }
     
@@ -105,12 +97,6 @@ SimplePlanete::~SimplePlanete()
         delete m_normal_surface;
 
     }
-
-    if(m_disp_surface != nullptr)
-    {
-        delete m_disp_surface;
-
-    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -155,21 +141,8 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &c
             
             if(m_normal_surface != nullptr)
             {
-                if( heighhtScale > 0.0)
-                {
-                    heighhtScale -= 0.0005f;
-                }
-                else
-                {
-                    heighhtScale = 0.0f;
-                }
                 simple_plan_shader->setInt("has_normal", true);
                 simple_plan_shader->setTexture("material.normalMap", 1);
-                simple_plan_shader->setTexture("material.depthMap", 2);
-                simple_plan_shader->setFloat("heightScale", heighhtScale);
-
-                glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
                 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
@@ -184,9 +157,6 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &c
             glBindTexture(GL_TEXTURE_2D, m_texture_surface->getID());
             
             glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
-
-            glActiveTexture(GL_TEXTURE2);
-            glBindTexture(GL_TEXTURE_2D, 0);
 
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, 0);

@@ -19,7 +19,7 @@ void main()
     vec3 lightColor;
     if(hdr)
     {
-        lightColor = vec3(0.15, 0.15, 0.15);
+        lightColor = vec3(0.04, 0.04, 0.04);
     }
     else
     {
@@ -54,7 +54,7 @@ void main()
 
     if(hdr)
     {
-        ambiantStrength = 0.001;
+        ambiantStrength = 1.0;
     }
     else
     {

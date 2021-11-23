@@ -43,10 +43,10 @@ void main(void) {
     // FragColor = vec4(objectColor, 1.0);
     // FragColor = vec4(lightColor, 1.0f);
 
-    // if(FragColor.r > 0.05f)
-    // {
-    //     FragColor.r *= 5.0f;
-    // }
+    if(FragColor.r > 0.05f)
+    {
+        FragColor.r *= 1.5f;
+    }
 
     // *********************************************** for bloom effect ***************************************************
     float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));

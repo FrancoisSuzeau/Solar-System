@@ -50,8 +50,6 @@ AtmoPlanete::AtmoPlanete(init_data data, TTF_Font *police) : SimplePlanete(data,
         assert(m_cloud_texture);
         assert(m_cloud_texture->loadTexture());
     }
-
-    heighhtScale = 0.1;
     
     //===================================================================================================================================
     
@@ -123,21 +121,8 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
 
             if(m_normal_surface != nullptr)
             {
-                if( heighhtScale > 0.0)
-                {
-                    heighhtScale -= 0.0005f;
-                }
-                else
-                {
-                    heighhtScale = 0.0f;
-                }
                 atmo_plan_shader->setInt("has_normal", true);
                 atmo_plan_shader->setTexture("material.normalMap", 2);
-                atmo_plan_shader->setTexture("material.depthMap", 3);
-                atmo_plan_shader->setFloat("heightScale", heighhtScale);
-
-                glActiveTexture(GL_TEXTURE3);
-                glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
                 
                 glActiveTexture(GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
@@ -157,9 +142,6 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             
                 //draw all textured vertices
                 glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
-
-            glActiveTexture(GL_TEXTURE3);
-            glBindTexture(GL_TEXTURE_2D, 0);
 
             glActiveTexture(GL_TEXTURE2);
             glBindTexture(GL_TEXTURE_2D, 0);
