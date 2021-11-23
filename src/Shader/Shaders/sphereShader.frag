@@ -19,14 +19,6 @@ void main()
     vec3 objectColor = atmoColor;
 
     vec3 lightColor = vec3(lightcolor);
-    // if(hdr)
-    // {
-    //     // lightColor = vec3(0.5);
-    // }
-    // else
-    // {
-    //     // lightColor = vec3(0.09);
-    // }
 
     vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
 
