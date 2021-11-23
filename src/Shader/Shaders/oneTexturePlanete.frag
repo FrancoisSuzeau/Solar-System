@@ -40,11 +40,11 @@ void main(void) {
     vec3 lightColor;
     if(hdr)
     {
-        lightColor = vec3(0.8, 0.8, 0.8);
+        lightColor = vec3(0.4);
     }
     else
     {
-        lightColor = vec3(1.0, 1.0, 1.0);
+        lightColor = vec3(0.2);
     }
 
     vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
@@ -102,7 +102,7 @@ void main(void) {
     }
     else
     {
-        ambiantStrength = 0.1;
+        ambiantStrength = 0.001;
     }
 
     vec3 ambiant = ambiantStrength * lightColor;

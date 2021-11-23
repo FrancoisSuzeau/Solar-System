@@ -8,6 +8,7 @@
 in vec3 color;
 uniform vec3 color2;
 uniform bool hdr;
+uniform bool load;
 
 
 // Sortie 
@@ -20,17 +21,27 @@ layout (location = 1) out vec4 BrightColor;
 void main()
 {
     // Couleur finale du pixel
-    vec3 correct_color = vec3(0.15, 0.15, 0.15);
+    vec3 correct_color;
     vec3 result;
     if(hdr)
     {
-        result = correct_color * color2;
+        correct_color = vec3(0.15);
         
     }
     else
     {
-        result = color2;
+        if(load)
+        {
+            correct_color = vec3(1.0);
+        }
+        else
+        {
+            correct_color = vec3(0.15);
+        }
+        
     }
+
+    result = correct_color * color2;
 
     float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0)

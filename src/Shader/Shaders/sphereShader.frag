@@ -19,11 +19,11 @@ void main()
     vec3 lightColor;
     if(hdr)
     {
-        lightColor = vec3(0.09, 0.09, 0.09);
+        lightColor = vec3(0.5);
     }
     else
     {
-        lightColor = vec3(0.5, 0.5, 0.5);
+        lightColor = vec3(0.09);
     }
 
     vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
@@ -54,22 +54,22 @@ void main()
 
     if(hdr)
     {
-        ambiantStrength = 0.005;
+        ambiantStrength = 0.2;
     }
     else
     {
-        ambiantStrength = 0.1;
+        ambiantStrength = 0.005;
     }
 
     float min_Transparency;
     
     if(hdr)
     {
-        min_Transparency = 0.01;
+        min_Transparency = 0.1;
     }
     else
     {
-        min_Transparency = 0.001;
+        min_Transparency = 0.01;
     }
 
     vec3 ambiant = ambiantStrength * lightColor;
@@ -85,7 +85,7 @@ void main()
     float trans_strenght;
     if(hdr)
     {
-        trans_strenght = 0.8;
+        trans_strenght = 0.6;
     }
     else
     {

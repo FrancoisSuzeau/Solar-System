@@ -92,6 +92,12 @@ void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool
 
         if(square_shader != nullptr)
         {
+            glUseProgram(square_shader->getProgramID());
+
+                square_shader->setInt("load", false);
+
+            glUseProgram(0);
+
             for (size_t i(0); i < 52; i++) // 25 * 2 + 2
             {
                 std::vector<glm::vec3> coordinates1;

@@ -94,7 +94,7 @@ void main(void) {
     }
     else
     {
-        ambiantStrength = 0.1;
+        ambiantStrength = 0.01;
     }
 
     vec3 ambiant = ambiantStrength * lightColor;

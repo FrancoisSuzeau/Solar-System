@@ -216,6 +216,11 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &view, glm::ve
 
     if(square_shader != nullptr)
     {
+        glUseProgram(square_shader->getProgramID());
+
+            square_shader->setInt("load", true);
+
+        glUseProgram(0);
         if(count == 0)
         {
                 view = translate(view, vec3((count - 12.2f) * 0.05f, -0.3f, 0.0f));

@@ -10,7 +10,7 @@ uniform bool hdr;
 
 void main()
 {
-    vec3 lightColor = vec3(2.0, 2.0, 2.0);
+    
 
     // *********************************************** ambiant light ***************************************************
     float ambiantStrength;
@@ -19,13 +19,16 @@ void main()
     vec3 objectColor = texture(skybox, TexCoords).rgb;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
+    vec3 lightColor;
     if(hdr)
     {
-        ambiantStrength = 0.09;
+        lightColor = vec3(1.0);
+        ambiantStrength = 0.4;
     }
     else
     {
-        ambiantStrength = 1.0;
+        lightColor = vec3(2.0);
+        ambiantStrength = 0.09;
     }
     
     vec3 ambiant = ambiantStrength * lightColor;
