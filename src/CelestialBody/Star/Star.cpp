@@ -26,7 +26,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Star::Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture, std::string const name, float const real_size) :
 Sphere(radius, longSegs, latSegs), m_cloud_texture(texture),
-m_name(name), m_light_vao(0)
+m_name(name)
 {
     assert(m_cloud_texture.loadTexture());
 
@@ -35,35 +35,6 @@ m_name(name), m_light_vao(0)
     m_current_position = m_initial_pos;
     m_speed_rotation = 0.1f;
     m_rotation_angle = 0.0f;
-
-    m_atmosphere = new Atmosphere(1.05f, m_name);
-    assert(m_atmosphere);
-
-    /************************************************* VAO management ********************************************************/
-    if(glIsVertexArray(m_light_vao) == GL_TRUE)
-    {
-        glDeleteVertexArrays(1, &m_light_vao);
-    }
-    //generate Vertex Array Object ID
-    glGenVertexArrays(1, &m_light_vao);
-
-    //lock VAO
-    glBindVertexArray(m_light_vao);
-
-        //lock VBO
-        glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-
-        //access to vertices in video memory
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-        glEnableVertexAttribArray(0);
-
-        //unlock VBO
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    //unlock VAO
-    glBindVertexArray(0);
-    //===================================================================================================================
-
 }
 
 Star::Star()
@@ -73,10 +44,6 @@ Star::Star()
 
 Star::~Star()
 {
-    if(m_atmosphere != nullptr)
-    {
-        delete m_atmosphere;
-    }
     
 }
 
@@ -131,42 +98,4 @@ void Star::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bo
         glUseProgram(0);
     }
     
-}
-
-// /***********************************************************************************************************************************************************************/
-// /**************************************************************************** updatePosition ***************************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void Star::updatePosition(glm::mat4 &projection, glm::mat4 &view, float const rotation)
-// {
-//     m_model_mat = glm::mat4(1.0f);
-//     //postionning body
-//     translateCelestialBody(m_model_mat, m_current_position);
-
-//     m_rotation_angle += m_speed_rotation;
-//     if(m_rotation_angle >= 360)
-//     {
-//         m_rotation_angle -= 360;
-//     }
-//     rotateCelestialBody(m_model_mat, m_rotation_angle);
-
-//     //scaling on his real size
-//     scaleCelestialBody(m_model_mat, m_real_size);
-// }
-
-/***********************************************************************************************************************************************************************/
-/******************************************************************************* displayAtmo ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Star::displayAtmo(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *atmo_shader)
-{
-    if(atmo_shader != nullptr)
-    {
-        translateCelestialBody(view, m_current_position);
-        if(m_atmosphere != nullptr)
-        {
-            //HACK : in fact we don't need this, have to change some parameter to pass them with default value
-            glm::vec3 campos(0.0f);
-            m_atmosphere->display(projection, view, campos, hdr, atmo_shader);
-        }
-           
-    }
 }

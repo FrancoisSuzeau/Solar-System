@@ -31,7 +31,6 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_sha
     assert(skybox);
 
     sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
-    // sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 100);
     assert(sun);
 
     m_asteroid_field = new AsteroidField(model_shader);
@@ -58,10 +57,6 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_sha
     shaders.push_back(new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag"));
     assert(shaders[4]);
     assert(shaders[4]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/sunAtmo.vert", "../src/Shader/Shaders/sunAtmo.frag"));
-    assert(shaders[5]);
-    assert(shaders[5]->loadShader());
 
     if(model_shader != nullptr)
     {
@@ -392,15 +387,6 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
         {
             exit(EXIT_FAILURE);
         }
-        
-        // if(sun != nullptr)
-        // {
-        //     if(shaders[5] != nullptr)
-        //     {
-        //         sun->displayAtmo(projection, view, hdr, shaders[5]);
-        //     }
-            
-        // }
 
     view = save;
 
@@ -426,7 +412,6 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
     {
         if(it[0] != nullptr)
         {
-            //! it[0]->UpdatePositionPlan();
 
             if((shaders[4] != nullptr) && (it[0] != nullptr))
             {

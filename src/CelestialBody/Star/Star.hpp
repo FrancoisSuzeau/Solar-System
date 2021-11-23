@@ -43,20 +43,13 @@ PURPOSE : header of the Star class
 
                 Texture         m_cloud_texture;
                 std::string     m_name;
-                GLuint          m_light_vao;
-
-                Atmosphere      *m_atmosphere;
         
-
- 
-                
             public:
 
                 Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture_surf, std::string const name, float const real_size);
                 Star();
                 ~Star();
                 void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *star_shader = nullptr);
-                void displayAtmo(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *atmo_shader = nullptr);
                 
                 
         };
