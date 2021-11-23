@@ -604,7 +604,7 @@ void OpenGlSketch::renderScene()
 
             /****************************************** atmosphere render *************************************************/
 
-                // solar_system->drawAtmo(projection, view, camPos, hdr);
+                solar_system->drawAtmo(projection, view, camPos, hdr);
 
             //restaure the modelview matrix
             view = save_view;

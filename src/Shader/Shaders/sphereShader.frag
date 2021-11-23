@@ -19,7 +19,7 @@ void main()
     vec3 lightColor;
     if(hdr)
     {
-        lightColor = vec3(0.04, 0.04, 0.04);
+        lightColor = vec3(0.09, 0.09, 0.09);
     }
     else
     {
@@ -54,11 +54,11 @@ void main()
 
     if(hdr)
     {
-        ambiantStrength = 1.0;
+        ambiantStrength = 0.005;
     }
     else
     {
-        ambiantStrength = 0.0001;
+        ambiantStrength = 0.1;
     }
 
     float min_Transparency;
