@@ -246,7 +246,7 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::v
 
         if(r <= 10 * size_plan)
         {
-            view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+            view = lookAt(vec3(0.0, 0.0, 1.71), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
 
             if(m_host_creator == nullptr) //exceptionnaly we exit the program because without 
             {

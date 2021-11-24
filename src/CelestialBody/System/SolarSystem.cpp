@@ -443,7 +443,7 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
 
             if(r <= 10 * size_plan)
             {
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
                 std::string tmp_name = it[0]->getName();
                 
                 if(tmp_name != m_planete_info->getInfoName())
