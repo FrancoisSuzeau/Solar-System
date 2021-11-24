@@ -16,7 +16,7 @@ PURPOSE : class Camera
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 Camera::Camera() : m_vertical_axe(0.0f, 0.0f, 1.0f),
-m_lateral_move(), m_position(), m_target_point(), distance_from_ship(5.0f), angle_around_player(0.0f),
+m_lateral_move(), m_position(), m_target_point(), distance_from_ship(3.0f), angle_around_player(0.0f),
 pitch(20.0f)
 {
 
@@ -24,7 +24,7 @@ pitch(20.0f)
 
 Camera::Camera(glm::vec3 position, glm::vec3 target_point, glm::vec3 vertical_axe, Spaceship *ship) : 
  m_vertical_axe(vertical_axe),
-m_lateral_move(), m_position(position), m_target_point(target_point), distance_from_ship(5.0f), angle_around_player(180.0f),
+m_lateral_move(), m_position(position), m_target_point(target_point), distance_from_ship(3.0f), angle_around_player(180.0f),
 pitch(0.0f)
 {
    if(ship != nullptr)

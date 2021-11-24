@@ -104,6 +104,13 @@ Skybox::~Skybox()
     //destroy VAO
     glDeleteVertexArrays(1, &m_vaoID);
 
+    if((glIsTexture(m_texture_id) == GL_FALSE) && 
+    (glIsBuffer(m_vboID) == GL_FALSE) && 
+    (glIsVertexArray(m_vaoID) == GL_FALSE))
+    {
+        std::cout << "SKYBOX :: delete >>> SUCESS" << std::endl;
+    }
+
 }
 
 /***********************************************************************************************************************************************************************/

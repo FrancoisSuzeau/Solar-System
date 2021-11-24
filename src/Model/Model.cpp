@@ -24,7 +24,21 @@ Model::Model(std::string const &path, bool gamma) : m_gammaCorrection(gamma)
 
 Model::~Model()
 {
+    for (std::vector<Texturate>::iterator it = textures_loaded.begin(); it != textures_loaded.end(); ++it)
+    {
+        glDeleteTextures(1, &it[0].id);
+        if(glIsTexture(it[0].id) == GL_FALSE)
+        {
+            std::cout << "TEXTURE :: delete >>> SUCESS" << std::endl;
+        }
+    }
 
+    //! NO need to destrpy every textures of the mesh vector because they are same as texture_loaded
+    // for (std::vector<Mesh>::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
+    // {
+        
+    // } 
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -248,20 +262,25 @@ unsigned int Model::textureFromFile(const char *path, const std::string &directo
         else if (nrComponents == 4)
             format = GL_RGBA;
 
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
 
-        // glBindTexture(GL_TEXTURE_2D, 0);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        stbi_image_free(data);
+            // glBindTexture(GL_TEXTURE_2D, 0);
 
-        std::cout << ">> Texture loading by path: " << path << " SUCCESS" << std::endl;
+            stbi_image_free(data);
+
+            std::cout << ">> Texture loading by path: " << path << " SUCCESS" << std::endl;
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
 
     }
     else

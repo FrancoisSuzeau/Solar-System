@@ -99,19 +99,36 @@ Make sure that the executable file is in the ````bin```` directory.
 + Changing navigation by a third person camera with ship as moveable
 + undisplay particule (for now, to adapt it to new navigation)
 
+### 08/11/2021
++ Implement an asteroid field with Model Instanced Object (3500 because of low performance pc)
+
+### 18/11/2021
++ Adding normal map for all object exept for Sun, Spaceship, and Mars/Earth Cloud (making Rings so smooth)
++ Testing parallax method but create bug so for now it is only available for Rings
+
+### 20/11/2021
++ Refactoring the settings class on Text members (use vector)
++ Tracking all textures, VAOs, VBOs, IBOs, frambuffers, renderBuffers bind by OpenGL are unbind and correctly deleted
+
+### 23/11/2021
++ Bloomed the Sun, and planete's atmosphere (Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune)
++ Adding gradient atenuation of how the atmosphere turn black when on the hidden face of a planete (not facing the sun) making a nice red/violet smooth sunrise for Earth and other color for other planetes
++ Changing how HDR effect work and values of light and ambient strenght in shaders
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
 For the moment I am working on this following aspect :
-+ Implements atmosphere effects (like red shadowing on the frontier of the dark side of a planets, bloom and blur effect) : impossible due to a not working framebuffer
 
 + Overlay : Display the sphere influence when approching a body or interplanetary travel
 
 + After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
 
-+ Change particule class to a move effect by the ship orientation
++ Change particule movement by ship movement not by camera movement
 
-+ Create an asteroid field class with Opengl Instanced Object to optimize the render
++ bug correction on skybox (see the borders)
+
++ rewrite Overlay class to correspond with perspective angle of projection matrix (for now at 70 degree) to pass it at 45 degree
 
 + Big refactoring phase
 

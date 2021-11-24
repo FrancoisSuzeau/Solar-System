@@ -17,28 +17,27 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Settings::Settings(TTF_Font *police):
-m_titre(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-m_quit(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-m_hdr(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-m_exposure(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-m_speed(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-m_music_playing(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-m_music_volume(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-m_overlay_display(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-m_info_planete(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police),
-display_name_plan(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police)
+Settings::Settings(TTF_Font *police)
 {
-    assert(m_titre.loadTTF("Settings"));
-    assert(m_quit.loadTTF("Quit Simulation"));
-    assert(m_hdr.loadTTF("HDR : ON / OFF"));
-    assert(m_exposure.loadTTF("Exposure : - / +"));
-    assert(m_speed.loadTTF("Speed : - / +"));
-    assert(m_music_playing.loadTTF("Music : ON / OFF"));
-    assert(m_music_volume.loadTTF("Music : - / +"));
-    assert(m_overlay_display.loadTTF("Overlay : ON / OFF"));
-    assert(m_info_planete.loadTTF("Planete information : ON / OFF"));
-    assert(display_name_plan.loadTTF("Show body name : ON / OFF"));
+    std::string text[] = {  "Settings",
+                            "Quit Simulation",
+                            "HDR : ON / OFF",
+                            "Exposure : - / +",
+                            "Speed : - / +",
+                            "Music : ON / OFF",
+                            "Music : - / +",
+                            "Overlay : ON / OFF",
+                            "Planete information : ON / OFF",
+                            "Show body name : ON / OFF"
+                        };
+
+    for (int i = 0; i < 10; i++)
+    {
+        m_texts.push_back(new Text(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police));
+        assert(m_texts[i]);
+        assert(m_texts[i]->loadTTF(text[i]));
+    }
+    
     m_mouse_button_pressed = false;
 
     screen_width = GetSystemMetrics(SM_CXSCREEN);
@@ -51,6 +50,7 @@ display_name_plan(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police)
     assert(m_grey_rect);
 
     initButtonCoord();
+    initRender();
 
 }
 
@@ -60,9 +60,33 @@ Settings::~Settings()
     {
         delete m_grey_rect;
     }
+
+    for (std::vector<Text*>::iterator it = m_texts.begin(); it != m_texts.end(); ++it)
+    {
+        if(*it != nullptr)
+        {
+            delete *it;
+        }
+    }
     
 }
 
+/***********************************************************************************************************************************************************************/
+/************************************************************************** initRender *********************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Settings::initRender()
+{
+    datas_renders.push_back({vec3(0.0, 0.34, -0.0), vec3(0.075, 0.09, 0.0)});
+    datas_renders.push_back({vec3(0.0, -0.345, -0.0), vec3(0.05, 0.060, 0.0)});
+    datas_renders.push_back({vec3(0.0, 0.25, -0.0), vec3(0.05, 0.060, 0.0)});
+    datas_renders.push_back({vec3(0.0, 0.18, -0.0), vec3(0.05, 0.060, 0.0)});
+    datas_renders.push_back({vec3(0.0, 0.11, -0.0), vec3(0.05, 0.060, 0.0)});
+    datas_renders.push_back({vec3(0.0, 0.04, -0.0), vec3(0.05, 0.060, 0.0)});
+    datas_renders.push_back({vec3(0.0, -0.03, -0.0), vec3(0.05, 0.060, 0.0)});
+    datas_renders.push_back({vec3(0.0, -0.1, -0.0), vec3(0.05, 0.060, 0.0)});
+    datas_renders.push_back({vec3(0.0, -0.17, -0.0), vec3(0.07, 0.090, 0.0)});
+    datas_renders.push_back({vec3(0.0, -0.24, -0.0), vec3(0.07, 0.090, 0.0)});
+}
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************* initButtonCoord *********************************************************************************/
@@ -186,76 +210,32 @@ void Settings::displayFrameSettings(glm::mat4 &projection, glm::mat4 &view, bool
             view = translate(view, vec3(0.31, -0.36, 0.0));
             m_grey_rect->display(projection, view, colorGrey, hdr, square_shader);
     }
-    
-            
     view = save;
 
+    renderAllTexts(projection, view, text_shader);
+}
 
-    //******************************************************************* render titre settings ***********************************************************************
+/***********************************************************************************************************************************************************************/
+/******************************************************************* renderAllTexts ************************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Settings::renderAllTexts(glm::mat4 &projection, glm::mat4 &view, Shader *text_shader)
+{
+    if(text_shader != nullptr)
+    {
+        glm::mat4 save = view;
 
-        if(text_shader != nullptr)
+        for (int i = 0; i < 10; i++)
         {
-                view = translate(view, vec3(0.0, 0.34, -0.0));
-                view = scale(view, vec3(0.075, 0.09, 0.0));
-                m_titre.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, -0.345, -0.0));
-                view = scale(view, vec3(0.05, 0.060, 0.0));
-                m_quit.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, 0.25, -0.0));
-                view = scale(view, vec3(0.05, 0.060, 0.0));
-                m_hdr.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, 0.18, -0.0));
-                view = scale(view, vec3(0.05, 0.060, 0.0));
-                m_exposure.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, 0.11, -0.0));
-                view = scale(view, vec3(0.05, 0.060, 0.0));
-                m_speed.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, 0.04, -0.0));
-                view = scale(view, vec3(0.05, 0.060, 0.0));
-                m_music_playing.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, -0.03, -0.0));
-                view = scale(view, vec3(0.05, 0.060, 0.0));
-                m_music_volume.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, -0.1, -0.0));
-                view = scale(view, vec3(0.05, 0.060, 0.0));
-                m_overlay_display.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, -0.17, -0.0));
-                view = scale(view, vec3(0.07, 0.090, 0.0));
-                m_info_planete.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(0.0, -0.24, -0.0));
-                view = scale(view, vec3(0.07, 0.090, 0.0));
-                display_name_plan.renderText(projection, view, text_shader);
+            view = translate(view, datas_renders[i].position);
+            view = scale(view, datas_renders[i].scale);
+            if(m_texts[i] != nullptr)
+            {
+                m_texts[i]->renderText(projection, view, text_shader);
+            }
             view = save;
         }
-        
-    
+        view = save;
+    }
 }
 
 /***********************************************************************************************************************************************************************/

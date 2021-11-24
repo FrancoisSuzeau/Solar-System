@@ -79,6 +79,10 @@ Text::~Text()
 	//no need to close font because it is made in the mainLoop method
 	
 	glDeleteTextures(1, &m_id);
+	if(glIsTexture(m_id) == GL_FALSE)
+    {
+        std::cout << "TEXT :: delete >>> SUCESS" << std::endl;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -202,6 +206,7 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shade
 {
 	if(text_shader != nullptr)
 	{
+		glm::mat4 save = view;
 		//activate shader program
 		glUseProgram(text_shader->getProgramID());
 
@@ -235,6 +240,8 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shade
 
 		//deactivate shader program
 		glUseProgram(0);
+
+		view = save;
 	}
 	
 }

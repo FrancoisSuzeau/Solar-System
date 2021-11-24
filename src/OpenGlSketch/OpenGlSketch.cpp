@@ -346,7 +346,7 @@ void OpenGlSketch::mainLoop()
     assert(camera);
 
     //hdr variables
-    exposure = 5.0f;
+    exposure = 0.8;
     hdr = true;
     hdr_key_pressed = false;
 
@@ -367,7 +367,7 @@ void OpenGlSketch::mainLoop()
     m_input.displayPointer(false);
     
     //initialize modelview and projection matrix
-    projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 900000.0);
+    projection = perspective(glm::radians(45.0), (double)m_window_width / m_window_height, 1.0, 900000.0);
 
     //TODO : change name by view
     view = mat4(1.0f);
@@ -378,6 +378,8 @@ void OpenGlSketch::mainLoop()
         assert(aud->loadMusic());
         // aud->playMusic();
     }
+
+    bloom = true;
 
     while(!m_terminate)
     {   
@@ -398,6 +400,9 @@ void OpenGlSketch::mainLoop()
             volume = 0;
             // aud->updateTrack();
         }
+
+         /********************************************************************** Framebuffer activation ******************************************************************/
+            m_framebuffer->bindFramebuffer();
         
     //===========================================================================================================================================
         if(camera != nullptr)
@@ -407,8 +412,7 @@ void OpenGlSketch::mainLoop()
             camera->lookAt(view);
         }
 
-    /********************************************************************** Framebuffer activation ******************************************************************/
-            m_framebuffer->bindFramebuffer();
+   
 
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene();
@@ -442,12 +446,9 @@ void OpenGlSketch::mainLoop()
         
         view = save_view;
 
-
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
 
-        m_framebuffer->unbindFramebuffer(true);
-
-        m_framebuffer->renderFrame(exposure, hdr);
+        m_framebuffer->renderFrame(exposure, hdr, bloom);
         
 
     /************************************************* SWAPPING WINDOWS ********************************************************/
@@ -542,28 +543,28 @@ void OpenGlSketch::renderOverlay()
             glm::vec3 position = camera->getPosition();
             float speed = ship->getSpeed();
 
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayGeneralOverlay(projection, view, hdr, square_shader);
 
                 //restaure the modelview matrix
                 view = save_view;
 
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMusicOverlay(projection, view, hdr, track, text_shader, square_shader);
 
                 //restaure the modelview matrix
                 view = save_view;
 
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMoveInfoOverlay(projection, view, hdr, position, speed, text_shader, square_shader);
 
                 //restaure the modelview matrix
                 view = save_view;
 
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayTimeInfoOverlay(projection, view, hdr, text_shader, square_shader);
 
@@ -709,7 +710,7 @@ void OpenGlSketch::windowProcess()
 
         if((m_input.getKey(SDL_SCANCODE_E)) && (!speed_key_pressed))
         {
-            if(ship->getSpeed() > 0.6f)
+            if(ship->getSpeed() >= 0.6f)
             {
                 ship->setMaximumSpeed();
             }
@@ -762,7 +763,7 @@ void OpenGlSketch::renderSettings()
             m_input.capturePointer(false);
             m_input.displayPointer(true);
 
-            view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+            view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                 m_settings->displayFrameSettings(projection, view, hdr, text_shader, square_shader);
 
@@ -778,37 +779,39 @@ void OpenGlSketch::renderSettings()
 
                 case HDR_ON:
                     hdr = true;
-                    if(exposure == 0.0f)
+                    if(exposure <= 0.5f)
                     {
-                        exposure = 5.0f;
+                        exposure = 0.8f;
                     }
                     break;
 
                 case HDR_OFF:
                     hdr = false;
+                    exposure = 0.5f;
                     break;
 
                 case EXPOSURE_DEC:
-                    if( (exposure >= 0.0f) && (exposure <= 5.0f))
+                    if( (exposure > 0.5f) && (exposure <= 0.8f))
                     {
-                        exposure = exposure - 1.0f;
+                        exposure = exposure - 0.1f;
                     }
-                    if(exposure == 0.0f)
+                    if(exposure <= 0.5f)
                     {
                         hdr = false;
+                        exposure = 0.5f;
                     }
                     break;
 
                 case EXPOSURE_INC:
-                    if( (exposure >= 0.0f) && (exposure <= 5.0f))
+                    if( (exposure >= 0.5f) && (exposure <= 0.8f))
                     {
-                        exposure = exposure + 1.0f;
+                        exposure = exposure + 0.1f;
                     }
-                    if(exposure > 5.0f)
+                    if(exposure > 0.8f)
                     {
-                        exposure = 5.0f;
+                        exposure = 0.8f;
                     }
-                    if(exposure == 1.0f)
+                    if(exposure == 0.8f)
                     {
                         hdr = true;
                     }
@@ -870,6 +873,14 @@ void OpenGlSketch::renderSettings()
 
                 default:
                     break;
+            }
+            if(hdr)
+            {
+                bloom = true;
+            }
+            else
+            {
+                bloom = false;
             }
         }
         else

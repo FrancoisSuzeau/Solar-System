@@ -47,12 +47,10 @@ PURPOSE : header of the SimplePlanete class
 
                 Texture         *m_texture_surface;
                 Texture         *m_normal_surface;
-                Texture         *m_disp_surface;
                 std::string     m_name;
                 Text            *m_name_renderer;
                 int             nb_moon;
                 Atmosphere      *m_atmosphere;
-                float           heighhtScale;
                 
             public:
 

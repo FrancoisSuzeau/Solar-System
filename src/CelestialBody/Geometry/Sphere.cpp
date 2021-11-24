@@ -173,6 +173,11 @@ Sphere::~Sphere()
 {
     glDeleteBuffers(1, &m_ibo);
     glDeleteBuffers(1, &m_vbo);
+
+    if( (glIsBuffer(m_vbo) == GL_FALSE) && (glIsBuffer(m_ibo) == GL_FALSE))
+    {
+        std::cout << "SPHERE :: delete >>> SUCESS" << std::endl;
+    }
 }
 
 

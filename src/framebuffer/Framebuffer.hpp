@@ -34,15 +34,13 @@ PURPOSE : header of the Framebuffer class
             private:
 
                 unsigned int quadVAO, quadVBO;
-
-                // unsigned int colorBuffer[2];
-                // unsigned int pingpongFBO[2];
-                // unsigned int pinpongColorBuffers[2];
-
-                unsigned int colorBuffer;
+                
                 unsigned int fb;
                 unsigned int depth_rb;
                 
+                unsigned int colorBuffers[2];
+                unsigned int ping_pongFBO[2];
+                unsigned int ping_pong_text[2];
 
                 float quadVertices[18];
                 float tex_coord[12];
@@ -51,7 +49,7 @@ PURPOSE : header of the Framebuffer class
                 int m_bytes_coord_size;
 
                 Shader *screenShader;
-                // Shader *shaderBlur;
+                Shader *blurShader;
 
                 void initVertices();
                 bool manageFramebuffer(int width, int height);
@@ -59,8 +57,8 @@ PURPOSE : header of the Framebuffer class
                 void manageDepthBuffer(int width, int height);
                 void managePinPongFBO(int width, int height);
 
-                void drawBlur(float exposure, bool hdr, bool &horizontal);
-                void drawScreenTexture(float exposure, bool hdr, bool &horizontal);
+                void drawBlur(float exposure, bool hdr, bool bloom, bool &horizontal);
+                void drawScreenTexture(float exposure, bool hdr, bool bloom, bool &horizontal);
 
             public:
 
@@ -68,9 +66,9 @@ PURPOSE : header of the Framebuffer class
                 ~Framebuffer();
 
                 bool initFramebuffer(int width, int height);
-                void renderFrame(float exposure, bool hdr);
+                void renderFrame(float exposure, bool hdr, bool bloom);
                 void bindFramebuffer();
-                void unbindFramebuffer(bool have_to_clear);
+                void unbindFramebuffer();
 
                 unsigned int getFB() const;
 

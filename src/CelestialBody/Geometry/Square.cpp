@@ -63,6 +63,11 @@ Square::~Square()
     
     //destroy VAO
     glDeleteVertexArrays(1, &m_vaoID);
+
+    if( (glIsBuffer(m_vboID) == GL_FALSE) && (glIsVertexArray(m_vaoID) == GL_FALSE))
+    {
+        std::cout << "SQUARE :: delete >>> SUCESS" << std::endl;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -211,6 +216,11 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &view, glm::ve
 
     if(square_shader != nullptr)
     {
+        glUseProgram(square_shader->getProgramID());
+
+            square_shader->setInt("load", true);
+
+        glUseProgram(0);
         if(count == 0)
         {
                 view = translate(view, vec3((count - 12.2f) * 0.05f, -0.3f, 0.0f));

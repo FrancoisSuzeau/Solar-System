@@ -72,10 +72,10 @@ void PlanetarySystem::initData()
     m_data.push_back({"../assets/textures/CelestialBody/IoMap.jpg", "../assets/textures/normalMap/io_normalMap.jpg", "../assets/textures/displacementMap/io_dispMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0)});
     m_data.push_back({"../assets/textures/CelestialBody/CallistoMap.jpg", "../assets/textures/normalMap/callisto_normalMap.jpg", "../assets/textures/displacementMap/callisto_dispMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0)});
     m_data.push_back({"../assets/textures/CelestialBody/JupiterCloud.jpg", "../assets/textures/normalMap/jupiter_normalMap.jpg", "../assets/textures/displacementMap/jupiter_dispMap.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/MimasMap.jpg", "../assets/textures/normalMap/mimas_normalMap.jpg", "../assets/textures/displacementMap/mimas_dispMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(0.0, -142485, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EnceladusMap.jpg", "../assets/textures/normalMap/enceladus_normalMap.jpg", "../assets/textures/displacementMap/enceladus_dispMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -142670, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/TitanMap.jpg", "../assets/textures/normalMap/titan_normalMap.jpg", "../assets/textures/displacementMap/titan_dispMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -142670, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/SaturnCloud.jpg", "../assets/textures/normalMap/saturn_normalMap.jpg", "../assets/textures/displacementMap/uranus_dispMap.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -142670, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/MimasMap.jpg", "../assets/textures/normalMap/mimas_normalMap.jpg", "../assets/textures/displacementMap/mimas_dispMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(2380.0, -14248, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/EnceladusMap.jpg", "../assets/textures/normalMap/enceladus_normalMap.jpg", "../assets/textures/displacementMap/enceladus_dispMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -14267, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/TitanMap.jpg", "../assets/textures/normalMap/titan_normalMap.jpg", "../assets/textures/displacementMap/titan_dispMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -14267, 0)});
+    m_data.push_back({"../assets/textures/CelestialBody/SaturnCloud.jpg", "../assets/textures/normalMap/saturn_normalMap.jpg", "../assets/textures/displacementMap/uranus_dispMap.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -14267, 0)});
 }
 
 /***********************************************************************************************************************************************************************/
@@ -110,6 +110,9 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         assert(m_host_creator);
         assert(m_host_creator->MakingPlanete(m_data[6], police));
 
+        m_atmosphere = new Atmosphere(1.05f, "Jupiter");
+        assert(m_atmosphere);
+
     }
     else if(m_system_name == "Saturnian System")
     {
@@ -124,6 +127,8 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
         assert(m_host_creator);
         assert(m_host_creator->MakingPlanete(m_data[10], police));
 
+        m_atmosphere = new Atmosphere(1.05f, "Saturn");
+        assert(m_atmosphere);
     }
     else
     {
@@ -211,14 +216,12 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::v
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
 {
-    if((m_system_name == "Earth System"))
+    if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
         glm::mat4 save = view;
 
         if(m_host_creator != nullptr)
         {
-            // m_host_creator->UpdatePositionPlan();
-
             if((m_atmosphere != nullptr) && (atmo_shader != nullptr))
             {
                 m_atmosphere->updatePosAtmo(m_host_creator->getPostion());
@@ -243,7 +246,7 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::v
 
         if(r <= 10 * size_plan)
         {
-            view = lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1, 0));
+            view = lookAt(vec3(0.0, 0.0, 1.71), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
 
             if(m_host_creator == nullptr) //exceptionnaly we exit the program because without 
             {
