@@ -367,7 +367,7 @@ void OpenGlSketch::mainLoop()
     m_input.displayPointer(false);
     
     //initialize modelview and projection matrix
-    projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 900000.0);
+    projection = perspective(glm::radians(45.0), (double)m_window_width / m_window_height, 1.0, 900000.0);
 
     //TODO : change name by view
     view = mat4(1.0f);
@@ -543,28 +543,28 @@ void OpenGlSketch::renderOverlay()
             glm::vec3 position = camera->getPosition();
             float speed = ship->getSpeed();
 
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.7f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayGeneralOverlay(projection, view, hdr, square_shader);
 
                 //restaure the modelview matrix
                 view = save_view;
 
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.7f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMusicOverlay(projection, view, hdr, track, text_shader, square_shader);
 
                 //restaure the modelview matrix
                 view = save_view;
 
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.7f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMoveInfoOverlay(projection, view, hdr, position, speed, text_shader, square_shader);
 
                 //restaure the modelview matrix
                 view = save_view;
 
-                view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                view = lookAt(vec3(0.0f, 0.0f, 1.7f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayTimeInfoOverlay(projection, view, hdr, text_shader, square_shader);
 
