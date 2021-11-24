@@ -47,8 +47,7 @@ PURPOSE : header of the Overlay class
             
             private:
 
-                Square          m_grey_rect;
-                Square          m_black_rect;
+                Square          m_rect;
 
                 Text            m_track_music;
                 Text            m_Author_music;
