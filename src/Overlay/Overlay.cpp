@@ -68,27 +68,31 @@ Overlay::~Overlay()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** displaySquares ********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displaySquares(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::vector<glm::vec3> coordinates, Shader *square_shader)
+void Overlay::displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates, Shader *square_shader)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
 
-        view = translate(view, coordinates[0]); //from bottom right to bottom left
-        m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+        glm::mat4 tmp = render_data.getViewMat();
+        tmp = translate(tmp, coordinates[0]); //from bottom right to bottom left
+        render_data.updateView(tmp);
+        m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
 
-    view = save;
+    render_data.updateView(save);
 
-        view = translate(view, coordinates[1]); //from top right to top left
-        m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+        tmp = render_data.getViewMat();
+        tmp = translate(tmp, coordinates[1]); //from top right to top left
+        render_data.updateView(tmp);
+        m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
-    view = save;
+    render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************** displayGeneralOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *square_shader)
+void Overlay::displayGeneralOverlay(RenderData &render_data, Shader *square_shader)
 {   
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     /************************************************************************ horizontal bar *******************************************************************/
@@ -112,27 +116,28 @@ void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool
                     coordinates2.push_back(glm::vec3(start_horizontal, -0.720f, -0.01f));
                     coordinates2.push_back(glm::vec3(start_horizontal, -0.725f, 0.0f));
 
-                    displaySquares(projection, view, hdr, coordinates1, square_shader);
-                    displaySquares(projection, view, hdr, coordinates2, square_shader);
+                    displaySquares(render_data, coordinates1, square_shader);
+                    displaySquares(render_data, coordinates2, square_shader);
 
                 start_horizontal = start_horizontal - constance;
-       
+
+                render_data.updateView(save);
             }
 
-            view = save;
+            render_data.updateView(save);
+            //TODO change square.display()
+                render_data.getViewMat() = translate(render_data.getViewMat(), vec3(-1.285f, 0.725f, 0.0f)); //top left
+                m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
-                view = translate(view, vec3(-1.285f, 0.725f, 0.0f)); //top left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+            render_data.updateView(save);
 
-            view = save;
+                render_data.getViewMat() = translate(render_data.getViewMat(), vec3(-1.285f, -0.725f, 0.0f)); //bottom left
+                m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
-                view = translate(view, vec3(-1.285f, -0.725f, 0.0f)); //bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
+            render_data.updateView(save);
     //=======================================================================================================================================================
 
-    /*************************************************************************** vertical bar ******************************************************************/
+    // /*************************************************************************** vertical bar ******************************************************************/
 
             float start_verticale = 0.675f; //minus one square because of the top bar
 
@@ -147,23 +152,25 @@ void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool
                     coordinates2.push_back(glm::vec3(1.285f, start_verticale, -0.01f));
                     coordinates2.push_back(glm::vec3(1.285f, start_verticale, 0.0f));
 
-                    displaySquares(projection, view, hdr, coordinates1, square_shader);
-                    displaySquares(projection, view, hdr, coordinates2, square_shader);
+                    displaySquares(render_data, coordinates1, square_shader);
+                    displaySquares(render_data, coordinates2, square_shader);
 
                 start_verticale = start_verticale - constance;
 
+                render_data.updateView(save);
             }
         }
-          
-        view = save;
+        
+    render_data.updateView(save);
+    
 }
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************** displayMusicOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::string const track, Shader *text_shader, Shader *square_shader)
+void Overlay::displayMusicOverlay(RenderData &render_data, std::string const track, Shader *text_shader, Shader *square_shader)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     float start = 1.265f;
@@ -174,62 +181,64 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool h
         {
             /*In the first pass, we do not render the grey square because they will be cover by black square*/
 
-                view = translate(view, vec3(start, -0.675f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+                glm::mat4 tmp = render_data.getViewMat();
+                tmp = translate(tmp, glm::vec3(start, -0.675f, 0.0f)); //from bottom right to bottom left
+                render_data.updateView(tmp);
+                m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
-            view = save;
-
+            render_data.updateView(save);
+            
                 std::vector<glm::vec3> coordinates;
 
                     coordinates.push_back(glm::vec3(start, -0.620f, -0.01f));
                     coordinates.push_back(glm::vec3(start, -0.625f, 0.0f));
             
-                    displaySquares(projection, view, hdr, coordinates, square_shader);
+                    displaySquares(render_data, coordinates, square_shader);
 
             start = start - constance;
 
-            view = save;
+            render_data.updateView(save);
         }
 
-        view = save;
+        render_data.updateView(save);
 
             /*We only draw the last one to make the border*/
-
-            view = translate(view, vec3(1.265f - 0.05f*8, -0.670f, -0.01f)); //from bottom right to bottom left
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+            glm::mat4 tmp = render_data.getViewMat();
+            tmp = translate(tmp, glm::vec3(1.265f - 0.05f*8, -0.670f, -0.01f)); //from bottom right to bottom left
+            render_data.updateView(tmp);
+            m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
     }
 
-    view = save;
+    render_data.updateView(save);
 
         if(track != m_ancient_track)
         {
-            //std::string tmp = "Music :\n" + track;
             assert(m_texts[0]->setText(track));
             m_ancient_track = track;
             setMusicInformation(track);
         }
 
-        if(text_shader != nullptr)
-        {
-            view = translate(view, vec3(0.99f, -0.61f, -0.0f));
-                view = scale(view, vec3(0.04f, 0.035f, 0.0f));
-                m_texts[0]->renderText(projection, view, text_shader);
+        // if(text_shader != nullptr)
+        // {
+        //     view = translate(view, vec3(0.99f, -0.61f, -0.0f));
+        //         view = scale(view, vec3(0.04f, 0.035f, 0.0f));
+        //         m_texts[0]->renderText(projection, view, text_shader);
 
-            view = save;
+        //     view = save;
 
-                view = translate(view, vec3(0.93f, -0.64f, -0.0f));
-                view = scale(view, vec3(0.02f, 0.035f, 0.0f));
-                m_texts[1]->renderText(projection, view, text_shader);
+        //         view = translate(view, vec3(0.93f, -0.64f, -0.0f));
+        //         view = scale(view, vec3(0.02f, 0.035f, 0.0f));
+        //         m_texts[1]->renderText(projection, view, text_shader);
 
-            view = save;
+        //     view = save;
 
-                view = translate(view, vec3(0.99f, -0.67f, -0.0f));
-                view = scale(view, vec3(0.04f, 0.035f, 0.0f));
-                m_texts[2]->renderText(projection, view, text_shader);
+        //         view = translate(view, vec3(0.99f, -0.67f, -0.0f));
+        //         view = scale(view, vec3(0.04f, 0.035f, 0.0f));
+        //         m_texts[2]->renderText(projection, view, text_shader);
 
-            view = save;
+        //     view = save;
 
-        }
+        // }
         
 
 }
