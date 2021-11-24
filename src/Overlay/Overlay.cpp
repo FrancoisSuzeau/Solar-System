@@ -23,27 +23,25 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 
 Overlay::Overlay(TTF_Font *police) :
-m_rect(0.05, 0.1),
-m_track_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_Author_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_studio_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_move_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_position(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_speed_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
+m_rect(0.05, 0.1)
 {
-    assert(m_track_music.loadTTF("None"));
-    assert(m_Author_music.loadTTF("None"));
-    assert(m_studio_music.loadTTF("None"));
+    std::string str_init[] = {  "None",
+                                "None",
+                                "None",
+                                "Navigation",
+                                "Position :",
+                                "Speed :",
+                                "None",
+                                "None"
+                                };
 
-    assert(m_move_info.loadTTF("Navigation"));
-    assert(m_position.loadTTF("Position :"));
-    assert(m_speed_info.loadTTF("Speed :"));
-    assert(m_speed.loadTTF("None"));
-
-
-    assert(m_time_info.loadTTF("None"));
+    for (int i = 0; i < 8; i++)
+    {
+        m_texts.push_back(new Text(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police));
+        assert(m_texts[i]);
+        assert(m_texts[i]->loadTTF(str_init[i]));
+    }
+    
     setTimeInformation();
 
     m_ancient_track = "None";
@@ -58,7 +56,13 @@ m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 
 Overlay::~Overlay()
 {
-    
+    for(std::vector<Text*>::iterator it = m_texts.begin(); it != m_texts.end(); ++it)
+    {
+        if(*it != nullptr)
+        {
+            delete *it;
+        }
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -200,7 +204,7 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool h
         if(track != m_ancient_track)
         {
             //std::string tmp = "Music :\n" + track;
-            assert(m_track_music.setText(track));
+            assert(m_texts[0]->setText(track));
             m_ancient_track = track;
             setMusicInformation(track);
         }
@@ -209,19 +213,19 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool h
         {
             view = translate(view, vec3(0.99f, -0.61f, -0.0f));
                 view = scale(view, vec3(0.04f, 0.035f, 0.0f));
-                m_track_music.renderText(projection, view, text_shader);
+                m_texts[0]->renderText(projection, view, text_shader);
 
             view = save;
 
                 view = translate(view, vec3(0.93f, -0.64f, -0.0f));
                 view = scale(view, vec3(0.02f, 0.035f, 0.0f));
-                m_Author_music.renderText(projection, view, text_shader);
+                m_texts[1]->renderText(projection, view, text_shader);
 
             view = save;
 
                 view = translate(view, vec3(0.99f, -0.67f, -0.0f));
                 view = scale(view, vec3(0.04f, 0.035f, 0.0f));
-                m_studio_music.renderText(projection, view, text_shader);
+                m_texts[2]->renderText(projection, view, text_shader);
 
             view = save;
 
@@ -317,20 +321,20 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
         {
                 view = translate(view, vec3(-1.03f, -0.515f, -0.0f));
                 view = scale(view, vec3(0.05f, 0.05f, 0.0f));
-                m_move_info.renderText(projection, view, text_shader);
+                m_texts[3]->renderText(projection, view, text_shader);
 
             view = save;
 
 
                 view = translate(view, vec3(-1.15f, -0.564f, -0.0f));
                 view = scale(view, vec3(0.02f, 0.045f, 0.0f));
-                m_position.renderText(projection, view, text_shader);
+                m_texts[4]->renderText(projection, view, text_shader);
 
             view = save;
 
                 view = translate(view, vec3(-1.15f, -0.650f, -0.0f));
                 view = scale(view, vec3(0.02f, 0.038f, 0.0f));
-                m_speed_info.renderText(projection, view, text_shader);
+                m_texts[5]->renderText(projection, view, text_shader);
 
             view = save;
 
@@ -338,7 +342,7 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
 
                 view = translate(view, vec3(-0.95f, -0.650f, -0.0f));
                 view = scale(view, vec3(0.04f, 0.04f, 0.0f));
-                m_speed.renderText(projection, view, text_shader);
+                m_texts[6]->renderText(projection, view, text_shader);
 
             view = save;
         }
@@ -416,7 +420,7 @@ void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
 
                 view = translate(view, vec3(0.0f, 0.658f, -0.0f));
                 view = scale(view, vec3(0.039f, 0.050f, 0.0f));
-                m_time_info.renderText(projection, view, text_shader);
+                m_texts[7]->renderText(projection, view, text_shader);
 
             view = save;
         }
@@ -430,26 +434,26 @@ void Overlay::setMusicInformation(std::string const track)
 {
     if(track == "Mass Effect - Vigil")
     {
-        assert(m_Author_music.setText("Jack Wall"));
-        assert(m_studio_music.setText("EA Games Soundtrack"));
+        assert(m_texts[1]->setText("Jack Wall"));
+        assert(m_texts[2]->setText("EA Games Soundtrack"));
     }
 
     if(track == "Natural Splendor") 
     {
-        assert(m_Author_music.setText("Gerald M. Dorai"));
-        assert(m_studio_music.setText("Le Phonarium - Nantes"));
+        assert(m_texts[1]->setText("Gerald M. Dorai"));
+        assert(m_texts[2]->setText("Le Phonarium - Nantes"));
     }
 
     if(track == "Dying Star") 
     {
-        assert(m_Author_music.setText("Utho Riley"));
-        assert(m_studio_music.setText("Symphonic Orchestral Music"));
+        assert(m_texts[1]->setText("Utho Riley"));
+        assert(m_texts[2]->setText("Symphonic Orchestral Music"));
     }
 
     if(track == "Orizon Theme") 
     {
-        assert(m_Author_music.setText("Pedro Camacho"));
-        assert(m_studio_music.setText("Star Citizen Soundtrack"));
+        assert(m_texts[1]->setText("Pedro Camacho"));
+        assert(m_texts[2]->setText("Star Citizen Soundtrack"));
     }
     
 }
@@ -474,7 +478,7 @@ void Overlay::setSpeedInformation(float const speed)
         oss_x << std::setprecision(3) << value_perc;
         std::string tmp = oss_x.str() + " time light speed";
 
-        assert(m_speed.setText(tmp));
+        assert(m_texts[6]->setText(tmp));
         m_ancient_speed = speed;
     }
 
@@ -495,7 +499,7 @@ void Overlay::setTimeInformation()
         
         if(ltm->tm_sec >= m_sec + 8) //reduce updating refresh
         {
-            assert(m_time_info.setText(time));
+            assert(m_texts[7]->setText(time));
             m_ancient_time = time;
             m_sec = ltm->tm_sec;
         }

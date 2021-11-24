@@ -48,19 +48,7 @@ PURPOSE : header of the Overlay class
             private:
 
                 Square          m_rect;
-
-                Text            m_track_music;
-                Text            m_Author_music;
-                Text            m_studio_music;
-
-                
-                Text            m_move_info;
-                Text            m_position;
-                Text            m_speed_info;
-                Text            m_speed;
-
-
-                Text            m_time_info;
+                std::vector<Text*> m_texts;
 
                 std::string     m_ancient_track;
                 float           m_ancient_radius;
