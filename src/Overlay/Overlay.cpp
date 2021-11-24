@@ -166,7 +166,7 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool h
 
     if(square_shader != nullptr)
     {
-        for (size_t i(0); i < 10; i++)
+        for (size_t i(0); i < 9; i++)
         {
             /*In the first pass, we do not render the grey square because they will be cover by black square*/
 
@@ -191,7 +191,7 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool h
 
             /*We only draw the last one to make the border*/
 
-            view = translate(view, vec3(1.265f - 0.05f*9, -0.670f, -0.01f)); //from bottom right to bottom left
+            view = translate(view, vec3(1.265f - 0.05f*8, -0.670f, -0.01f)); //from bottom right to bottom left
             m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
     }
 
@@ -207,19 +207,19 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool h
 
         if(text_shader != nullptr)
         {
-            view = translate(view, vec3(0.91f, -0.61f, -0.0f));
+            view = translate(view, vec3(0.99f, -0.61f, -0.0f));
                 view = scale(view, vec3(0.04f, 0.035f, 0.0f));
                 m_track_music.renderText(projection, view, text_shader);
 
             view = save;
 
-                view = translate(view, vec3(0.85f, -0.64f, -0.0f));
+                view = translate(view, vec3(0.93f, -0.64f, -0.0f));
                 view = scale(view, vec3(0.02f, 0.035f, 0.0f));
                 m_Author_music.renderText(projection, view, text_shader);
 
             view = save;
 
-                view = translate(view, vec3(0.91f, -0.67f, -0.0f));
+                view = translate(view, vec3(0.99f, -0.67f, -0.0f));
                 view = scale(view, vec3(0.04f, 0.035f, 0.0f));
                 m_studio_music.renderText(projection, view, text_shader);
 
