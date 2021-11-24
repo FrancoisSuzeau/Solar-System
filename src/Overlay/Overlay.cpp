@@ -182,7 +182,7 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
             /*In the first pass, we do not render the grey square because they will be cover by black square*/
 
                 glm::mat4 tmp = render_data.getViewMat();
-                tmp = translate(tmp, glm::vec3(start, -0.675f, 0.0f)); //from bottom right to bottom left
+                tmp = translate(tmp, glm::vec3(start, -0.675f, 0.0f));
                 render_data.updateView(tmp);
                 m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
@@ -202,9 +202,8 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
 
         render_data.updateView(save);
 
-            /*We only draw the last one to make the border*/
             glm::mat4 tmp = render_data.getViewMat();
-            tmp = translate(tmp, glm::vec3(1.265f - 0.05f*8, -0.670f, -0.01f)); //from bottom right to bottom left
+            tmp = translate(tmp, glm::vec3(1.265f - 0.05f*8, -0.670f, -0.01f));
             render_data.updateView(tmp);
             m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
     }
@@ -218,27 +217,26 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
             setMusicInformation(track);
         }
 
-        // if(text_shader != nullptr)
-        // {
-        //     view = translate(view, vec3(0.99f, -0.61f, -0.0f));
-        //         view = scale(view, vec3(0.04f, 0.035f, 0.0f));
-        //         m_texts[0]->renderText(projection, view, text_shader);
+        if(text_shader != nullptr)
+        {
+            glm::vec3 coordinate(0.99f, -0.61f, -0.0f);
+            glm::vec3 scale_data(0.04f, 0.035f, 0.0f);
 
-        //     view = save;
+            for (int i = 0; i < 3; i++)
+            {
+                glm::mat4 tmp = render_data.getViewMat();
+                tmp = translate(tmp, coordinate); 
+                tmp = scale(tmp, scale_data);
+                render_data.updateView(tmp);
+                m_texts[i]->renderText(render_data.getProjectionMat(), render_data.getViewMat(), text_shader);
 
-        //         view = translate(view, vec3(0.93f, -0.64f, -0.0f));
-        //         view = scale(view, vec3(0.02f, 0.035f, 0.0f));
-        //         m_texts[1]->renderText(projection, view, text_shader);
+                render_data.updateView(save);
+                coordinate.y -= 0.03;
+            }
 
-        //     view = save;
+            render_data.updateView(save);
 
-        //         view = translate(view, vec3(0.99f, -0.67f, -0.0f));
-        //         view = scale(view, vec3(0.04f, 0.035f, 0.0f));
-        //         m_texts[2]->renderText(projection, view, text_shader);
-
-        //     view = save;
-
-        // }
+        }
         
 
 }
