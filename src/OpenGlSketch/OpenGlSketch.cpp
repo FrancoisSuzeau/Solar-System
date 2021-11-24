@@ -379,7 +379,7 @@ void OpenGlSketch::mainLoop()
         // aud->playMusic();
     }
 
-    bool bloom = true;
+    bloom = true;
 
     while(!m_terminate)
     {   
@@ -710,7 +710,7 @@ void OpenGlSketch::windowProcess()
 
         if((m_input.getKey(SDL_SCANCODE_E)) && (!speed_key_pressed))
         {
-            if(ship->getSpeed() > 0.6f)
+            if(ship->getSpeed() >= 0.6f)
             {
                 ship->setMaximumSpeed();
             }
@@ -779,7 +779,7 @@ void OpenGlSketch::renderSettings()
 
                 case HDR_ON:
                     hdr = true;
-                    if(exposure == 0.0f)
+                    if(exposure <= 0.5f)
                     {
                         exposure = 0.8f;
                     }
@@ -787,21 +787,23 @@ void OpenGlSketch::renderSettings()
 
                 case HDR_OFF:
                     hdr = false;
+                    exposure = 0.5f;
                     break;
 
                 case EXPOSURE_DEC:
-                    if( (exposure >= 0.0f) && (exposure <= 0.8f))
+                    if( (exposure > 0.5f) && (exposure <= 0.8f))
                     {
                         exposure = exposure - 0.1f;
                     }
-                    if(exposure == 0.0f)
+                    if(exposure <= 0.5f)
                     {
                         hdr = false;
+                        exposure = 0.5f;
                     }
                     break;
 
                 case EXPOSURE_INC:
-                    if( (exposure >= 0.0f) && (exposure <= 0.8f))
+                    if( (exposure >= 0.5f) && (exposure <= 0.8f))
                     {
                         exposure = exposure + 0.1f;
                     }
@@ -871,6 +873,14 @@ void OpenGlSketch::renderSettings()
 
                 default:
                     break;
+            }
+            if(hdr)
+            {
+                bloom = true;
+            }
+            else
+            {
+                bloom = false;
             }
         }
         else

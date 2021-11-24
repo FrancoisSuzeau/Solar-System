@@ -112,6 +112,7 @@ PURPOSE : header of the OpenGlSketch class
                 // Particule *m_particuleGenerator;
 
                 bool is_moving;
+                bool bloom;
                 
 
             public:
