@@ -763,7 +763,7 @@ void OpenGlSketch::renderSettings()
             m_input.capturePointer(false);
             m_input.displayPointer(true);
 
-            view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+            view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                 m_settings->displayFrameSettings(projection, view, hdr, text_shader, square_shader);
 
