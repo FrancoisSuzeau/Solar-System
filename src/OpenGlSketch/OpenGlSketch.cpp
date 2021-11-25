@@ -564,23 +564,17 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
 
                 render_data.saveViewMat();
 
-                // // view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-                // render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                //     m_overlay->displayMoveInfoOverlay(render_data.getProjectionMat(), render_data.getViewMat(), render_data.getHDR(), position, speed, text_shader, square_shader);
+                    m_overlay->displayMoveInfoOverlay(render_data, position, speed, text_shader, square_shader);
 
-                // //restaure the modelview matrix
-                // // view = save_view;
-                // render_data.saveViewMat();
+                render_data.saveViewMat();
 
-                // // view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-                // render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                //     m_overlay->displayTimeInfoOverlay(render_data.getProjectionMat(), render_data.getViewMat(), render_data.getHDR(), text_shader, square_shader);
+                    m_overlay->displayTimeInfoOverlay(render_data, text_shader, square_shader);
 
-                // //restaure the modelview matrix
-                // // view = save_view;
-                // render_data.saveViewMat();
+            render_data.saveViewMat();
 
         }
         

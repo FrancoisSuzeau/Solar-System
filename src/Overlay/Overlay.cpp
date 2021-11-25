@@ -244,9 +244,9 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayMoveInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, glm::vec3 &position, float const speed, Shader *text_shader, Shader *square_shader)
+void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed, Shader *text_shader, Shader *square_shader)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     float start_bottom_black_first = -1.265f;
@@ -261,97 +261,110 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
         {
             /*In the first pass, we do not render the grey square because they will be cover by black square*/
 
-                view = translate(view, vec3(start_bottom_black_first, -0.675f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+                glm::mat4 tmp = render_data.getViewMat();
+                tmp = translate(tmp, glm::vec3(start_bottom_black_first, -0.675f, 0.0f)); 
+                render_data.updateView(tmp);
+                m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
-            view = save;
+            render_data.updateView(save);
             start_bottom_black_first = start_bottom_black_first + constance;
         }
 
         for (size_t i(0); i < 10; i++)
         {
             /*In the second pass, we do not render the grey square because they also will be cover by black square*/
+                glm::mat4 tmp = render_data.getViewMat();
+                tmp = translate(tmp, glm::vec3(start_bottom_black_second, -0.625f, 0.0f)); 
+                render_data.updateView(tmp);
+                m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
-                view = translate(view, vec3(start_bottom_black_second, -0.625f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
+            render_data.updateView(save);
             start_bottom_black_second = start_bottom_black_second + constance;
         }
 
         for (size_t i(0); i < 10; i++)
         {
             /*In the third pass, we do not render the grey square because they also will be cover by black square*/
+                glm::mat4 tmp = render_data.getViewMat();
+                tmp = translate(tmp, glm::vec3(start_bottom_black_third, -0.575f, 0.0f)); 
+                render_data.updateView(tmp);
+                m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
-                view = translate(view, vec3(start_bottom_black_third, -0.575f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
+            render_data.updateView(save);
             start_bottom_black_third = start_bottom_black_third + constance;
         }
 
         //fourth and last pass with white border on the top
         for (size_t i(0); i < 10; i++)
         {
-                view = translate(view, vec3(start_bottom_white, -0.525f, -0.01f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+                glm::mat4 tmp = render_data.getViewMat();
+                tmp = translate(tmp, glm::vec3(start_bottom_white, -0.525f, -0.01f)); 
+                render_data.updateView(tmp);
+                m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
 
-            view = save;
+            render_data.updateView(save);
             start_bottom_white = start_bottom_white + constance;
 
-                view = translate(view, vec3(start_bottom_black_fourth, -0.530f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+                tmp = render_data.getViewMat();
+                tmp = translate(tmp, glm::vec3(start_bottom_black_fourth, -0.530f, 0.0f)); 
+                render_data.updateView(tmp);
+                m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorBlack, render_data.getHDR(), square_shader);
 
-            view = save;
+            render_data.updateView(save);
             start_bottom_black_fourth = start_bottom_black_fourth + constance;
         }
 
         /*We only draw the lasts ones to make the border*/
+        glm::mat4 tmp = render_data.getViewMat();
+        tmp = translate(tmp, glm::vec3(-1.265f + 0.05f*9, -0.670f, -0.01f)); 
+        render_data.updateView(tmp);
+        m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
 
-        view = translate(view, vec3(-1.265f + 0.05f*9, -0.670f, -0.01f)); 
-        m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+        render_data.updateView(save);
 
-        view = save;
+            tmp = render_data.getViewMat();
+            tmp = translate(tmp, glm::vec3(-1.265f + 0.05f*9, -0.625f, -0.01f)); 
+            render_data.updateView(tmp);
+            m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
 
-            view = translate(view, vec3(-1.265f + 0.05f*9, -0.625f, -0.01f)); 
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+        render_data.updateView(save);
 
-        view = save;
-
-            view = translate(view, vec3(-1.265f + 0.05f*9, -0.575f, -0.01f));
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+            tmp = render_data.getViewMat();
+            tmp = translate(tmp, glm::vec3(-1.265f + 0.05f*9, -0.575f, -0.01f)); 
+            render_data.updateView(tmp);
+            m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
     }
 
-    view = save;
+    render_data.updateView(save);
 
         if(text_shader != nullptr)
         {
-                view = translate(view, vec3(-1.03f, -0.515f, -0.0f));
-                view = scale(view, vec3(0.05f, 0.05f, 0.0f));
-                m_texts[3]->renderText(projection, view, text_shader);
+            std::vector<glm::vec3> coordinates;
+            coordinates.push_back(glm::vec3(-1.03f, -0.525f, -0.0f));
+            coordinates.push_back(glm::vec3(-1.15f, -0.580f, -0.0f));
+            coordinates.push_back(glm::vec3(-1.15f, -0.650f, -0.0f));
+            coordinates.push_back(glm::vec3(-0.95f, -0.650f, -0.0f));
 
-            view = save;
-
-
-                view = translate(view, vec3(-1.15f, -0.564f, -0.0f));
-                view = scale(view, vec3(0.02f, 0.045f, 0.0f));
-                m_texts[4]->renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(-1.15f, -0.650f, -0.0f));
-                view = scale(view, vec3(0.02f, 0.038f, 0.0f));
-                m_texts[5]->renderText(projection, view, text_shader);
-
-            view = save;
+            std::vector<glm::vec3> scale_datas;
+            scale_datas.push_back(glm::vec3(0.05f, 0.05f, 0.0f));
+            scale_datas.push_back(glm::vec3(0.02f, 0.045f, 0.0f));
+            scale_datas.push_back(glm::vec3(0.02f, 0.038f, 0.0f));
+            scale_datas.push_back(glm::vec3(0.04f, 0.04f, 0.0f));
 
             setSpeedInformation(speed);
 
-                view = translate(view, vec3(-0.95f, -0.650f, -0.0f));
-                view = scale(view, vec3(0.04f, 0.04f, 0.0f));
-                m_texts[6]->renderText(projection, view, text_shader);
+            for (int i = 3; i < 7; i++)
+            {
+                glm::mat4 tmp = render_data.getViewMat();
+                tmp = translate(tmp, coordinates[i - 3]); 
+                tmp = scale(tmp, scale_datas[i - 3]);
+                render_data.updateView(tmp);
+                m_texts[i]->renderText(render_data.getProjectionMat(), render_data.getViewMat(), text_shader);
 
-            view = save;
+                render_data.updateView(save);
+            }
+
+            render_data.updateView(save);
         }
 
         
@@ -360,9 +373,9 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayTimeInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *text_shader, Shader *square_shader)
+void Overlay::displayTimeInfoOverlay(RenderData &render_data, Shader *text_shader, Shader *square_shader)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     float start_top_black_to_left = 0.0f;
@@ -376,60 +389,60 @@ void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
         
         for (size_t i(0); i < 5; i++)
         {
-                view = translate(view, vec3(start_top_white_to_left, 0.670f, -0.01f)); 
-                m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
-
-            view = save;
+                std::vector<glm::vec3> coordinates;
+                coordinates.push_back(glm::vec3(start_top_white_to_left, 0.670f, -0.01f));
+                coordinates.push_back(glm::vec3(start_top_black_to_left, 0.675f, 0.0f));
+                displaySquares(render_data, coordinates, square_shader);
+               
+            render_data.updateView(save);
             start_top_white_to_left = start_top_white_to_left - constance;
-
-                view = translate(view, vec3(start_top_black_to_left, 0.675f, 0.0f)); 
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
             start_top_black_to_left = start_top_black_to_left - constance;
         }
 
         for (size_t i(0); i < 4; i++)
         {
+            std::vector<glm::vec3> coordinates;
+            coordinates.push_back(glm::vec3(start_top_white_to_right, 0.670f, -0.01f));
+            coordinates.push_back(glm::vec3(start_top_black_to_right, 0.675f, 0.0f));
+            displaySquares(render_data, coordinates, square_shader);
 
-                view = translate(view, vec3(start_top_white_to_right, 0.670f, -0.01f)); 
-                m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
-
-            view = save;
+            render_data.updateView(save);
             start_top_white_to_right = start_top_white_to_right + constance;
-
-                view = translate(view, vec3(start_top_black_to_right, 0.675f, 0.0f)); 
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
             start_top_black_to_right = start_top_black_to_right + constance;
         }
 
+        render_data.updateView(save);
 
-            /*We only draw the lasts whites squares to make the border ont left and the right*/
+            glm::mat4 tmp = render_data.getViewMat();
+            tmp = translate(tmp, glm::vec3(0.0f - 0.043f*5, 0.670f, -0.01f));
+            render_data.updateView(tmp);
+            m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
 
-            view = translate(view, vec3(0.0f - 0.043f*5, 0.670f, -0.01f)); 
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
-        
-        view = save;
+        render_data.updateView(save);
 
-            view = translate(view, vec3(0.0f + 0.043f * 5, 0.670f, -0.01f)); 
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+            tmp = render_data.getViewMat();
+            tmp = translate(tmp, glm::vec3(0.0f + 0.043f * 5, 0.670f, -0.01f));
+            render_data.updateView(tmp);
+            m_rect.display(render_data.getProjectionMat(), render_data.getViewMat(), m_colorGrey, render_data.getHDR(), square_shader);
+
+        render_data.updateView(save);
 
     }
 
-    
-    view = save;
+    render_data.updateView(save);
 
         if(text_shader != nullptr)
         {
             setTimeInformation();
 
-                view = translate(view, vec3(0.0f, 0.658f, -0.0f));
-                view = scale(view, vec3(0.039f, 0.050f, 0.0f));
-                m_texts[7]->renderText(projection, view, text_shader);
+                glm::mat4 tmp = render_data.getViewMat();
+                tmp = translate(tmp, glm::vec3(0.0f, 0.658f, -0.0f));
+                tmp = scale(tmp, vec3(0.039f, 0.050f, 0.0f));
+                render_data.updateView(tmp);
+                m_texts[7]->renderText(render_data.getProjectionMat(), render_data.getViewMat(), text_shader);
 
-            view = save;
+            render_data.updateView(save);
+            
         }
         
 }

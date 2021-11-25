@@ -101,8 +101,8 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             atmo_plan_shader->setMat4("projection", projection);
             atmo_plan_shader->setMat4("model", m_model_mat);
             
-            atmo_plan_shader->setTexture("material.diffuse", 0);
-            atmo_plan_shader->setTexture("material.specular", 1);
+            atmo_plan_shader->setTexture("material.cloud", 0);
+            atmo_plan_shader->setTexture("material.terrain", 1);
             
             if(m_name == "Venus")
             {
