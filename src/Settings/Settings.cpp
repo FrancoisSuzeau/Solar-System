@@ -135,7 +135,7 @@ void Settings::initButtonCoord()
 /***********************************************************************************************************************************************************************/
 /********************************************************************* displayFrameSettings ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader, Shader *square_shader)
+void Settings::displayFrameSettings(RenderData &render_data)
 {
     glm::mat4 save = render_data.getViewMat();
     float constance = 0.05;
@@ -143,7 +143,7 @@ void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader
     float start_x_black = -0.3;
     float start_y = 0.35;
     
-    if((square_shader != nullptr) && (m_grey_rect != nullptr))
+    if((render_data.getShader("square") != nullptr) && (m_grey_rect != nullptr))
     {
         //black fill
         for (size_t i(0); i < 15; i++)
@@ -151,7 +151,7 @@ void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader
             for (size_t j(0); j < 13; j++)
             {
                     m_grey_rect->updatePosition(glm::vec3(start_x_black, start_y, 0.0));
-                    m_grey_rect->display(render_data, colorBlack, square_shader);
+                    m_grey_rect->display(render_data, colorBlack);
                 
                 render_data.updateView(save);
                 start_x_black = start_x_black + constance;
@@ -172,12 +172,12 @@ void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader
         for (size_t i(0); i < 13; i++)
         {
                 m_grey_rect->updatePosition(glm::vec3(start_x_white, 0.36, 0.0));
-                m_grey_rect->display(render_data, colorGrey, square_shader);
+                m_grey_rect->display(render_data, colorGrey);
                 
             render_data.updateView(save);
             
                 m_grey_rect->updatePosition(glm::vec3(start_x_white, -0.36, 0.0));
-                m_grey_rect->display(render_data, colorGrey, square_shader);
+                m_grey_rect->display(render_data, colorGrey);
 
             render_data.updateView(save);
 
@@ -190,12 +190,12 @@ void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader
         for (size_t i(0); i < 15; i++)
         {
                 m_grey_rect->updatePosition(glm::vec3(-0.31, start_y_white, 0.0));
-                m_grey_rect->display(render_data, colorGrey, square_shader);
+                m_grey_rect->display(render_data, colorGrey);
                 
             render_data.updateView(save);
 
                 m_grey_rect->updatePosition(glm::vec3(0.31, start_y_white, 0.0));
-                m_grey_rect->display(render_data, colorGrey, square_shader);
+                m_grey_rect->display(render_data, colorGrey);
                 
             render_data.updateView(save);
 
@@ -205,24 +205,24 @@ void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader
         render_data.updateView(save);
 
             m_grey_rect->updatePosition(glm::vec3(-0.31, -0.36, 0.0));
-            m_grey_rect->display(render_data, colorGrey, square_shader);
+            m_grey_rect->display(render_data, colorGrey);
                 
         render_data.updateView(save);
 
             m_grey_rect->updatePosition(glm::vec3(0.31, -0.36, 0.0));
-            m_grey_rect->display(render_data, colorGrey, square_shader);
+            m_grey_rect->display(render_data, colorGrey);
     }
     render_data.updateView(save);
 
-    renderAllTexts(render_data, text_shader);
+    renderAllTexts(render_data);
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************* renderAllTexts ************************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Settings::renderAllTexts(RenderData &render_data, Shader *text_shader)
+void Settings::renderAllTexts(RenderData &render_data)
 {
-    if(text_shader != nullptr)
+    if(render_data.getShader("text") != nullptr)
     {
         glm::mat4 save = render_data.getViewMat();
 
@@ -232,7 +232,7 @@ void Settings::renderAllTexts(RenderData &render_data, Shader *text_shader)
             {
                 m_texts[i]->updatePosition(datas_renders[i].position);
                 m_texts[i]->updateScale(datas_renders[i].scale);
-                m_texts[i]->renderText(render_data, text_shader);
+                m_texts[i]->renderText(render_data);
             }
             render_data.updateView(save);
         }

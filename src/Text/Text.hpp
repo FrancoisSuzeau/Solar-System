@@ -62,8 +62,8 @@ PURPOSE : header of the Text class
                 
                 void            updatePosition(glm::vec3 position);
                 void            updateScale(glm::vec3 scale_data);
-                void            renderMovingText(RenderData &render_data, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
-                void            renderText(RenderData &render_data, Shader *text_shader = nullptr);
+                void            renderMovingText(RenderData &render_data, float const z, double ratio, float phi, float theta, float y);
+                void            renderText(RenderData &render_data);
                 bool            setText(std::string const text);
                 
         };

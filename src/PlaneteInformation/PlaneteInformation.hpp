@@ -62,7 +62,7 @@ PURPOSE : header of the PlaneteInformation class
                 PlaneteInformation();
                 ~PlaneteInformation();
 
-                void renderInfo(RenderData &render_data, std::vector<Shader *> shaders);
+                void renderInfo(RenderData &render_data);
                 void setPosPlan(glm::vec3 const &posPlan);
                 void changeNamePlan(std::string const name);
                 std::string getInfoName() const;

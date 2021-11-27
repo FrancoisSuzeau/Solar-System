@@ -422,7 +422,7 @@ void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Shader
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, std::vector<Shader *> shaders, PlaneteInformation *plan_info)
+void SolarSystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *plan_info)
 {
     
     glm::mat4 save = render_data.getViewMat();
@@ -446,9 +446,9 @@ void SolarSystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, std::v
                 }
 
 
-                if((shaders[0] != nullptr) && (shaders[1] != nullptr))
+                if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
                 {
-                    m_planete_info->renderInfo(render_data, shaders);
+                    m_planete_info->renderInfo(render_data);
                     render_data.updateView(save);
                 }
             }
@@ -462,9 +462,9 @@ void SolarSystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, std::v
     {
         if(it[0] != nullptr)
         {
-            if((shaders[0] != nullptr) && (shaders[1] != nullptr))
+            if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
             {
-                it[0]->drawInfo(render_data, camPos, shaders, m_planete_info);
+                it[0]->drawInfo(render_data, camPos, m_planete_info);
                 render_data.updateView(save);
             }
         }

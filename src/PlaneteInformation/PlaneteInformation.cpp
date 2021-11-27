@@ -49,7 +49,7 @@ PlaneteInformation::~PlaneteInformation()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* renderInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteInformation::renderInfo(RenderData &render_data, std::vector<Shader *> shaders)
+void PlaneteInformation::renderInfo(RenderData &render_data)
 {
     glm::mat4 save = render_data.getViewMat();
     float constance = 0.05;
@@ -57,7 +57,7 @@ void PlaneteInformation::renderInfo(RenderData &render_data, std::vector<Shader 
     float start_x_black = -0.8;
     float start_y = 0.5;
 
-    if((shaders[1] != nullptr) && (m_rect != nullptr))
+    if((render_data.getShader("square") != nullptr) && (m_rect != nullptr))
     {
         //black fill
         for (size_t i(0); i < 11; i++)
@@ -65,7 +65,7 @@ void PlaneteInformation::renderInfo(RenderData &render_data, std::vector<Shader 
             for (size_t j(0); j < 9; j++)
             {
                     m_rect->updatePosition(glm::vec3(start_x_black, start_y, 0.0));
-                    m_rect->display(render_data, colorBlack, shaders[1]);
+                    m_rect->display(render_data, colorBlack);
                 
                 render_data.updateView(save);
                 start_x_black = start_x_black + constance;
@@ -81,12 +81,12 @@ void PlaneteInformation::renderInfo(RenderData &render_data, std::vector<Shader 
         for (size_t i(0); i < 9; i++)
         {
                 m_rect->updatePosition(glm::vec3(start_x_white, 0.51, 0.0));
-                m_rect->display(render_data, colorGrey, shaders[1]);
+                m_rect->display(render_data, colorGrey);
                 
             render_data.updateView(save);
 
                 m_rect->updatePosition(glm::vec3(start_x_white, -0.01, 0.0));
-                m_rect->display(render_data, colorGrey, shaders[1]);
+                m_rect->display(render_data, colorGrey);
 
             render_data.updateView(save);
 
@@ -99,12 +99,12 @@ void PlaneteInformation::renderInfo(RenderData &render_data, std::vector<Shader 
         for (size_t i(0); i < 11; i++)
         {
                 m_rect->updatePosition(glm::vec3(-0.81, start_y_white, 0.0));
-                m_rect->display(render_data, colorGrey, shaders[1]);
+                m_rect->display(render_data, colorGrey);
                 
             render_data.updateView(save);
 
                 m_rect->updatePosition(glm::vec3(-0.39, start_y_white, 0.0));
-                m_rect->display(render_data, colorGrey, shaders[1]);
+                m_rect->display(render_data, colorGrey);
                 
             render_data.updateView(save);
 
@@ -114,23 +114,23 @@ void PlaneteInformation::renderInfo(RenderData &render_data, std::vector<Shader 
         //the last to white on the bottom corner left and right
 
             m_rect->updatePosition(glm::vec3(-0.81, -0.01, 0.0));
-            m_rect->display(render_data, colorGrey, shaders[1]);
+            m_rect->display(render_data, colorGrey);
                 
         render_data.updateView(save);
 
             m_rect->updatePosition(glm::vec3(-0.39, -0.01, 0.0));
-            m_rect->display(render_data, colorGrey, shaders[1]);
+            m_rect->display(render_data, colorGrey);
     }
 
     
 
     render_data.updateView(save);
 
-    if(shaders[0] != nullptr)
+    if(render_data.getShader("text") != nullptr)
     {
             m_text_name.updatePosition(glm::vec3(-0.585, 0.49, -0.0));
             m_text_name.updateScale(glm::vec3(0.03, 0.05, 0.0));
-            m_text_name.renderText(render_data, shaders[0]);
+            m_text_name.renderText(render_data);
 
         render_data.updateView(save);
     }

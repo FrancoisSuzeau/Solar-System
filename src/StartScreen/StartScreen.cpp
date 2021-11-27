@@ -34,15 +34,15 @@ StartScreen::~StartScreen()
 /***********************************************************************************************************************************************************************/
 /***************************************************************************** DrawStartScreen *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void StartScreen::drawStartScreen(RenderData &render_data, Shader *text_shader)
+void StartScreen::drawStartScreen(RenderData &render_data)
 {
     glm::mat4 save = render_data.getViewMat();
 
 
-    if(text_shader != nullptr)
+    if(render_data.getShader("text") != nullptr)
     {
         m_text_loadScreen.updatePosition(glm::vec3(0.0f, 0.5f, 0.0f));
-        m_text_loadScreen.renderText(render_data, text_shader);
+        m_text_loadScreen.renderText(render_data);
     }
 
 	render_data.updateView(save);

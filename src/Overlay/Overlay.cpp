@@ -68,17 +68,17 @@ Overlay::~Overlay()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** displaySquares ********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates, Shader *square_shader)
+void Overlay::displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates)
 {
     glm::mat4 save = render_data.getViewMat();
 
         m_rect.updatePosition(coordinates[0]);
-        m_rect.display(render_data, m_colorGrey, square_shader);
+        m_rect.display(render_data, m_colorGrey);
 
     render_data.updateView(save);
 
         m_rect.updatePosition(coordinates[1]);
-        m_rect.display(render_data, m_colorBlack, square_shader);
+        m_rect.display(render_data, m_colorBlack);
 
     render_data.updateView(save);
 }
@@ -86,7 +86,7 @@ void Overlay::displaySquares(RenderData &render_data, std::vector<glm::vec3> coo
 /***********************************************************************************************************************************************************************/
 /******************************************************************** displayGeneralOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayGeneralOverlay(RenderData &render_data, Shader *square_shader)
+void Overlay::displayGeneralOverlay(RenderData &render_data)
 {   
     glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
@@ -94,11 +94,11 @@ void Overlay::displayGeneralOverlay(RenderData &render_data, Shader *square_shad
     /************************************************************************ horizontal bar *******************************************************************/
         float start_horizontal = 1.285f;
 
-        if(square_shader != nullptr)
+        if(render_data.getShader("square") != nullptr)
         {
-            glUseProgram(square_shader->getProgramID());
+            glUseProgram(render_data.getShader("square")->getProgramID());
 
-                square_shader->setInt("load", false);
+                render_data.getShader("square")->setInt("load", false);
 
             glUseProgram(0);
 
@@ -112,8 +112,8 @@ void Overlay::displayGeneralOverlay(RenderData &render_data, Shader *square_shad
                     coordinates2.push_back(glm::vec3(start_horizontal, -0.720f, -0.01f));
                     coordinates2.push_back(glm::vec3(start_horizontal, -0.725f, 0.0f));
 
-                    displaySquares(render_data, coordinates1, square_shader);
-                    displaySquares(render_data, coordinates2, square_shader);
+                    displaySquares(render_data, coordinates1);
+                    displaySquares(render_data, coordinates2);
 
                 start_horizontal = start_horizontal - constance;
 
@@ -123,12 +123,12 @@ void Overlay::displayGeneralOverlay(RenderData &render_data, Shader *square_shad
             render_data.updateView(save);
 
                 m_rect.updatePosition(glm::vec3(-1.285f, 0.725f, 0.0f));
-                m_rect.display(render_data, m_colorBlack, square_shader);
+                m_rect.display(render_data, m_colorBlack);
 
             render_data.updateView(save);
 
                 m_rect.updatePosition(glm::vec3(-1.285f, -0.725f, 0.0f));
-                m_rect.display(render_data, m_colorBlack, square_shader);
+                m_rect.display(render_data, m_colorBlack);
 
             render_data.updateView(save);
     //=======================================================================================================================================================
@@ -148,8 +148,8 @@ void Overlay::displayGeneralOverlay(RenderData &render_data, Shader *square_shad
                     coordinates2.push_back(glm::vec3(1.285f, start_verticale, -0.01f));
                     coordinates2.push_back(glm::vec3(1.285f, start_verticale, 0.0f));
 
-                    displaySquares(render_data, coordinates1, square_shader);
-                    displaySquares(render_data, coordinates2, square_shader);
+                    displaySquares(render_data, coordinates1);
+                    displaySquares(render_data, coordinates2);
 
                 start_verticale = start_verticale - constance;
 
@@ -164,21 +164,21 @@ void Overlay::displayGeneralOverlay(RenderData &render_data, Shader *square_shad
 /***********************************************************************************************************************************************************************/
 /********************************************************************** displayMusicOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMusicOverlay(RenderData &render_data, std::string const track, Shader *text_shader, Shader *square_shader)
+void Overlay::displayMusicOverlay(RenderData &render_data, std::string const track)
 {
     glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     float start = 1.265f;
 
-    if(square_shader != nullptr)
+    if(render_data.getShader("square") != nullptr)
     {
         for (size_t i(0); i < 9; i++)
         {
             /*In the first pass, we do not render the grey square because they will be cover by black square*/
 
                 m_rect.updatePosition(glm::vec3(start, -0.675f, 0.0f));
-                m_rect.display(render_data, m_colorBlack, square_shader);
+                m_rect.display(render_data, m_colorBlack);
 
             render_data.updateView(save);
             
@@ -187,7 +187,7 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
                     coordinates.push_back(glm::vec3(start, -0.620f, -0.01f));
                     coordinates.push_back(glm::vec3(start, -0.625f, 0.0f));
             
-                    displaySquares(render_data, coordinates, square_shader);
+                    displaySquares(render_data, coordinates);
 
             start = start - constance;
 
@@ -197,7 +197,7 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
         render_data.updateView(save);
 
             m_rect.updatePosition(glm::vec3(1.265f - 0.05f*8, -0.670f, -0.01f));
-            m_rect.display(render_data, m_colorGrey, square_shader);
+            m_rect.display(render_data, m_colorGrey);
     }
 
     render_data.updateView(save);
@@ -209,7 +209,7 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
             setMusicInformation(track);
         }
 
-        if(text_shader != nullptr)
+        if(render_data.getShader("text") != nullptr)
         {
             glm::vec3 coordinate(0.99f, -0.61f, -0.0f);
             glm::vec3 scale_data(0.04f, 0.035f, 0.0f);
@@ -218,7 +218,7 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
             {
                 m_texts[i]->updatePosition(coordinate);
                 m_texts[i]->updateScale(scale_data);
-                m_texts[i]->renderText(render_data, text_shader);
+                m_texts[i]->renderText(render_data);
 
                 render_data.updateView(save);
                 coordinate.y -= 0.03;
@@ -234,7 +234,7 @@ void Overlay::displayMusicOverlay(RenderData &render_data, std::string const tra
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayMoveInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed, Shader *text_shader, Shader *square_shader)
+void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed)
 {
     glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
@@ -245,17 +245,12 @@ void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &positio
     float start_bottom_black_fourth = -1.265f;
     float start_bottom_white = -1.265f;
 
-    if(square_shader != nullptr)
+    if(render_data.getShader("square") != nullptr)
     {
         for (size_t i(0); i < 10; i++)
         {
-            /*In the first pass, we do not render the grey square because they will be cover by black square*/
-
-                // glm::mat4 tmp = render_data.getViewMat();
-                // tmp = translate(tmp, glm::vec3(start_bottom_black_first, -0.675f, 0.0f)); 
-                // render_data.updateView(tmp);
                 m_rect.updatePosition(glm::vec3(start_bottom_black_first, -0.675f, 0.0f));
-                m_rect.display(render_data, m_colorBlack, square_shader);
+                m_rect.display(render_data, m_colorBlack);
 
             render_data.updateView(save);
             start_bottom_black_first = start_bottom_black_first + constance;
@@ -263,12 +258,8 @@ void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &positio
 
         for (size_t i(0); i < 10; i++)
         {
-            /*In the second pass, we do not render the grey square because they also will be cover by black square*/
-                // glm::mat4 tmp = render_data.getViewMat();
-                // tmp = translate(tmp, glm::vec3(start_bottom_black_second, -0.625f, 0.0f)); 
-                // render_data.updateView(tmp);
                 m_rect.updatePosition(glm::vec3(start_bottom_black_second, -0.625f, 0.0f));
-                m_rect.display(render_data, m_colorBlack, square_shader);
+                m_rect.display(render_data, m_colorBlack);
 
             render_data.updateView(save);
             start_bottom_black_second = start_bottom_black_second + constance;
@@ -276,12 +267,9 @@ void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &positio
 
         for (size_t i(0); i < 10; i++)
         {
-            /*In the third pass, we do not render the grey square because they also will be cover by black square*/
-                // glm::mat4 tmp = render_data.getViewMat();
-                // tmp = translate(tmp, glm::vec3(start_bottom_black_third, -0.575f, 0.0f)); 
-                // render_data.updateView(tmp);
+
                 m_rect.updatePosition(glm::vec3(start_bottom_black_third, -0.575f, 0.0f));
-                m_rect.display(render_data, m_colorBlack, square_shader);
+                m_rect.display(render_data, m_colorBlack);
 
             render_data.updateView(save);
             start_bottom_black_third = start_bottom_black_third + constance;
@@ -290,52 +278,36 @@ void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &positio
         //fourth and last pass with white border on the top
         for (size_t i(0); i < 10; i++)
         {
-                // glm::mat4 tmp = render_data.getViewMat();
-                // tmp = translate(tmp, glm::vec3(start_bottom_white, -0.525f, -0.01f)); 
-                // render_data.updateView(tmp);
                 m_rect.updatePosition(glm::vec3(start_bottom_white, -0.525f, -0.01f));
-                m_rect.display(render_data, m_colorGrey, square_shader);
+                m_rect.display(render_data, m_colorGrey);
 
             render_data.updateView(save);
             start_bottom_white = start_bottom_white + constance;
 
-                // tmp = render_data.getViewMat();
-                // tmp = translate(tmp, glm::vec3(start_bottom_black_fourth, -0.530f, 0.0f)); 
-                // render_data.updateView(tmp);
                 m_rect.updatePosition(glm::vec3(start_bottom_black_fourth, -0.530f, 0.0f));
-                m_rect.display(render_data, m_colorBlack, square_shader);
+                m_rect.display(render_data, m_colorBlack);
 
             render_data.updateView(save);
             start_bottom_black_fourth = start_bottom_black_fourth + constance;
         }
 
-        /*We only draw the lasts ones to make the border*/
-        // glm::mat4 tmp = render_data.getViewMat();
-        // tmp = translate(tmp, glm::vec3(-1.265f + 0.05f*9, -0.670f, -0.01f)); 
-        // render_data.updateView(tmp);
         m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.670f, -0.01f));
-        m_rect.display(render_data, m_colorGrey, square_shader);
+        m_rect.display(render_data, m_colorGrey);
 
         render_data.updateView(save);
 
-            // tmp = render_data.getViewMat();
-            // tmp = translate(tmp, glm::vec3(-1.265f + 0.05f*9, -0.625f, -0.01f)); 
-            // render_data.updateView(tmp);
             m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.625f, -0.01f));
-            m_rect.display(render_data, m_colorGrey, square_shader);
+            m_rect.display(render_data, m_colorGrey);
 
         render_data.updateView(save);
 
-            // tmp = render_data.getViewMat();
-            // tmp = translate(tmp, glm::vec3(-1.265f + 0.05f*9, -0.575f, -0.01f)); 
-            // render_data.updateView(tmp);
             m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.575f, -0.01f));
-            m_rect.display(render_data, m_colorGrey, square_shader);
+            m_rect.display(render_data, m_colorGrey);
     }
 
     render_data.updateView(save);
 
-        if(text_shader != nullptr)
+        if(render_data.getShader("text") != nullptr)
         {
             std::vector<glm::vec3> coordinates;
             coordinates.push_back(glm::vec3(-1.03f, -0.525f, -0.0f));
@@ -355,7 +327,7 @@ void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &positio
             {
                 m_texts[i]->updatePosition(coordinates[i - 3]);
                 m_texts[i]->updateScale(scale_datas[i - 3]);
-                m_texts[i]->renderText(render_data, text_shader);
+                m_texts[i]->renderText(render_data);
 
                 render_data.updateView(save);
             }
@@ -369,7 +341,7 @@ void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &positio
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayTimeInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayTimeInfoOverlay(RenderData &render_data, Shader *text_shader, Shader *square_shader)
+void Overlay::displayTimeInfoOverlay(RenderData &render_data)
 {
     glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
@@ -380,7 +352,7 @@ void Overlay::displayTimeInfoOverlay(RenderData &render_data, Shader *text_shade
     float start_top_black_to_right = 0.05f;
     float start_top_white_to_right = 0.05f;
 
-    if(square_shader != nullptr)
+    if(render_data.getShader("square") != nullptr)
     {
         
         for (size_t i(0); i < 5; i++)
@@ -388,7 +360,7 @@ void Overlay::displayTimeInfoOverlay(RenderData &render_data, Shader *text_shade
                 std::vector<glm::vec3> coordinates;
                 coordinates.push_back(glm::vec3(start_top_white_to_left, 0.670f, -0.01f));
                 coordinates.push_back(glm::vec3(start_top_black_to_left, 0.675f, 0.0f));
-                displaySquares(render_data, coordinates, square_shader);
+                displaySquares(render_data, coordinates);
                
             render_data.updateView(save);
             start_top_white_to_left = start_top_white_to_left - constance;
@@ -400,7 +372,7 @@ void Overlay::displayTimeInfoOverlay(RenderData &render_data, Shader *text_shade
             std::vector<glm::vec3> coordinates;
             coordinates.push_back(glm::vec3(start_top_white_to_right, 0.670f, -0.01f));
             coordinates.push_back(glm::vec3(start_top_black_to_right, 0.675f, 0.0f));
-            displaySquares(render_data, coordinates, square_shader);
+            displaySquares(render_data, coordinates);
 
             render_data.updateView(save);
             start_top_white_to_right = start_top_white_to_right + constance;
@@ -409,19 +381,13 @@ void Overlay::displayTimeInfoOverlay(RenderData &render_data, Shader *text_shade
 
         render_data.updateView(save);
 
-            // glm::mat4 tmp = render_data.getViewMat();
-            // tmp = translate(tmp, glm::vec3(0.0f - 0.043f*5, 0.670f, -0.01f));
-            // render_data.updateView(tmp);
             m_rect.updatePosition(glm::vec3(0.0f - 0.043f*5, 0.670f, -0.01f));
-            m_rect.display(render_data, m_colorGrey, square_shader);
+            m_rect.display(render_data, m_colorGrey);
 
         render_data.updateView(save);
 
-            // tmp = render_data.getViewMat();
-            // tmp = translate(tmp, glm::vec3(0.0f + 0.043f * 5, 0.670f, -0.01f));
-            // render_data.updateView(tmp);
             m_rect.updatePosition(glm::vec3(0.0f + 0.043f * 5, 0.670f, -0.01f));
-            m_rect.display(render_data, m_colorGrey, square_shader);
+            m_rect.display(render_data, m_colorGrey);
 
         render_data.updateView(save);
 
@@ -429,13 +395,13 @@ void Overlay::displayTimeInfoOverlay(RenderData &render_data, Shader *text_shade
 
     render_data.updateView(save);
 
-        if(text_shader != nullptr)
+        if(render_data.getShader("text") != nullptr)
         {
             setTimeInformation();
 
                 m_texts[7]->updatePosition(glm::vec3(0.0f, 0.658f, -0.0f));
                 m_texts[7]->updateScale(vec3(0.039f, 0.050f, 0.0f));
-                m_texts[7]->renderText(render_data, text_shader);
+                m_texts[7]->renderText(render_data);
 
             render_data.updateView(save);
             

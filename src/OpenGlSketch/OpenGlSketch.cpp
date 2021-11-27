@@ -221,7 +221,7 @@ void OpenGlSketch::startLoop()
     m_input.capturePointer(true);
     m_input.displayPointer(false);
 
-    RenderData render(m_window_width, m_window_height, 70.0f);
+    RenderData render(m_window_width, m_window_height, 70.0f, false);
 
     //loading system and making start screen
     while(nb_loaded < 9)
@@ -243,7 +243,7 @@ void OpenGlSketch::startLoop()
             {
                 if(render.getShader("text") != nullptr)
                 {
-                    startScreen->drawStartScreen(render, render.getShader("text"));
+                    startScreen->drawStartScreen(render);
                 }
             }
             
@@ -253,7 +253,7 @@ void OpenGlSketch::startLoop()
         
             if(square != nullptr)
             {
-                square->drawLoad(nb_loaded, render, color, render.getShader("square"));
+                square->drawLoad(nb_loaded, render, color);
             }
             
         //restaure the modelview matrix
@@ -317,7 +317,7 @@ void OpenGlSketch::mainLoop()
 
     m_terminate = false;
 
-    RenderData render_data(m_window_width, m_window_height, 45.0f);
+    RenderData render_data(m_window_width, m_window_height, 45.0f, true);
 
 
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
@@ -491,25 +491,25 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
 
                 render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayGeneralOverlay(render_data, render_data.getShader("square"));
+                    m_overlay->displayGeneralOverlay(render_data);
 
                 render_data.saveViewMat();
 
                 render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayMusicOverlay(render_data, track, render_data.getShader("text"), render_data.getShader("square"));
+                    m_overlay->displayMusicOverlay(render_data, track);
 
                 render_data.saveViewMat();
 
                 render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayMoveInfoOverlay(render_data, position, speed, render_data.getShader("text"), render_data.getShader("square"));
+                    m_overlay->displayMoveInfoOverlay(render_data, position, speed);
 
                 render_data.saveViewMat();
 
                 render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayTimeInfoOverlay(render_data, render_data.getShader("text"), render_data.getShader("square"));
+                    m_overlay->displayTimeInfoOverlay(render_data);
 
             render_data.saveViewMat();
 
@@ -583,11 +583,7 @@ void OpenGlSketch::renderInfo(RenderData &render_data)
 
                 if(render_data.getShader("text") != nullptr)
                 {
-                    std::vector<Shader*> shaders;
-                    shaders.push_back(render_data.getShader("text"));
-                    shaders.push_back(render_data.getShader("square"));
-
-                    solar_system->drawInfo(render_data, camPos, shaders);
+                    solar_system->drawInfo(render_data, camPos);
                 }
                 
             render_data.saveViewMat();
@@ -697,11 +693,9 @@ void OpenGlSketch::renderSettings(RenderData &render_data)
 
             render_data.initSaveMat();
 
-            glm::mat4 tmp = render_data.getViewMat();
-            tmp = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-            render_data.updateView(tmp);
+            render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-                m_settings->displayFrameSettings(render_data, render_data.getShader("text"), render_data.getShader("square"));
+                m_settings->displayFrameSettings(render_data);
 
             render_data.saveViewMat();
 

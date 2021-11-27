@@ -114,14 +114,14 @@ PURPOSE : header of the Settings class
 
                 void initRender();
 
-                void renderAllTexts(RenderData &render_data, Shader *text_shader = nullptr);
+                void renderAllTexts(RenderData &render_data);
 
             public:
             
                 Settings(TTF_Font *police);
                 ~Settings();
 
-                void displayFrameSettings(RenderData &render_data, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayFrameSettings(RenderData &render_data);
                 int manageButton(Input const &intput);
         };
 

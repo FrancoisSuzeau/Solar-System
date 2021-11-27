@@ -214,9 +214,8 @@ void SimplePlanete::displayName(RenderData &render_data, glm::vec3 camPos, int t
         
         if(r >= threshold * m_real_size)
         {
-            // 
             m_name_renderer->updatePosition(m_current_position);
-            m_name_renderer->renderMovingText(render_data, m_real_size, r, phi, theta, y, name_render_shader);
+            m_name_renderer->renderMovingText(render_data, m_real_size, r, phi, theta, y);
         }
         
     }

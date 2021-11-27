@@ -60,17 +60,17 @@ PURPOSE : header of the Overlay class
                 glm::vec3 m_colorBlack;
                 glm::vec3 m_colorGrey;
 
-                void displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates, Shader *square_shader = nullptr);
+                void displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates);
 
             public:
             
                 Overlay(TTF_Font *police);
                 ~Overlay();
 
-                void displayGeneralOverlay(RenderData &render_data, Shader *square_shader = nullptr);
-                void displayMusicOverlay(RenderData &render_data, std::string const track, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
-                void displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
-                void displayTimeInfoOverlay(RenderData &render_data, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayGeneralOverlay(RenderData &render_data);
+                void displayMusicOverlay(RenderData &render_data, std::string const track);
+                void displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed);
+                void displayTimeInfoOverlay(RenderData &render_data);
 
                 void setMusicInformation(std::string const track);
                 void setSpeedInformation(float const speed);

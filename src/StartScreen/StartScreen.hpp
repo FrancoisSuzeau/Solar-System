@@ -46,7 +46,7 @@ PURPOSE : header of the virtual StartScreen class
                 StartScreen(TTF_Font *police);
                 ~StartScreen();
 
-                void drawStartScreen(RenderData &render_data, Shader *text_shader = nullptr);
+                void drawStartScreen(RenderData &render_data);
 
         };
 

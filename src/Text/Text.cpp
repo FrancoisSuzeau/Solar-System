@@ -199,17 +199,17 @@ void Text::rotateText(float const z, double ratio, float phi, float theta, float
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ renderText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderMovingText(RenderData &render_data, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
+void Text::renderMovingText(RenderData &render_data, float const z, double ratio, float phi, float theta, float y)
 {
 
-	if(name_render_shader != nullptr)
+	if(render_data.getShader("text") != nullptr)
 	{
 		
 		render_data.initSaveMat();
 
 		this->rotateText(z, ratio, phi, theta, y);
 
-		this->renderText(render_data, name_render_shader);
+		this->renderText(render_data);
 
 		render_data.saveViewMat();
 	}
@@ -220,12 +220,12 @@ void Text::renderMovingText(RenderData &render_data, float const z, double ratio
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* renderTextoverlay *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderText(RenderData &render_data, Shader *text_shader)
+void Text::renderText(RenderData &render_data)
 {
-	if(text_shader != nullptr)
+	if(render_data.getShader("text") != nullptr)
 	{
 		//activate shader program
-		glUseProgram(text_shader->getProgramID());
+		glUseProgram(render_data.getShader("text")->getProgramID());
 
 		//send vertices coordinates
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, m_vertices);
@@ -236,10 +236,10 @@ void Text::renderText(RenderData &render_data, Shader *text_shader)
 		glEnableVertexAttribArray(2);
 
 		//send matrices
-		text_shader->setMat4("projection", render_data.getProjectionMat());
-		text_shader->setMat4("view", render_data.getViewMat());
-		text_shader->setMat4("model", m_model_mat);
-		text_shader->setTexture("texture0", 0);
+		render_data.getShader("text")->setMat4("projection", render_data.getProjectionMat());
+		render_data.getShader("text")->setMat4("view", render_data.getViewMat());
+		render_data.getShader("text")->setMat4("model", m_model_mat);
+		render_data.getShader("text")->setTexture("texture0", 0);
 
 		//lock texture
 		glActiveTexture(GL_TEXTURE0);

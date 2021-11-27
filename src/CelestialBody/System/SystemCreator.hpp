@@ -67,9 +67,9 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displayAtmo(render_data, camPos, atmo_shader);
                 }
 
-                void drawInfo(RenderData &render_data, glm::vec3 &camPos, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr)
+                void drawInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *planete_info = nullptr)
                 {
-                        m_system->displayInfo(render_data, camPos, shaders, planete_info);
+                        m_system->displayInfo(render_data, camPos, planete_info);
                 }
 
                 void drawSkybox(RenderData &render_data)

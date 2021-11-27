@@ -238,7 +238,7 @@ void PlanetarySystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Sh
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, std::vector<Shader *> shaders, PlaneteInformation *planete_info)
+void PlanetarySystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *planete_info)
 {
     glm::mat4 save = render_data.getViewMat();
 
@@ -263,9 +263,9 @@ void PlanetarySystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, st
                     planete_info->changeNamePlan(tmp_name);
                 }
 
-                if((shaders[0] != nullptr) && (shaders[1] != nullptr))
+                if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
                 {
-                    planete_info->renderInfo(render_data, shaders);
+                    planete_info->renderInfo(render_data);
                     render_data.updateView(save);
                 }
                 

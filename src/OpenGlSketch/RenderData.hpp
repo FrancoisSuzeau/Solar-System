@@ -70,7 +70,7 @@ PURPOSE : header of the RenderData class
 
             public:
 
-                RenderData(int width, int height, double angle)
+                RenderData(int width, int height, double angle, bool main_loop)
                 {
                     // pause_music = false;
                     // volume = 0;
@@ -92,7 +92,7 @@ PURPOSE : header of the RenderData class
 
                     m_terminate = false;
 
-                    setShader();
+                    setShader(main_loop);
 
                 }
                 ~RenderData()
@@ -139,12 +139,17 @@ PURPOSE : header of the RenderData class
                 bool getBloom() const {return bloom;}
                 void updateView(glm::mat4 &new_mat) {view = new_mat;}
 
-                void setShader()
+                void setShader(bool main_loop)
                 {
                     std::vector<shader_datas> shader_init;
                     shader_init.push_back({"../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag", "text"});
                     shader_init.push_back({"../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", "square"});
-                    shader_init.push_back({"../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag", "model"});
+
+                    if(main_loop)
+                    {
+                        shader_init.push_back({"../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag", "model"});
+                    }
+                    
 
                     for(std::vector<shader_datas>::iterator it = shader_init.begin(); it != shader_init.end(); ++it)
                     {
