@@ -46,6 +46,8 @@ m_file_path(file_path)
 
 	m_police = nullptr;
 
+	m_model_mat = glm::mat4(1.0f);
+
 }
 
 Text::Text(float x, float y, float z, std::string file_path, TTF_Font *police) : 
@@ -145,55 +147,71 @@ SDL_Surface *Text::reversePixels(SDL_Surface *src) const
 
 	return reverse_surface;
 }
+/***********************************************************************************************************************************************************************/
+/********************************************************************************** updatePosition *********************************************************************/
+/***********************************************************************************************************************************************************************/
+void Text::updatePosition(glm::vec3 position)
+{
+	m_model_mat = glm::mat4(1.0f);
+	m_model_mat = glm::translate(m_model_mat, position);
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************** updateScale *********************************************************************/
+/***********************************************************************************************************************************************************************/
+void Text::updateScale(glm::vec3 position)
+{
+	m_model_mat = glm::scale(m_model_mat, position);
+}
 
 /***********************************************************************************************************************************************************************/
 /************************************************************************************** rotateText *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::rotateText(glm::mat4 &view, float const z, double ratio, float phi, float theta, float y)
+void Text::rotateText(float const z, double ratio, float phi, float theta, float y)
 {
 	float sizet = 4.0f;
 	phi = (float) (phi * 180 / M_PI);
 	theta = (float) (theta * 180 / M_PI);
 		
-	view = translate(view, vec3(0.0f, sizet - 4.0f, z + 4.0f));
+	m_model_mat = translate(m_model_mat, vec3(0.0f, sizet - 4.0f, z + 4.0f));
 	if((phi < 0.0f) && (y > 0.0f))
 	{
-		view = rotate(view, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		m_model_mat = rotate(m_model_mat, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi > 0.0f) && (y < 0.0f) )
 	{
-		view = rotate(view, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		m_model_mat = rotate(m_model_mat, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi > 0.0f) && (y > 0.0f) )
 	{
-		view = rotate(view, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		m_model_mat = rotate(m_model_mat, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi < 0.0f) && (y < 0.0f) )
 	{
-		view = rotate(view, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		m_model_mat = rotate(m_model_mat, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 
-	view = rotate(view, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
+	m_model_mat = rotate(m_model_mat, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
 		
-	view = scale(view, vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
+	this->updateScale(glm::vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
 }
 
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ renderText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &view, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
+void Text::renderMovingText(RenderData &render_data, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader)
 {
 
 	if(name_render_shader != nullptr)
 	{
 		
-		glm::mat4 save = view;
+		render_data.initSaveMat();
 
-		this->rotateText(view, z, ratio, phi, theta, y);
+		this->rotateText(z, ratio, phi, theta, y);
 
-		this->renderText(projection, view, name_render_shader);
+		this->renderText(render_data, name_render_shader);
 
-		view = save;
+		render_data.saveViewMat();
 	}
 	
 
@@ -202,11 +220,10 @@ void Text::renderMovingText(glm::mat4 &projection, glm::mat4 &view, float const 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* renderTextoverlay *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shader)
+void Text::renderText(RenderData &render_data, Shader *text_shader)
 {
 	if(text_shader != nullptr)
 	{
-		glm::mat4 save = view;
 		//activate shader program
 		glUseProgram(text_shader->getProgramID());
 
@@ -219,8 +236,9 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shade
 		glEnableVertexAttribArray(2);
 
 		//send matrices
-		text_shader->setMat4("projection", projection);
-		text_shader->setMat4("view", view);
+		text_shader->setMat4("projection", render_data.getProjectionMat());
+		text_shader->setMat4("view", render_data.getViewMat());
+		text_shader->setMat4("model", m_model_mat);
 		text_shader->setTexture("texture0", 0);
 
 		//lock texture
@@ -240,8 +258,6 @@ void Text::renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shade
 
 		//deactivate shader program
 		glUseProgram(0);
-
-		view = save;
 	}
 	
 }

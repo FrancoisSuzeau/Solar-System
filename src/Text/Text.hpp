@@ -29,6 +29,7 @@ PURPOSE : header of the Text class
 
         #include "../Texture/Texture.hpp"
         #include "../Shader/Shader.hpp"
+        #include "../OpenGlSketch/RenderData.hpp"
 
 /********************************************************************* class definition *********************************************************************/
 
@@ -43,9 +44,11 @@ PURPOSE : header of the Text class
                 float           m_vertices[18];
                 float           m_texture_coord[12];
                 GLuint          m_id;
+
+                glm::mat4 m_model_mat;
                 
                 SDL_Surface *reversePixels(SDL_Surface *src) const;
-                void rotateText(glm::mat4 &view, float const z, double ratio, float phi, float theta, float y);
+                void rotateText(float const z, double ratio, float phi, float theta, float y);
                 
             public:
 
@@ -57,8 +60,10 @@ PURPOSE : header of the Text class
 
                 bool loadTTF(std::string const text);
                 
-                void            renderMovingText(glm::mat4 &projection, glm::mat4 &view, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
-                void            renderText(glm::mat4 &projection, glm::mat4 &view, Shader *text_shader = nullptr);
+                void            updatePosition(glm::vec3 position);
+                void            updateScale(glm::vec3 scale_data);
+                void            renderMovingText(RenderData &render_data, float const z, double ratio, float phi, float theta, float y, Shader *name_render_shader = nullptr);
+                void            renderText(RenderData &render_data, Shader *text_shader = nullptr);
                 bool            setText(std::string const text);
                 
         };

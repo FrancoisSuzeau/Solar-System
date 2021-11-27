@@ -49,9 +49,9 @@ PlaneteInformation::~PlaneteInformation()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* renderInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::vector<Shader *> shaders)
+void PlaneteInformation::renderInfo(RenderData &render_data, std::vector<Shader *> shaders)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05;
 
     float start_x_black = -0.8;
@@ -64,10 +64,10 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &view, bool
         {
             for (size_t j(0); j < 9; j++)
             {
-                    view = translate(view, vec3(start_x_black, start_y, 0.0));
-                    m_rect->display(projection, view, colorBlack, hdr, shaders[1]);
+                    m_rect->updatePosition(glm::vec3(start_x_black, start_y, 0.0));
+                    m_rect->display(render_data, colorBlack, shaders[1]);
                 
-                view = save;
+                render_data.updateView(save);
                 start_x_black = start_x_black + constance;
             }
 
@@ -80,15 +80,15 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &view, bool
 
         for (size_t i(0); i < 9; i++)
         {
-                view = translate(view, vec3(start_x_white, 0.51, 0.0));
-                m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
+                m_rect->updatePosition(glm::vec3(start_x_white, 0.51, 0.0));
+                m_rect->display(render_data, colorGrey, shaders[1]);
                 
-            view = save;
+            render_data.updateView(save);
 
-                view = translate(view, vec3(start_x_white, -0.01, 0.0));
-                m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
+                m_rect->updatePosition(glm::vec3(start_x_white, -0.01, 0.0));
+                m_rect->display(render_data, colorGrey, shaders[1]);
 
-            view = save;
+            render_data.updateView(save);
 
             start_x_white = start_x_white + constance;
         }
@@ -98,42 +98,41 @@ void PlaneteInformation::renderInfo(glm::mat4 &projection, glm::mat4 &view, bool
 
         for (size_t i(0); i < 11; i++)
         {
-                view = translate(view, vec3(-0.81, start_y_white, 0.0));
-                m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
+                m_rect->updatePosition(glm::vec3(-0.81, start_y_white, 0.0));
+                m_rect->display(render_data, colorGrey, shaders[1]);
                 
-            view = save;
+            render_data.updateView(save);
 
-                view = translate(view, vec3(-0.39, start_y_white, 0.0));
-                m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
+                m_rect->updatePosition(glm::vec3(-0.39, start_y_white, 0.0));
+                m_rect->display(render_data, colorGrey, shaders[1]);
                 
-            view = save;
+            render_data.updateView(save);
 
             start_y_white = start_y_white - constance;
         }
 
         //the last to white on the bottom corner left and right
 
-            view = translate(view, vec3(-0.81, -0.01, 0.0));
-            m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
+            m_rect->updatePosition(glm::vec3(-0.81, -0.01, 0.0));
+            m_rect->display(render_data, colorGrey, shaders[1]);
                 
-        view = save;
+        render_data.updateView(save);
 
-            view = translate(view, vec3(-0.39, -0.01, 0.0));
-            m_rect->display(projection, view, colorGrey, hdr, shaders[1]);
+            m_rect->updatePosition(glm::vec3(-0.39, -0.01, 0.0));
+            m_rect->display(render_data, colorGrey, shaders[1]);
     }
 
     
 
-    view = save;
+    render_data.updateView(save);
 
     if(shaders[0] != nullptr)
     {
-            //Diplay text information
-            view = translate(view, vec3(-0.585, 0.49, -0.0));
-            view = scale(view, vec3(0.03, 0.05, 0.0));
-            m_text_name.renderText(projection, view, shaders[0]);
+            m_text_name.updatePosition(glm::vec3(-0.585, 0.49, -0.0));
+            m_text_name.updateScale(glm::vec3(0.03, 0.05, 0.0));
+            m_text_name.renderText(render_data, shaders[0]);
 
-        view = save;
+        render_data.updateView(save);
     }
 
     

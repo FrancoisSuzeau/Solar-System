@@ -49,6 +49,8 @@ m_bytes_colors_size(18 * sizeof(float))
 
     this->load();
 
+    m_model_mat = glm::mat4(1.0f);
+
 }
 
 Square::Square()
@@ -73,7 +75,7 @@ Square::~Square()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Square::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 color, bool hdr, Shader *square_shader)
+void Square::display(RenderData &render_data, glm::vec3 color, Shader *square_shader)
 {
     if(square_shader != nullptr)
     {
@@ -84,10 +86,11 @@ void Square::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 color, bo
             glBindVertexArray(m_vaoID);
 
             //send matrices to shader
-            square_shader->setMat4("projection", projection);
-            square_shader->setMat4("view", view);
+            square_shader->setMat4("projection", render_data.getProjectionMat());
+            square_shader->setMat4("view", render_data.getViewMat());
+            square_shader->setMat4("model", m_model_mat);
 
-            square_shader->setInt("hdr", hdr);
+            square_shader->setInt("hdr", render_data.getHDR());
             square_shader->setVec3("color2", color);
 
             //display the form
@@ -207,15 +210,28 @@ void Square::updateVBO(void *data, int size_bytes, int offset)
 }
 
 /***********************************************************************************************************************************************************************/
+/********************************************************************************* updatePosition **********************************************************************/
+/***********************************************************************************************************************************************************************/
+void Square::updatePosition(glm::vec3 position)
+{
+    m_model_mat = glm::mat4(1.0f);
+    m_model_mat = translate(m_model_mat, position);
+}
+
+/***********************************************************************************************************************************************************************/
 /*************************************************************************************** drawLoad **********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &view, glm::vec3 color, Shader *square_shader)
+void Square::drawLoad(int count, RenderData &render_data, glm::vec3 color, Shader *square_shader)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     
+    bool save_hdr = render_data.getHDR();
+    render_data.updateHDR(false);
 
     if(square_shader != nullptr)
     {
+        
+
         glUseProgram(square_shader->getProgramID());
 
             square_shader->setInt("load", true);
@@ -223,51 +239,52 @@ void Square::drawLoad(int count, glm::mat4 &projection, glm::mat4 &view, glm::ve
         glUseProgram(0);
         if(count == 0)
         {
-                view = translate(view, vec3((count - 12.2f) * 0.05f, -0.3f, 0.0f));
-                display(projection, view, color, false, square_shader);
+                this->updatePosition(glm::vec3((count - 12.2f) * 0.05f, -0.3f, 0.0f));
+                display(render_data, color, square_shader);
 
             //restaure the view matrix
-            view = save;
+            render_data.updateView(save);
 
-                view = translate(view, vec3((count - 11.2f) * 0.05f, -0.3f, 0.0f));
-                display(projection, view, color, false, square_shader);
-
-            //restaure the view matrix
-            view = save;
-
-                view = translate(view, vec3((count - 10.2f) * 0.05f, -0.3f, 0.0f));
-                display(projection, view, color, false, square_shader);
+                this->updatePosition(glm::vec3((count - 11.2f) * 0.05f, -0.3f, 0.0f));
+                display(render_data, color, square_shader);
 
             //restaure the view matrix
-            view = save;
+            render_data.updateView(save);
+
+                this->updatePosition(glm::vec3((count - 10.2f) * 0.05f, -0.3f, 0.0f));
+                display(render_data, color, square_shader);
+
+            //restaure the view matrix
+            render_data.updateView(save);
         }
         else
         {
             for (int i = 0; i < count * 3; i++)
             {
-                    view = translate(view, vec3((i - 12.2f) * 0.05f, -0.3f, 0.0f));
-                    display(projection, view, color, false, square_shader);
+                    this->updatePosition(glm::vec3((i - 12.2f) * 0.05f, -0.3f, 0.0f));
+                    display(render_data, color, square_shader);
 
-                view = save;
+                render_data.updateView(save);
 
-                    view = translate(view, vec3((i - 11.2f) * 0.05f, -0.3f, 0.0f));
-                    display(projection, view, color, false, square_shader);
+                    this->updatePosition(glm::vec3((i - 11.2f) * 0.05f, -0.3f, 0.0f));
+                    display(render_data, color, square_shader);
 
-                view = save;
+                render_data.updateView(save);
 
-                    view = translate(view, vec3((i - 10.2f) * 0.05f, -0.3f, 0.0f));
-                    display(projection, view, color, false, square_shader);
+                    this->updatePosition(glm::vec3((i - 10.2f) * 0.05f, -0.3f, 0.0f));
+                    display(render_data, color, square_shader);
 
-                view = save;
+                render_data.updateView(save);
             }
         }
     }
 
+    render_data.updateHDR(save_hdr);
     
 }
 
 //NOT CONCERN
-void Square::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 color, bool hdr, Shader *square_shader)
+void Square::displayInfo(RenderData &render_data, glm::vec3 color, Shader *square_shader)
 {
 
 }

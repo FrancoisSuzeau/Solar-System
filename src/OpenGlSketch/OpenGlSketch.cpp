@@ -228,17 +228,19 @@ void OpenGlSketch::startLoop()
 
     int nb_loaded(0);
 
-    mat4 projection;
-    mat4 view;
-    mat4 save_view;     
+    // mat4 projection;
+    // mat4 view;
+    // mat4 save_view;   
     //===================================================================================================================
 
     m_input.capturePointer(true);
     m_input.displayPointer(false);
 
     //initialize modelview and projection matrix
-    projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 120.0);
-    view = mat4(1.0f);
+    // projection = perspective(glm::radians(70.0), (double)m_window_width / m_window_height, 1.0, 120.0);
+    // view = mat4(1.0f);
+
+    RenderData render(m_window_width, m_window_height, 70.0f);
 
     //loading system and making start screen
     while(nb_loaded < 9)
@@ -249,33 +251,32 @@ void OpenGlSketch::startLoop()
 
         if(startScreen_cam != nullptr)
         {
-            startScreen_cam->lookAt(view);
+            startScreen_cam->lookAt(render.getViewMat());
         }
         
 
         //save the modelview matrix
-        save_view = view;
-
-            view = translate(view, vec3(0.0f, 0.5f, 0.0f));
+        render.initSaveMat();
+        
             if(startScreen != nullptr)
             {
                 if(text_shader != nullptr)
                 {
-                    startScreen->drawStartScreen(projection, view, text_shader);
+                    startScreen->drawStartScreen(render, text_shader);
                 }
             }
             
 
         //restaure the modelview matrix
-        view = save_view;
+        render.saveViewMat();
         
             if(square != nullptr)
             {
-                square->drawLoad(nb_loaded, projection, view, color, square_shader);
+                square->drawLoad(nb_loaded, render, color, square_shader);
             }
             
         //restaure the modelview matrix
-        view = save_view;
+        render.saveViewMat();
 
         //actualising the window
         SDL_GL_SwapWindow(m_window);
@@ -335,7 +336,7 @@ void OpenGlSketch::mainLoop()
 
     m_terminate = false;
 
-    RenderData render_data(m_window_width, m_window_height);
+    RenderData render_data(m_window_width, m_window_height, 45.0f);
 
 
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
@@ -626,7 +627,7 @@ void OpenGlSketch::renderInfo(RenderData &render_data)
                     shaders.push_back(text_shader);
                     shaders.push_back(square_shader);
 
-                    solar_system->drawInfo(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), shaders);
+                    solar_system->drawInfo(render_data, camPos, shaders);
                 }
                 
             render_data.saveViewMat();

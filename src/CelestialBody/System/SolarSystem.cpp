@@ -427,10 +427,10 @@ void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Shader
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *plan_info)
+void SolarSystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, std::vector<Shader *> shaders, PlaneteInformation *plan_info)
 {
     
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
 
     for(std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
     {
@@ -441,7 +441,8 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
 
             if(r <= 10 * size_plan)
             {
-                view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                // view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
                 std::string tmp_name = it[0]->getName();
                 
                 if(tmp_name != m_planete_info->getInfoName())
@@ -452,14 +453,14 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
 
                 if((shaders[0] != nullptr) && (shaders[1] != nullptr))
                 {
-                    m_planete_info->renderInfo(projection, view, hdr, shaders);
-                    view = save;
+                    m_planete_info->renderInfo(render_data, shaders);
+                    render_data.updateView(save);
                 }
             }
         }
-        view = save;
+        render_data.updateView(save);
     }
-    view = save;
+    render_data.updateView(save);
 
     //display information of planetof the planetary system
     for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
@@ -468,14 +469,14 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
         {
             if((shaders[0] != nullptr) && (shaders[1] != nullptr))
             {
-                it[0]->drawInfo(projection, view, camPos, hdr, shaders, m_planete_info);
-                view = save;
+                it[0]->drawInfo(render_data, camPos, shaders, m_planete_info);
+                render_data.updateView(save);
             }
         }
         
-        view = save;
+        render_data.updateView(save);
     }
 
-    view = save;
+    render_data.updateView(save);
     
 }

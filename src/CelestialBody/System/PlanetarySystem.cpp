@@ -238,16 +238,17 @@ void PlanetarySystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Sh
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info)
+void PlanetarySystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, std::vector<Shader *> shaders, PlaneteInformation *planete_info)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
 
     float r = m_host_creator->getRadius(camPos);
     float size_plan = m_host_creator->getSizePlan();
 
         if(r <= 10 * size_plan)
         {
-            view = lookAt(vec3(0.0, 0.0, 1.71), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
+            // view = lookAt(vec3(0.0, 0.0, 1.71), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
+            render_data.lockViewMat(glm::vec3(0.0, 0.0, 1.71), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 
             if(m_host_creator == nullptr) //exceptionnaly we exit the program because without 
             {
@@ -264,15 +265,15 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::v
 
                 if((shaders[0] != nullptr) && (shaders[1] != nullptr))
                 {
-                    planete_info->renderInfo(projection, view, hdr, shaders);
-                    view = save;
+                    planete_info->renderInfo(render_data, shaders);
+                    render_data.updateView(save);
                 }
                 
             }
             
         }
 
-        view = save;
+        render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/

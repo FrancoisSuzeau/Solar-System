@@ -56,7 +56,7 @@ PURPOSE : header of the RenderData class
 
             public:
 
-                RenderData(int width, int height)
+                RenderData(int width, int height, double angle)
                 {
                     // pause_music = false;
                     // volume = 0;
@@ -71,7 +71,7 @@ PURPOSE : header of the RenderData class
 
                     // is_moving = false;
 
-                    projection = glm::perspective(glm::radians(45.0), (double)width / height, 1.0, 900000.0);
+                    projection = glm::perspective(glm::radians(angle), (double)width / height, 1.0, 900000.0);
                     view = glm::mat4(1.0f);
 
                     bloom = true;

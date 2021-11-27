@@ -150,10 +150,8 @@ void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader
         {
             for (size_t j(0); j < 13; j++)
             {
-                    glm::mat4 tmp = render_data.getViewMat();
-                    tmp = translate(tmp, vec3(start_x_black, start_y, 0.0));
-                    render_data.updateView(tmp);
-                    m_grey_rect->display(render_data.getProjectionMat(), render_data.getViewMat(), colorBlack, render_data.getHDR(), square_shader);
+                    m_grey_rect->updatePosition(glm::vec3(start_x_black, start_y, 0.0));
+                    m_grey_rect->display(render_data, colorBlack, square_shader);
                 
                 render_data.updateView(save);
                 start_x_black = start_x_black + constance;
@@ -173,17 +171,13 @@ void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader
 
         for (size_t i(0); i < 13; i++)
         {
-                glm::mat4 tmp = render_data.getViewMat();
-                tmp = translate(tmp, vec3(start_x_white, 0.36, 0.0));
-                render_data.updateView(tmp);
-                m_grey_rect->display(render_data.getProjectionMat(), render_data.getViewMat(), colorGrey, render_data.getHDR(), square_shader);
+                m_grey_rect->updatePosition(glm::vec3(start_x_white, 0.36, 0.0));
+                m_grey_rect->display(render_data, colorGrey, square_shader);
                 
             render_data.updateView(save);
             
-                tmp = render_data.getViewMat();
-                tmp = translate(tmp, vec3(start_x_white, -0.36, 0.0));
-                render_data.updateView(tmp);
-                m_grey_rect->display(render_data.getProjectionMat(), render_data.getViewMat(), colorGrey, render_data.getHDR(), square_shader);
+                m_grey_rect->updatePosition(glm::vec3(start_x_white, -0.36, 0.0));
+                m_grey_rect->display(render_data, colorGrey, square_shader);
 
             render_data.updateView(save);
 
@@ -195,36 +189,28 @@ void Settings::displayFrameSettings(RenderData &render_data, Shader *text_shader
 
         for (size_t i(0); i < 15; i++)
         {
-                glm::mat4 tmp = render_data.getViewMat();
-                tmp = translate(tmp, vec3(-0.31, start_y_white, 0.0));
-                render_data.updateView(tmp);
-                m_grey_rect->display(render_data.getProjectionMat(), render_data.getViewMat(), colorGrey, render_data.getHDR(), square_shader);
+                m_grey_rect->updatePosition(glm::vec3(-0.31, start_y_white, 0.0));
+                m_grey_rect->display(render_data, colorGrey, square_shader);
                 
             render_data.updateView(save);
 
-                tmp = render_data.getViewMat();
-                tmp = translate(tmp, vec3(0.31, start_y_white, 0.0));
-                render_data.updateView(tmp);
-                m_grey_rect->display(render_data.getProjectionMat(), render_data.getViewMat(), colorGrey, render_data.getHDR(), square_shader);
+                m_grey_rect->updatePosition(glm::vec3(0.31, start_y_white, 0.0));
+                m_grey_rect->display(render_data, colorGrey, square_shader);
                 
             render_data.updateView(save);
 
             start_y_white = start_y_white - constance;
         }
 
-        // render_data.updateView(save);
+        render_data.updateView(save);
 
-            glm::mat4 tmp = render_data.getViewMat();
-            tmp = translate(tmp, vec3(-0.31, -0.36, 0.0));
-            render_data.updateView(tmp);
-            m_grey_rect->display(render_data.getProjectionMat(), render_data.getViewMat(), colorGrey, render_data.getHDR(), square_shader);
+            m_grey_rect->updatePosition(glm::vec3(-0.31, -0.36, 0.0));
+            m_grey_rect->display(render_data, colorGrey, square_shader);
                 
         render_data.updateView(save);
 
-            tmp = render_data.getViewMat();
-            tmp = translate(tmp, vec3(0.31, -0.36, 0.0));
-            render_data.updateView(tmp);
-            m_grey_rect->display(render_data.getProjectionMat(), render_data.getViewMat(), colorGrey, render_data.getHDR(), square_shader);
+            m_grey_rect->updatePosition(glm::vec3(0.31, -0.36, 0.0));
+            m_grey_rect->display(render_data, colorGrey, square_shader);
     }
     render_data.updateView(save);
 
@@ -241,14 +227,12 @@ void Settings::renderAllTexts(RenderData &render_data, Shader *text_shader)
         glm::mat4 save = render_data.getViewMat();
 
         for (int i = 0; i < 10; i++)
-        {
-            glm::mat4 tmp = render_data.getViewMat();
-            tmp = translate(tmp, datas_renders[i].position);
-            tmp = scale(tmp, datas_renders[i].scale);
-            render_data.updateView(tmp);
+        {   
             if(m_texts[i] != nullptr)
             {
-                m_texts[i]->renderText(render_data.getProjectionMat(), render_data.getViewMat(), text_shader);
+                m_texts[i]->updatePosition(datas_renders[i].position);
+                m_texts[i]->updateScale(datas_renders[i].scale);
+                m_texts[i]->renderText(render_data, text_shader);
             }
             render_data.updateView(save);
         }
