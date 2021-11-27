@@ -579,7 +579,7 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
             // /****************************************** atmosphere render *************************************************/
 
-                solar_system->drawAtmo(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR());
+                solar_system->drawAtmo(render_data, camPos);
 
             render_data.saveViewMat();
 

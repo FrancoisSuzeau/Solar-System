@@ -57,9 +57,9 @@ PURPOSE : header of the SimplePlanete class
                 SimplePlanete(init_data data, TTF_Font *police);
                 SimplePlanete();
                 ~SimplePlanete();
-                void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader = nullptr, Shader *ring_shader = nullptr);
+                void display(RenderData &render_data, glm::vec3 &camPos, Shader *simple_plan_shader = nullptr, Shader *ring_shader = nullptr);
                 void displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 camPos, int threshold, Shader *name_render_shader = nullptr);
-                void displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr);
+                void displayAtmo(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader = nullptr);
                 
                 std::string getName() const;
                 float getRadiusFromCam(glm::vec3 camPos);

@@ -17,6 +17,7 @@ PURPOSE : Interface CelestialBody
 /********************************************************************* includes *********************************************************************/
 
         #include "../Shader/Shader.hpp"
+        #include "../OpenGlSketch/RenderData.hpp"
 
         #include <string>
         #include <vector>
@@ -45,7 +46,7 @@ PURPOSE : Interface CelestialBody
 
             public:
 
-                virtual void display(glm::mat4 &projection, glm::mat4 &modelview, glm::vec3 &camPos, bool hdr, Shader *body_shader = nullptr, Shader *ring_shader = nullptr) = 0;
+                virtual void display(RenderData &render_data, glm::vec3 &camPos, Shader *body_shader = nullptr, Shader *ring_shader = nullptr) = 0;
 
                 void setPosition(glm::vec3 new_position)
                 {

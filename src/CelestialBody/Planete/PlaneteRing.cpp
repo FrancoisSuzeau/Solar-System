@@ -64,7 +64,7 @@ PlaneteRing::~PlaneteRing()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader, Shader *ring_shader)
+void PlaneteRing::display(RenderData &render_data, glm::vec3 &camPos, Shader *plan_ring_shader, Shader *ring_shader)
 {
     if(plan_ring_shader != nullptr)
     {
@@ -80,15 +80,15 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            plan_ring_shader->setMat4("view", view);
-            plan_ring_shader->setMat4("projection", projection);
+            plan_ring_shader->setMat4("view", render_data.getViewMat());
+            plan_ring_shader->setMat4("projection", render_data.getProjectionMat());
             plan_ring_shader->setMat4("model", m_model_mat);
             
             plan_ring_shader->setTexture("material.diffuse", 0);
 
             plan_ring_shader->setVec3("viewPos", camPos);
             
-            plan_ring_shader->setInt("hdr", hdr);
+            plan_ring_shader->setInt("hdr", render_data.getHDR());
             plan_ring_shader->setInt("material.shininess", 32);
 
 
@@ -122,7 +122,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             {
                 m_ring->setPosition(m_current_position);
                 m_ring->updatePosition();
-                m_ring->display(projection, view, camPos, hdr, ring_shader);
+                m_ring->display(render_data, camPos, ring_shader);
             }
 
         /************************************************* unbind VBO and IBO ********************************************************/

@@ -53,14 +53,14 @@ PURPOSE : header of the virtual PlaneteCreator class
                         m_planete->displayName(projection, view, camPos, threshold, name_render_shader);
                 }
 
-                void drawAtmoPlanete(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
+                void drawAtmoPlanete(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader = nullptr)
                 {
-                       m_planete->displayAtmo(projection, view, camPos, hdr, atmo_shader);
+                       m_planete->displayAtmo(render_data, camPos, atmo_shader);
                 }
 
-                void drawPlanete(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *m_plan_shader = nullptr, Shader *ring_shader = nullptr)
+                void drawPlanete(RenderData &render_data, glm::vec3 &camPos, Shader *m_plan_shader = nullptr, Shader *ring_shader = nullptr)
                 {
-                        m_planete->display(projection, view, camPos, hdr, m_plan_shader, ring_shader);
+                        m_planete->display(render_data, camPos, m_plan_shader, ring_shader);
                 }
 
                 void UpdatePositionPlan()

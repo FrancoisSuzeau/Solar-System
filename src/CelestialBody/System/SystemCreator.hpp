@@ -62,9 +62,9 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displayName(projection, view, camPos, name_render_shader);
                 }
 
-                void drawAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
+                void drawAtmo(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader = nullptr)
                 {
-                        m_system->displayAtmo(projection, view, camPos, hdr, atmo_shader);
+                        m_system->displayAtmo(render_data, camPos, atmo_shader);
                 }
 
                 void drawInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr)

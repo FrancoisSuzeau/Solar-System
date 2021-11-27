@@ -79,7 +79,7 @@ AtmoPlanete::~AtmoPlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader, Shader *ring_shader)
+void AtmoPlanete::display(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_plan_shader, Shader *ring_shader)
 {
     if(atmo_plan_shader != nullptr)
     {
@@ -97,8 +97,8 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            atmo_plan_shader->setMat4("view", view);
-            atmo_plan_shader->setMat4("projection", projection);
+            atmo_plan_shader->setMat4("view", render_data.getViewMat());
+            atmo_plan_shader->setMat4("projection", render_data.getProjectionMat());
             atmo_plan_shader->setMat4("model", m_model_mat);
             
             atmo_plan_shader->setTexture("material.cloud", 0);
@@ -117,7 +117,7 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
 
             atmo_plan_shader->setVec3("viewPos", camPos);
 
-            atmo_plan_shader->setInt("hdr", hdr);
+            atmo_plan_shader->setInt("hdr", render_data.getHDR());
 
             if(m_normal_surface != nullptr)
             {

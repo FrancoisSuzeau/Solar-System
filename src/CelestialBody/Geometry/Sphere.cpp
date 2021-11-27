@@ -184,7 +184,7 @@ Sphere::~Sphere()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** display ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Sphere::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *sphere_shader, Shader *ring_shader)
+void Sphere::display(RenderData &render_data, glm::vec3 &camPos, Shader *sphere_shader, Shader *ring_shader)
 {
     if(sphere_shader != nullptr)
     {
@@ -201,14 +201,14 @@ void Sphere::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, 
         //===================================================================================================================================
 
 
-        sphere_shader->setMat4("view", view);
-        sphere_shader->setMat4("projection", projection);
+        sphere_shader->setMat4("view", render_data.getViewMat());
+        sphere_shader->setMat4("projection", render_data.getProjectionMat());
         sphere_shader->setMat4("model", m_model_mat);
 
         sphere_shader->setVec3("viewPos", camPos);
         sphere_shader->setFloat("transparency", 1.0f);
 
-        sphere_shader->setInt("hdr", hdr);
+        sphere_shader->setInt("hdr", render_data.getHDR());
         
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 

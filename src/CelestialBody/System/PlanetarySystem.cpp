@@ -149,7 +149,7 @@ void PlanetarySystem::display(RenderData &render_data, glm::vec3 &camPos, Shader
     if(host_shader != nullptr)
     {
         m_host_creator->UpdatePositionPlan();
-        m_host_creator->drawPlanete(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), host_shader, ring_shader);
+        m_host_creator->drawPlanete(render_data, camPos, host_shader, ring_shader);
 
     }
 
@@ -160,7 +160,7 @@ void PlanetarySystem::display(RenderData &render_data, glm::vec3 &camPos, Shader
         for (int i(0); i < m_companion_count; i++)
         {
             m_moons_creator[i]->UpdatePositionPlan();
-            m_moons_creator[i]->drawPlanete(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), companion_shader); 
+            m_moons_creator[i]->drawPlanete(render_data, camPos, companion_shader); 
 
             render_data.saveViewMat();
         }
@@ -215,22 +215,22 @@ void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::v
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void PlanetarySystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader)
 {
     if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
-        glm::mat4 save = view;
+        render_data.initSaveMat();
 
         if(m_host_creator != nullptr)
         {
             if((m_atmosphere != nullptr) && (atmo_shader != nullptr))
             {
                 m_atmosphere->updatePosAtmo(m_host_creator->getPostion());
-                m_atmosphere->display(projection, view, camPos, hdr, atmo_shader);
+                m_atmosphere->display(render_data, camPos, atmo_shader);
             }
         }
                
-        view = save;
+        render_data.saveViewMat();
     }
     
 }

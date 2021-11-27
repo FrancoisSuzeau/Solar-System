@@ -106,12 +106,13 @@ void Atmosphere::updatePosAtmo(glm::vec3 pos_plan)
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader, Shader *ring_shader)
+void Atmosphere::display(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader, Shader *ring_shader)
 {
     if(atmo_shader != nullptr)
     {
         
-        glm::mat4 save = view;
+        // glm::mat4 save = view;
+        render_data.initSaveMat();
         //! view = scale(view, m_apparent_size);
 
         //==============================================================================================================================
@@ -123,7 +124,7 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camP
             {
                 glUseProgram(atmo_shader->getProgramID());
 
-                    if(hdr)
+                    if(render_data.getHDR())
                     {
                         
                         if(name_planete_host == "Jupiter")
@@ -156,11 +157,11 @@ void Atmosphere::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camP
                     }
 
                 glUseProgram(0);
-                sphere_atmosphere->display(projection, view, camPos, hdr, atmo_shader);
+                sphere_atmosphere->display(render_data, camPos, atmo_shader);
             }
             
         glUseProgram(0);
         
-        view = save;
+        render_data.saveViewMat();
     }
 }

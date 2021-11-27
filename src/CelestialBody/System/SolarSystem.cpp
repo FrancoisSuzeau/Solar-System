@@ -278,15 +278,15 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *ho
             {
                 if((it[0]->getName() == "Uranus") || (it[0]->getName() == "Neptune"))
                 {
-                    it[0]->drawPlanete(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), shaders[0], shaders[3]);
+                    it[0]->drawPlanete(render_data, camPos, shaders[0], shaders[3]);
                 }
                 else if((it[0]->getName() == "Mars") || (it[0]->getName() == "Venus"))
                 {
-                    it[0]->drawPlanete(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), shaders[1]);
+                    it[0]->drawPlanete(render_data, camPos, shaders[1]);
                 }
                 else
                 {
-                    it[0]->drawPlanete(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), shaders[0]);
+                    it[0]->drawPlanete(render_data, camPos, shaders[0]);
                 }
                 
                 render_data.saveViewMat();
@@ -376,9 +376,9 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader)
 {
-    glm::mat4 save = view;
+    render_data.initSaveMat();
 
     /************************************************* SUN ATMO RENDER ********************************************************/
         if(sun == nullptr)
@@ -386,7 +386,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
             exit(EXIT_FAILURE);
         }
 
-    view = save;
+    render_data.saveViewMat();
 
     /************************************************* OTHER ATMO RENDER ********************************************************/
 
@@ -396,15 +396,15 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
         {
             if(shaders[4] != nullptr)
             {
-                it[0]->drawAtmo(projection, view, camPos, hdr, shaders[4]);
+                it[0]->drawAtmo(render_data, camPos, shaders[4]);
             }
             
         }
         
-        view = save;
+        render_data.saveViewMat();
     }
 
-    view = save;
+    render_data.saveViewMat();
 
     for(std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
     {
@@ -413,15 +413,15 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
 
             if((shaders[4] != nullptr) && (it[0] != nullptr))
             {
-                it[0]->drawAtmoPlanete(projection, view, camPos, hdr, shaders[4]);
+                it[0]->drawAtmoPlanete(render_data, camPos, shaders[4]);
             }
             
         }
 
-        view = save;
+        render_data.saveViewMat();
     }
 
-    view = save;
+    render_data.saveViewMat();
 }
 
 /***********************************************************************************************************************************************************************/

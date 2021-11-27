@@ -67,7 +67,7 @@ Disk::~Disk()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Disk::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *disk_shader, Shader *ring_shader)
+void Disk::display(RenderData &render_data, glm::vec3 &camPos, Shader *disk_shader, Shader *ring_shader)
 {
     if(disk_shader != nullptr)
     {
@@ -75,8 +75,8 @@ void Disk::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bo
 
             glBindVertexArray(m_vaoID);
 
-            disk_shader->setMat4("projection", projection);
-            disk_shader->setMat4("view", view);
+            disk_shader->setMat4("projection", render_data.getProjectionMat());
+            disk_shader->setMat4("view", render_data.getViewMat());
 
             glDrawArrays(GL_TRIANGLES, 0, 6);
 
