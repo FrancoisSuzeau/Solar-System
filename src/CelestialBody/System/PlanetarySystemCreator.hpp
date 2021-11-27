@@ -41,7 +41,7 @@ PURPOSE : header of the virtual PlanetarySystemCreator class
             public:
 
 
-                System* FactoryMethod(sys_init_data data, TTF_Font *police, Shader *model_sader = nullptr) override
+                System* FactoryMethod(sys_init_data data, TTF_Font *police) override
                 {
                         puts("");
                         puts("");

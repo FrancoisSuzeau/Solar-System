@@ -295,14 +295,14 @@ unsigned int Model::textureFromFile(const char *path, const std::string &directo
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Model::draw(RenderData &render_data, glm::mat4 &model_mat, glm::vec3 camPos, Shader *model_shader)
+void Model::draw(RenderData &render_data, glm::mat4 &model_mat, glm::vec3 camPos)
 {
     
-    if(model_shader != nullptr)
+    if(render_data.getShader("model") != nullptr)
     {
         for (unsigned int i(0); i < m_meshes.size(); i++)
         {
-            m_meshes[i].draw(render_data, model_mat, camPos, model_shader);
+            m_meshes[i].draw(render_data, model_mat, camPos);
         }
         
     }

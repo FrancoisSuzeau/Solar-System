@@ -74,7 +74,7 @@ PURPOSE : header of the Model class
                 Model(std::string const &path, bool gamma = false);
                 ~Model();
 
-                void draw(RenderData &render_data, glm::mat4 &model_mat, glm::vec3 camPos, Shader *model_shader);
+                void draw(RenderData &render_data, glm::mat4 &model_mat, glm::vec3 camPos);
                 unsigned int getMeshVAO(int index) const;
                 size_t getSizeMeshesVector() const;
                 unsigned int getTextureLoadedID(int index) const;

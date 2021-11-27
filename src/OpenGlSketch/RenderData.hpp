@@ -25,6 +25,18 @@ PURPOSE : header of the RenderData class
         #include <string>
         #include <math.h>
         #include <cassert>
+        #include <map>
+        #include <vector>
+
+        #include "../Shader/Shader.hpp"
+
+        typedef struct shader_datas {
+
+            std::string v_shader_path;
+            std::string f_shader_path;
+            std::string key;
+
+        }shader_datas;
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -52,6 +64,8 @@ PURPOSE : header of the RenderData class
 
                 // bool is_moving;
                 bool bloom;
+
+                std::map<std::string, Shader*> map_shader;
                 
 
             public:
@@ -78,8 +92,19 @@ PURPOSE : header of the RenderData class
 
                     m_terminate = false;
 
+                    setShader();
+
                 }
-                ~RenderData() {}
+                ~RenderData()
+                {
+                    for(std::map<std::string, Shader*>::iterator it = map_shader.begin(); it != map_shader.end(); ++it)
+                    {
+                        if(it->second != nullptr)
+                        {
+                            delete it->second;
+                        }
+                    }
+                }
 
                 glm::mat4& getViewMat() { return view;}
 
@@ -113,6 +138,24 @@ PURPOSE : header of the RenderData class
                 bool getHDR() const {return hdr;}
                 bool getBloom() const {return bloom;}
                 void updateView(glm::mat4 &new_mat) {view = new_mat;}
+
+                void setShader()
+                {
+                    std::vector<shader_datas> shader_init;
+                    shader_init.push_back({"../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag", "text"});
+                    shader_init.push_back({"../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", "square"});
+                    shader_init.push_back({"../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag", "model"});
+
+                    for(std::vector<shader_datas>::iterator it = shader_init.begin(); it != shader_init.end(); ++it)
+                    {
+                        map_shader[it[0].key] = new Shader(it[0].v_shader_path, it[0].f_shader_path);
+                        assert(map_shader[it[0].key]);
+                        assert(map_shader[it[0].key]->loadShader());
+                    }
+                    
+                }
+
+                Shader *getShader(std::string key) {return map_shader[key];}
  
         };
 

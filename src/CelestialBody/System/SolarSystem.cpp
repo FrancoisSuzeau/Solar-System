@@ -17,7 +17,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_shader)
+SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police)
 {
     m_planete_info = new PlaneteInformation("None", police);
     assert(m_planete_info);
@@ -34,7 +34,7 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_sha
     // sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
     assert(sun);
 
-    m_asteroid_field = new AsteroidField(model_shader);
+    m_asteroid_field = new AsteroidField();
     assert(m_asteroid_field);
 
     
@@ -58,11 +58,6 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_sha
     shaders.push_back(new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag"));
     assert(shaders[4]);
     assert(shaders[4]->loadShader());
-
-    if(model_shader != nullptr)
-    {
-        m_model_shader = model_shader;
-    }
     
     this->initData();
 }

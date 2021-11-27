@@ -57,14 +57,13 @@ PURPOSE : header of the virtual SolarSystem class
                 PlaneteInformation              *m_planete_info;
 
                 std::vector<Shader*>            shaders;
-                Shader                          *m_model_shader;
                 
 
                 void initData() override;
                 
             public:
 
-                SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_shader = nullptr);
+                SolarSystem(sys_init_data data, TTF_Font *police);
                 SolarSystem();
                 ~SolarSystem();
 

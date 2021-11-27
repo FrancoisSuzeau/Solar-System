@@ -43,11 +43,11 @@ PURPOSE : header of the virtual SystemCreator class
 
                 virtual ~SystemCreator() {delete m_system;};
 
-                virtual System* FactoryMethod(sys_init_data data, TTF_Font *police, Shader *model_shader = nullptr) = 0;
+                virtual System* FactoryMethod(sys_init_data data, TTF_Font *police) = 0;
 
-                bool MakingSystem(sys_init_data data, TTF_Font *police, Shader *model_shader = nullptr) 
+                bool MakingSystem(sys_init_data data, TTF_Font *police) 
                 {
-                        m_system = this->FactoryMethod(data, police, model_shader);
+                        m_system = this->FactoryMethod(data, police);
                         return true;
                 }
 

@@ -66,10 +66,6 @@ PURPOSE : header of the OpenGlSketch class
                 Audio           *aud;
 
                 Camera	*camera;
-
-                // mat4 projection;
-                // mat4 view;
-                // mat4 save_view;
                 
                 SDL_Window      *m_window;
                 SDL_GLContext   m_openGL_context;
@@ -80,11 +76,7 @@ PURPOSE : header of the OpenGlSketch class
 
                 Framebuffer     *m_framebuffer;
 
-                Shader *text_shader;
-
                 Spaceship *ship;
-                Shader *square_shader;
-                Shader *m_model_shader;
 
                 bool hdr_key_pressed;
 
