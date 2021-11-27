@@ -86,9 +86,7 @@ PURPOSE : header of the OpenGlSketch class
                 Shader *square_shader;
                 Shader *m_model_shader;
 
-                // bool hdr;
                 bool hdr_key_pressed;
-                // float exposure;
 
                 bool pause_music;
                 bool speed_key_pressed;
@@ -101,9 +99,6 @@ PURPOSE : header of the OpenGlSketch class
                 bool info_render;
                 bool info_render_key_pressed;
 
-                // unsigned int frame_rate;
-                // Uint32 start_loop, end_loop, time_past;
-
                 bool m_terminate;
 
                 bool m_overlay_display;
@@ -114,7 +109,6 @@ PURPOSE : header of the OpenGlSketch class
                 // Particule *m_particuleGenerator;
 
                 bool is_moving;
-                // bool bloom;
                 
 
             public:
@@ -131,7 +125,7 @@ PURPOSE : header of the OpenGlSketch class
                 void    startLoop();
                 void    windowProcess();
                 void    renderScene(RenderData &render_data);
-                void    renderInfo();
+                void    renderInfo(RenderData &render_data);
                 void    renderOverlay(RenderData &render_data);
                 void    renderParticles();
 
