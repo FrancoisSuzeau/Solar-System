@@ -48,19 +48,19 @@ PURPOSE : header of the virtual PlaneteCreator class
                         return true;
                 }
 
-                void displayName(RenderData &render_data, glm::vec3 camPos, int threshold)
+                void displayName(RenderData &render_data, int threshold)
                 {
-                        m_planete->displayName(render_data, camPos, threshold);
+                        m_planete->displayName(render_data, threshold);
                 }
 
-                void drawAtmoPlanete(RenderData &render_data, glm::vec3 &camPos)
+                void drawAtmoPlanete(RenderData &render_data)
                 {
-                       m_planete->displayAtmo(render_data, camPos);
+                       m_planete->displayAtmo(render_data);
                 }
 
-                void drawPlanete(RenderData &render_data, glm::vec3 &camPos)
+                void drawPlanete(RenderData &render_data)
                 {
-                        m_planete->display(render_data, camPos);
+                        m_planete->display(render_data);
                 }
 
                 void UpdatePositionPlan()

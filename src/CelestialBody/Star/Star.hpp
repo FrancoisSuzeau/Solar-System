@@ -50,7 +50,7 @@ PURPOSE : header of the Star class
                 Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture_surf, std::string const name, float const real_size);
                 Star();
                 ~Star();
-                void display(RenderData &render_data, glm::vec3 &camPos);
+                void display(RenderData &render_data);
                 
                 
         };

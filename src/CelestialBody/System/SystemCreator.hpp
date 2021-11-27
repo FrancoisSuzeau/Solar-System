@@ -57,19 +57,19 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
-                void drawName(RenderData &render_data, glm::vec3 &camPos)
+                void drawName(RenderData &render_data)
                 {
-                        m_system->displayName(render_data, camPos);
+                        m_system->displayName(render_data);
                 }
 
-                void drawAtmo(RenderData &render_data, glm::vec3 &camPos)
+                void drawAtmo(RenderData &render_data)
                 {
-                        m_system->displayAtmo(render_data, camPos);
+                        m_system->displayAtmo(render_data);
                 }
 
-                void drawInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *planete_info = nullptr)
+                void drawInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr)
                 {
-                        m_system->displayInfo(render_data, camPos, planete_info);
+                        m_system->displayInfo(render_data, planete_info);
                 }
 
                 void drawSkybox(RenderData &render_data)
@@ -77,14 +77,14 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displaySkybox(render_data);
                 }
 
-                void drawSystem(RenderData &render_data, glm::vec3 &camPos)
+                void drawSystem(RenderData &render_data)
                 {
-                        m_system->display(render_data, camPos);
+                        m_system->display(render_data);
                 }
 
-                void drawAsteroidField(RenderData &render_data, glm::vec3 camPos)
+                void drawAsteroidField(RenderData &render_data)
                 {
-                        m_system->displayAsteroidField(render_data, camPos);
+                        m_system->displayAsteroidField(render_data);
                 }
 
 

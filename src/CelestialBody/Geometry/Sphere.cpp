@@ -184,7 +184,7 @@ Sphere::~Sphere()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** display ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Sphere::display(RenderData &render_data, glm::vec3 &camPos)
+void Sphere::display(RenderData &render_data)
 {
     if(render_data.getShader("atmosphere") != nullptr)
     {
@@ -205,7 +205,7 @@ void Sphere::display(RenderData &render_data, glm::vec3 &camPos)
         render_data.getShader("atmosphere")->setMat4("projection", render_data.getProjectionMat());
         render_data.getShader("atmosphere")->setMat4("model", m_model_mat);
 
-        render_data.getShader("atmosphere")->setVec3("viewPos", camPos);
+        render_data.getShader("atmosphere")->setVec3("viewPos", render_data.getCamPos());
         render_data.getShader("atmosphere")->setFloat("transparency", 1.0f);
 
         render_data.getShader("atmosphere")->setInt("hdr", render_data.getHDR());

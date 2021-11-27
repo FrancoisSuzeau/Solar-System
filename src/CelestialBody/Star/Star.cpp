@@ -50,7 +50,7 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::display(RenderData &render_data, glm::vec3 &camPos)
+void Star::display(RenderData &render_data)
 {
     if(render_data.getShader("sun") != nullptr)
     {
@@ -75,7 +75,7 @@ void Star::display(RenderData &render_data, glm::vec3 &camPos)
 
             render_data.getShader("sun")->setTexture("texture0", 0);
 
-            render_data.getShader("sun")->setVec3("viewPos", camPos);
+            render_data.getShader("sun")->setVec3("viewPos", render_data.getCamPos());
             
             //active and lock cloudy texture
             glActiveTexture(GL_TEXTURE0);

@@ -54,7 +54,7 @@ PURPOSE : header of the Disk class
                 ~Disk();
 
                 void load();
-                void display(RenderData &render_data, glm::vec3 &camPos);
+                void display(RenderData &render_data);
         };
 
 

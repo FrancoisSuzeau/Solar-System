@@ -46,7 +46,7 @@ PURPOSE : Interface CelestialBody
 
             public:
 
-                virtual void display(RenderData &render_data, glm::vec3 &camPos) = 0;
+                virtual void display(RenderData &render_data) = 0;
 
                 void setPosition(glm::vec3 new_position)
                 {

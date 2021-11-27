@@ -50,6 +50,8 @@ PURPOSE : header of the RenderData class
                 glm::mat4 view;
                 glm::mat4 save_view;
 
+                glm::vec3 camPos;
+
                 bool hdr;
                 float exposure;
 
@@ -166,6 +168,9 @@ PURPOSE : header of the RenderData class
                 }
 
                 Shader *getShader(std::string key) {return map_shader[key];}
+
+                void setCamPos(glm::vec3 new_cam_pos) {camPos = new_cam_pos;}
+                glm::vec3 getCamPos() {return camPos;}
  
         };
 

@@ -48,7 +48,7 @@ PURPOSE : header of the AtmoPlanete class
                 AtmoPlanete(init_data data, TTF_Font *police);
                 AtmoPlanete();
                 ~AtmoPlanete();
-                void display(RenderData &render_data, glm::vec3 &camPos);
+                void display(RenderData &render_data);
 
         };
 

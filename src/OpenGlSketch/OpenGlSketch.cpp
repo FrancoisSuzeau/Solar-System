@@ -319,7 +319,6 @@ void OpenGlSketch::mainLoop()
 
     RenderData render_data(m_window_width, m_window_height, 45.0f, true);
 
-
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
     // m_particuleGenerator->initParticles(camera->getTargetPoint());
     
@@ -381,7 +380,7 @@ void OpenGlSketch::mainLoop()
             camera->lookAt(render_data.getViewMat());
         }
 
-   
+        render_data.setCamPos(camera->getPosition());
 
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene(render_data);
@@ -405,9 +404,7 @@ void OpenGlSketch::mainLoop()
 
         render_data.initSaveMat();
 
-            glm::vec3 camPos = camera->getPosition();
-
-            ship->drawSpaceship(render_data, camPos, m_input);
+            ship->drawSpaceship(render_data, m_input);
         
         render_data.saveViewMat();
 
@@ -526,7 +523,7 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 {
     if( (camera != nullptr) && (solar_system != nullptr))
     {
-        glm::vec3 camPos = camera->getPosition();
+        // glm::vec3 camPos = camera->getPosition();
 
             render_data.initSaveMat();
 
@@ -538,13 +535,13 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
             /****************************************** bodys render ****************************************************/
             
-                solar_system->drawSystem(render_data, camPos);
+                solar_system->drawSystem(render_data);
 
             render_data.saveViewMat();
 
             // /****************************************** atmosphere render *************************************************/
 
-                solar_system->drawAtmo(render_data, camPos);
+                solar_system->drawAtmo(render_data);
 
             render_data.saveViewMat();
 
@@ -552,7 +549,7 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
                 if((render_data.getShader("text") != nullptr) && (m_name_display == true))
                 {
-                    solar_system->drawName(render_data, camPos);
+                    solar_system->drawName(render_data);
                 }
                 
             render_data.saveViewMat();
@@ -579,11 +576,11 @@ void OpenGlSketch::renderInfo(RenderData &render_data)
         {
             render_data.initSaveMat();
 
-            glm::vec3 camPos = camera->getPosition();
+            // glm::vec3 camPos = camera->getPosition();
 
                 if(render_data.getShader("text") != nullptr)
                 {
-                    solar_system->drawInfo(render_data, camPos);
+                    solar_system->drawInfo(render_data);
                 }
                 
             render_data.saveViewMat();

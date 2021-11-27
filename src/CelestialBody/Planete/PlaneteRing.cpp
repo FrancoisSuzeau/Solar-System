@@ -64,7 +64,7 @@ PlaneteRing::~PlaneteRing()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRing::display(RenderData &render_data, glm::vec3 &camPos)
+void PlaneteRing::display(RenderData &render_data)
 {
     if(render_data.getShader("one_texture_p") != nullptr)
     {
@@ -86,7 +86,7 @@ void PlaneteRing::display(RenderData &render_data, glm::vec3 &camPos)
             
             render_data.getShader("one_texture_p")->setTexture("material.diffuse", 0);
 
-            render_data.getShader("one_texture_p")->setVec3("viewPos", camPos);
+            render_data.getShader("one_texture_p")->setVec3("viewPos", render_data.getCamPos());
             
             render_data.getShader("one_texture_p")->setInt("hdr", render_data.getHDR());
             render_data.getShader("one_texture_p")->setInt("material.shininess", 32);
@@ -122,7 +122,7 @@ void PlaneteRing::display(RenderData &render_data, glm::vec3 &camPos)
             {
                 m_ring->setPosition(m_current_position);
                 m_ring->updatePosition();
-                m_ring->display(render_data, camPos);
+                m_ring->display(render_data);
             }
 
         /************************************************* unbind VBO and IBO ********************************************************/

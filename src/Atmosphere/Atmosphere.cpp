@@ -106,7 +106,7 @@ void Atmosphere::updatePosAtmo(glm::vec3 pos_plan)
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(RenderData &render_data, glm::vec3 &camPos)
+void Atmosphere::display(RenderData &render_data)
 {
     if(render_data.getShader("atmosphere") != nullptr)
     {
@@ -157,7 +157,7 @@ void Atmosphere::display(RenderData &render_data, glm::vec3 &camPos)
                     }
 
                 glUseProgram(0);
-                sphere_atmosphere->display(render_data, camPos);
+                sphere_atmosphere->display(render_data);
             }
             
         glUseProgram(0);

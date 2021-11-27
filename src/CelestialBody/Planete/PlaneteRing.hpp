@@ -50,7 +50,7 @@ PURPOSE : header of the PlaneteRing class
                 PlaneteRing(init_data data, TTF_Font *police);
                 PlaneteRing();
                 ~PlaneteRing();
-                void display(RenderData &render_data, glm::vec3 &camPos);
+                void display(RenderData &render_data);
         };
 
 

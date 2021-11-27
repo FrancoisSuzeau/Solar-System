@@ -79,7 +79,7 @@ AtmoPlanete::~AtmoPlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void AtmoPlanete::display(RenderData &render_data, glm::vec3 &camPos)
+void AtmoPlanete::display(RenderData &render_data)
 {
     if(render_data.getShader("multi_texture_p") != nullptr)
     {
@@ -115,7 +115,7 @@ void AtmoPlanete::display(RenderData &render_data, glm::vec3 &camPos)
 
             render_data.getShader("multi_texture_p")->setFloat("oppacity", m_oppacity);
 
-            render_data.getShader("multi_texture_p")->setVec3("viewPos", camPos);
+            render_data.getShader("multi_texture_p")->setVec3("viewPos", render_data.getCamPos());
 
             render_data.getShader("multi_texture_p")->setInt("hdr", render_data.getHDR());
 

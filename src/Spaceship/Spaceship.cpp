@@ -38,7 +38,7 @@ Spaceship::~Spaceship()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* drawSpaceship *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::drawSpaceship(RenderData &render_data, glm::vec3 camPos, Input input)
+void Spaceship::drawSpaceship(RenderData &render_data, Input input)
 {
     
     if((m_spaceship_model != nullptr) && ((render_data.getShader("model") != nullptr)))
@@ -52,7 +52,7 @@ void Spaceship::drawSpaceship(RenderData &render_data, glm::vec3 camPos, Input i
         this->positioningShip();
         this->scalingShip();
         
-        m_spaceship_model->draw(render_data, m_model_matrice, camPos);
+        m_spaceship_model->draw(render_data, m_model_matrice);
 
         
     }

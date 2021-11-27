@@ -195,13 +195,13 @@ void SolarSystem::displaySkybox(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAsteroidField ******************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAsteroidField(RenderData &render_data, glm::vec3 camPos)
+void SolarSystem::displayAsteroidField(RenderData &render_data)
 {
     glm::mat4 save = render_data.getViewMat();
 
     if(m_asteroid_field != nullptr)
     {
-        m_asteroid_field->drawAsteroidField(render_data, camPos);
+        m_asteroid_field->drawAsteroidField(render_data);
     }
         
     render_data.updateView(save);
@@ -210,7 +210,7 @@ void SolarSystem::displayAsteroidField(RenderData &render_data, glm::vec3 camPos
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos)
+void SolarSystem::display(RenderData &render_data)
 {
     // glm::mat4 save = view;
     render_data.initSaveMat();
@@ -227,7 +227,7 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos)
         
             if(render_data.getShader("sun") != nullptr)
             {
-                sun->display(render_data, camPos);
+                sun->display(render_data);
             }
         }
 
@@ -241,7 +241,7 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos)
 
             if((render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("ring") != nullptr) && (render_data.getShader("multi_texture_p")))
             {
-                it[0]->drawPlanete(render_data, camPos);
+                it[0]->drawPlanete(render_data);
                 
                 render_data.saveViewMat();
             }
@@ -258,7 +258,7 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos)
         {
             if( (render_data.getShader("multi_texture_p") != nullptr) && (render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("ring") != nullptr))
             {
-                it[0]->drawSystem(render_data, camPos);
+                it[0]->drawSystem(render_data);
                 render_data.saveViewMat();
             }
         }
@@ -271,7 +271,7 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayName **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos)
+void SolarSystem::displayName(RenderData &render_data)
 {
     
     render_data.initSaveMat();
@@ -282,7 +282,7 @@ void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos)
         {
             if(render_data.getShader("text") != nullptr)
             {
-                m_planetary_system[i]->drawName(render_data, camPos);
+                m_planetary_system[i]->drawName(render_data);
                 render_data.saveViewMat();
 
             }
@@ -299,7 +299,7 @@ void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos)
        {
            if(render_data.getShader("text") != nullptr)
             {
-                m_planete_creator[i]->displayName(render_data, camPos, 400);
+                m_planete_creator[i]->displayName(render_data, 400);
                 render_data.saveViewMat();
 
             }
@@ -315,7 +315,7 @@ void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos)
+void SolarSystem::displayAtmo(RenderData &render_data)
 {
     render_data.initSaveMat();
 
@@ -335,7 +335,7 @@ void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos)
         {
             if(render_data.getShader("atmosphere") != nullptr)
             {
-                it[0]->drawAtmo(render_data, camPos);
+                it[0]->drawAtmo(render_data);
             }
             
         }
@@ -352,7 +352,7 @@ void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos)
 
             if((render_data.getShader("atmosphere") != nullptr) && (it[0] != nullptr))
             {
-                it[0]->drawAtmoPlanete(render_data, camPos);
+                it[0]->drawAtmoPlanete(render_data);
             }
             
         }
@@ -366,7 +366,7 @@ void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *plan_info)
+void SolarSystem::displayInfo(RenderData &render_data, PlaneteInformation *plan_info)
 {
     
     glm::mat4 save = render_data.getViewMat();
@@ -375,7 +375,7 @@ void SolarSystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, Planet
     {
         if( (it[0] != nullptr) && (m_planete_info != nullptr))
         {
-            float r = it[0]->getRadius(camPos);
+            float r = it[0]->getRadius(render_data.getCamPos());
             float size_plan = it[0]->getSizePlan();
 
             if(r <= 10 * size_plan)
@@ -408,7 +408,7 @@ void SolarSystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, Planet
         {
             if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
             {
-                it[0]->drawInfo(render_data, camPos, m_planete_info);
+                it[0]->drawInfo(render_data, m_planete_info);
                 render_data.updateView(save);
             }
         }

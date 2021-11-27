@@ -83,7 +83,7 @@ PURPOSE : header of the Spaceship class
                 Spaceship(std::string const path);
                 ~Spaceship();
 
-                void drawSpaceship(RenderData &render_data, glm::vec3 camPos, Input input);
+                void drawSpaceship(RenderData &render_data, Input input);
                 float getRotX() const;
                 float getRotY() const;
                 glm::vec3       getPosition() const;

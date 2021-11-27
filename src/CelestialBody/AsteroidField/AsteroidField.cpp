@@ -67,7 +67,7 @@ AsteroidField::~AsteroidField()
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** drawAsteroidField **********************************************************************/
 /***********************************************************************************************************************************************************************/
-void AsteroidField::drawAsteroidField(RenderData &render_data, glm::vec3 camPos)
+void AsteroidField::drawAsteroidField(RenderData &render_data)
 {
     glm::mat4 save = render_data.getViewMat();
 
@@ -79,7 +79,7 @@ void AsteroidField::drawAsteroidField(RenderData &render_data, glm::vec3 camPos)
             m_model_shader->setInt("hdr", render_data.getHDR());
             m_model_shader->setMat4("projection", render_data.getProjectionMat());
             m_model_shader->setMat4("view", render_data.getViewMat());
-            m_model_shader->setVec3("viewPos", camPos);
+            m_model_shader->setVec3("viewPos", render_data.getCamPos());
 
             if(m_noramal_surface != nullptr)
             {

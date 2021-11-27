@@ -71,12 +71,12 @@ PURPOSE : header of the virtual System class
                 
                 virtual ~System() {};
                 virtual void loadSystem(int count, TTF_Font *police) = 0;
-                virtual void display(RenderData &render_data, glm::vec3 &camPos) = 0;
+                virtual void display(RenderData &render_data) = 0;
                 virtual void displaySkybox(RenderData &render_data) = 0;
-                virtual void displayName(RenderData &render_data, glm::vec3 &camPos) = 0;
-                virtual void displayAtmo(RenderData &render_data, glm::vec3 &camPos) = 0;
-                virtual void displayInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *planete_info = nullptr) = 0;
-                virtual void displayAsteroidField(RenderData &redner_data, glm::vec3 camPos) = 0;
+                virtual void displayName(RenderData &render_data) = 0;
+                virtual void displayAtmo(RenderData &render_data) = 0;
+                virtual void displayInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;
+                virtual void displayAsteroidField(RenderData &redner_data) = 0;
                 
         };
 

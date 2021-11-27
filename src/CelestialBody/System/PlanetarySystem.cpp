@@ -140,19 +140,19 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(RenderData &render_data, glm::vec3 &camPos)
+void PlanetarySystem::display(RenderData &render_data)
 {
     render_data.initSaveMat();
 
     m_host_creator->UpdatePositionPlan();
-    m_host_creator->drawPlanete(render_data, camPos);
+    m_host_creator->drawPlanete(render_data);
 
     render_data.saveViewMat();
 
     for (int i(0); i < m_companion_count; i++)
     {
         m_moons_creator[i]->UpdatePositionPlan();
-        m_moons_creator[i]->drawPlanete(render_data, camPos); 
+        m_moons_creator[i]->drawPlanete(render_data); 
 
         render_data.saveViewMat();
     }
@@ -164,7 +164,7 @@ void PlanetarySystem::display(RenderData &render_data, glm::vec3 &camPos)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayName **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayName(RenderData &render_data, glm::vec3 &camPos)
+void PlanetarySystem::displayName(RenderData &render_data)
 {
     render_data.initSaveMat();
 
@@ -175,13 +175,13 @@ void PlanetarySystem::displayName(RenderData &render_data, glm::vec3 &camPos)
             exit(EXIT_FAILURE);
         }
         float size_plan = m_host_creator->getSizePlan();
-        float r = m_host_creator->getRadius(camPos);
+        float r = m_host_creator->getRadius(render_data.getCamPos());
 
         if( r >= 400 * size_plan ) // juste to allow the application to display host name or moon name depends on the posiiton of the camera
         {
             if( render_data.getShader("text") != nullptr )
             {
-                m_host_creator->displayName(render_data, camPos, 400);
+                m_host_creator->displayName(render_data, 400);
                 render_data.saveViewMat();
             }
             render_data.saveViewMat();
@@ -192,7 +192,7 @@ void PlanetarySystem::displayName(RenderData &render_data, glm::vec3 &camPos)
             {
                 if(render_data.getShader("text") != nullptr)
                 {
-                    m_moons_creator[i]->displayName(render_data, camPos, 10);
+                    m_moons_creator[i]->displayName(render_data, 10);
                     render_data.saveViewMat();
                 }  
                 render_data.saveViewMat();
@@ -206,7 +206,7 @@ void PlanetarySystem::displayName(RenderData &render_data, glm::vec3 &camPos)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos)
+void PlanetarySystem::displayAtmo(RenderData &render_data)
 {
     if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
@@ -217,7 +217,7 @@ void PlanetarySystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos)
             if((m_atmosphere != nullptr) && (render_data.getShader("atmosphere") != nullptr))
             {
                 m_atmosphere->updatePosAtmo(m_host_creator->getPostion());
-                m_atmosphere->display(render_data, camPos);
+                m_atmosphere->display(render_data);
             }
         }
                
@@ -229,11 +229,11 @@ void PlanetarySystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *planete_info)
+void PlanetarySystem::displayInfo(RenderData &render_data, PlaneteInformation *planete_info)
 {
     glm::mat4 save = render_data.getViewMat();
 
-    float r = m_host_creator->getRadius(camPos);
+    float r = m_host_creator->getRadius(render_data.getCamPos());
     float size_plan = m_host_creator->getSizePlan();
 
         if(r <= 10 * size_plan)
@@ -275,7 +275,7 @@ void PlanetarySystem::displaySkybox(RenderData &render_data)
     //do nothing and doesn't have
 }
 
-void PlanetarySystem::displayAsteroidField(RenderData &render_data, glm::vec3 camPos)
+void PlanetarySystem::displayAsteroidField(RenderData &render_data)
 {
     //do nothing and doesn't have
 }

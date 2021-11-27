@@ -66,12 +66,12 @@ PURPOSE : header of the virtual SolarSystem class
 
 
                 void loadSystem(int count, TTF_Font *police) override;
-                void display(RenderData &render_data, glm::vec3 &camPos) override;
+                void display(RenderData &render_data) override;
                 void displaySkybox(RenderData &render_data) override;
-                void displayName(RenderData &render_data, glm::vec3 &camPos) override;
-                void displayAtmo(RenderData &render_data, glm::vec3 &camPos) override;
-                void displayInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *planete_info = nullptr) override;
-                void displayAsteroidField(RenderData &render_data, glm::vec3 camPos) override;
+                void displayName(RenderData &render_data) override;
+                void displayAtmo(RenderData &render_data) override;
+                void displayInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
+                void displayAsteroidField(RenderData &render_data) override;
 
 
         };
