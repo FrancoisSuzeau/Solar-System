@@ -332,10 +332,10 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *ho
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayName **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader)
+void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos, Shader *name_render_shader)
 {
     
-    glm::mat4 save = view;
+    render_data.initSaveMat();
 
     for (int i(0); i < m_planetarySYS_count; i++)
     {
@@ -343,16 +343,16 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
         {
             if(name_render_shader != nullptr)
             {
-                m_planetary_system[i]->drawName(projection, view, camPos, name_render_shader);
-                view = save;
+                m_planetary_system[i]->drawName(render_data, camPos, name_render_shader);
+                render_data.saveViewMat();
 
             }
         }
 
-        view = save;
+        render_data.saveViewMat();
     }
 
-    view = save;
+    render_data.saveViewMat();
 
     for (int i(0); i < m_simple_planete_count; i++)
     {
@@ -360,16 +360,16 @@ void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
        {
            if(name_render_shader != nullptr)
             {
-                m_planete_creator[i]->displayName(projection, view, camPos, 400, name_render_shader);
-                view = save;
+                m_planete_creator[i]->displayName(render_data, camPos, 400, name_render_shader);
+                render_data.saveViewMat();
 
             }
        }
 
-        view = save;
+        render_data.saveViewMat();
     }
 
-    view = save;
+    render_data.saveViewMat();
 
 }
 

@@ -196,7 +196,7 @@ void SimplePlanete::display(RenderData &render_data, glm::vec3 &camPos, Shader *
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayName2 ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 camPos, int threshold, Shader *name_render_shader)
+void SimplePlanete::displayName(RenderData &render_data, glm::vec3 camPos, int threshold, Shader *name_render_shader)
 {
     if(name_render_shader != nullptr)
     {
@@ -214,8 +214,8 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec
         
         if(r >= threshold * m_real_size)
         {
-            translateCelestialBody(view, m_current_position);
-            m_name_renderer->renderMovingText(projection, view, m_real_size, r, phi, theta, y, name_render_shader);
+            translateCelestialBody(render_data.getViewMat(), m_current_position);
+            m_name_renderer->renderMovingText(render_data.getProjectionMat(), render_data.getViewMat(), m_real_size, r, phi, theta, y, name_render_shader);
         }
         
     }

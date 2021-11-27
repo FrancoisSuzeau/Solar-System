@@ -57,9 +57,9 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
-                void drawName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader = nullptr)
+                void drawName(RenderData &render_data, glm::vec3 &camPos, Shader *name_render_shader = nullptr)
                 {
-                        m_system->displayName(projection, view, camPos, name_render_shader);
+                        m_system->displayName(render_data, camPos, name_render_shader);
                 }
 
                 void drawAtmo(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader = nullptr)

@@ -48,9 +48,9 @@ PURPOSE : header of the virtual PlaneteCreator class
                         return true;
                 }
 
-                void displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 camPos, int threshold, Shader *name_render_shader = nullptr)
+                void displayName(RenderData &render_data, glm::vec3 camPos, int threshold, Shader *name_render_shader = nullptr)
                 {
-                        m_planete->displayName(projection, view, camPos, threshold, name_render_shader);
+                        m_planete->displayName(render_data, camPos, threshold, name_render_shader);
                 }
 
                 void drawAtmoPlanete(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader = nullptr)

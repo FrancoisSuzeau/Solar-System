@@ -587,7 +587,7 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
                 if((text_shader != nullptr) && (m_name_display == true))
                 {
-                    solar_system->drawName(render_data.getProjectionMat(), render_data.getViewMat(), camPos, text_shader);
+                    solar_system->drawName(render_data, camPos, text_shader);
                 }
                 
             render_data.saveViewMat();
