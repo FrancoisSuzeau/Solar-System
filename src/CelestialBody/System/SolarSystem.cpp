@@ -230,16 +230,16 @@ void SolarSystem::displaySkybox(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAsteroidField ******************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
+void SolarSystem::displayAsteroidField(RenderData &render_data, glm::vec3 camPos)
 {
-    glm::mat4 save = projection_view_mat[1];
+    glm::mat4 save = render_data.getViewMat();
 
     if(m_asteroid_field != nullptr)
     {
-        m_asteroid_field->drawAsteroidField(projection_view_mat, camPos, hdr);
+        m_asteroid_field->drawAsteroidField(render_data, camPos);
     }
         
-    projection_view_mat[1] = save;
+    render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/

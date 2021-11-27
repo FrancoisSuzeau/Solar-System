@@ -67,18 +67,18 @@ AsteroidField::~AsteroidField()
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** drawAsteroidField **********************************************************************/
 /***********************************************************************************************************************************************************************/
-void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
+void AsteroidField::drawAsteroidField(RenderData &render_data, glm::vec3 camPos)
 {
-    glm::mat4 save = projection_view_mat[1];
+    glm::mat4 save = render_data.getViewMat();
 
         if((asteroid != nullptr) && (m_model_shader != nullptr))
         {
             glUseProgram(m_model_shader->getProgramID());
 
             m_model_shader->setTexture("texture_diffuse1", 0);
-            m_model_shader->setInt("hdr", hdr);
-            m_model_shader->setMat4("projection", projection_view_mat[0]);
-            m_model_shader->setMat4("view", projection_view_mat[1]);
+            m_model_shader->setInt("hdr", render_data.getHDR());
+            m_model_shader->setMat4("projection", render_data.getProjectionMat());
+            m_model_shader->setMat4("view", render_data.getViewMat());
             m_model_shader->setVec3("viewPos", camPos);
 
             if(m_noramal_surface != nullptr)
@@ -115,7 +115,7 @@ void AsteroidField::drawAsteroidField(std::vector<glm::mat4> projection_view_mat
 
         }
         
-    projection_view_mat[1] = save;
+    render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/

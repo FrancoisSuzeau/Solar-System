@@ -284,7 +284,7 @@ void PlanetarySystem::displaySkybox(RenderData &render_data)
     //do nothing and doesn't have
 }
 
-void PlanetarySystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
+void PlanetarySystem::displayAsteroidField(RenderData &render_data, glm::vec3 camPos)
 {
     //do nothing and doesn't have
 }

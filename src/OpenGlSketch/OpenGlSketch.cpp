@@ -596,13 +596,13 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
             // /******************************************* asteroid field render *****************************************************/
 
-            //     std::vector<glm::mat4> projection_view;
-            //     projection_view.push_back(render_data.getProjectionMat());
-            //     projection_view.push_back(render_data.getViewMat());
+                std::vector<glm::mat4> projection_view;
+                projection_view.push_back(render_data.getProjectionMat());
+                projection_view.push_back(render_data.getViewMat());
 
-            //     solar_system->drawAsteroidField(projection_view, camPos, render_data.getHDR());
+                solar_system->drawAsteroidField(render_data, camPos);
                 
-            // render_data.saveViewMat();
+            render_data.saveViewMat();
 
     }
     
