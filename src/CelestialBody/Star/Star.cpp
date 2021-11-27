@@ -50,7 +50,7 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *star_shader)
+void Star::display(RenderData &render_data, glm::vec3 &camPos, Shader *star_shader)
 {
     if(star_shader != nullptr)
     {
@@ -68,8 +68,8 @@ void Star::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bo
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            star_shader->setMat4("view", view);
-            star_shader->setMat4("projection", projection);
+            star_shader->setMat4("view", render_data.getViewMat());
+            star_shader->setMat4("projection", render_data.getProjectionMat());
             star_shader->setMat4("model", m_model_mat);
             star_shader->setInt("inverse_normals", true);
 

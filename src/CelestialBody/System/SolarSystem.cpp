@@ -262,7 +262,7 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *ho
         
             if(shaders[2] != nullptr)
             {
-                sun->display(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), shaders[2]);
+                sun->display(render_data, camPos, shaders[2]);
             }
         }
 

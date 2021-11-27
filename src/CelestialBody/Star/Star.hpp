@@ -21,6 +21,7 @@ PURPOSE : header of the Star class
 
         #include "../../Atmosphere/Atmosphere.hpp"
         #include "../../Shader/Shader.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
@@ -49,7 +50,7 @@ PURPOSE : header of the Star class
                 Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture_surf, std::string const name, float const real_size);
                 Star();
                 ~Star();
-                void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *star_shader = nullptr);
+                void display(RenderData &render_data, glm::vec3 &camPos, Shader *star_shader = nullptr);
                 
                 
         };
