@@ -29,6 +29,7 @@ PURPOSE : header of the Skybox class
         #include <vector>
 
         #include "../../Shader/Shader.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
 
         
@@ -57,7 +58,7 @@ PURPOSE : header of the Skybox class
                 ~Skybox();
 
                 unsigned int            loadSybox();
-                void            display(glm::mat4 &projection, glm::mat4 &view, bool hdr);
+                void            display(RenderData &render_data);
                 
         };
 

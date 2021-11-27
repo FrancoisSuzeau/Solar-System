@@ -174,7 +174,7 @@ unsigned int Skybox::loadSybox()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Skybox::display(glm::mat4 &projection, glm::mat4 &view, bool hdr)
+void Skybox::display(RenderData &render_data)
 {   
     
     glDepthFunc(GL_LEQUAL);
@@ -184,19 +184,15 @@ void Skybox::display(glm::mat4 &projection, glm::mat4 &view, bool hdr)
     //lock vao
         glBindVertexArray(m_vaoID);
 
-        glm::mat4 save = view;
+        // glm::mat4 save = view;
+        render_data.initSaveMat();
 
-        view = glm::mat4(glm::mat3(view));
-        //send matrices to shader
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "view"), 1, GL_FALSE, value_ptr(view));
-        // glUniformMatrix4fv(glGetUniformLocation(m_shader.getProgramID(), "projection"), 1, GL_FALSE, value_ptr(projection));
+        glm::mat4 view = glm::mat4(glm::mat3(render_data.getViewMat()));
         m_shader.setMat4("view", view);
-        m_shader.setMat4("projection", projection);
+        m_shader.setMat4("projection", render_data.getProjectionMat());
 
-        //Send texture unit to shader
-        //glUniform1i(glGetUniformLocation(m_shader.getProgramID(), "skybox"), 0);
         m_shader.setTexture("skybox", 0);
-        m_shader.setInt("hdr", hdr);
+        m_shader.setInt("hdr", render_data.getHDR());
 
         //lock texture
         glActiveTexture(GL_TEXTURE0);
@@ -210,10 +206,6 @@ void Skybox::display(glm::mat4 &projection, glm::mat4 &view, bool hdr)
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
-
-        // glDisableVertexAttribArray(2);
-        // glDisableVertexAttribArray(0);
-
     //unlock VAO
     glBindVertexArray(0);
 
@@ -222,6 +214,6 @@ void Skybox::display(glm::mat4 &projection, glm::mat4 &view, bool hdr)
     glDepthFunc(GL_LESS);
     
 
-    view = save;
+    render_data.saveViewMat();
 }
 

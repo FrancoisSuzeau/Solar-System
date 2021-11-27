@@ -72,9 +72,9 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displayInfo(projection, view, camPos, hdr, shaders, planete_info);
                 }
 
-                void drawSkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr)
+                void drawSkybox(RenderData &render_data)
                 {
-                        m_system->displaySkybox(projection, view, hdr);
+                        m_system->displaySkybox(render_data);
                 }
 
                 void drawSystem(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *shader_host = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr)

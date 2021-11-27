@@ -30,6 +30,7 @@ PURPOSE : header of the virtual System class
         #include "../../Shader/Shader.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
         typedef struct init_data {
 
@@ -71,7 +72,7 @@ PURPOSE : header of the virtual System class
                 virtual ~System() {};
                 virtual void loadSystem(int count, TTF_Font *police) = 0;
                 virtual void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *host_shader = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr) = 0;
-                virtual void displaySkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr) = 0;
+                virtual void displaySkybox(RenderData &render_data) = 0;
                 virtual void displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader = nullptr) = 0;
                 virtual void displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) = 0;
                 virtual void displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr) = 0;

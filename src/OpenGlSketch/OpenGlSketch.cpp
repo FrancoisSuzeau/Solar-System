@@ -368,11 +368,8 @@ void OpenGlSketch::mainLoop()
         // aud->playMusic();
     }
 
-    // bloom = true;
-
     while(!m_terminate)
     {   
-        // start_loop = SDL_GetTicks();
         render_data.initFrameRate();
     
     /********************************************************** MANAGING EVENTS *************************************************************/
@@ -421,19 +418,15 @@ void OpenGlSketch::mainLoop()
     //=======================================================================================================================================================
 
     /******************************************************************* RENDER PARTICLES ********************************************************************/
-            renderParticles();
+            // renderParticles();
     //=======================================================================================================================================================
 
         // save_view = view;
         render_data.initSaveMat();
 
-            std::vector<glm::mat4> projection_view;
-            projection_view.push_back(render_data.getProjectionMat());
-            projection_view.push_back(render_data.getViewMat());
-            projection_view.push_back(glm::mat4(1.0f));
             glm::vec3 camPos = camera->getPosition();
 
-            ship->drawSpaceship(projection_view, camPos, render_data.getHDR(), m_model_shader, m_input);
+            ship->drawSpaceship(render_data, camPos, m_model_shader, m_input);
         
         // view = save_view;
         render_data.saveViewMat();
@@ -574,7 +567,7 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
             /****************************************** skybox render **************************************************/
 
-                solar_system->drawSkybox(render_data.getProjectionMat(), render_data.getViewMat(), render_data.getHDR());
+                solar_system->drawSkybox(render_data);
 
             render_data.saveViewMat();
 
