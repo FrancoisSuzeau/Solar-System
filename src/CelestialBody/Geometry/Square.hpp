@@ -27,6 +27,7 @@ PURPOSE : header of the Square class
         #include <cstring>
 
         #include "../../Shader/Shader.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
 /********************************************************************* class definition *********************************************************************/
 
@@ -46,6 +47,8 @@ PURPOSE : header of the Square class
                 int     m_bytes_colors_size;
 
                 GLuint  m_vaoID;
+
+                glm::mat4 m_model_mat;
                 
             public:
 
@@ -54,9 +57,10 @@ PURPOSE : header of the Square class
                 ~Square();
 
                 void load();
-                void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 color, bool hdr = false, Shader *square_shader = nullptr);
-                void displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 color, bool hdr, Shader *square_shader = nullptr);
-                void drawLoad(int count, glm::mat4 &projection, glm::mat4 &view, glm::vec3 color, Shader *square_shader = nullptr);
+                void display(RenderData &render_data, glm::vec3 color);
+                void drawLoad(int count, RenderData &render_data, glm::vec3 color);
+
+                void updatePosition(glm::vec3 position);
                 
                 void updateVBO(void *data, int size_bytes, int offset);
                 

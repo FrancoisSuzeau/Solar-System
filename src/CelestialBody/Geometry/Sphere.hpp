@@ -56,7 +56,7 @@ PURPOSE : header of the Sphere class
 
                 Sphere();
                 ~Sphere();
-                void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *sphere_shader = nullptr, Shader *ring_shader = nullptr) override;
+                void display(RenderData &render_data) override;
         };
 
 

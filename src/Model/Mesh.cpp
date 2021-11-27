@@ -89,18 +89,18 @@ void Mesh::setupMesh()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Mesh::draw(std::vector<glm::mat4> projection_view_model_mat, glm::vec3 camPos, bool hdr, Shader *mesh_shader)
+void Mesh::draw(RenderData &render_data, glm::mat4 &model_mat)
 {
-    if(mesh_shader != nullptr)
+    if(render_data.getShader("model") != nullptr)
     {
-        glUseProgram(mesh_shader->getProgramID());
+        glUseProgram(render_data.getShader("model")->getProgramID());
 
-        mesh_shader->setMat4("projection", projection_view_model_mat[0]);
-        mesh_shader->setMat4("view", projection_view_model_mat[1]);
-        mesh_shader->setMat4("model", projection_view_model_mat[2]);
-        mesh_shader->setVec3("viewPos", camPos);
+        render_data.getShader("model")->setMat4("projection", render_data.getProjectionMat());
+        render_data.getShader("model")->setMat4("view", render_data.getViewMat());
+        render_data.getShader("model")->setMat4("model", model_mat);
+        render_data.getShader("model")->setVec3("viewPos", render_data.getCamPos());
 
-        mesh_shader->setInt("hdr", hdr);
+        render_data.getShader("model")->setInt("hdr", render_data.getHDR());
         
         glBindVertexArray(m_vao);
 
@@ -132,7 +132,7 @@ void Mesh::draw(std::vector<glm::mat4> projection_view_model_mat, glm::vec3 camP
                     number = std::to_string(heightNr++);
                 }
                 
-                mesh_shader->setTexture((name + number).c_str(), i);
+                render_data.getShader("model")->setTexture((name + number).c_str(), i);
                 glBindTexture(GL_TEXTURE_2D, m_textures[i].id);
             }
 

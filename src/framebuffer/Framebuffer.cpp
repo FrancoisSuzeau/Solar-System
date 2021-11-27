@@ -297,17 +297,17 @@ bool Framebuffer::manageFramebuffer(int width, int height)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** renderFrame ***********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::renderFrame(float exposure, bool hdr, bool bloom)
+void Framebuffer::renderFrame(RenderData &render_data)
 {
     bool horizontal = true;
-    this->drawBlur(exposure, hdr, bloom, horizontal);
-    this->drawScreenTexture(exposure, hdr, bloom, horizontal);
+    this->drawBlur(render_data, horizontal);
+    this->drawScreenTexture(render_data, horizontal);
 }
 
 /***********************************************************************************************************************************************************************/
 /************************************************************************* drawBlur ************************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::drawBlur(float exposure, bool hdr, bool bloom, bool &horizontal)
+void Framebuffer::drawBlur(RenderData &render_data, bool &horizontal)
 {
     bool first_it = true;
     
@@ -315,7 +315,7 @@ void Framebuffer::drawBlur(float exposure, bool hdr, bool bloom, bool &horizonta
 
         glUseProgram(blurShader->getProgramID());
 
-        if(bloom)
+        if(render_data.getBloom())
         {
             for (unsigned int i = 0; i < amount; i++)
             {
@@ -361,22 +361,22 @@ void Framebuffer::drawBlur(float exposure, bool hdr, bool bloom, bool &horizonta
 /***********************************************************************************************************************************************************************/
 /**************************************************************** drawScreenTexture ************************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::drawScreenTexture(float exposure, bool hdr, bool bloom, bool &horizontal)
+void Framebuffer::drawScreenTexture(RenderData &render_data, bool &horizontal)
 {
     if(screenShader != nullptr)
     {
         glUseProgram(screenShader->getProgramID());
 
-            screenShader->setFloat("exposure", exposure);
-            screenShader->setInt("hdr", hdr);
-            screenShader->setInt("bloom", bloom);
+            screenShader->setFloat("exposure", render_data.getExposure());
+            screenShader->setInt("hdr", render_data.getHDR());
+            screenShader->setInt("bloom", render_data.getBloom());
 
             glBindVertexArray(quadVAO);
                 
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
 
-                if(bloom)
+                if(render_data.getBloom())
                 {
                     glActiveTexture(GL_TEXTURE1);
                     glBindTexture(GL_TEXTURE_2D, ping_pong_text[!horizontal]);
@@ -387,7 +387,7 @@ void Framebuffer::drawScreenTexture(float exposure, bool hdr, bool bloom, bool &
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, 0);
 
-                if(bloom)
+                if(render_data.getBloom())
                 {
                     glActiveTexture(GL_TEXTURE1);
                     glBindTexture(GL_TEXTURE_2D, 0);

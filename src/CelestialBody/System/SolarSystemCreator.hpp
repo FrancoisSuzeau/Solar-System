@@ -41,12 +41,12 @@ PURPOSE : header of the virtual SolarSystemCreator class
             public:
 
 
-                System* FactoryMethod(sys_init_data data, TTF_Font *police, Shader *model_shader = nullptr) override
+                System* FactoryMethod(sys_init_data data, TTF_Font *police) override
                 {
                         puts("");
                         puts("");
                         std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << data.name_sys << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                        return new SolarSystem(data, police, model_shader);
+                        return new SolarSystem(data, police);
                 }
 
 

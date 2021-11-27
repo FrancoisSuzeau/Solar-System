@@ -24,6 +24,7 @@ PURPOSE : header of the Framebuffer class
         #include <cassert>
 
         #include "../Shader/Shader.hpp"
+        #include "../OpenGlSketch/RenderData.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -57,8 +58,8 @@ PURPOSE : header of the Framebuffer class
                 void manageDepthBuffer(int width, int height);
                 void managePinPongFBO(int width, int height);
 
-                void drawBlur(float exposure, bool hdr, bool bloom, bool &horizontal);
-                void drawScreenTexture(float exposure, bool hdr, bool bloom, bool &horizontal);
+                void drawBlur(RenderData &render_data, bool &horizontal);
+                void drawScreenTexture(RenderData &render_data, bool &horizontal);
 
             public:
 
@@ -66,7 +67,7 @@ PURPOSE : header of the Framebuffer class
                 ~Framebuffer();
 
                 bool initFramebuffer(int width, int height);
-                void renderFrame(float exposure, bool hdr, bool bloom);
+                void renderFrame(RenderData &render_data);
                 void bindFramebuffer();
                 void unbindFramebuffer();
 

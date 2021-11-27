@@ -64,12 +64,12 @@ PlaneteRing::~PlaneteRing()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *plan_ring_shader, Shader *ring_shader)
+void PlaneteRing::display(RenderData &render_data)
 {
-    if(plan_ring_shader != nullptr)
+    if(render_data.getShader("one_texture_p") != nullptr)
     {
         //Activate the shader
-        glUseProgram(plan_ring_shader->getProgramID());
+        glUseProgram(render_data.getShader("one_texture_p")->getProgramID());
 
         glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
@@ -80,22 +80,22 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            plan_ring_shader->setMat4("view", view);
-            plan_ring_shader->setMat4("projection", projection);
-            plan_ring_shader->setMat4("model", m_model_mat);
+            render_data.getShader("one_texture_p")->setMat4("view", render_data.getViewMat());
+            render_data.getShader("one_texture_p")->setMat4("projection", render_data.getProjectionMat());
+            render_data.getShader("one_texture_p")->setMat4("model", m_model_mat);
             
-            plan_ring_shader->setTexture("material.diffuse", 0);
+            render_data.getShader("one_texture_p")->setTexture("material.diffuse", 0);
 
-            plan_ring_shader->setVec3("viewPos", camPos);
+            render_data.getShader("one_texture_p")->setVec3("viewPos", render_data.getCamPos());
             
-            plan_ring_shader->setInt("hdr", hdr);
-            plan_ring_shader->setInt("material.shininess", 32);
+            render_data.getShader("one_texture_p")->setInt("hdr", render_data.getHDR());
+            render_data.getShader("one_texture_p")->setInt("material.shininess", 32);
 
 
             if(m_normal_surface != nullptr)
             {
-                plan_ring_shader->setInt("has_normal", true);
-                plan_ring_shader->setTexture("material.normalMap", 1);
+                render_data.getShader("one_texture_p")->setInt("has_normal", true);
+                render_data.getShader("one_texture_p")->setTexture("material.normalMap", 1);
                 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
@@ -103,7 +103,7 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             }
             else
             {
-                plan_ring_shader->setInt("has_normal", false);
+                render_data.getShader("one_texture_p")->setInt("has_normal", false);
 
             }
             
@@ -118,11 +118,11 @@ void PlaneteRing::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, 0);
 
-            if((m_ring != nullptr) && (ring_shader != nullptr))
+            if((m_ring != nullptr) && (render_data.getShader("ring") != nullptr))
             {
                 m_ring->setPosition(m_current_position);
                 m_ring->updatePosition();
-                m_ring->display(projection, view, camPos, hdr, ring_shader);
+                m_ring->display(render_data);
             }
 
         /************************************************* unbind VBO and IBO ********************************************************/

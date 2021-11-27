@@ -56,26 +56,22 @@ PURPOSE : header of the virtual SolarSystem class
 
                 PlaneteInformation              *m_planete_info;
 
-                std::vector<Shader*>            shaders;
-                Shader                          *m_model_shader;
-                
-
                 void initData() override;
                 
             public:
 
-                SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_shader = nullptr);
+                SolarSystem(sys_init_data data, TTF_Font *police);
                 SolarSystem();
                 ~SolarSystem();
 
 
                 void loadSystem(int count, TTF_Font *police) override;
-                void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *host_shader = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr) override;
-                void displaySkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr) override;
-                void displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader = nullptr) override;
-                void displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) override;
-                void displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr) override;
-                void displayAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr) override;
+                void display(RenderData &render_data) override;
+                void displaySkybox(RenderData &render_data) override;
+                void displayName(RenderData &render_data) override;
+                void displayAtmo(RenderData &render_data) override;
+                void displayInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
+                void displayAsteroidField(RenderData &render_data) override;
 
 
         };

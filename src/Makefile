@@ -18,7 +18,7 @@ CC=g++
 # SRC contient liste des fichier sources du projet 
 # on pourrait utiliser une construction automatique a l'aide du joker *.c et la commande wildcard mais il faudra gerer les dépendances vis a vis des .h
 # SRC=$(wildcard *.c)
-SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp Particule/Particule.cpp Model/Mesh.cpp Model/Model.cpp Spaceship/Spaceship.cpp CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp
+SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/AtmoPlanete.cpp CelestialBody/Planete/SimplePlanete.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/PlaneteRing.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp Model/Mesh.cpp Model/Model.cpp Spaceship/Spaceship.cpp CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp
 
 OBJET=$(SRC:.cpp=.o)
 
@@ -30,7 +30,7 @@ ${EXEC}: ${OBJET}
 # au cas ou .h est modifié
 
 main.o: OpenGlSketch/OpenGlSketch.hpp 
-OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.hpp Shader/Shader.hpp Overlay/Overlay.hpp Settings/Settings.hpp Particule/Particule.hpp Spaceship/Spaceship.hpp Framebuffer/Framebuffer.hpp
+OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.hpp Shader/Shader.hpp Overlay/Overlay.hpp Settings/Settings.hpp Spaceship/Spaceship.hpp Framebuffer/Framebuffer.hpp OpenGlSketch/RenderData.hpp
 Shader.o: Shader/Shader.hpp
 Input.o: Input/Input.hpp
 Texture.o: Texture/Texture.hpp
@@ -53,7 +53,7 @@ Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/Geometry/Sphere.hpp Shader
 Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp
 Settings.o: Settings/Settings.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp Input/Input.hpp
 PlaneteInformation.o: PlaneteInformation/PlaneteInformation.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Shader/Shader.hpp
-Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp Spaceship/Spaceship.hpp
+#Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp Spaceship/Spaceship.hpp
 Mesh.o: Model/Mesh.hpp Shader/Shader.hpp
 Model.o: Model/Model.hpp Model/Mesh.hpp Shader/Shader.hpp
 Spaceship.o : Spaceship/Spaceship.hpp Model/Model.hpp Shader/Shader.hpp Input/Input.hpp

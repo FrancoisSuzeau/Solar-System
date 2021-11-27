@@ -118,13 +118,13 @@ SimplePlanete::~SimplePlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *simple_plan_shader, Shader *ring_shader)
+void SimplePlanete::display(RenderData &render_data)
 {
     
-    if(simple_plan_shader != nullptr)
+    if(render_data.getShader("one_texture_p") != nullptr)
     {
         //Activate the shader
-        glUseProgram(simple_plan_shader->getProgramID());
+        glUseProgram(render_data.getShader("one_texture_p")->getProgramID());
 
         //lock VBO and Index Buffer Object
         glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
@@ -137,35 +137,35 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &c
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            simple_plan_shader->setMat4("view", view);
-            simple_plan_shader->setMat4("projection", projection);
-            simple_plan_shader->setMat4("model", m_model_mat);
+            render_data.getShader("one_texture_p")->setMat4("view", render_data.getViewMat());
+            render_data.getShader("one_texture_p")->setMat4("projection", render_data.getProjectionMat());
+            render_data.getShader("one_texture_p")->setMat4("model", m_model_mat);
         
-            simple_plan_shader->setTexture("material.diffuse", 0);
+            render_data.getShader("one_texture_p")->setTexture("material.diffuse", 0);
 
-            simple_plan_shader->setVec3("viewPos", camPos);
+            render_data.getShader("one_texture_p")->setVec3("viewPos", render_data.getCamPos());
 
-            simple_plan_shader->setInt("hdr", hdr);
+            render_data.getShader("one_texture_p")->setInt("hdr", render_data.getHDR());
             if(m_name == "Jupiter")
             {
-                simple_plan_shader->setInt("material.shininess", 8);
+                render_data.getShader("one_texture_p")->setInt("material.shininess", 8);
             }
             else
             {
-                simple_plan_shader->setInt("material.shininess", 32);
+                render_data.getShader("one_texture_p")->setInt("material.shininess", 32);
             }
             
             if(m_normal_surface != nullptr)
             {
-                simple_plan_shader->setInt("has_normal", true);
-                simple_plan_shader->setTexture("material.normalMap", 1);
+                render_data.getShader("one_texture_p")->setInt("has_normal", true);
+                render_data.getShader("one_texture_p")->setTexture("material.normalMap", 1);
                 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
             }
             else
             {
-                simple_plan_shader->setInt("has_normal", false);
+                render_data.getShader("one_texture_p")->setInt("has_normal", false);
 
             }
 
@@ -196,9 +196,9 @@ void SimplePlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &c
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayName2 ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 camPos, int threshold, Shader *name_render_shader)
+void SimplePlanete::displayName(RenderData &render_data, int threshold)
 {
-    if(name_render_shader != nullptr)
+    if(render_data.getShader("text") != nullptr)
     {
         /*
             CamPos is the M point in spherical coordinate, so we already have his x, y, z coordinate
@@ -207,15 +207,15 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec
             we only use the parametrical coordinate to find the r radius
         */
            
-        float r = this->getRadiusFromCam(camPos);
-        float phi = this->getPhiFromCam(camPos);
-        float theta = this->getThetaFromCam(camPos, r);
-        float y = camPos[1] - m_current_position[1];
+        float r = this->getRadiusFromCam(render_data.getCamPos());
+        float phi = this->getPhiFromCam(render_data.getCamPos());
+        float theta = this->getThetaFromCam(render_data.getCamPos(), r);
+        float y = render_data.getCamPos()[1] - m_current_position[1];
         
         if(r >= threshold * m_real_size)
         {
-            translateCelestialBody(view, m_current_position);
-            m_name_renderer->renderMovingText(projection, view, m_real_size, r, phi, theta, y, name_render_shader);
+            m_name_renderer->updatePosition(m_current_position);
+            m_name_renderer->renderMovingText(render_data, m_real_size, r, phi, theta, y);
         }
         
     }
@@ -225,17 +225,17 @@ void SimplePlanete::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SimplePlanete::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void SimplePlanete::displayAtmo(RenderData &render_data)
 {
     if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune")) 
     {
-        if(atmo_shader != nullptr)
+        if(render_data.getShader("atmosphere") != nullptr)
         {
             
             if(m_atmosphere != nullptr)
             {
                 m_atmosphere->updatePosAtmo(m_current_position);
-                m_atmosphere->display(projection, view, camPos, hdr, atmo_shader);
+                m_atmosphere->display(render_data);
             }
             
         }

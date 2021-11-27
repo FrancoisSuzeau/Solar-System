@@ -43,11 +43,11 @@ PURPOSE : header of the virtual SystemCreator class
 
                 virtual ~SystemCreator() {delete m_system;};
 
-                virtual System* FactoryMethod(sys_init_data data, TTF_Font *police, Shader *model_shader = nullptr) = 0;
+                virtual System* FactoryMethod(sys_init_data data, TTF_Font *police) = 0;
 
-                bool MakingSystem(sys_init_data data, TTF_Font *police, Shader *model_shader = nullptr) 
+                bool MakingSystem(sys_init_data data, TTF_Font *police) 
                 {
-                        m_system = this->FactoryMethod(data, police, model_shader);
+                        m_system = this->FactoryMethod(data, police);
                         return true;
                 }
 
@@ -57,34 +57,34 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
-                void drawName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader = nullptr)
+                void drawName(RenderData &render_data)
                 {
-                        m_system->displayName(projection, view, camPos, name_render_shader);
+                        m_system->displayName(render_data);
                 }
 
-                void drawAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr)
+                void drawAtmo(RenderData &render_data)
                 {
-                        m_system->displayAtmo(projection, view, camPos, hdr, atmo_shader);
+                        m_system->displayAtmo(render_data);
                 }
 
-                void drawInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info = nullptr)
+                void drawInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr)
                 {
-                        m_system->displayInfo(projection, view, camPos, hdr, shaders, planete_info);
+                        m_system->displayInfo(render_data, planete_info);
                 }
 
-                void drawSkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr)
+                void drawSkybox(RenderData &render_data)
                 {
-                        m_system->displaySkybox(projection, view, hdr);
+                        m_system->displaySkybox(render_data);
                 }
 
-                void drawSystem(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *shader_host = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr)
+                void drawSystem(RenderData &render_data)
                 {
-                        m_system->display(projection, view, camPos, hdr, shader_host, companion_shader, ring_shader);
+                        m_system->display(render_data);
                 }
 
-                void drawAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
+                void drawAsteroidField(RenderData &render_data)
                 {
-                        m_system->displayAsteroidField(projection_view_mat, camPos, hdr);
+                        m_system->displayAsteroidField(render_data);
                 }
 
 

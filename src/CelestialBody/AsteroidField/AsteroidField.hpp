@@ -62,10 +62,10 @@ PURPOSE : header of the AsteroidField class
 
             public:
             
-                AsteroidField(Shader *model_shader);
+                AsteroidField();
                 ~AsteroidField();
 
-                void drawAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr);
+                void drawAsteroidField(RenderData &render_data);
 
               
 

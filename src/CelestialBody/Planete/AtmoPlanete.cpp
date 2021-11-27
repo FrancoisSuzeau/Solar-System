@@ -79,12 +79,12 @@ AtmoPlanete::~AtmoPlanete()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_plan_shader, Shader *ring_shader)
+void AtmoPlanete::display(RenderData &render_data)
 {
-    if(atmo_plan_shader != nullptr)
+    if(render_data.getShader("multi_texture_p") != nullptr)
     {
         //Activate the shader
-        glUseProgram(atmo_plan_shader->getProgramID());
+        glUseProgram(render_data.getShader("multi_texture_p")->getProgramID());
 
         //lock VBO and Index Buffer Object
         glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
@@ -97,39 +97,39 @@ void AtmoPlanete::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            atmo_plan_shader->setMat4("view", view);
-            atmo_plan_shader->setMat4("projection", projection);
-            atmo_plan_shader->setMat4("model", m_model_mat);
+            render_data.getShader("multi_texture_p")->setMat4("view", render_data.getViewMat());
+            render_data.getShader("multi_texture_p")->setMat4("projection", render_data.getProjectionMat());
+            render_data.getShader("multi_texture_p")->setMat4("model", m_model_mat);
             
-            atmo_plan_shader->setTexture("material.diffuse", 0);
-            atmo_plan_shader->setTexture("material.specular", 1);
+            render_data.getShader("multi_texture_p")->setTexture("material.cloud", 0);
+            render_data.getShader("multi_texture_p")->setTexture("material.terrain", 1);
             
             if(m_name == "Venus")
             {
-                atmo_plan_shader->setInt("material.shininess", 16);
+                render_data.getShader("multi_texture_p")->setInt("material.shininess", 16);
             }
             else
             {
-                atmo_plan_shader->setInt("material.shininess", 32);
+                render_data.getShader("multi_texture_p")->setInt("material.shininess", 32);
             }
 
-            atmo_plan_shader->setFloat("oppacity", m_oppacity);
+            render_data.getShader("multi_texture_p")->setFloat("oppacity", m_oppacity);
 
-            atmo_plan_shader->setVec3("viewPos", camPos);
+            render_data.getShader("multi_texture_p")->setVec3("viewPos", render_data.getCamPos());
 
-            atmo_plan_shader->setInt("hdr", hdr);
+            render_data.getShader("multi_texture_p")->setInt("hdr", render_data.getHDR());
 
             if(m_normal_surface != nullptr)
             {
-                atmo_plan_shader->setInt("has_normal", true);
-                atmo_plan_shader->setTexture("material.normalMap", 2);
+                render_data.getShader("multi_texture_p")->setInt("has_normal", true);
+                render_data.getShader("multi_texture_p")->setTexture("material.normalMap", 2);
                 
                 glActiveTexture(GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surface->getID());
             }
             else
             {
-                atmo_plan_shader->setInt("has_normal", false);
+                render_data.getShader("multi_texture_p")->setInt("has_normal", false);
             }
             
             // active and lock unit texture 1: surface

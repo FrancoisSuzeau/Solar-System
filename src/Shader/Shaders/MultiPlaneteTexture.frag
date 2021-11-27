@@ -12,8 +12,8 @@ layout (location = 1) out vec4 BrightColor;
 layout (location = 0) out vec4 FragColor;
 
 struct Material {
-    sampler2D diffuse;
-    sampler2D specular;
+    sampler2D cloud;
+    sampler2D terrain;
     sampler2D normalMap;
     int shininess;
 };
@@ -64,7 +64,10 @@ void main(void) {
         viewDir = normalize(viewPos - FragPos);
     }
 
-    objectColor = mix(texture(material.diffuse, texCoord), texture(material.specular, texCoord), oppacity).rgb;
+    vec4 surface_text = texture(material.terrain, texCoord);
+    vec4 cloud_text = texture(material.cloud, texCoord);
+
+    objectColor = mix(cloud_text, surface_text, oppacity).rgb;
 
     // *********************************************** mitigation ***************************************************
     //mitigation
@@ -107,11 +110,12 @@ void main(void) {
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     
     vec3 result = (ambiant + diffuse + specular) * objectColor;
+    FragColor = vec4(result, 1.0);
     float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0)
         BrightColor = vec4(result, 1.0);
     else
         BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     
-    FragColor = vec4(result, 1.0);
+    
 }

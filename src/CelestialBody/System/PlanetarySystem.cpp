@@ -140,96 +140,88 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
+void PlanetarySystem::display(RenderData &render_data)
 {
-    
-    glm::mat4 save = view;
+    render_data.initSaveMat();
 
-    if(host_shader != nullptr)
+    m_host_creator->UpdatePositionPlan();
+    m_host_creator->drawPlanete(render_data);
+
+    render_data.saveViewMat();
+
+    for (int i(0); i < m_companion_count; i++)
     {
-        m_host_creator->UpdatePositionPlan();
-        m_host_creator->drawPlanete(projection, view, camPos, hdr, host_shader, ring_shader);
+        m_moons_creator[i]->UpdatePositionPlan();
+        m_moons_creator[i]->drawPlanete(render_data); 
 
-    }
-
-    view = save;
-
-    if(companion_shader != nullptr)
-    {
-        for (int i(0); i < m_companion_count; i++)
-        {
-            m_moons_creator[i]->UpdatePositionPlan();
-            m_moons_creator[i]->drawPlanete(projection, view, camPos, hdr, companion_shader); 
-
-            view = save;
-        }
+        render_data.saveViewMat();
     }
     
-    view = save;
+    render_data.saveViewMat();
 
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayName **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader)
+void PlanetarySystem::displayName(RenderData &render_data)
 {
-    glm::mat4 save = view;
+    render_data.initSaveMat();
 
-    if(name_render_shader != nullptr)
+    if(render_data.getShader("text") != nullptr)
     {
         if(m_host_creator == nullptr) 
         {
             exit(EXIT_FAILURE);
         }
         float size_plan = m_host_creator->getSizePlan();
-        float r = m_host_creator->getRadius(camPos);
+        float r = m_host_creator->getRadius(render_data.getCamPos());
 
         if( r >= 400 * size_plan ) // juste to allow the application to display host name or moon name depends on the posiiton of the camera
         {
-            if( name_render_shader != nullptr )
+            if( render_data.getShader("text") != nullptr )
             {
-                m_host_creator->displayName(projection, view, camPos, 400, name_render_shader);
-                view = save;
+                m_host_creator->displayName(render_data, 400);
+                render_data.saveViewMat();
             }
-            view = save;
+            render_data.saveViewMat();
         }
         else
         {
             for (int i(0); i < m_companion_count; i++)
             {
-                if(name_render_shader != nullptr)
+                if(render_data.getShader("text") != nullptr)
                 {
-                    m_moons_creator[i]->displayName(projection, view, camPos, 10, name_render_shader);
-                    view = save;
+                    m_moons_creator[i]->displayName(render_data, 10);
+                    render_data.saveViewMat();
                 }  
-                view = save;
+                render_data.saveViewMat();
             }
         }
-        view = save;
+        render_data.saveViewMat();
     }
-    view = save;
+    render_data.saveViewMat();
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void PlanetarySystem::displayAtmo(RenderData &render_data)
 {
     if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
     {
-        glm::mat4 save = view;
+        render_data.initSaveMat();
 
         if(m_host_creator != nullptr)
         {
-            if((m_atmosphere != nullptr) && (atmo_shader != nullptr))
+            if((m_atmosphere != nullptr) && (render_data.getShader("atmosphere") != nullptr))
             {
                 m_atmosphere->updatePosAtmo(m_host_creator->getPostion());
-                m_atmosphere->display(projection, view, camPos, hdr, atmo_shader);
+                m_atmosphere->display(render_data);
             }
         }
                
-        view = save;
+        render_data.saveViewMat();
     }
     
 }
@@ -237,16 +229,17 @@ void PlanetarySystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::v
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *planete_info)
+void PlanetarySystem::displayInfo(RenderData &render_data, PlaneteInformation *planete_info)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
 
-    float r = m_host_creator->getRadius(camPos);
+    float r = m_host_creator->getRadius(render_data.getCamPos());
     float size_plan = m_host_creator->getSizePlan();
 
         if(r <= 10 * size_plan)
         {
-            view = lookAt(vec3(0.0, 0.0, 1.71), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
+            // view = lookAt(vec3(0.0, 0.0, 1.71), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
+            render_data.lockViewMat(glm::vec3(0.0, 0.0, 1.71), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 
             if(m_host_creator == nullptr) //exceptionnaly we exit the program because without 
             {
@@ -261,28 +254,28 @@ void PlanetarySystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::v
                     planete_info->changeNamePlan(tmp_name);
                 }
 
-                if((shaders[0] != nullptr) && (shaders[1] != nullptr))
+                if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
                 {
-                    planete_info->renderInfo(projection, view, hdr, shaders);
-                    view = save;
+                    planete_info->renderInfo(render_data);
+                    render_data.updateView(save);
                 }
                 
             }
             
         }
 
-        view = save;
+        render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** NOT CONCERN **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displaySkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr)
+void PlanetarySystem::displaySkybox(RenderData &render_data)
 {
     //do nothing and doesn't have
 }
 
-void PlanetarySystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
+void PlanetarySystem::displayAsteroidField(RenderData &render_data)
 {
     //do nothing and doesn't have
 }

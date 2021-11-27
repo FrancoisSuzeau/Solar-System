@@ -35,6 +35,7 @@ PURPOSE : header of the Mesh class
         #include <Windows.h>
 
         #include "../Shader/Shader.hpp"
+        #include "../OpenGlSketch/RenderData.hpp"
 
         #define MAX_BONE_INFLUENCE 4
 
@@ -86,7 +87,7 @@ PURPOSE : header of the Mesh class
                 Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texturate> textures);
                 ~Mesh();
 
-                void draw(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr, Shader *mesh_shader = nullptr);
+                void draw(RenderData &render_data, glm::mat4 &model_mat);
                 
                 std::vector<Vertex> getVertices() const;
                 std::vector<unsigned int> getIndices() const;

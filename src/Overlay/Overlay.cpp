@@ -23,27 +23,25 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 
 Overlay::Overlay(TTF_Font *police) :
-m_rect(0.05, 0.1),
-m_track_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_Author_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_studio_music(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_move_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_position(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_speed_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_speed(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police),
-m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
+m_rect(0.05, 0.1)
 {
-    assert(m_track_music.loadTTF("None"));
-    assert(m_Author_music.loadTTF("None"));
-    assert(m_studio_music.loadTTF("None"));
+    std::string str_init[] = {  "None",
+                                "None",
+                                "None",
+                                "Navigation",
+                                "Position :",
+                                "Speed :",
+                                "None",
+                                "None"
+                                };
 
-    assert(m_move_info.loadTTF("Navigation"));
-    assert(m_position.loadTTF("Position :"));
-    assert(m_speed_info.loadTTF("Speed :"));
-    assert(m_speed.loadTTF("None"));
-
-
-    assert(m_time_info.loadTTF("None"));
+    for (int i = 0; i < 8; i++)
+    {
+        m_texts.push_back(new Text(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police));
+        assert(m_texts[i]);
+        assert(m_texts[i]->loadTTF(str_init[i]));
+    }
+    
     setTimeInformation();
 
     m_ancient_track = "None";
@@ -58,43 +56,49 @@ m_time_info(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
 
 Overlay::~Overlay()
 {
-    
+    for(std::vector<Text*>::iterator it = m_texts.begin(); it != m_texts.end(); ++it)
+    {
+        if(*it != nullptr)
+        {
+            delete *it;
+        }
+    }
 }
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** displaySquares ********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displaySquares(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::vector<glm::vec3> coordinates, Shader *square_shader)
+void Overlay::displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
 
-        view = translate(view, coordinates[0]); //from bottom right to bottom left
-        m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+        m_rect.updatePosition(coordinates[0]);
+        m_rect.display(render_data, m_colorGrey);
 
-    view = save;
+    render_data.updateView(save);
 
-        view = translate(view, coordinates[1]); //from top right to top left
-        m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+        m_rect.updatePosition(coordinates[1]);
+        m_rect.display(render_data, m_colorBlack);
 
-    view = save;
+    render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************** displayGeneralOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *square_shader)
+void Overlay::displayGeneralOverlay(RenderData &render_data)
 {   
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     /************************************************************************ horizontal bar *******************************************************************/
         float start_horizontal = 1.285f;
 
-        if(square_shader != nullptr)
+        if(render_data.getShader("square") != nullptr)
         {
-            glUseProgram(square_shader->getProgramID());
+            glUseProgram(render_data.getShader("square")->getProgramID());
 
-                square_shader->setInt("load", false);
+                render_data.getShader("square")->setInt("load", false);
 
             glUseProgram(0);
 
@@ -108,27 +112,28 @@ void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool
                     coordinates2.push_back(glm::vec3(start_horizontal, -0.720f, -0.01f));
                     coordinates2.push_back(glm::vec3(start_horizontal, -0.725f, 0.0f));
 
-                    displaySquares(projection, view, hdr, coordinates1, square_shader);
-                    displaySquares(projection, view, hdr, coordinates2, square_shader);
+                    displaySquares(render_data, coordinates1);
+                    displaySquares(render_data, coordinates2);
 
                 start_horizontal = start_horizontal - constance;
-       
+
+                render_data.updateView(save);
             }
 
-            view = save;
+            render_data.updateView(save);
 
-                view = translate(view, vec3(-1.285f, 0.725f, 0.0f)); //top left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+                m_rect.updatePosition(glm::vec3(-1.285f, 0.725f, 0.0f));
+                m_rect.display(render_data, m_colorBlack);
 
-            view = save;
+            render_data.updateView(save);
 
-                view = translate(view, vec3(-1.285f, -0.725f, 0.0f)); //bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+                m_rect.updatePosition(glm::vec3(-1.285f, -0.725f, 0.0f));
+                m_rect.display(render_data, m_colorBlack);
 
-            view = save;
+            render_data.updateView(save);
     //=======================================================================================================================================================
 
-    /*************************************************************************** vertical bar ******************************************************************/
+    // /*************************************************************************** vertical bar ******************************************************************/
 
             float start_verticale = 0.675f; //minus one square because of the top bar
 
@@ -143,87 +148,83 @@ void Overlay::displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool
                     coordinates2.push_back(glm::vec3(1.285f, start_verticale, -0.01f));
                     coordinates2.push_back(glm::vec3(1.285f, start_verticale, 0.0f));
 
-                    displaySquares(projection, view, hdr, coordinates1, square_shader);
-                    displaySquares(projection, view, hdr, coordinates2, square_shader);
+                    displaySquares(render_data, coordinates1);
+                    displaySquares(render_data, coordinates2);
 
                 start_verticale = start_verticale - constance;
 
+                render_data.updateView(save);
             }
         }
-          
-        view = save;
+        
+    render_data.updateView(save);
+    
 }
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************** displayMusicOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::string const track, Shader *text_shader, Shader *square_shader)
+void Overlay::displayMusicOverlay(RenderData &render_data, std::string const track)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     float start = 1.265f;
 
-    if(square_shader != nullptr)
+    if(render_data.getShader("square") != nullptr)
     {
         for (size_t i(0); i < 9; i++)
         {
             /*In the first pass, we do not render the grey square because they will be cover by black square*/
 
-                view = translate(view, vec3(start, -0.675f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+                m_rect.updatePosition(glm::vec3(start, -0.675f, 0.0f));
+                m_rect.display(render_data, m_colorBlack);
 
-            view = save;
-
+            render_data.updateView(save);
+            
                 std::vector<glm::vec3> coordinates;
 
                     coordinates.push_back(glm::vec3(start, -0.620f, -0.01f));
                     coordinates.push_back(glm::vec3(start, -0.625f, 0.0f));
             
-                    displaySquares(projection, view, hdr, coordinates, square_shader);
+                    displaySquares(render_data, coordinates);
 
             start = start - constance;
 
-            view = save;
+            render_data.updateView(save);
         }
 
-        view = save;
+        render_data.updateView(save);
 
-            /*We only draw the last one to make the border*/
-
-            view = translate(view, vec3(1.265f - 0.05f*8, -0.670f, -0.01f)); //from bottom right to bottom left
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+            m_rect.updatePosition(glm::vec3(1.265f - 0.05f*8, -0.670f, -0.01f));
+            m_rect.display(render_data, m_colorGrey);
     }
 
-    view = save;
+    render_data.updateView(save);
 
         if(track != m_ancient_track)
         {
-            //std::string tmp = "Music :\n" + track;
-            assert(m_track_music.setText(track));
+            assert(m_texts[0]->setText(track));
             m_ancient_track = track;
             setMusicInformation(track);
         }
 
-        if(text_shader != nullptr)
+        if(render_data.getShader("text") != nullptr)
         {
-            view = translate(view, vec3(0.99f, -0.61f, -0.0f));
-                view = scale(view, vec3(0.04f, 0.035f, 0.0f));
-                m_track_music.renderText(projection, view, text_shader);
+            glm::vec3 coordinate(0.99f, -0.61f, -0.0f);
+            glm::vec3 scale_data(0.04f, 0.035f, 0.0f);
 
-            view = save;
+            for (int i = 0; i < 3; i++)
+            {
+                m_texts[i]->updatePosition(coordinate);
+                m_texts[i]->updateScale(scale_data);
+                m_texts[i]->renderText(render_data);
 
-                view = translate(view, vec3(0.93f, -0.64f, -0.0f));
-                view = scale(view, vec3(0.02f, 0.035f, 0.0f));
-                m_Author_music.renderText(projection, view, text_shader);
+                render_data.updateView(save);
+                coordinate.y -= 0.03;
+            }
 
-            view = save;
-
-                view = translate(view, vec3(0.99f, -0.67f, -0.0f));
-                view = scale(view, vec3(0.04f, 0.035f, 0.0f));
-                m_studio_music.renderText(projection, view, text_shader);
-
-            view = save;
+            render_data.updateView(save);
 
         }
         
@@ -233,9 +234,9 @@ void Overlay::displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool h
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayMoveInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, glm::vec3 &position, float const speed, Shader *text_shader, Shader *square_shader)
+void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     float start_bottom_black_first = -1.265f;
@@ -244,103 +245,94 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
     float start_bottom_black_fourth = -1.265f;
     float start_bottom_white = -1.265f;
 
-    if(square_shader != nullptr)
+    if(render_data.getShader("square") != nullptr)
     {
         for (size_t i(0); i < 10; i++)
         {
-            /*In the first pass, we do not render the grey square because they will be cover by black square*/
+                m_rect.updatePosition(glm::vec3(start_bottom_black_first, -0.675f, 0.0f));
+                m_rect.display(render_data, m_colorBlack);
 
-                view = translate(view, vec3(start_bottom_black_first, -0.675f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
+            render_data.updateView(save);
             start_bottom_black_first = start_bottom_black_first + constance;
         }
 
         for (size_t i(0); i < 10; i++)
         {
-            /*In the second pass, we do not render the grey square because they also will be cover by black square*/
+                m_rect.updatePosition(glm::vec3(start_bottom_black_second, -0.625f, 0.0f));
+                m_rect.display(render_data, m_colorBlack);
 
-                view = translate(view, vec3(start_bottom_black_second, -0.625f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
+            render_data.updateView(save);
             start_bottom_black_second = start_bottom_black_second + constance;
         }
 
         for (size_t i(0); i < 10; i++)
         {
-            /*In the third pass, we do not render the grey square because they also will be cover by black square*/
 
-                view = translate(view, vec3(start_bottom_black_third, -0.575f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+                m_rect.updatePosition(glm::vec3(start_bottom_black_third, -0.575f, 0.0f));
+                m_rect.display(render_data, m_colorBlack);
 
-            view = save;
+            render_data.updateView(save);
             start_bottom_black_third = start_bottom_black_third + constance;
         }
 
         //fourth and last pass with white border on the top
         for (size_t i(0); i < 10; i++)
         {
-                view = translate(view, vec3(start_bottom_white, -0.525f, -0.01f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+                m_rect.updatePosition(glm::vec3(start_bottom_white, -0.525f, -0.01f));
+                m_rect.display(render_data, m_colorGrey);
 
-            view = save;
+            render_data.updateView(save);
             start_bottom_white = start_bottom_white + constance;
 
-                view = translate(view, vec3(start_bottom_black_fourth, -0.530f, 0.0f)); //from bottom right to bottom left
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
+                m_rect.updatePosition(glm::vec3(start_bottom_black_fourth, -0.530f, 0.0f));
+                m_rect.display(render_data, m_colorBlack);
 
-            view = save;
+            render_data.updateView(save);
             start_bottom_black_fourth = start_bottom_black_fourth + constance;
         }
 
-        /*We only draw the lasts ones to make the border*/
+        m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.670f, -0.01f));
+        m_rect.display(render_data, m_colorGrey);
 
-        view = translate(view, vec3(-1.265f + 0.05f*9, -0.670f, -0.01f)); 
-        m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+        render_data.updateView(save);
 
-        view = save;
+            m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.625f, -0.01f));
+            m_rect.display(render_data, m_colorGrey);
 
-            view = translate(view, vec3(-1.265f + 0.05f*9, -0.625f, -0.01f)); 
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+        render_data.updateView(save);
 
-        view = save;
-
-            view = translate(view, vec3(-1.265f + 0.05f*9, -0.575f, -0.01f));
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+            m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.575f, -0.01f));
+            m_rect.display(render_data, m_colorGrey);
     }
 
-    view = save;
+    render_data.updateView(save);
 
-        if(text_shader != nullptr)
+        if(render_data.getShader("text") != nullptr)
         {
-                view = translate(view, vec3(-1.03f, -0.515f, -0.0f));
-                view = scale(view, vec3(0.05f, 0.05f, 0.0f));
-                m_move_info.renderText(projection, view, text_shader);
+            std::vector<glm::vec3> coordinates;
+            coordinates.push_back(glm::vec3(-1.03f, -0.525f, -0.0f));
+            coordinates.push_back(glm::vec3(-1.15f, -0.580f, -0.0f));
+            coordinates.push_back(glm::vec3(-1.15f, -0.650f, -0.0f));
+            coordinates.push_back(glm::vec3(-0.95f, -0.650f, -0.0f));
 
-            view = save;
-
-
-                view = translate(view, vec3(-1.15f, -0.564f, -0.0f));
-                view = scale(view, vec3(0.02f, 0.045f, 0.0f));
-                m_position.renderText(projection, view, text_shader);
-
-            view = save;
-
-                view = translate(view, vec3(-1.15f, -0.650f, -0.0f));
-                view = scale(view, vec3(0.02f, 0.038f, 0.0f));
-                m_speed_info.renderText(projection, view, text_shader);
-
-            view = save;
+            std::vector<glm::vec3> scale_datas;
+            scale_datas.push_back(glm::vec3(0.05f, 0.05f, 0.0f));
+            scale_datas.push_back(glm::vec3(0.02f, 0.045f, 0.0f));
+            scale_datas.push_back(glm::vec3(0.02f, 0.038f, 0.0f));
+            scale_datas.push_back(glm::vec3(0.04f, 0.04f, 0.0f));
 
             setSpeedInformation(speed);
 
-                view = translate(view, vec3(-0.95f, -0.650f, -0.0f));
-                view = scale(view, vec3(0.04f, 0.04f, 0.0f));
-                m_speed.renderText(projection, view, text_shader);
+            for (int i = 3; i < 7; i++)
+            {
+                m_texts[i]->updatePosition(coordinates[i - 3]);
+                m_texts[i]->updateScale(scale_datas[i - 3]);
+                m_texts[i]->renderText(render_data);
 
-            view = save;
+                render_data.updateView(save);
+            }
+
+            render_data.updateView(save);
         }
 
         
@@ -349,9 +341,9 @@ void Overlay::displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayTimeInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *text_shader, Shader *square_shader)
+void Overlay::displayTimeInfoOverlay(RenderData &render_data)
 {
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
     float constance = 0.05f;
 
     float start_top_black_to_left = 0.0f;
@@ -360,65 +352,59 @@ void Overlay::displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &view, boo
     float start_top_black_to_right = 0.05f;
     float start_top_white_to_right = 0.05f;
 
-    if(square_shader != nullptr)
+    if(render_data.getShader("square") != nullptr)
     {
         
         for (size_t i(0); i < 5; i++)
         {
-                view = translate(view, vec3(start_top_white_to_left, 0.670f, -0.01f)); 
-                m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
-
-            view = save;
+                std::vector<glm::vec3> coordinates;
+                coordinates.push_back(glm::vec3(start_top_white_to_left, 0.670f, -0.01f));
+                coordinates.push_back(glm::vec3(start_top_black_to_left, 0.675f, 0.0f));
+                displaySquares(render_data, coordinates);
+               
+            render_data.updateView(save);
             start_top_white_to_left = start_top_white_to_left - constance;
-
-                view = translate(view, vec3(start_top_black_to_left, 0.675f, 0.0f)); 
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
             start_top_black_to_left = start_top_black_to_left - constance;
         }
 
         for (size_t i(0); i < 4; i++)
         {
+            std::vector<glm::vec3> coordinates;
+            coordinates.push_back(glm::vec3(start_top_white_to_right, 0.670f, -0.01f));
+            coordinates.push_back(glm::vec3(start_top_black_to_right, 0.675f, 0.0f));
+            displaySquares(render_data, coordinates);
 
-                view = translate(view, vec3(start_top_white_to_right, 0.670f, -0.01f)); 
-                m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
-
-            view = save;
+            render_data.updateView(save);
             start_top_white_to_right = start_top_white_to_right + constance;
-
-                view = translate(view, vec3(start_top_black_to_right, 0.675f, 0.0f)); 
-                m_rect.display(projection, view, m_colorBlack, hdr, square_shader);
-
-            view = save;
             start_top_black_to_right = start_top_black_to_right + constance;
         }
 
+        render_data.updateView(save);
 
-            /*We only draw the lasts whites squares to make the border ont left and the right*/
+            m_rect.updatePosition(glm::vec3(0.0f - 0.043f*5, 0.670f, -0.01f));
+            m_rect.display(render_data, m_colorGrey);
 
-            view = translate(view, vec3(0.0f - 0.043f*5, 0.670f, -0.01f)); 
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
-        
-        view = save;
+        render_data.updateView(save);
 
-            view = translate(view, vec3(0.0f + 0.043f * 5, 0.670f, -0.01f)); 
-            m_rect.display(projection, view, m_colorGrey, hdr, square_shader);
+            m_rect.updatePosition(glm::vec3(0.0f + 0.043f * 5, 0.670f, -0.01f));
+            m_rect.display(render_data, m_colorGrey);
+
+        render_data.updateView(save);
 
     }
 
-    
-    view = save;
+    render_data.updateView(save);
 
-        if(text_shader != nullptr)
+        if(render_data.getShader("text") != nullptr)
         {
             setTimeInformation();
 
-                view = translate(view, vec3(0.0f, 0.658f, -0.0f));
-                view = scale(view, vec3(0.039f, 0.050f, 0.0f));
-                m_time_info.renderText(projection, view, text_shader);
+                m_texts[7]->updatePosition(glm::vec3(0.0f, 0.658f, -0.0f));
+                m_texts[7]->updateScale(vec3(0.039f, 0.050f, 0.0f));
+                m_texts[7]->renderText(render_data);
 
-            view = save;
+            render_data.updateView(save);
+            
         }
         
 }
@@ -430,26 +416,26 @@ void Overlay::setMusicInformation(std::string const track)
 {
     if(track == "Mass Effect - Vigil")
     {
-        assert(m_Author_music.setText("Jack Wall"));
-        assert(m_studio_music.setText("EA Games Soundtrack"));
+        assert(m_texts[1]->setText("Jack Wall"));
+        assert(m_texts[2]->setText("EA Games Soundtrack"));
     }
 
     if(track == "Natural Splendor") 
     {
-        assert(m_Author_music.setText("Gerald M. Dorai"));
-        assert(m_studio_music.setText("Le Phonarium - Nantes"));
+        assert(m_texts[1]->setText("Gerald M. Dorai"));
+        assert(m_texts[2]->setText("Le Phonarium - Nantes"));
     }
 
     if(track == "Dying Star") 
     {
-        assert(m_Author_music.setText("Utho Riley"));
-        assert(m_studio_music.setText("Symphonic Orchestral Music"));
+        assert(m_texts[1]->setText("Utho Riley"));
+        assert(m_texts[2]->setText("Symphonic Orchestral Music"));
     }
 
     if(track == "Orizon Theme") 
     {
-        assert(m_Author_music.setText("Pedro Camacho"));
-        assert(m_studio_music.setText("Star Citizen Soundtrack"));
+        assert(m_texts[1]->setText("Pedro Camacho"));
+        assert(m_texts[2]->setText("Star Citizen Soundtrack"));
     }
     
 }
@@ -474,7 +460,7 @@ void Overlay::setSpeedInformation(float const speed)
         oss_x << std::setprecision(3) << value_perc;
         std::string tmp = oss_x.str() + " time light speed";
 
-        assert(m_speed.setText(tmp));
+        assert(m_texts[6]->setText(tmp));
         m_ancient_speed = speed;
     }
 
@@ -495,7 +481,7 @@ void Overlay::setTimeInformation()
         
         if(ltm->tm_sec >= m_sec + 8) //reduce updating refresh
         {
-            assert(m_time_info.setText(time));
+            assert(m_texts[7]->setText(time));
             m_ancient_time = time;
             m_sec = ltm->tm_sec;
         }

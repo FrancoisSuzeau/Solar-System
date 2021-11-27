@@ -38,6 +38,7 @@ PURPOSE : header of the Overlay class
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
         #include "../Shader/Shader.hpp"
+        #include "../OpenGlSketch/RenderData.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -48,19 +49,7 @@ PURPOSE : header of the Overlay class
             private:
 
                 Square          m_rect;
-
-                Text            m_track_music;
-                Text            m_Author_music;
-                Text            m_studio_music;
-
-                
-                Text            m_move_info;
-                Text            m_position;
-                Text            m_speed_info;
-                Text            m_speed;
-
-
-                Text            m_time_info;
+                std::vector<Text*> m_texts;
 
                 std::string     m_ancient_track;
                 float           m_ancient_radius;
@@ -71,17 +60,17 @@ PURPOSE : header of the Overlay class
                 glm::vec3 m_colorBlack;
                 glm::vec3 m_colorGrey;
 
-                void displaySquares(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::vector<glm::vec3> coordinates, Shader *square_shader = nullptr);
+                void displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates);
 
             public:
             
                 Overlay(TTF_Font *police);
                 ~Overlay();
 
-                void displayGeneralOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *square_shader = nullptr);
-                void displayMusicOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, std::string const track, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
-                void displayMoveInfoOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, glm::vec3 &position, float const speed, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
-                void displayTimeInfoOverlay(glm::mat4 &projection, glm::mat4 &view, bool hdr, Shader *text_shader = nullptr, Shader *square_shader = nullptr);
+                void displayGeneralOverlay(RenderData &render_data);
+                void displayMusicOverlay(RenderData &render_data, std::string const track);
+                void displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed);
+                void displayTimeInfoOverlay(RenderData &render_data);
 
                 void setMusicInformation(std::string const track);
                 void setSpeedInformation(float const speed);

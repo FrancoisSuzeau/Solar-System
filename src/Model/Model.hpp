@@ -42,6 +42,7 @@ PURPOSE : header of the Model class
         
 
         #include "../Shader/Shader.hpp"
+        #include "../OpenGlSketch/RenderData.hpp"
         #include "Mesh.hpp"
 
        
@@ -73,7 +74,7 @@ PURPOSE : header of the Model class
                 Model(std::string const &path, bool gamma = false);
                 ~Model();
 
-                void draw(std::vector<glm::mat4> projection_view_model_mat, glm::vec3 camPos, bool hdr, Shader *model_shader);
+                void draw(RenderData &render_data, glm::mat4 &model_mat);
                 unsigned int getMeshVAO(int index) const;
                 size_t getSizeMeshesVector() const;
                 unsigned int getTextureLoadedID(int index) const;

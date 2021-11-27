@@ -39,6 +39,7 @@ PURPOSE : header of the Spaceship class
         #include "../Shader/Shader.hpp"
         #include "../Model/Model.hpp"
         #include "../Input/Input.hpp"
+        #include "../OpenGlSketch/RenderData.hpp"
 
        
 
@@ -82,7 +83,7 @@ PURPOSE : header of the Spaceship class
                 Spaceship(std::string const path);
                 ~Spaceship();
 
-                void drawSpaceship(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr, Shader *model_shader, Input input);
+                void drawSpaceship(RenderData &render_data, Input input);
                 float getRotX() const;
                 float getRotY() const;
                 glm::vec3       getPosition() const;

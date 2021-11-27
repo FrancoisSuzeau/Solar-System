@@ -17,7 +17,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_shader)
+SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police)
 {
     m_planete_info = new PlaneteInformation("None", police);
     assert(m_planete_info);
@@ -30,38 +30,12 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police, Shader *model_sha
     skybox = new Skybox();
     assert(skybox);
 
-    sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
+    sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 500);
+    // sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
     assert(sun);
 
-    m_asteroid_field = new AsteroidField(model_shader);
+    m_asteroid_field = new AsteroidField();
     assert(m_asteroid_field);
-
-    
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"));
-    assert(shaders[0]);
-    assert(shaders[0]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag"));
-    assert(shaders[1]);
-    assert(shaders[1]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag"));
-    assert(shaders[2]);
-    assert(shaders[2]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag"));
-    assert(shaders[3]);
-    assert(shaders[3]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag"));
-    assert(shaders[4]);
-    assert(shaders[4]->loadShader());
-
-    if(model_shader != nullptr)
-    {
-        m_model_shader = model_shader;
-    }
     
     this->initData();
 }
@@ -110,14 +84,6 @@ SolarSystem::~SolarSystem()
     if(m_planete_info != nullptr)
     {
         delete m_planete_info;
-    }
-
-    for (std::vector<Shader*>::iterator it = shaders.begin(); it!= shaders.end(); ++it)
-    {
-        if(*it != nullptr)
-        {
-            delete *it;
-        }
     }
 }
 
@@ -213,40 +179,41 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** displaySkybox *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displaySkybox(glm::mat4 &projection, glm::mat4 &view, bool hdr)
+void SolarSystem::displaySkybox(RenderData &render_data)
 {
-    glm::mat4 save = view;
+    render_data.initSaveMat();
 
         if(skybox != nullptr)
         {
-            skybox->display(projection, view, hdr);
+            skybox->display(render_data);
         }
         
 
-    view = save;
+    render_data.saveViewMat();
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAsteroidField ******************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)
+void SolarSystem::displayAsteroidField(RenderData &render_data)
 {
-    glm::mat4 save = projection_view_mat[1];
+    glm::mat4 save = render_data.getViewMat();
 
     if(m_asteroid_field != nullptr)
     {
-        m_asteroid_field->drawAsteroidField(projection_view_mat, camPos, hdr);
+        m_asteroid_field->drawAsteroidField(render_data);
     }
         
-    projection_view_mat[1] = save;
+    render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
+void SolarSystem::display(RenderData &render_data)
 {
-    glm::mat4 save = view;
+    // glm::mat4 save = view;
+    render_data.initSaveMat();
 
     /************************************************* SUN RENDER ********************************************************/
         if(sun == nullptr)
@@ -258,14 +225,13 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
         {
             sun->updatePosition();
         
-            if(shaders[2] != nullptr)
+            if(render_data.getShader("sun") != nullptr)
             {
-                sun->display(projection, view, camPos, hdr, shaders[2]);
+                sun->display(render_data);
             }
         }
 
-    //restaure the view matrix
-    view = save;
+    render_data.saveViewMat();
 
     for (std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
     {
@@ -273,114 +239,85 @@ void SolarSystem::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &cam
         {
             it[0]->UpdatePositionPlan();
 
-            if((shaders[0] != nullptr) && (shaders[3] != nullptr))
+            if((render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("ring") != nullptr) && (render_data.getShader("multi_texture_p")))
             {
-                if((it[0]->getName() == "Uranus") || (it[0]->getName() == "Neptune"))
-                {
-                    it[0]->drawPlanete(projection, view, camPos, hdr, shaders[0], shaders[3]);
-                }
-                else if((it[0]->getName() == "Mars") || (it[0]->getName() == "Venus"))
-                {
-                    it[0]->drawPlanete(projection, view, camPos, hdr, shaders[1]);
-                }
-                else
-                {
-                    it[0]->drawPlanete(projection, view, camPos, hdr, shaders[0]);
-                }
+                it[0]->drawPlanete(render_data);
                 
-
-                //restaure the view matrix
-                view = save;
+                render_data.saveViewMat();
             }
         }
     }
         
-    /************************************************* EARTH RENDER ********************************************************/
-    //restaure the view matrix
-    view = save;
+    /************************************************* PLANETARY SYSTEM RENDER ********************************************************/
+    render_data.saveViewMat();
 
-    int i(0);
-    for (std::vector<sys_init_data>::iterator it = sys_data.begin(); it != sys_data.end(); ++it)
+    for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
     {
 
-        if(m_planetary_system[i] != nullptr)
+        if(it[0] != nullptr)
         {
-            if( (shaders[1] != nullptr) && (shaders[0] != nullptr) && (shaders[3] != nullptr))
+            if( (render_data.getShader("multi_texture_p") != nullptr) && (render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("ring") != nullptr))
             {
-                if(it[0].name_sys == "Earth System")
-                {
-                    m_planetary_system[i]->drawSystem(projection, view, camPos, hdr, shaders[1], shaders[0]);
-                    view = save;
-                }
-                else if(it[0].name_sys == "Jovian System")
-                {
-                    m_planetary_system[i]->drawSystem(projection, view, camPos, hdr,  shaders[0], shaders[0]);
-                    view = save;
-                }
-                else if(it[0].name_sys == "Saturnian System")
-                {
-                    m_planetary_system[i]->drawSystem(projection, view, camPos, hdr, shaders[0], shaders[0], shaders[3]);
-                    view = save;
-                }
+                it[0]->drawSystem(render_data);
+                render_data.saveViewMat();
             }
-            i++;
         }
     }
 
     //restaure the view matrix
-    view = save;
+    render_data.saveViewMat();
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayName **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader)
+void SolarSystem::displayName(RenderData &render_data)
 {
     
-    glm::mat4 save = view;
+    render_data.initSaveMat();
 
     for (int i(0); i < m_planetarySYS_count; i++)
     {
         if(m_planetary_system[i] != nullptr)
         {
-            if(name_render_shader != nullptr)
+            if(render_data.getShader("text") != nullptr)
             {
-                m_planetary_system[i]->drawName(projection, view, camPos, name_render_shader);
-                view = save;
+                m_planetary_system[i]->drawName(render_data);
+                render_data.saveViewMat();
 
             }
         }
 
-        view = save;
+        render_data.saveViewMat();
     }
 
-    view = save;
+    render_data.saveViewMat();
 
     for (int i(0); i < m_simple_planete_count; i++)
     {
        if(m_planete_creator[i] != nullptr)
        {
-           if(name_render_shader != nullptr)
+           if(render_data.getShader("text") != nullptr)
             {
-                m_planete_creator[i]->displayName(projection, view, camPos, 400, name_render_shader);
-                view = save;
+                m_planete_creator[i]->displayName(render_data, 400);
+                render_data.saveViewMat();
 
             }
        }
 
-        view = save;
+        render_data.saveViewMat();
     }
 
-    view = save;
+    render_data.saveViewMat();
 
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader)
+void SolarSystem::displayAtmo(RenderData &render_data)
 {
-    glm::mat4 save = view;
+    render_data.initSaveMat();
 
     /************************************************* SUN ATMO RENDER ********************************************************/
         if(sun == nullptr)
@@ -388,7 +325,7 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
             exit(EXIT_FAILURE);
         }
 
-    view = save;
+    render_data.saveViewMat();
 
     /************************************************* OTHER ATMO RENDER ********************************************************/
 
@@ -396,54 +333,55 @@ void SolarSystem::displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
     {
         if(it[0] != nullptr)
         {
-            if(shaders[4] != nullptr)
+            if(render_data.getShader("atmosphere") != nullptr)
             {
-                it[0]->drawAtmo(projection, view, camPos, hdr, shaders[4]);
+                it[0]->drawAtmo(render_data);
             }
             
         }
         
-        view = save;
+        render_data.saveViewMat();
     }
 
-    view = save;
+    render_data.saveViewMat();
 
     for(std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
     {
         if(it[0] != nullptr)
         {
 
-            if((shaders[4] != nullptr) && (it[0] != nullptr))
+            if((render_data.getShader("atmosphere") != nullptr) && (it[0] != nullptr))
             {
-                it[0]->drawAtmoPlanete(projection, view, camPos, hdr, shaders[4]);
+                it[0]->drawAtmoPlanete(render_data);
             }
             
         }
 
-        view = save;
+        render_data.saveViewMat();
     }
 
-    view = save;
+    render_data.saveViewMat();
 }
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, std::vector<Shader *> shaders, PlaneteInformation *plan_info)
+void SolarSystem::displayInfo(RenderData &render_data, PlaneteInformation *plan_info)
 {
     
-    glm::mat4 save = view;
+    glm::mat4 save = render_data.getViewMat();
 
     for(std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
     {
         if( (it[0] != nullptr) && (m_planete_info != nullptr))
         {
-            float r = it[0]->getRadius(camPos);
+            float r = it[0]->getRadius(render_data.getCamPos());
             float size_plan = it[0]->getSizePlan();
 
             if(r <= 10 * size_plan)
             {
-                view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                // view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
                 std::string tmp_name = it[0]->getName();
                 
                 if(tmp_name != m_planete_info->getInfoName())
@@ -452,32 +390,32 @@ void SolarSystem::displayInfo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 
                 }
 
 
-                if((shaders[0] != nullptr) && (shaders[1] != nullptr))
+                if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
                 {
-                    m_planete_info->renderInfo(projection, view, hdr, shaders);
-                    view = save;
+                    m_planete_info->renderInfo(render_data);
+                    render_data.updateView(save);
                 }
             }
         }
-        view = save;
+        render_data.updateView(save);
     }
-    view = save;
+    render_data.updateView(save);
 
     //display information of planetof the planetary system
     for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
     {
         if(it[0] != nullptr)
         {
-            if((shaders[0] != nullptr) && (shaders[1] != nullptr))
+            if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
             {
-                it[0]->drawInfo(projection, view, camPos, hdr, shaders, m_planete_info);
-                view = save;
+                it[0]->drawInfo(render_data, m_planete_info);
+                render_data.updateView(save);
             }
         }
         
-        view = save;
+        render_data.updateView(save);
     }
 
-    view = save;
+    render_data.updateView(save);
     
 }

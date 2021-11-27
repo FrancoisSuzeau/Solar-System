@@ -28,6 +28,8 @@ PURPOSE : header of the OpenGlSketch class
         #include <string>
         #include <math.h>
         #include <cassert>
+
+        #include "RenderData.hpp"
         
         #include "../CelestialBody/System/SystemCreator.hpp"
         #include "../CelestialBody/System/SolarSystemCreator.hpp"
@@ -64,10 +66,6 @@ PURPOSE : header of the OpenGlSketch class
                 Audio           *aud;
 
                 Camera	*camera;
-
-                mat4 projection;
-                mat4 view;
-                mat4 save_view;
                 
                 SDL_Window      *m_window;
                 SDL_GLContext   m_openGL_context;
@@ -78,15 +76,9 @@ PURPOSE : header of the OpenGlSketch class
 
                 Framebuffer     *m_framebuffer;
 
-                Shader *text_shader;
-
                 Spaceship *ship;
-                Shader *square_shader;
-                Shader *m_model_shader;
 
-                bool hdr;
                 bool hdr_key_pressed;
-                float exposure;
 
                 bool pause_music;
                 bool speed_key_pressed;
@@ -99,9 +91,6 @@ PURPOSE : header of the OpenGlSketch class
                 bool info_render;
                 bool info_render_key_pressed;
 
-                unsigned int frame_rate;
-                Uint32 start_loop, end_loop, time_past;
-
                 bool m_terminate;
 
                 bool m_overlay_display;
@@ -112,7 +101,6 @@ PURPOSE : header of the OpenGlSketch class
                 // Particule *m_particuleGenerator;
 
                 bool is_moving;
-                bool bloom;
                 
 
             public:
@@ -128,13 +116,13 @@ PURPOSE : header of the OpenGlSketch class
                 void    mainLoop();
                 void    startLoop();
                 void    windowProcess();
-                void    renderScene();
-                void    renderInfo();
-                void    renderOverlay();
+                void    renderScene(RenderData &render_data);
+                void    renderInfo(RenderData &render_data);
+                void    renderOverlay(RenderData &render_data);
                 void    renderParticles();
 
                 
-                void renderSettings();
+                void renderSettings(RenderData &render_data);
 
         };
 
