@@ -429,7 +429,7 @@ void OpenGlSketch::mainLoop()
     //=======================================================================================================================================================
 
     /******************************************************************* RENDER OVERLAY ********************************************************************/
-            renderSettings();
+            renderSettings(render_data);
     //=======================================================================================================================================================
 
     /******************************************************************* RENDER PARTICLES ********************************************************************/
@@ -591,32 +591,25 @@ void OpenGlSketch::renderScene(RenderData &render_data)
     {
         glm::vec3 camPos = camera->getPosition();
 
-            //save the modelview matrix
-            // save_view = view;
             render_data.initSaveMat();
 
             /****************************************** skybox render **************************************************/
 
                 solar_system->drawSkybox(render_data.getProjectionMat(), render_data.getViewMat(), render_data.getHDR());
 
-            //restaure the modelview matrix
-            // view = save_view;
             render_data.saveViewMat();
 
             /****************************************** bodys render ****************************************************/
             
                 solar_system->drawSystem(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR());
 
-            //restaure the modelview matrix
-            // view = save_view;
             render_data.saveViewMat();
 
             // /****************************************** atmosphere render *************************************************/
 
             //     solar_system->drawAtmo(projection, view, camPos, hdr);
 
-            // //restaure the modelview matrix
-            // view = save_view;
+            render_data.saveViewMat();
 
             // /******************************************* name render *****************************************************/
 
@@ -625,9 +618,8 @@ void OpenGlSketch::renderScene(RenderData &render_data)
             //         solar_system->drawName(projection, view, camPos, text_shader);
             //     }
                 
+            render_data.saveViewMat();
 
-            // //restaure the modelview matrix
-            // view = save_view;
 
             // /******************************************* asteroid field render *****************************************************/
 
@@ -635,10 +627,10 @@ void OpenGlSketch::renderScene(RenderData &render_data)
             //     projection_view.push_back(projection);
             //     projection_view.push_back(view);
 
-            //     // solar_system->drawAsteroidField(projection_view, camPos, hdr);
+                // solar_system->drawAsteroidField(projection_view, camPos, hdr);
                 
-            // //restaure the modelview matrix
-            // view = save_view;
+            render_data.saveViewMat();
+
     }
     
 }
@@ -763,20 +755,24 @@ void OpenGlSketch::windowProcess()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** renderSetting *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void OpenGlSketch::renderSettings()
+void OpenGlSketch::renderSettings(RenderData &render_data)
 {
     if((camera != nullptr) && (m_settings != nullptr) && (square_shader != nullptr))
     {
         if(menu)
         {
-    //         m_input.capturePointer(false);
-    //         m_input.displayPointer(true);
+            m_input.capturePointer(false);
+            m_input.displayPointer(true);
 
-    //         view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+            render_data.initSaveMat();
 
-    //             m_settings->displayFrameSettings(projection, view, hdr, text_shader, square_shader);
+            glm::mat4 tmp = render_data.getViewMat();
+            tmp = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+            render_data.updateView(tmp);
 
-    //         view = save_view;
+                m_settings->displayFrameSettings(render_data, text_shader, square_shader);
+
+            render_data.saveViewMat();
 
     //         int button_type = m_settings->manageButton(m_input);
 
@@ -891,11 +887,11 @@ void OpenGlSketch::renderSettings()
     //         {
     //             bloom = false;
     //         }
-    //     }
-    //     else
-    //     {
-    //         m_input.capturePointer(true);
-    //         m_input.displayPointer(false);
+        }
+        else
+        {
+            m_input.capturePointer(true);
+            m_input.displayPointer(false);
         }
     }
     

@@ -136,7 +136,7 @@ PURPOSE : header of the OpenGlSketch class
                 void    renderParticles();
 
                 
-                void renderSettings();
+                void renderSettings(RenderData &render_data);
 
         };
 
