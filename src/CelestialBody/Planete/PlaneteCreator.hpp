@@ -48,19 +48,19 @@ PURPOSE : header of the virtual PlaneteCreator class
                         return true;
                 }
 
-                void displayName(RenderData &render_data, glm::vec3 camPos, int threshold, Shader *name_render_shader = nullptr)
+                void displayName(RenderData &render_data, glm::vec3 camPos, int threshold)
                 {
-                        m_planete->displayName(render_data, camPos, threshold, name_render_shader);
+                        m_planete->displayName(render_data, camPos, threshold);
                 }
 
-                void drawAtmoPlanete(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader = nullptr)
+                void drawAtmoPlanete(RenderData &render_data, glm::vec3 &camPos)
                 {
-                       m_planete->displayAtmo(render_data, camPos, atmo_shader);
+                       m_planete->displayAtmo(render_data, camPos);
                 }
 
-                void drawPlanete(RenderData &render_data, glm::vec3 &camPos, Shader *m_plan_shader = nullptr, Shader *ring_shader = nullptr)
+                void drawPlanete(RenderData &render_data, glm::vec3 &camPos)
                 {
-                        m_planete->display(render_data, camPos, m_plan_shader, ring_shader);
+                        m_planete->display(render_data, camPos);
                 }
 
                 void UpdatePositionPlan()

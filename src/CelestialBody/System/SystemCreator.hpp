@@ -57,14 +57,14 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
-                void drawName(RenderData &render_data, glm::vec3 &camPos, Shader *name_render_shader = nullptr)
+                void drawName(RenderData &render_data, glm::vec3 &camPos)
                 {
-                        m_system->displayName(render_data, camPos, name_render_shader);
+                        m_system->displayName(render_data, camPos);
                 }
 
-                void drawAtmo(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader = nullptr)
+                void drawAtmo(RenderData &render_data, glm::vec3 &camPos)
                 {
-                        m_system->displayAtmo(render_data, camPos, atmo_shader);
+                        m_system->displayAtmo(render_data, camPos);
                 }
 
                 void drawInfo(RenderData &render_data, glm::vec3 &camPos, PlaneteInformation *planete_info = nullptr)
@@ -77,9 +77,9 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displaySkybox(render_data);
                 }
 
-                void drawSystem(RenderData &render_data, glm::vec3 &camPos, Shader *shader_host = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr)
+                void drawSystem(RenderData &render_data, glm::vec3 &camPos)
                 {
-                        m_system->display(render_data, camPos, shader_host, companion_shader, ring_shader);
+                        m_system->display(render_data, camPos);
                 }
 
                 void drawAsteroidField(RenderData &render_data, glm::vec3 camPos)

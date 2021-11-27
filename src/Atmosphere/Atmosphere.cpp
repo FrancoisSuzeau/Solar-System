@@ -106,9 +106,9 @@ void Atmosphere::updatePosAtmo(glm::vec3 pos_plan)
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Atmosphere::display(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader, Shader *ring_shader)
+void Atmosphere::display(RenderData &render_data, glm::vec3 &camPos)
 {
-    if(atmo_shader != nullptr)
+    if(render_data.getShader("atmosphere") != nullptr)
     {
         
         // glm::mat4 save = view;
@@ -116,26 +116,26 @@ void Atmosphere::display(RenderData &render_data, glm::vec3 &camPos, Shader *atm
         //! view = scale(view, m_apparent_size);
 
         //==============================================================================================================================
-        glUseProgram(atmo_shader->getProgramID());
+        glUseProgram(render_data.getShader("atmosphere")->getProgramID());
 
-            atmo_shader->setVec3("atmoColor", m_color_atmo);
+            render_data.getShader("atmosphere")->setVec3("atmoColor", m_color_atmo);
             
             if(sphere_atmosphere != nullptr)
             {
-                glUseProgram(atmo_shader->getProgramID());
+                glUseProgram(render_data.getShader("atmosphere")->getProgramID());
 
                     if(render_data.getHDR())
                     {
                         
                         if(name_planete_host == "Jupiter")
                         {
-                            atmo_shader->setFloat("trans_strenght", 0.0001);
-                            atmo_shader->setFloat("lightcolor", 0.35);
+                            render_data.getShader("atmosphere")->setFloat("trans_strenght", 0.0001);
+                            render_data.getShader("atmosphere")->setFloat("lightcolor", 0.35);
                         }
                         else
                         {
-                            atmo_shader->setFloat("trans_strenght", 0.2);
-                            atmo_shader->setFloat("lightcolor", 0.5);
+                            render_data.getShader("atmosphere")->setFloat("trans_strenght", 0.2);
+                            render_data.getShader("atmosphere")->setFloat("lightcolor", 0.5);
 
                         }
                     }
@@ -144,20 +144,20 @@ void Atmosphere::display(RenderData &render_data, glm::vec3 &camPos, Shader *atm
                         
                         if(name_planete_host == "Jupiter")
                         {
-                            atmo_shader->setFloat("trans_strenght", 0.2);
-                            atmo_shader->setFloat("lightcolor", 0.09);
+                            render_data.getShader("atmosphere")->setFloat("trans_strenght", 0.2);
+                            render_data.getShader("atmosphere")->setFloat("lightcolor", 0.09);
 
                         }
                         else
                         {
-                            atmo_shader->setFloat("trans_strenght", 0.5);
-                            atmo_shader->setFloat("lightcolor", 0.09);
+                            render_data.getShader("atmosphere")->setFloat("trans_strenght", 0.5);
+                            render_data.getShader("atmosphere")->setFloat("lightcolor", 0.09);
 
                         }
                     }
 
                 glUseProgram(0);
-                sphere_atmosphere->display(render_data, camPos, atmo_shader);
+                sphere_atmosphere->display(render_data, camPos);
             }
             
         glUseProgram(0);

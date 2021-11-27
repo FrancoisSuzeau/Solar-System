@@ -58,7 +58,6 @@ PURPOSE : header of the Square class
 
                 void load();
                 void display(RenderData &render_data, glm::vec3 color);
-                // void displayInfo(RenderData &render_data, glm::vec3 color, Shader *square_shader = nullptr);
                 void drawLoad(int count, RenderData &render_data, glm::vec3 color);
 
                 void updatePosition(glm::vec3 position);

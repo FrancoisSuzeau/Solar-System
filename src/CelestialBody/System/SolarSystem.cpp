@@ -36,28 +36,6 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police)
 
     m_asteroid_field = new AsteroidField();
     assert(m_asteroid_field);
-
-    
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag"));
-    assert(shaders[0]);
-    assert(shaders[0]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag"));
-    assert(shaders[1]);
-    assert(shaders[1]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag"));
-    assert(shaders[2]);
-    assert(shaders[2]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag"));
-    assert(shaders[3]);
-    assert(shaders[3]->loadShader());
-
-    shaders.push_back(new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag"));
-    assert(shaders[4]);
-    assert(shaders[4]->loadShader());
     
     this->initData();
 }
@@ -106,14 +84,6 @@ SolarSystem::~SolarSystem()
     if(m_planete_info != nullptr)
     {
         delete m_planete_info;
-    }
-
-    for (std::vector<Shader*>::iterator it = shaders.begin(); it!= shaders.end(); ++it)
-    {
-        if(*it != nullptr)
-        {
-            delete *it;
-        }
     }
 }
 
@@ -240,7 +210,7 @@ void SolarSystem::displayAsteroidField(RenderData &render_data, glm::vec3 camPos
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
+void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos)
 {
     // glm::mat4 save = view;
     render_data.initSaveMat();
@@ -255,9 +225,9 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *ho
         {
             sun->updatePosition();
         
-            if(shaders[2] != nullptr)
+            if(render_data.getShader("sun") != nullptr)
             {
-                sun->display(render_data, camPos, shaders[2]);
+                sun->display(render_data, camPos);
             }
         }
 
@@ -269,20 +239,9 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *ho
         {
             it[0]->UpdatePositionPlan();
 
-            if((shaders[0] != nullptr) && (shaders[3] != nullptr))
+            if((render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("ring") != nullptr) && (render_data.getShader("multi_texture_p")))
             {
-                if((it[0]->getName() == "Uranus") || (it[0]->getName() == "Neptune"))
-                {
-                    it[0]->drawPlanete(render_data, camPos, shaders[0], shaders[3]);
-                }
-                else if((it[0]->getName() == "Mars") || (it[0]->getName() == "Venus"))
-                {
-                    it[0]->drawPlanete(render_data, camPos, shaders[1]);
-                }
-                else
-                {
-                    it[0]->drawPlanete(render_data, camPos, shaders[0]);
-                }
+                it[0]->drawPlanete(render_data, camPos);
                 
                 render_data.saveViewMat();
             }
@@ -292,31 +251,16 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *ho
     /************************************************* PLANETARY SYSTEM RENDER ********************************************************/
     render_data.saveViewMat();
 
-    int i(0);
-    for (std::vector<sys_init_data>::iterator it = sys_data.begin(); it != sys_data.end(); ++it)
+    for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
     {
 
-        if(m_planetary_system[i] != nullptr)
+        if(it[0] != nullptr)
         {
-            if( (shaders[1] != nullptr) && (shaders[0] != nullptr) && (shaders[3] != nullptr))
+            if( (render_data.getShader("multi_texture_p") != nullptr) && (render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("ring") != nullptr))
             {
-                if(it[0].name_sys == "Earth System")
-                {
-                    m_planetary_system[i]->drawSystem(render_data, camPos, shaders[1], shaders[0]);
-                    render_data.saveViewMat();
-                }
-                else if(it[0].name_sys == "Jovian System")
-                {
-                    m_planetary_system[i]->drawSystem(render_data, camPos,  shaders[0], shaders[0]);
-                    render_data.saveViewMat();
-                }
-                else if(it[0].name_sys == "Saturnian System")
-                {
-                    m_planetary_system[i]->drawSystem(render_data, camPos, shaders[0], shaders[0], shaders[3]);
-                    render_data.saveViewMat();
-                }
+                it[0]->drawSystem(render_data, camPos);
+                render_data.saveViewMat();
             }
-            i++;
         }
     }
 
@@ -327,7 +271,7 @@ void SolarSystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *ho
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayName **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos, Shader *name_render_shader)
+void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos)
 {
     
     render_data.initSaveMat();
@@ -336,9 +280,9 @@ void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos, Shader
     {
         if(m_planetary_system[i] != nullptr)
         {
-            if(name_render_shader != nullptr)
+            if(render_data.getShader("text") != nullptr)
             {
-                m_planetary_system[i]->drawName(render_data, camPos, name_render_shader);
+                m_planetary_system[i]->drawName(render_data, camPos);
                 render_data.saveViewMat();
 
             }
@@ -353,9 +297,9 @@ void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos, Shader
     {
        if(m_planete_creator[i] != nullptr)
        {
-           if(name_render_shader != nullptr)
+           if(render_data.getShader("text") != nullptr)
             {
-                m_planete_creator[i]->displayName(render_data, camPos, 400, name_render_shader);
+                m_planete_creator[i]->displayName(render_data, camPos, 400);
                 render_data.saveViewMat();
 
             }
@@ -371,7 +315,7 @@ void SolarSystem::displayName(RenderData &render_data, glm::vec3 &camPos, Shader
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayAtmo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Shader *atmo_shader)
+void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos)
 {
     render_data.initSaveMat();
 
@@ -389,9 +333,9 @@ void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Shader
     {
         if(it[0] != nullptr)
         {
-            if(shaders[4] != nullptr)
+            if(render_data.getShader("atmosphere") != nullptr)
             {
-                it[0]->drawAtmo(render_data, camPos, shaders[4]);
+                it[0]->drawAtmo(render_data, camPos);
             }
             
         }
@@ -406,9 +350,9 @@ void SolarSystem::displayAtmo(RenderData &render_data, glm::vec3 &camPos, Shader
         if(it[0] != nullptr)
         {
 
-            if((shaders[4] != nullptr) && (it[0] != nullptr))
+            if((render_data.getShader("atmosphere") != nullptr) && (it[0] != nullptr))
             {
-                it[0]->drawAtmoPlanete(render_data, camPos, shaders[4]);
+                it[0]->drawAtmoPlanete(render_data, camPos);
             }
             
         }

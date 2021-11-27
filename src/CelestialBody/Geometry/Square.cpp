@@ -282,9 +282,3 @@ void Square::drawLoad(int count, RenderData &render_data, glm::vec3 color)
     render_data.updateHDR(save_hdr);
     
 }
-
-//NOT CONCERN
-// void Square::displayInfo(RenderData &render_data, glm::vec3 color, Shader *square_shader)
-// {
-
-// }

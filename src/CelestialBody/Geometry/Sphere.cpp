@@ -184,11 +184,11 @@ Sphere::~Sphere()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** display ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Sphere::display(RenderData &render_data, glm::vec3 &camPos, Shader *sphere_shader, Shader *ring_shader)
+void Sphere::display(RenderData &render_data, glm::vec3 &camPos)
 {
-    if(sphere_shader != nullptr)
+    if(render_data.getShader("atmosphere") != nullptr)
     {
-        glUseProgram(sphere_shader->getProgramID());
+        glUseProgram(render_data.getShader("atmosphere")->getProgramID());
         /************************************************* bind VBO and IBO ********************************************************/
         glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
@@ -201,14 +201,14 @@ void Sphere::display(RenderData &render_data, glm::vec3 &camPos, Shader *sphere_
         //===================================================================================================================================
 
 
-        sphere_shader->setMat4("view", render_data.getViewMat());
-        sphere_shader->setMat4("projection", render_data.getProjectionMat());
-        sphere_shader->setMat4("model", m_model_mat);
+        render_data.getShader("atmosphere")->setMat4("view", render_data.getViewMat());
+        render_data.getShader("atmosphere")->setMat4("projection", render_data.getProjectionMat());
+        render_data.getShader("atmosphere")->setMat4("model", m_model_mat);
 
-        sphere_shader->setVec3("viewPos", camPos);
-        sphere_shader->setFloat("transparency", 1.0f);
+        render_data.getShader("atmosphere")->setVec3("viewPos", camPos);
+        render_data.getShader("atmosphere")->setFloat("transparency", 1.0f);
 
-        sphere_shader->setInt("hdr", render_data.getHDR());
+        render_data.getShader("atmosphere")->setInt("hdr", render_data.getHDR());
         
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 

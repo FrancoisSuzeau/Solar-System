@@ -67,16 +67,16 @@ Disk::~Disk()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* display *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Disk::display(RenderData &render_data, glm::vec3 &camPos, Shader *disk_shader, Shader *ring_shader)
+void Disk::display(RenderData &render_data, glm::vec3 &camPos)
 {
-    if(disk_shader != nullptr)
+    if(render_data.getShader("square") != nullptr)
     {
-        glUseProgram(disk_shader->getProgramID());
+        glUseProgram(render_data.getShader("square")->getProgramID());
 
             glBindVertexArray(m_vaoID);
 
-            disk_shader->setMat4("projection", render_data.getProjectionMat());
-            disk_shader->setMat4("view", render_data.getViewMat());
+            render_data.getShader("square")->setMat4("projection", render_data.getProjectionMat());
+            render_data.getShader("square")->setMat4("view", render_data.getViewMat());
 
             glDrawArrays(GL_TRIANGLES, 0, 6);
 

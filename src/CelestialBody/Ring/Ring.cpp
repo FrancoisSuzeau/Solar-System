@@ -184,24 +184,24 @@ void Ring::updatePosRing(glm::vec3 planPos)
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Ring::display(RenderData &render_data, glm::vec3 &camPos, Shader *ring_shader)
+void Ring::display(RenderData &render_data, glm::vec3 &camPos)
 {
-    if(ring_shader != nullptr)
+    if(render_data.getShader("ring") != nullptr)
     {
         //Activate the shader
-        glUseProgram(ring_shader->getProgramID());
+        glUseProgram(render_data.getShader("ring")->getProgramID());
 
         //lock VAO
         glBindVertexArray(m_vaoID);
 
-            ring_shader->setMat4("view", render_data.getViewMat());
-            ring_shader->setMat4("projection", render_data.getProjectionMat());
-            ring_shader->setMat4("model", m_model_mat);
+            render_data.getShader("ring")->setMat4("view", render_data.getViewMat());
+            render_data.getShader("ring")->setMat4("projection", render_data.getProjectionMat());
+            render_data.getShader("ring")->setMat4("model", m_model_mat);
 
-            ring_shader->setVec3("viewPos", camPos);
-            ring_shader->setInt("hdr", render_data.getHDR());
+            render_data.getShader("ring")->setVec3("viewPos", camPos);
+            render_data.getShader("ring")->setInt("hdr", render_data.getHDR());
 
-            ring_shader->setTexture("texture0", 0);
+            render_data.getShader("ring")->setTexture("texture0", 0);
 
             if(m_normal_surf != nullptr)
             {
@@ -214,11 +214,11 @@ void Ring::display(RenderData &render_data, glm::vec3 &camPos, Shader *ring_shad
                     heighhtScale = 0.0f;
                 }
 
-                ring_shader->setTexture("normalMap", 1);
-                ring_shader->setInt("has_normal", true);
+                render_data.getShader("ring")->setTexture("normalMap", 1);
+                render_data.getShader("ring")->setInt("has_normal", true);
 
-                ring_shader->setTexture("depthMap", 2);
-                ring_shader->setFloat("heightScale", heighhtScale);
+                render_data.getShader("ring")->setTexture("depthMap", 2);
+                render_data.getShader("ring")->setFloat("heightScale", heighhtScale);
 
                 glActiveTexture(GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, m_disp_surf->getID());
@@ -228,7 +228,7 @@ void Ring::display(RenderData &render_data, glm::vec3 &camPos, Shader *ring_shad
             }
             else
             {
-                ring_shader->setInt("has_normal", false);
+                render_data.getShader("ring")->setInt("has_normal", false);
             }
 
             glActiveTexture(GL_TEXTURE0);

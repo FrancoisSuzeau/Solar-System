@@ -50,12 +50,12 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* display *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::display(RenderData &render_data, glm::vec3 &camPos, Shader *star_shader)
+void Star::display(RenderData &render_data, glm::vec3 &camPos)
 {
-    if(star_shader != nullptr)
+    if(render_data.getShader("sun") != nullptr)
     {
         //Activate the shader
-        glUseProgram(star_shader->getProgramID());
+        glUseProgram(render_data.getShader("sun")->getProgramID());
 
         //lock VBO and Index Buffer Object
         glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
@@ -68,14 +68,14 @@ void Star::display(RenderData &render_data, glm::vec3 &camPos, Shader *star_shad
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            star_shader->setMat4("view", render_data.getViewMat());
-            star_shader->setMat4("projection", render_data.getProjectionMat());
-            star_shader->setMat4("model", m_model_mat);
-            star_shader->setInt("inverse_normals", true);
+            render_data.getShader("sun")->setMat4("view", render_data.getViewMat());
+            render_data.getShader("sun")->setMat4("projection", render_data.getProjectionMat());
+            render_data.getShader("sun")->setMat4("model", m_model_mat);
+            render_data.getShader("sun")->setInt("inverse_normals", true);
 
-            star_shader->setTexture("texture0", 0);
+            render_data.getShader("sun")->setTexture("texture0", 0);
 
-            star_shader->setVec3("viewPos", camPos);
+            render_data.getShader("sun")->setVec3("viewPos", camPos);
             
             //active and lock cloudy texture
             glActiveTexture(GL_TEXTURE0);
