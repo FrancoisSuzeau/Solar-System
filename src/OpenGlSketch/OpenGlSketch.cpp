@@ -573,7 +573,7 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
             /****************************************** bodys render ****************************************************/
             
-                solar_system->drawSystem(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR());
+                solar_system->drawSystem(render_data, camPos);
 
             render_data.saveViewMat();
 

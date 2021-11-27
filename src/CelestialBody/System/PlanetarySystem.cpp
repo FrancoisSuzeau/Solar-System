@@ -140,32 +140,33 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** display ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
+void PlanetarySystem::display(RenderData &render_data, glm::vec3 &camPos, Shader *host_shader, Shader *companion_shader, Shader *ring_shader)
 {
     
-    glm::mat4 save = view;
+    // glm::mat4 save = view;
+    render_data.initSaveMat();
 
     if(host_shader != nullptr)
     {
         m_host_creator->UpdatePositionPlan();
-        m_host_creator->drawPlanete(projection, view, camPos, hdr, host_shader, ring_shader);
+        m_host_creator->drawPlanete(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), host_shader, ring_shader);
 
     }
 
-    view = save;
+    render_data.saveViewMat();
 
     if(companion_shader != nullptr)
     {
         for (int i(0); i < m_companion_count; i++)
         {
             m_moons_creator[i]->UpdatePositionPlan();
-            m_moons_creator[i]->drawPlanete(projection, view, camPos, hdr, companion_shader); 
+            m_moons_creator[i]->drawPlanete(render_data.getProjectionMat(), render_data.getViewMat(), camPos, render_data.getHDR(), companion_shader); 
 
-            view = save;
+            render_data.saveViewMat();
         }
     }
     
-    view = save;
+    render_data.saveViewMat();
 
 }
 

@@ -77,9 +77,9 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displaySkybox(render_data);
                 }
 
-                void drawSystem(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *shader_host = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr)
+                void drawSystem(RenderData &render_data, glm::vec3 &camPos, Shader *shader_host = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr)
                 {
-                        m_system->display(projection, view, camPos, hdr, shader_host, companion_shader, ring_shader);
+                        m_system->display(render_data, camPos, shader_host, companion_shader, ring_shader);
                 }
 
                 void drawAsteroidField(std::vector<glm::mat4> projection_view_mat, glm::vec3 camPos, bool hdr)

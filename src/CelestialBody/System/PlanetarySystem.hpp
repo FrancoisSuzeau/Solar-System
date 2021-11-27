@@ -62,7 +62,7 @@ PURPOSE : header of the virtual PlanetarySystem class
 
 
                 void loadSystem(int count, TTF_Font *police) override;
-                void display(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *host_shader = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr) override;
+                void display(RenderData &render_data, glm::vec3 &camPos, Shader *host_shader = nullptr, Shader *companion_shader = nullptr, Shader *ring_shader = nullptr) override;
                 void displaySkybox(RenderData &render_data) override;
                 void displayName(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, Shader *name_render_shader = nullptr) override;
                 void displayAtmo(glm::mat4 &projection, glm::mat4 &view, glm::vec3 &camPos, bool hdr, Shader *atmo_shader = nullptr) override;
