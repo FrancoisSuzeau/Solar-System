@@ -31,7 +31,7 @@ PURPOSE : header of the Sphere class
         #include <cmath>
 
         #include "../CelestialBody.hpp"
-        #include "../../Shader/Shader.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
         
 

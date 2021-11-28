@@ -564,7 +564,7 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
             // /******************************************* asteroid field render *****************************************************/
 
-                // solar_system->drawAsteroidField(render_data, camPos);
+                // solar_system->drawAsteroidField(render_data);
                 
             render_data.saveViewMat();
 

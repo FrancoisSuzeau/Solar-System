@@ -302,7 +302,7 @@ void SolarSystem::displayName(RenderData &render_data)
        {
            if(render_data.getShader("text") != nullptr)
             {
-                planete_render->displayName(render_data, 400, it[0]);
+                planete_render->displayName(render_data, 30, it[0]);
                 render_data.saveViewMat();
             }
        }

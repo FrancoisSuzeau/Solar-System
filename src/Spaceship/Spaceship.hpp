@@ -35,8 +35,6 @@ PURPOSE : header of the Spaceship class
         #include <Windows.h>
         #include <cassert>
         
-
-        #include "../Shader/Shader.hpp"
         #include "../Model/Model.hpp"
         #include "../Input/Input.hpp"
         #include "../OpenGlSketch/RenderData.hpp"

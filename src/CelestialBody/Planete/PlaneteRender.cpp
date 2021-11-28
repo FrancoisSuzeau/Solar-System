@@ -68,6 +68,8 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
 
             render_data.getShader(planete->getTypePlan())->setVec3("viewPos", render_data.getCamPos());
 
+            std::cout << planete->getName() << std::endl;
+
             render_data.getShader(planete->getTypePlan())->setInt("hdr", render_data.getHDR());
             if(planete->getName() == "Jupiter")
             {
@@ -147,12 +149,18 @@ void PlaneteRender::displayName(RenderData &render_data, int threshold, Planete 
         float theta = planete->getThetaFromCam(render_data.getCamPos(), r);
         float y = render_data.getCamPos()[1] - planete->getPosition()[1];
         
-        if(r >= threshold * m_real_size)
+        if(r >= threshold * planete->getSize())
         {
             planete->getNameRender()->updatePosition(planete->getPosition());
-            planete->getNameRender()->renderMovingText(render_data, m_real_size, r, phi, theta, y);
+            planete->getNameRender()->renderMovingText(render_data, planete->getSize(), r, phi, theta, y);
+
+            planete->setProximity(false);
         }
-        
+        else
+        {
+            planete->setProximity(true);
+        }
+
     }
     
 }

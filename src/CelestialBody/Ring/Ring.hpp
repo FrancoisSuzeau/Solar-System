@@ -18,8 +18,8 @@ PURPOSE : header of the Ring class
 
         #include "../../Texture/Texture.hpp"
         #include "../Geometry/Disk.hpp"
-        #include "../../Shader/Shader.hpp"
         #include "../System/System.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
         #include <string>
         #include <cassert>

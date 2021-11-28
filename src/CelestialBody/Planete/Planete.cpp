@@ -53,6 +53,7 @@ m_name(data.name)
     m_inclinaison_angle = data.inclinaison_angle;
     m_speed_rotation = data.speed_rotation;
     m_type_plan = data.type_plan;
+    is_near = false;
 
     if(m_name == "Mars")
     {
@@ -266,4 +267,14 @@ Ring* Planete::getRing() const
 float Planete::getSize() const
 {
     return m_real_size;
+}
+
+bool Planete::getProximity() const
+{
+    return is_near;
+}
+
+void Planete::setProximity(bool change)
+{
+    is_near = change;
 }

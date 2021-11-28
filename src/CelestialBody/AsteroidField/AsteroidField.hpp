@@ -34,10 +34,9 @@ PURPOSE : header of the AsteroidField class
         #include <vector>
         #include <Windows.h>
         
-
-        #include "../../Shader/Shader.hpp"
         #include "../../Model/Model.hpp"
         #include "../../Texture/Texture.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
        
 

@@ -25,9 +25,6 @@ PURPOSE : header of the virtual PlanetarySystemCreator class
 
         #include "SystemCreator.hpp"
         #include "PlanetarySystem.hpp"
-
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_ttf.h>
        
 /********************************************************************* class definition *********************************************************************/
 

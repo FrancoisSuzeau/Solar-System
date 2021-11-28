@@ -126,8 +126,6 @@ void PlanetarySystem::display(RenderData &render_data)
 {
     render_data.initSaveMat();
 
-    std::cout << m_host->getName() << " : " << m_moons.size() << std::endl;
-
     for (std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
     {
         if((it[0] != nullptr) && (planete_render != nullptr))
@@ -137,8 +135,6 @@ void PlanetarySystem::display(RenderData &render_data)
             if(render_data.getShader("one_texture_p") != nullptr)
             {
                 planete_render->display(render_data, it[0]);
-
-                std::cout << m_host->getName() << " : " << m_moons.size() << std::endl;
                 
                 render_data.saveViewMat();
             }
@@ -169,29 +165,38 @@ void PlanetarySystem::displayName(RenderData &render_data)
 {
     render_data.initSaveMat();
 
-    for (std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
+    if(m_host->getProximity())
     {
-       if(it[0] != nullptr)
-       {
-           if(render_data.getShader("text") != nullptr)
+        for (std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
+        {
+            if(it[0] != nullptr)
             {
-                planete_render->displayName(render_data, 400, it[0]);
-                render_data.saveViewMat();
+                if(render_data.getShader("text") != nullptr)
+                {
+                    planete_render->displayName(render_data, 10, it[0]);
+                    render_data.saveViewMat();
+                }
             }
-       }
+
+            render_data.saveViewMat();
+        }
 
         render_data.saveViewMat();
     }
-    render_data.saveViewMat();
-
+    
     if(m_host != nullptr)
     {
         if(render_data.getShader("text") != nullptr)
         {
-            planete_render->displayName(render_data, 400, m_host);
+            planete_render->displayName(render_data, 30, m_host);
             render_data.saveViewMat();
         }
     }
+
+    
+    
+
+    
 
     render_data.saveViewMat();
 }

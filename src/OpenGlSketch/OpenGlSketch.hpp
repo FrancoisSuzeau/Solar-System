@@ -42,8 +42,6 @@ PURPOSE : header of the OpenGlSketch class
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Overlay/Overlay.hpp"
 
-        #include "../Shader/Shader.hpp"
-
         #include "../Settings/Settings.hpp"
         #include "../Particule/Particule.hpp"
 

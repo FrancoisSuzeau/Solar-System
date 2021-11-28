@@ -26,7 +26,6 @@ PURPOSE : header of the Square class
         #include <string>
         #include <cstring>
 
-        #include "../../Shader/Shader.hpp"
         #include "../../OpenGlSketch/RenderData.hpp"
 
 /********************************************************************* class definition *********************************************************************/

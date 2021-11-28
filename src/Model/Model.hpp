@@ -40,8 +40,6 @@ PURPOSE : header of the Model class
         #include <vector>
         #include <Windows.h>
         
-
-        #include "../Shader/Shader.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
         #include "Mesh.hpp"
 

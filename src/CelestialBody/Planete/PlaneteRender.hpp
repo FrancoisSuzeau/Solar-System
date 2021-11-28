@@ -17,12 +17,8 @@ PURPOSE : header of the PlaneteRender class
 /********************************************************************* includes *********************************************************************/
 
         #include "../Geometry/Sphere.hpp"
-        #include "../../Texture/Texture.hpp"
-        #include "../../Text/Text.hpp"
-        #include "../../Atmosphere/Atmosphere.hpp"
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
         #include "Planete.hpp"
-        #include "../System/System.hpp"
 
         #include <string>
         #include <vector>
@@ -34,10 +30,6 @@ PURPOSE : header of the PlaneteRender class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
         
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_ttf.h>
-        
-
 /********************************************************************* class definition *********************************************************************/
 
         class PlaneteRender: public Sphere

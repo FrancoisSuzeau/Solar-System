@@ -20,11 +20,9 @@ PURPOSE : header of the virtual PlanetarySystem class
 
         #include "../Planete/PlaneteRender.hpp"
         #include "../Planete/Planete.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
-
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_ttf.h>
 
         #include <string>
         #include <vector>

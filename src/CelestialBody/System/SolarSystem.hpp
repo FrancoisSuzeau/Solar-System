@@ -25,13 +25,12 @@ PURPOSE : header of the virtual SolarSystem class
 
         #include "../Planete/PlaneteRender.hpp"
         #include "../Planete/Planete.hpp"
-        #include "../../Shader/Shader.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
         #include "../AsteroidField/AsteroidField.hpp"
 
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_ttf.h>
+        #include "../../OpenGlSketch/RenderData.hpp"
+
         #include <cassert>
         
         

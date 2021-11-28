@@ -58,6 +58,7 @@ PURPOSE : header of the Planete class
                 std::string                     m_type_plan;
 
                 float                           m_oppacity;
+                bool                            is_near;
                 
             public:
 
@@ -82,6 +83,8 @@ PURPOSE : header of the Planete class
                 Ring *getRing() const;
 
                 Atmosphere *getAtmosphere() const;
+                bool getProximity() const;
+                void setProximity(bool change);
 
                 void updatePosition();
                 
