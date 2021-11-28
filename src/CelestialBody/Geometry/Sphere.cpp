@@ -203,7 +203,7 @@ void Sphere::display(RenderData &render_data)
 
         render_data.getShader("atmosphere")->setMat4("view", render_data.getViewMat());
         render_data.getShader("atmosphere")->setMat4("projection", render_data.getProjectionMat());
-        render_data.getShader("atmosphere")->setMat4("model", m_model_mat);
+        // render_data.getShader("atmosphere")->setMat4("model", m_model_mat);
 
         render_data.getShader("atmosphere")->setVec3("viewPos", render_data.getCamPos());
         render_data.getShader("atmosphere")->setFloat("transparency", 1.0f);

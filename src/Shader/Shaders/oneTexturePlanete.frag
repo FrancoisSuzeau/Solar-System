@@ -8,7 +8,7 @@ uniform bool hdr;
 uniform bool has_normal;
 
 struct Material {
-    sampler2D diffuse;
+    sampler2D texture0;
     sampler2D normalMap;
     int shininess;
 };
@@ -70,7 +70,7 @@ void main(void) {
         viewDir = normalize(viewPos - FragPos);
     }
 
-    objectColor = texture(material.diffuse, texCoord).rgb;
+    objectColor = texture(material.texture0, texCoord).rgb;
     
     // *********************************************** mitigation ***************************************************
     float lightConst = 1.0f;

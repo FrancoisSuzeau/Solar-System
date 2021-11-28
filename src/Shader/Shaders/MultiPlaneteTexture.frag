@@ -12,8 +12,8 @@ layout (location = 1) out vec4 BrightColor;
 layout (location = 0) out vec4 FragColor;
 
 struct Material {
-    sampler2D cloud;
-    sampler2D terrain;
+    sampler2D texture0;
+    sampler2D texture1;
     sampler2D normalMap;
     int shininess;
 };
@@ -64,8 +64,8 @@ void main(void) {
         viewDir = normalize(viewPos - FragPos);
     }
 
-    vec4 surface_text = texture(material.terrain, texCoord);
-    vec4 cloud_text = texture(material.cloud, texCoord);
+    vec4 cloud_text = texture(material.texture1, texCoord);
+    vec4 surface_text = texture(material.texture0, texCoord);
 
     objectColor = mix(cloud_text, surface_text, oppacity).rgb;
 
