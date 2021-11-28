@@ -77,6 +77,7 @@ PURPOSE : header of the Planete class
                 Text *getNameRender() const;
                 glm::vec3 getPosition() const;
                 float getOppacity() const;
+                float getSize() const;
 
                 Ring *getRing() const;
 

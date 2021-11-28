@@ -27,7 +27,6 @@ PURPOSE : header of the virtual System class
 
         #include <SDL2/SDL.h>
         #include <SDL2/SDL_ttf.h>
-        #include "../../Shader/Shader.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
         #include "../../OpenGlSketch/RenderData.hpp"
@@ -76,7 +75,7 @@ PURPOSE : header of the virtual System class
                 virtual void displaySkybox(RenderData &render_data) = 0;
                 virtual void displayName(RenderData &render_data) = 0;
                 virtual void displayAtmo(RenderData &render_data) = 0;
-                virtual void displayInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;
+                virtual void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;
                 virtual void displayAsteroidField(RenderData &redner_data) = 0;
                 virtual void displayRing(RenderData &render_data) = 0;
                 

@@ -63,6 +63,16 @@ m_name(data.name)
 
         m_ring = nullptr;
     }
+    else if(m_name == "Earth")
+    {
+        m_atmosphere = new Atmosphere(1.05f, m_name);
+        assert(m_atmosphere);
+
+        m_oppacity = 0.3f;
+
+        m_ring = nullptr;
+
+    }
     else if(m_name == "Venus")
     {
         m_atmosphere = new Atmosphere(1.05f, m_name);
@@ -71,6 +81,23 @@ m_name(data.name)
         m_oppacity = 0.115f;
 
         m_ring = nullptr;
+
+    }
+    else if(m_name == "Jupiter")
+    {
+        m_atmosphere = new Atmosphere(1.05f, m_name);
+        assert(m_atmosphere);
+
+        m_ring = nullptr;
+
+    }
+    else if(m_name == "Saturn")
+    {
+        m_atmosphere = new Atmosphere(1.05f, m_name);
+        assert(m_atmosphere);
+
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png", data);
+        assert(m_ring);
 
     }
     else if(m_name == "Uranus")
@@ -234,4 +261,9 @@ Atmosphere* Planete::getAtmosphere() const
 Ring* Planete::getRing() const
 {
     return m_ring;
+}
+
+float Planete::getSize() const
+{
+    return m_real_size;
 }

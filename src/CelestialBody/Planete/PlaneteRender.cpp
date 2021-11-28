@@ -162,14 +162,10 @@ void PlaneteRender::displayName(RenderData &render_data, int threshold, Planete 
 /***********************************************************************************************************************************************************************/
 void PlaneteRender::displayAtmo(RenderData &render_data, Planete *planete)
 {
-    if( (planete->getName() == "Mars") || (planete->getName() == "Venus") || (planete->getName() == "Uranus") || (planete->getName() == "Neptune")) 
+    if( (render_data.getShader("atmosphere") != nullptr) && (planete->getAtmosphere() != nullptr) )
     {
-        if( (render_data.getShader("atmosphere") != nullptr) && (planete->getAtmosphere() != nullptr) )
-        {
-            planete->getAtmosphere()->updatePosAtmo(planete->getPosition());
-            planete->getAtmosphere()->display(render_data);
-        }
-        
+        planete->getAtmosphere()->updatePosAtmo(planete->getPosition());
+        planete->getAtmosphere()->display(render_data);
     }
     
 }

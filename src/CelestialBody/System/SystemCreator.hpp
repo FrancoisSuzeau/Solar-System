@@ -69,7 +69,7 @@ PURPOSE : header of the virtual SystemCreator class
 
                 void drawInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr)
                 {
-                        m_system->displayInfo(render_data, planete_info);
+                        m_system->renderInfos(render_data, planete_info);
                 }
 
                 void drawSkybox(RenderData &render_data)

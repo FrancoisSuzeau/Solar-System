@@ -23,6 +23,7 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police)
     assert(m_planete_info);
 
     planete_render = new PlaneteRender();
+    assert(planete_render);
 
     m_system_name = data.name_sys;
     m_companion_count = data.companion_count;
@@ -57,6 +58,14 @@ SolarSystem::~SolarSystem()
             delete *it;
         }
         
+    }
+
+    for(std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
+    {
+        if(*it != nullptr)
+        {
+            delete *it;
+        }
     }
     
     if(skybox != nullptr)
@@ -109,32 +118,31 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
 {
     assert(police);
     /************************************************* loading planetary system ********************************************************/
-    //Earth System
-    // if(count == 1)
-    // {
-    //     m_planetary_system.push_back(new PlanetarySystemCreator());
-    //     assert(m_planetary_system[0]);
-    //     assert(m_planetary_system[0]->MakingSystem(sys_data[0], police));
-    //     m_planetary_system[0]->loadSystem(count, police);
-    // }
+    // Earth System
+    if(count == 1)
+    {
+        m_planetary_system.push_back(new PlanetarySystemCreator());
+        assert(m_planetary_system[0]);
+        assert(m_planetary_system[0]->MakingSystem(sys_data[0], police));
+        m_planetary_system[0]->loadSystem(count, police);
+    }
+    // Jovian System
+    if(count == 2)
+    {
+        m_planetary_system.push_back(new PlanetarySystemCreator());
+        assert(m_planetary_system[1]);
+        assert(m_planetary_system[1]->MakingSystem(sys_data[1], police));
+        m_planetary_system[1]->loadSystem(count, police);
+    }
 
-    // //Jovian System
-    // if(count == 2)
-    // {
-    //     m_planetary_system.push_back(new PlanetarySystemCreator());
-    //     assert(m_planetary_system[1]);
-    //     assert(m_planetary_system[1]->MakingSystem(sys_data[1], police));
-    //     m_planetary_system[1]->loadSystem(count, police);
-    // }
-
-    // //Saturian System
-    // if(count == 3)
-    // {
-    //     m_planetary_system.push_back(new PlanetarySystemCreator());
-    //     assert(m_planetary_system[2]);
-    //     assert(m_planetary_system[2]->MakingSystem(sys_data[2], police));
-    //     m_planetary_system[2]->loadSystem(count, police);
-    // }  
+    //Saturian System
+    if(count == 3)
+    {
+        m_planetary_system.push_back(new PlanetarySystemCreator());
+        assert(m_planetary_system[2]);
+        assert(m_planetary_system[2]->MakingSystem(sys_data[2], police));
+        m_planetary_system[2]->loadSystem(count, police);
+    }  
     //===================================================================================================================
 
     /************************************************* loading planete ********************************************************/
@@ -211,10 +219,6 @@ void SolarSystem::display(RenderData &render_data)
     render_data.initSaveMat();
 
     /************************************************* SUN RENDER ********************************************************/
-        if(sun == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
 
         if(sun != nullptr)
         {
@@ -234,30 +238,34 @@ void SolarSystem::display(RenderData &render_data)
         {
             it[0]->updatePosition();
 
-            if((render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("ring") != nullptr) && (render_data.getShader("multi_texture_p")))
+            if((render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("multi_texture_p")))
             {
                 planete_render->display(render_data, it[0]);
                 
                 render_data.saveViewMat();
             }
         }
+
+        render_data.saveViewMat();
     }
         
     /************************************************* PLANETARY SYSTEM RENDER ********************************************************/
     render_data.saveViewMat();
 
-    // for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
-    // {
+    for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
+    {
 
-    //     if(it[0] != nullptr)
-    //     {
-    //         if( (render_data.getShader("multi_texture_p") != nullptr) && (render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("ring") != nullptr))
-    //         {
-    //             it[0]->drawSystem(render_data);
-    //             render_data.saveViewMat();
-    //         }
-    //     }
-    // }
+        if(it[0] != nullptr)
+        {
+            if( (render_data.getShader("multi_texture_p") != nullptr) && (render_data.getShader("one_texture_p") != nullptr))
+            {
+                it[0]->drawSystem(render_data);
+                render_data.saveViewMat();
+            }
+        }
+
+        render_data.saveViewMat();
+    }
 
     //restaure the view matrix
     render_data.saveViewMat();
@@ -272,20 +280,19 @@ void SolarSystem::displayName(RenderData &render_data)
     render_data.initSaveMat();
 
 
-    // for (int i(0); i < m_planetarySYS_count; i++)
-    // {
-    //     if(m_planetary_system[i] != nullptr)
-    //     {
-    //         if(render_data.getShader("text") != nullptr)
-    //         {
-    //             m_planetary_system[i]->drawName(render_data);
-    //             render_data.saveViewMat();
+    for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            if(render_data.getShader("text") != nullptr)
+            {
+                it[0]->drawName(render_data);
+                render_data.saveViewMat();
+            }
+        }
 
-    //         }
-    //     }
-
-    //     render_data.saveViewMat();
-    // }
+        render_data.saveViewMat();
+    }
 
     render_data.saveViewMat();
 
@@ -316,19 +323,21 @@ void SolarSystem::displayAtmo(RenderData &render_data)
 
     /************************************************* OTHER ATMO RENDER ********************************************************/
 
-    // for(std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
-    // {
-    //     if(it[0] != nullptr)
-    //     {
-    //         if(render_data.getShader("atmosphere") != nullptr)
-    //         {
-    //             it[0]->drawAtmo(render_data);
-    //         }
+    for(std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            if(render_data.getShader("atmosphere") != nullptr)
+            {
+                it[0]->drawAtmo(render_data);
+
+                render_data.saveViewMat();
+            }
             
-    //     }
+        }
         
-    //     render_data.saveViewMat();
-    // }
+        render_data.saveViewMat();
+    }
 
     render_data.saveViewMat();
 
@@ -337,6 +346,8 @@ void SolarSystem::displayAtmo(RenderData &render_data)
         if((render_data.getShader("atmosphere") != nullptr) && (it[0] != nullptr))
         {
             planete_render->displayAtmo(render_data, it[0]);
+
+            render_data.saveViewMat();
         }
 
         render_data.saveViewMat();
@@ -348,84 +359,62 @@ void SolarSystem::displayAtmo(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** displayInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void SolarSystem::displayInfo(RenderData &render_data, PlaneteInformation *plan_info)
+void SolarSystem::renderInfos(RenderData &render_data, PlaneteInformation *plan_info)
 {
     
     glm::mat4 save = render_data.getViewMat();
 
-    // if( (m_planete_creator[0] != nullptr) && (m_planete_info != nullptr))
-    //     {
-    //         float r = m_planete_creator[0]->getRadius(render_data.getCamPos());
-    //         float size_plan = m_planete_creator[0]->getSizePlan();
 
-    //         if(r <= 10 * size_plan)
-    //         {
-    //             // view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-    //             render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    //             std::string tmp_name = m_planete_creator[0]->getName();
-                
-    //             if(tmp_name != m_planete_info->getInfoName())
-    //             {
-    //                 m_planete_info->changeNamePlan(tmp_name);
-    //             }
+    for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
+    {
 
+        if( (it[0] != nullptr) && (m_planete_info != nullptr))
+        {
+            float r = it[0]->getRadiusFromCam(render_data.getCamPos());
+            float size_plan = it[0]->getSize();
 
-    //             if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
-    //             {
-    //                 m_planete_info->renderInfo(render_data);
-    //                 render_data.updateView(save);
-    //             }
-    //         }
-    //     }
-
-    // for(std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
-    // {
-    //     if( (it[0] != nullptr) && (m_planete_info != nullptr))
-    //     {
-    //         float r = it[0]->getRadius(render_data.getCamPos());
-    //         float size_plan = it[0]->getSizePlan();
-
-    //         if(r <= 10 * size_plan)
-    //         {
-    //             // view = lookAt(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-    //             render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    //             std::string tmp_name = it[0]->getName();
-                
-    //             if(tmp_name != m_planete_info->getInfoName())
-    //             {
-    //                 m_planete_info->changeNamePlan(tmp_name);
-    //             }
+            if(r <= 10 * size_plan)
+            {
+                render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                std::string tmp_name = it[0]->getName();
+                    
+                if(tmp_name != m_planete_info->getInfoName())
+                {
+                    m_planete_info->changeNamePlan(tmp_name);
+                }
 
 
-    //             if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
-    //             {
-    //                 m_planete_info->renderInfo(render_data);
-    //                 render_data.updateView(save);
-    //             }
-    //         }
-    //     }
-    //     render_data.updateView(save);
-    // }
+                if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
+                {
+                    m_planete_info->renderInfo(render_data);
+                    render_data.updateView(save);
+                }
+            }
+        }
+        render_data.updateView(save);
+    }
     render_data.updateView(save);
 
-    //display information of planetof the planetary system
-    // for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
-    // {
-    //     if(it[0] != nullptr)
-    //     {
-    //         if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
-    //         {
-    //             it[0]->drawInfo(render_data, m_planete_info);
-    //             render_data.updateView(save);
-    //         }
-    //     }
+    // display information of planetof the planetary system
+    for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
+            {
+                it[0]->drawInfo(render_data, m_planete_info);
+                render_data.updateView(save);
+            }
+        }
         
-    //     render_data.updateView(save);
-    // }
+        render_data.updateView(save);
+    }
 
     render_data.updateView(save);
     
-}/***********************************************************************************************************************************************************************/
+}
+
+/***********************************************************************************************************************************************************************/
 /******************************************************************************* displayRing ****************************************************************************/
 /************************************************************************************************************************************************************************/
 void SolarSystem::displayRing(RenderData &render_data)
@@ -442,5 +431,11 @@ void SolarSystem::displayRing(RenderData &render_data)
 
     render_data.saveViewMat();
 
-
+    for(std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            it[0]->drawRing(render_data);
+        }
+    }
 }

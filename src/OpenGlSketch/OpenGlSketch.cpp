@@ -583,8 +583,6 @@ void OpenGlSketch::renderInfo(RenderData &render_data)
         {
             render_data.initSaveMat();
 
-            // glm::vec3 camPos = camera->getPosition();
-
                 if(render_data.getShader("text") != nullptr)
                 {
                     solar_system->drawInfo(render_data);
