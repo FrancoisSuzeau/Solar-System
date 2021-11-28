@@ -57,34 +57,37 @@ m_name(data.name)
     if(m_name == "Mars")
     {
         m_atmosphere = new Atmosphere(1.05f, m_name);
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_atmosphere);
+
+        m_oppacity = 0.3f;
     }
     else if(m_name == "Venus")
     {
         m_atmosphere = new Atmosphere(1.05f, m_name);
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_atmosphere);
+
+        m_oppacity = 0.115f;
+
     }
     else if(m_name == "Uranus")
     {
         m_atmosphere = new Atmosphere(1.05f, m_name);
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_atmosphere);
+
+        // m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png", data);
+        // assert(m_ring);
     }
     else if(m_name == "Neptune")
     {
         m_atmosphere = new Atmosphere(1.05f, m_name);
-        if(m_atmosphere == nullptr)
-        {
-            exit(EXIT_FAILURE);
-        }
+        assert(m_atmosphere);
+
+        // m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png", data);
+        // assert(m_ring);
+    }
+    else
+    {
+        m_atmosphere = nullptr;
     }
 }
 
@@ -102,6 +105,16 @@ Planete::~Planete()
             delete it[0];
         }
     }
+
+    if(m_atmosphere != nullptr)
+    {
+        delete m_atmosphere;
+    }
+
+    // if(m_ring != nullptr)
+    // {
+    //     delete m_ring;
+    // }
     
 
     if(m_name_renderer != nullptr)
@@ -201,4 +214,19 @@ Text* Planete::getNameRender() const
 glm::vec3 Planete::getPosition() const
 {
     return m_current_position;
+}
+
+float Planete::getOppacity() const
+{
+    return m_oppacity;
+}
+
+Atmosphere* Planete::getAtmosphere() const
+{
+    return m_atmosphere;
+}
+
+Ring* Planete::getRing() const
+{
+    return m_ring;
 }

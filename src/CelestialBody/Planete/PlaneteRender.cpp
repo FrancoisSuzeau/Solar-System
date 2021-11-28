@@ -64,6 +64,7 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
         
             render_data.getShader(planete->getTypePlan())->setTexture("material.texture0", 0);
             render_data.getShader(planete->getTypePlan())->setTexture("material.texture1", 1);
+            render_data.getShader(planete->getTypePlan())->setFloat("oppacity", planete->getOppacity());
 
             render_data.getShader(planete->getTypePlan())->setVec3("viewPos", render_data.getCamPos());
 
@@ -102,7 +103,7 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
             
             glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
-            glActiveTexture(GL_TEXTURE + planete->getPlanTexture().size());
+            glActiveTexture(GL_TEXTURE0 + planete->getPlanTexture().size());
             glBindTexture(GL_TEXTURE_2D, 0);
             
             if(planete->getTypePlan() == "multi_texture_p")
@@ -159,21 +160,29 @@ void PlaneteRender::displayName(RenderData &render_data, int threshold, Planete 
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* displayAtmo ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteRender::displayAtmo(RenderData &render_data)
+void PlaneteRender::displayAtmo(RenderData &render_data, Planete *planete)
 {
-    if( (m_name == "Mars") || (m_name == "Venus") || (m_name == "Uranus") || (m_name == "Neptune")) 
+    if( (planete->getName() == "Mars") || (planete->getName() == "Venus") || (planete->getName() == "Uranus") || (planete->getName() == "Neptune")) 
     {
-        // if(render_data.getShader("atmosphere") != nullptr)
-        // {
-            
-        //     if(m_atmosphere != nullptr)
-        //     {
-        //         m_atmosphere->updatePosAtmo(m_current_position);
-        //         m_atmosphere->display(render_data);
-        //     }
-            
-        // }
+        if( (render_data.getShader("atmosphere") != nullptr) && (planete->getAtmosphere() != nullptr) )
+        {
+            planete->getAtmosphere()->updatePosAtmo(planete->getPosition());
+            planete->getAtmosphere()->display(render_data);
+        }
         
     }
     
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************* renderRing ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void PlaneteRender::renderRing(RenderData &render_data, Planete *planete)
+{
+    // if((planete->getRing() != nullptr) && (render_data.getShader("ring") != nullptr))
+    // {
+    //     planete->getRing()->setPosition(m_current_position);
+    //     planete->getRing()->updatePosition();
+    //     planete->getRing()->display(render_data);
+    // }
 }

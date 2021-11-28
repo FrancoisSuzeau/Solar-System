@@ -93,10 +93,9 @@ void SolarSystem::initData()
 {
     m_data.push_back({{"../assets/textures/CelestialBody/MercuryMap.jpg"}, "../assets/textures/normalMap/mercury_normalMap.jpg", "Mercury", "one_texture_p", 11.49f, 0.01f, 0.1f, glm::vec3(5790.0f, 0.0f, 0.0f)});
     m_data.push_back({{"../assets/textures/CelestialBody/VenusMap.jpg", "../assets/textures/CelestialBody/VenusCloud.jpg"}, "../assets/textures/normalMap/venus_normalMap.jpg", "Venus", "multi_texture_p", 28.47f, 177.3f, 0.1f, glm::vec3(0.0f, -10820.0f, 0.0f)});
-    // m_data.push_back({"../assets/textures/CelestialBody/VenusMap.jpg", "../assets/textures/normalMap/venus_normalMap.jpg", "../assets/textures/displacementMap/venus_dispMap.jpg", "Venus", 28.47f, 177.3f, glm::vec3(0.0f, -10820.0f, 0.0f)});
-    // m_data.push_back({"../assets/textures/CelestialBody/MarsMap.jpg", "../assets/textures/normalMap/mars_normalMap.jpg", "../assets/textures/displacementMap/mars_dispMap.jpg", "Mars", 15.99f, 25.19f, glm::vec3(0, 22790, 0)});
-    // m_data.push_back({"../assets/textures/CelestialBody/UranusCloud.jpg", "../assets/textures/normalMap/uranus_normalMap.jpg", "../assets/textures/displacementMap/uranus_dispMap.jpg", "Uranus", 120.21f, 97.77f, glm::vec3(-28707.0f, 0.0f, 0.0f)});
-    // m_data.push_back({"../assets/textures/CelestialBody/NeptuneCloud.jpg", "../assets/textures/normalMap/neptune_normalMap.jpg", "../assets/textures/displacementMap/neptune_dispMap.jpg", "Neptune", 116.49f, 26.32f, glm::vec3(0.0f, 44984.0f, 0.0f)});
+    m_data.push_back({{"../assets/textures/CelestialBody/MarsMap.jpg", "../assets/textures/CelestialBody/MarsCloud.png"}, "../assets/textures/normalMap/mars_normalMap.jpg", "Mars", "multi_texture_p", 15.99f, 25.19f, 0.1f, glm::vec3(0, 22790, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/UranusCloud.jpg"}, "../assets/textures/normalMap/uranus_normalMap.jpg", "Uranus", "one_texture_p", 120.21f, 97.77f, 0.1f, glm::vec3(-28707.0f, 0.0f, 0.0f)});
+    m_data.push_back({{"../assets/textures/CelestialBody/NeptuneCloud.jpg"}, "../assets/textures/normalMap/neptune_normalMap.jpg", "Neptune", "one_texture_p", 116.49f, 26.32f, 0.1f, glm::vec3(0.0f, 44984.0f, 0.0f)});
 
     sys_data.push_back({"Earth System", 1});
     sys_data.push_back({"Jovian System", 4});
@@ -152,25 +151,22 @@ void SolarSystem::loadSystem(int count, TTF_Font *police)
         assert(m_planetes[1]);
     }
 
-    // if(count == 6)
-    // {
-    //     m_planete_creator.push_back(new AtmoPlaneteCreator());
-    //     assert(m_planete_creator[2]);
-    //     assert(m_planete_creator[2]->MakingPlanete(m_data[2], police));
-    // }
+    if(count == 6)
+    {
+        m_planetes.push_back(new Planete(m_data[2], police));
+        assert(m_planetes[2]);
+    }
 
-    // if(count == 7)
-    // {
-    //     m_planete_creator.push_back(new PlaneteRingCreator());
-    //     assert(m_planete_creator[3]);
-    //     assert(m_planete_creator[3]->MakingPlanete(m_data[3], police));
-    // }
-    // if(count == 8)
-    // {
-    //     m_planete_creator.push_back(new PlaneteRingCreator());
-    //     assert(m_planete_creator[4]);
-    //     assert(m_planete_creator[4]->MakingPlanete(m_data[4], police));
-    // }
+    if(count == 7)
+    {
+        m_planetes.push_back(new Planete(m_data[3], police));
+        assert(m_planetes[3]);
+    }
+    if(count == 8)
+    {
+        m_planetes.push_back(new Planete(m_data[4], police));
+        assert(m_planetes[4]);
+    }
     //===================================================================================================================
 
     
@@ -336,20 +332,15 @@ void SolarSystem::displayAtmo(RenderData &render_data)
 
     render_data.saveViewMat();
 
-    // for(std::vector<PlaneteCreator*>::iterator it = m_planete_creator.begin(); it != m_planete_creator.end(); ++it)
-    // {
-    //     if(it[0] != nullptr)
-    //     {
+    for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
+    {
+        if((render_data.getShader("atmosphere") != nullptr) && (it[0] != nullptr))
+        {
+            planete_render->displayAtmo(render_data, it[0]);
+        }
 
-    //         if((render_data.getShader("atmosphere") != nullptr) && (it[0] != nullptr))
-    //         {
-    //             it[0]->drawAtmoPlanete(render_data);
-    //         }
-            
-    //     }
-
-    //     render_data.saveViewMat();
-    // }
+        render_data.saveViewMat();
+    }
 
     render_data.saveViewMat();
 }

@@ -53,7 +53,8 @@ PURPOSE : header of the PlaneteRender class
                 ~PlaneteRender();
                 void display(RenderData &render_data, Planete *planete);
                 void displayName(RenderData &render_data, int threshold, Planete *planete);
-                void displayAtmo(RenderData &render_data);
+                void displayAtmo(RenderData &render_data, Planete *planete);
+                void renderRing(RenderData &render_data, Planete *planete);
                 
         };
 

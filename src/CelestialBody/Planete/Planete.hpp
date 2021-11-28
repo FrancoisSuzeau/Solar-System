@@ -19,6 +19,7 @@ PURPOSE : header of the Planete class
         #include "../../Texture/Texture.hpp"
         #include "../../Text/Text.hpp"
         #include "../../Atmosphere/Atmosphere.hpp"
+        #include "../Ring/Ring.hpp"
         #include "../System/System.hpp"
 
         #include <string>
@@ -44,6 +45,7 @@ PURPOSE : header of the Planete class
                 std::string                     m_name;
                 Text                            *m_name_renderer;
                 Atmosphere                      *m_atmosphere;
+                Ring                            *m_ring;
                 float                           m_real_size;
                 float                           m_size;
                 float                           m_inclinaison_angle;
@@ -54,6 +56,8 @@ PURPOSE : header of the Planete class
                 glm::mat4                       m_model_mat;
 
                 std::string                     m_type_plan;
+
+                float                           m_oppacity;
                 
             public:
 
@@ -72,6 +76,11 @@ PURPOSE : header of the Planete class
                 glm::mat4 getModelMat() const;
                 Text *getNameRender() const;
                 glm::vec3 getPosition() const;
+                float getOppacity() const;
+
+                Ring *getRing() const;
+
+                Atmosphere *getAtmosphere() const;
 
                 void updatePosition();
                 
