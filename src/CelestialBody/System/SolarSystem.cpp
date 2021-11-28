@@ -425,4 +425,22 @@ void SolarSystem::displayInfo(RenderData &render_data, PlaneteInformation *plan_
 
     render_data.updateView(save);
     
+}/***********************************************************************************************************************************************************************/
+/******************************************************************************* displayRing ****************************************************************************/
+/************************************************************************************************************************************************************************/
+void SolarSystem::displayRing(RenderData &render_data)
+{
+    render_data.initSaveMat();
+    
+    for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
+    {
+        if( (render_data.getShader("ring") != nullptr) && (it[0] != nullptr) )
+        {
+            planete_render->renderRing(render_data, it[0]);
+        }
+    }
+
+    render_data.saveViewMat();
+
+
 }

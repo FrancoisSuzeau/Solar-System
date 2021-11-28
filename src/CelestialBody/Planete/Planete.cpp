@@ -60,6 +60,8 @@ m_name(data.name)
         assert(m_atmosphere);
 
         m_oppacity = 0.3f;
+
+        m_ring = nullptr;
     }
     else if(m_name == "Venus")
     {
@@ -68,26 +70,29 @@ m_name(data.name)
 
         m_oppacity = 0.115f;
 
+        m_ring = nullptr;
+
     }
     else if(m_name == "Uranus")
     {
         m_atmosphere = new Atmosphere(1.05f, m_name);
         assert(m_atmosphere);
 
-        // m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png", data);
-        // assert(m_ring);
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png", data);
+        assert(m_ring);
     }
     else if(m_name == "Neptune")
     {
         m_atmosphere = new Atmosphere(1.05f, m_name);
         assert(m_atmosphere);
 
-        // m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png", data);
-        // assert(m_ring);
+        m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png", data);
+        assert(m_ring);
     }
     else
     {
         m_atmosphere = nullptr;
+        m_ring = nullptr;
     }
 }
 
@@ -111,10 +116,10 @@ Planete::~Planete()
         delete m_atmosphere;
     }
 
-    // if(m_ring != nullptr)
-    // {
-    //     delete m_ring;
-    // }
+    if(m_ring != nullptr)
+    {
+        delete m_ring;
+    }
     
 
     if(m_name_renderer != nullptr)

@@ -87,10 +87,10 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displayAsteroidField(render_data);
                 }
 
-                // void drawRing(RenderData &render_data)
-                // {
-                //         m_system->displayRing(render_data);
-                // }
+                void drawRing(RenderData &render_data)
+                {
+                        m_system->displayRing(render_data);
+                }
 
 
         };

@@ -179,10 +179,10 @@ void PlaneteRender::displayAtmo(RenderData &render_data, Planete *planete)
 /***********************************************************************************************************************************************************************/
 void PlaneteRender::renderRing(RenderData &render_data, Planete *planete)
 {
-    // if((planete->getRing() != nullptr) && (render_data.getShader("ring") != nullptr))
-    // {
-    //     planete->getRing()->setPosition(m_current_position);
-    //     planete->getRing()->updatePosition();
-    //     planete->getRing()->display(render_data);
-    // }
+    if((planete->getRing() != nullptr) && (render_data.getShader("ring") != nullptr))
+    {
+        planete->getRing()->setPosition(planete->getPosition());
+        planete->getRing()->updatePosition();
+        planete->getRing()->display(render_data);
+    }
 }
