@@ -27,16 +27,6 @@ Framebuffer::Framebuffer()
 
 Framebuffer::~Framebuffer()
 {
-    if(screenShader != nullptr)
-    {
-        delete screenShader;
-    }
-
-    if(blurShader != nullptr)
-    {
-        delete blurShader;
-    }
-
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
     glDeleteFramebuffers(1, &fb);
@@ -269,28 +259,6 @@ bool Framebuffer::manageFramebuffer(int width, int height)
 
     //===================================================================================================================
 
-    screenShader = new Shader("../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag");
-    assert(screenShader);
-    assert(screenShader->loadShader());
-
-    glUseProgram(screenShader->getProgramID());
-
-        screenShader->setTexture("screenTexture", 0);
-        screenShader->setTexture("bloomTexture", 1);
-        screenShader->setFloat("gamma", 2.2);
-
-    glUseProgram(0);
-
-    blurShader = new Shader("../src/Shader/Shaders/blur.vert", "../src/Shader/Shaders/blur.frag");
-    assert(blurShader);
-    assert(blurShader->loadShader());
-
-    glUseProgram(blurShader->getProgramID());
-
-        blurShader->setTexture("screenTexture", 0);
-
-    glUseProgram(0);
-
     return true;
 }
 
@@ -313,7 +281,7 @@ void Framebuffer::drawBlur(RenderData &render_data, bool &horizontal)
     
     unsigned int amount = 4;
 
-        glUseProgram(blurShader->getProgramID());
+        glUseProgram(render_data.getShader("blur")->getProgramID());
 
         if(render_data.getBloom())
         {
@@ -321,7 +289,8 @@ void Framebuffer::drawBlur(RenderData &render_data, bool &horizontal)
             {
                 glBindFramebuffer(GL_FRAMEBUFFER, ping_pongFBO[horizontal]);
                 
-                blurShader->setInt("horizontal", horizontal);
+                render_data.getShader("blur")->setInt("horizontal", horizontal);
+                render_data.getShader("blur")->setTexture("screenTexture", 0);
 
                 if(first_it)
                 {
@@ -363,13 +332,17 @@ void Framebuffer::drawBlur(RenderData &render_data, bool &horizontal)
 /***********************************************************************************************************************************************************************/
 void Framebuffer::drawScreenTexture(RenderData &render_data, bool &horizontal)
 {
-    if(screenShader != nullptr)
+    if(render_data.getShader("screen") != nullptr)
     {
-        glUseProgram(screenShader->getProgramID());
+        glUseProgram(render_data.getShader("screen")->getProgramID());
 
-            screenShader->setFloat("exposure", render_data.getExposure());
-            screenShader->setInt("hdr", render_data.getHDR());
-            screenShader->setInt("bloom", render_data.getBloom());
+            render_data.getShader("screen")->setFloat("exposure", render_data.getExposure());
+            render_data.getShader("screen")->setInt("hdr", render_data.getHDR());
+            render_data.getShader("screen")->setInt("bloom", render_data.getBloom());
+
+            render_data.getShader("screen")->setTexture("screenTexture", 0);
+            render_data.getShader("screen")->setTexture("bloomTexture", 1);
+            render_data.getShader("screen")->setFloat("gamma", 2.2);
 
             glBindVertexArray(quadVAO);
                 

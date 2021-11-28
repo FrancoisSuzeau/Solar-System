@@ -49,9 +49,6 @@ PURPOSE : header of the Framebuffer class
                 int m_bytes_vertices_size;
                 int m_bytes_coord_size;
 
-                Shader *screenShader;
-                Shader *blurShader;
-
                 void initVertices();
                 bool manageFramebuffer(int width, int height);
                 void manageColorBuffer(int width, int height);

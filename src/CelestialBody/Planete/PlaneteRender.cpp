@@ -68,8 +68,6 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
 
             render_data.getShader(planete->getTypePlan())->setVec3("viewPos", render_data.getCamPos());
 
-            std::cout << planete->getName() << std::endl;
-
             render_data.getShader(planete->getTypePlan())->setInt("hdr", render_data.getHDR());
             if(planete->getName() == "Jupiter")
             {
