@@ -15,7 +15,7 @@ At the launch, all the textures, audio, font files are loaded. You can follow th
 After a while the Solar System appears with all planets and moons.
 For now, planets and moons are only rotating, I haven't create orbital mechanics yet
 
-The initial position of the ship is on the ````1, 9000, 1```` coordinates. You can move the position with the keyboard, the ship orientation with the left button of the mouse and the camera position with the right button. Here is the list of all the move command following this shem : QWERTY/AZERTY.
+The initial position of the ship is on the ``0, 9000, 0`` coordinates. You can move the position with the keyboard, the ship orientation with the left button of the mouse and the camera position with the right button. Here is the list of all the move command following this shem : QWERTY/AZERTY.
 + W/Z : move forward
 + S : 	move backward
 + A/Q : move to the left
@@ -115,6 +115,12 @@ Make sure that the executable file is in the ````bin```` directory.
 + Adding gradient atenuation of how the atmosphere turn black when on the hidden face of a planete (not facing the sun) making a nice red/violet smooth sunrise for Earth and other color for other planetes
 + Changing how HDR effect work and values of light and ambient strenght in shaders
 
+### 28/11/2021
+Big refactoring session
++ Extract class : Renderdata used to pass many parameters
++ Now there is a planete renderer and texture are stick to ONE sphere
++ No more factory method for planete make easy to modify without taking care witch type of planete this is
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
@@ -129,8 +135,6 @@ For the moment I am working on this following aspect :
 + bug correction on skybox (see the borders)
 
 + rewrite Overlay class to correspond with perspective angle of projection matrix (for now at 70 degree) to pass it at 45 degree
-
-+ Big refactoring phase
 
 + Implement hit box to prevent to pass through body (have to extract method to calculate radius coming from body position)
 
