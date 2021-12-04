@@ -43,7 +43,10 @@ AsteroidField::~AsteroidField()
         delete modelMatrices;
     }
 
-    glDeleteBuffers(1, &buffer1);
+    if(glIsBuffer(buffer1) == GL_TRUE)
+    {
+        glDeleteBuffers(1, &buffer1);
+    }
 
     if(m_noramal_surface != nullptr)
     {
@@ -94,8 +97,12 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
                 glBindVertexArray(0);
             }
 
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, 0);
+            if(m_noramal_surface != nullptr)
+            {
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
+            
             
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, 0);
@@ -167,6 +174,10 @@ void AsteroidField::initInstanced(glm::mat4 *matrice)
 {
     // configure instanced array
     // -------------------------
+    if(glIsBuffer(buffer1) == GL_TRUE)
+    {
+        glDeleteBuffers(1, &buffer1);
+    }
     glGenBuffers(1, &buffer1);
     glBindBuffer(GL_ARRAY_BUFFER, buffer1);
     glBufferData(GL_ARRAY_BUFFER, m_amount * sizeof(glm::mat4), &matrice[0], GL_STATIC_DRAW);
