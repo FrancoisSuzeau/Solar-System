@@ -246,7 +246,7 @@ void PlanetarySystem::displayInfo(RenderData &render_data, Planete *planete, Pla
 
     if(planete != nullptr)
     {
-        float r = planete->getRadiusFromCam(render_data.getCamPos());
+        float r = planete->getRadiusFromCam(render_data.getShipPos());
         float size_plan = planete->getSize();
 
             if(r <= 10 * size_plan)

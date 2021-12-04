@@ -371,7 +371,7 @@ void SolarSystem::renderInfos(RenderData &render_data, PlaneteInformation *plan_
 
         if( (it[0] != nullptr) && (m_planete_info != nullptr))
         {
-            float r = it[0]->getRadiusFromCam(render_data.getCamPos());
+            float r = it[0]->getRadiusFromCam(render_data.getShipPos());
             float size_plan = it[0]->getSize();
 
             if(r <= 10 * size_plan)
