@@ -9,6 +9,7 @@ in vec2 coordTexture;
 in vec3 Normal;
 in vec3 FragPos;
 uniform vec3 viewPos;
+uniform vec3 sunPos;
 
 uniform bool hdr;
 uniform bool has_normal;
@@ -97,7 +98,8 @@ void main()
     {
         lightColor = vec3(0.2);
     }
-    vec3 lightPos = vec3(1.0f, 0.0f, 0.0f);
+    // vec3 lightPos = vec3(1.0f, 0.0f, 0.0f);
+    vec3 lightPos = sunPos;
 
     vec3 norm;
     vec3 lightDir;

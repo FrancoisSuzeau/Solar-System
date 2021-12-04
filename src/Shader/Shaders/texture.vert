@@ -19,6 +19,7 @@ out vec3 Normal;
 out vec3 FragPos;
 
 uniform vec3 viewPos;
+uniform vec3 sunPos;
 
 
 // Sortie
@@ -50,7 +51,8 @@ void main()
     mat3 normalMatrice = mat3(transpose(inverse(model)));
     Normal = normalize(normalMatrice * in_Vertex);
 
-    vec3 lightPos = vec3(0.1, 0.0, 0.0);
+    // vec3 lightPos = vec3(0.1, 0.0, 0.0);
+    vec3 lightPos = sunPos;
 
     vec3 v = vec3(Normal.x + 1, Normal.y, Normal.z);
     vec3 k = Normal * v;

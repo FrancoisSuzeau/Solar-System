@@ -67,7 +67,7 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
             render_data.getShader(planete->getTypePlan())->setFloat("oppacity", planete->getOppacity());
 
             render_data.getShader(planete->getTypePlan())->setVec3("viewPos", render_data.getCamPos());
-            render_data.getShader(planete->getTypePlan())->setVec3("sunPos", (render_data.getSunPos() - render_data.getShipPos()));
+            render_data.getShader(planete->getTypePlan())->setVec3("sunPos", render_data.getSunPos());
 
             render_data.getShader(planete->getTypePlan())->setInt("hdr", render_data.getHDR());
             if(planete->getName() == "Jupiter")
@@ -143,14 +143,14 @@ void PlaneteRender::displayName(RenderData &render_data, int threshold, Planete 
             we only use the parametrical coordinate to find the r radius
         */
            
-        float r = planete->getRadiusFromCam(render_data.getCamPos());
-        float phi = planete->getPhiFromCam(render_data.getCamPos());
-        float theta = planete->getThetaFromCam(render_data.getCamPos(), r);
-        float y = render_data.getCamPos()[1] - planete->getPosition()[1];
+        float r = planete->getRadiusFromCam(render_data.getShipPos());
+        float phi = planete->getPhiFromCam(render_data.getShipPos());
+        float theta = planete->getThetaFromCam(render_data.getShipPos(), r);
+        float y = render_data.getShipPos()[1] - planete->getPosition()[1];
         
         if(r >= threshold * planete->getSize())
         {
-            planete->getNameRender()->updatePosition(planete->getPosition());
+            planete->getNameRender()->updatePosition(planete->getPosition() - render_data.getShipPos());
             planete->getNameRender()->renderMovingText(render_data, planete->getSize(), r, phi, theta, y);
 
             planete->setProximity(false);
@@ -171,7 +171,7 @@ void PlaneteRender::displayAtmo(RenderData &render_data, Planete *planete)
 {
     if( (render_data.getShader("atmosphere") != nullptr) && (planete->getAtmosphere() != nullptr) )
     {
-        planete->getAtmosphere()->updatePosAtmo(planete->getPosition());
+        planete->getAtmosphere()->updatePosAtmo(planete->getPosition() - render_data.getShipPos());
         planete->getAtmosphere()->display(render_data);
     }
     
@@ -184,7 +184,7 @@ void PlaneteRender::renderRing(RenderData &render_data, Planete *planete)
 {
     if((planete->getRing() != nullptr) && (render_data.getShader("ring") != nullptr))
     {
-        planete->getRing()->setPosition(planete->getPosition());
+        planete->getRing()->setPosition(planete->getPosition() - render_data.getShipPos());
         planete->getRing()->updatePosition();
         planete->getRing()->display(render_data);
     }

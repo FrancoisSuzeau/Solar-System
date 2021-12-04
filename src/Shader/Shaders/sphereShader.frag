@@ -1,6 +1,7 @@
 #version 330 core
 
 uniform vec3 viewPos;
+uniform vec3 sunPos;
 in vec3 Normal;
 in vec3 FragPos;
 uniform vec3 atmoColor;
@@ -20,7 +21,8 @@ void main()
 
     vec3 lightColor = vec3(lightcolor);
 
-    vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    // vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    vec3 lightPos = sunPos;
 
     // *********************************************** mitigation ***************************************************
     float lightConst = 1.0f;

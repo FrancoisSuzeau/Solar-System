@@ -199,6 +199,7 @@ void Ring::display(RenderData &render_data)
             render_data.getShader("ring")->setMat4("model", m_model_mat);
 
             render_data.getShader("ring")->setVec3("viewPos", render_data.getCamPos());
+            render_data.getShader("ring")->setVec3("sunPos", render_data.getSunPos());
             render_data.getShader("ring")->setInt("hdr", render_data.getHDR());
 
             render_data.getShader("ring")->setTexture("texture0", 0);
