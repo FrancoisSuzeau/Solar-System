@@ -18,18 +18,11 @@ PURPOSE : header of the virtual PlanetarySystem class
 
         #include "System.hpp"
 
-        #include "../Planete/PlaneteCreator.hpp"
-        #include "../Planete/AtmoPlaneteCreator.hpp"
-        #include "../Planete/SimplePlaneteCreator.hpp"
-        #include "../Planete/PlaneteRingCreator.hpp"
-
-        #include "../../Atmosphere/Atmosphere.hpp"
-        #include "../../Shader/Shader.hpp"
+        #include "../Planete/PlaneteRender.hpp"
+        #include "../Planete/Planete.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
-
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_ttf.h>
 
         #include <string>
         #include <vector>
@@ -48,12 +41,13 @@ PURPOSE : header of the virtual PlanetarySystem class
             
             private:
 
-                std::vector<PlaneteCreator*>            m_moons_creator;
-                PlaneteCreator                          *m_host_creator;
+                std::vector<Planete*>                   m_moons;
+                Planete                                 *m_host;
+                PlaneteRender                           *planete_render;
 
-                Atmosphere      *m_atmosphere;
 
                 void initData() override;
+                void displayInfo(RenderData &render_data, Planete *planete, PlaneteInformation *planete_info);
             public:
 
                 PlanetarySystem(sys_init_data data, TTF_Font *police);
@@ -66,8 +60,9 @@ PURPOSE : header of the virtual PlanetarySystem class
                 void displaySkybox(RenderData &render_data) override;
                 void displayName(RenderData &render_data) override;
                 void displayAtmo(RenderData &render_data) override;
-                void displayInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
+                void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
                 void displayAsteroidField(RenderData &render_data) override;
+                void displayRing(RenderData &render_data) override;
 
         };
 

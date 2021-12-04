@@ -25,21 +25,18 @@ PURPOSE : header of the virtual System class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_ttf.h>
-        #include "../../Shader/Shader.hpp"
-
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
         #include "../../OpenGlSketch/RenderData.hpp"
 
         typedef struct init_data {
 
-                std::string texture_path;
+                std::vector<std::string> texture_path;
                 std::string normal_path;
-                std::string disp_path;
                 std::string name;
+                std::string type_plan;
                 float   size;
                 float   inclinaison_angle;
+                float   speed_rotation;
                 glm::vec3 position;
 
         } init_data;
@@ -75,8 +72,9 @@ PURPOSE : header of the virtual System class
                 virtual void displaySkybox(RenderData &render_data) = 0;
                 virtual void displayName(RenderData &render_data) = 0;
                 virtual void displayAtmo(RenderData &render_data) = 0;
-                virtual void displayInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;
+                virtual void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;
                 virtual void displayAsteroidField(RenderData &redner_data) = 0;
+                virtual void displayRing(RenderData &render_data) = 0;
                 
         };
 

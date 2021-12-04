@@ -73,9 +73,12 @@ void Star::display(RenderData &render_data)
             render_data.getShader("sun")->setMat4("model", m_model_mat);
             render_data.getShader("sun")->setInt("inverse_normals", true);
 
+            render_data.setSunPos(m_current_position - render_data.getShipPos());
+
             render_data.getShader("sun")->setTexture("texture0", 0);
 
             render_data.getShader("sun")->setVec3("viewPos", render_data.getCamPos());
+            render_data.getShader("sun")->setVec3("sunPos", render_data.getSunPos());
             
             //active and lock cloudy texture
             glActiveTexture(GL_TEXTURE0);

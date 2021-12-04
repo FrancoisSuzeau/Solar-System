@@ -8,6 +8,7 @@ in vec3 Normal;
 in vec3 FragPos;
 uniform bool hdr;
 uniform vec3 viewPos;
+uniform vec3 sunPos;
 
 uniform sampler2D texture_diffuse1;
 
@@ -23,7 +24,8 @@ void main()
         lightColor = vec3(0.2);
     }
 
-    vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    // vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    vec3 lightPos = sunPos;
 
     vec3 objectColor = texture(texture_diffuse1, TexCoords).rgb;
 

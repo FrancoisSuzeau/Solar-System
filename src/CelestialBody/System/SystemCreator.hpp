@@ -23,11 +23,6 @@ PURPOSE : header of the virtual SystemCreator class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_ttf.h>
-
-        #include "../../Shader/Shader.hpp"
-
         #include "System.hpp"
        
 /********************************************************************* class definition *********************************************************************/
@@ -69,7 +64,7 @@ PURPOSE : header of the virtual SystemCreator class
 
                 void drawInfo(RenderData &render_data, PlaneteInformation *planete_info = nullptr)
                 {
-                        m_system->displayInfo(render_data, planete_info);
+                        m_system->renderInfos(render_data, planete_info);
                 }
 
                 void drawSkybox(RenderData &render_data)
@@ -85,6 +80,11 @@ PURPOSE : header of the virtual SystemCreator class
                 void drawAsteroidField(RenderData &render_data)
                 {
                         m_system->displayAsteroidField(render_data);
+                }
+
+                void drawRing(RenderData &render_data)
+                {
+                        m_system->displayRing(render_data);
                 }
 
 

@@ -24,6 +24,9 @@ PlanetarySystem::PlanetarySystem(sys_init_data data, TTF_Font *police)
     m_system_name = data.name_sys;
     m_companion_count = data.companion_count;
 
+    planete_render = new PlaneteRender();
+    assert(planete_render);
+
     this->initData();
 }
 
@@ -34,28 +37,22 @@ PlanetarySystem::PlanetarySystem()
 
 PlanetarySystem::~PlanetarySystem()
 {
-    for (std::vector<PlaneteCreator*>::iterator it = m_moons_creator.begin(); it != m_moons_creator.end(); ++it)
+    if(planete_render != nullptr)
+    {
+        delete planete_render;
+    }
+
+    for(std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
     {
         if(*it != nullptr)
         {
             delete *it;
         }
-        
     }
 
-    if(m_host_creator != nullptr)
+    if(m_host != nullptr)
     {
-        delete m_host_creator;
-    }
-    
-
-    if(m_system_name == "Earth System")
-    {
-        if(m_atmosphere != nullptr)
-        {
-            delete m_atmosphere;
-        }
-        
+        delete m_host;
     }
 
 }
@@ -65,17 +62,17 @@ PlanetarySystem::~PlanetarySystem()
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::initData()
 {
-    m_data.push_back({"../assets/textures/CelestialBody/MoonMap.jpg", "../assets/textures/normalMap/moon_normalMap.jpg", "../assets/textures/displacementMap/moon_dispMap.jpg", "Moon", 8.19f, 5.145f, glm::vec3(-15000, 3800, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EarthDayMap.jpg", "../assets/textures/normalMap/earth_normalMap.jpg", "../assets/textures/displacementMap/earth_dispMap.jpg", "Earth", 30.0f, 23.26f, glm::vec3(-15000, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EuropaMap.jpg", "../assets/textures/normalMap/europa_normalMap.jpg", "../assets/textures/displacementMap/europa_dispMap.jpg", "Europa", 7.5f, 0.469f, glm::vec3(77164, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/GanymedeMap.jpg", "../assets/textures/normalMap/ganymede_normalMap.jpg", "../assets/textures/displacementMap/ganymede_dispMap.jpg", "Ganymede", 12.39f, 0.170f, glm::vec3(77834, -10700, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/IoMap.jpg", "../assets/textures/normalMap/io_normalMap.jpg", "../assets/textures/displacementMap/io_dispMap.jpg", "Io", 8.57f, 0.036f, glm::vec3(77834, 4210, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/CallistoMap.jpg", "../assets/textures/normalMap/callisto_normalMap.jpg", "../assets/textures/displacementMap/callisto_dispMap.jpg", "Callisto", 11.36f, 0.187f, glm::vec3(77834, -18800, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/JupiterCloud.jpg", "../assets/textures/normalMap/jupiter_normalMap.jpg", "../assets/textures/displacementMap/jupiter_dispMap.jpg", "Jupiter", 363.27f, 3.13f, glm::vec3(77834, 0, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/MimasMap.jpg", "../assets/textures/normalMap/mimas_normalMap.jpg", "../assets/textures/displacementMap/mimas_dispMap.jpg", "Mimas", 1.0f, 1.53f, glm::vec3(2380.0, -14248, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/EnceladusMap.jpg", "../assets/textures/normalMap/enceladus_normalMap.jpg", "../assets/textures/displacementMap/enceladus_dispMap.jpg", "Enceladus", 1.2f, 0.0f, glm::vec3(-2380, -14267, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/TitanMap.jpg", "../assets/textures/normalMap/titan_normalMap.jpg", "../assets/textures/displacementMap/titan_dispMap.jpg", "Titan", 12.5f, 0.33f, glm::vec3(12210, -14267, 0)});
-    m_data.push_back({"../assets/textures/CelestialBody/SaturnCloud.jpg", "../assets/textures/normalMap/saturn_normalMap.jpg", "../assets/textures/displacementMap/uranus_dispMap.jpg", "Saturn", 283.476f, 26.73f, glm::vec3(0.0, -14267, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/MoonMap.jpg"}, "../assets/textures/normalMap/moon_normalMap.jpg", "Moon", "one_texture_p", 8.19f, 5.145f, 0.1f, glm::vec3(-15000, 3800, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/EarthDayMap.jpg", "../assets/textures/CelestialBody/CloudMap.jpg"}, "../assets/textures/normalMap/earth_normalMap.jpg", "Earth", "multi_texture_p", 30.0f, 23.26f, 0.1f, glm::vec3(-15000, 0, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/EuropaMap.jpg"}, "../assets/textures/normalMap/europa_normalMap.jpg", "Europa", "one_texture_p", 7.5f, 0.469f, 0.1f, glm::vec3(77164, 0, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/GanymedeMap.jpg"}, "../assets/textures/normalMap/ganymede_normalMap.jpg", "Ganymede", "one_texture_p", 12.39f, 0.170f, 0.1f, glm::vec3(77834, -10700, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/IoMap.jpg"}, "../assets/textures/normalMap/io_normalMap.jpg", "Io", "one_texture_p", 8.57f, 0.036f, 0.1f, glm::vec3(77834, 4210, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/CallistoMap.jpg"}, "../assets/textures/normalMap/callisto_normalMap.jpg", "Callisto", "one_texture_p", 11.36f, 0.187f, 0.1f, glm::vec3(77834, -18800, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/JupiterCloud.jpg"}, "../assets/textures/normalMap/jupiter_normalMap.jpg", "Jupiter",  "one_texture_p",363.27f, 3.13f, 0.1f, glm::vec3(77834, 0, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/MimasMap.jpg"}, "../assets/textures/normalMap/mimas_normalMap.jpg", "Mimas", "one_texture_p", 1.0f, 1.53f, 0.1f, glm::vec3(2380.0, -14248, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/EnceladusMap.jpg"}, "../assets/textures/normalMap/enceladus_normalMap.jpg", "Enceladus", "one_texture_p", 1.2f, 0.0f, 0.1f, glm::vec3(-2380, -14267, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/TitanMap.jpg"}, "../assets/textures/normalMap/titan_normalMap.jpg", "Titan", "one_texture_p", 12.5f, 0.33f, 0.1f, glm::vec3(12210, -14267, 0)});
+    m_data.push_back({{"../assets/textures/CelestialBody/SaturnCloud.jpg"}, "../assets/textures/normalMap/saturn_normalMap.jpg", "Saturn", "one_texture_p", 283.476f, 26.73f, 0.1f, glm::vec3(0.0, -14267, 0)});
 }
 
 /***********************************************************************************************************************************************************************/
@@ -86,49 +83,34 @@ void PlanetarySystem::loadSystem(int count, TTF_Font *police)
     /************************************************* loading companion ********************************************************/
     if(m_system_name == "Earth System")
     {
-        m_moons_creator.push_back(new SimplePlaneteCreator());
-        assert(m_moons_creator[0]);
-        assert(m_moons_creator[0]->MakingPlanete(m_data[0], police));
+        m_moons.push_back(new Planete(m_data[0], police));
+        assert(m_moons[0]);
 
-        m_host_creator = new AtmoPlaneteCreator();
-        assert(m_host_creator);
-        assert(m_host_creator->MakingPlanete(m_data[1], police));
-
-        m_atmosphere = new Atmosphere(1.05f, "Earth");
-        assert(m_atmosphere);
+        m_host = new Planete(m_data[1], police);
+        assert(m_host);
     }
     else if(m_system_name == "Jovian System")
     {
         for (int i(2); i < 6; i++)
         {
-            m_moons_creator.push_back(new SimplePlaneteCreator());
-            assert(m_moons_creator[i-2]);
-            assert(m_moons_creator[i-2]->MakingPlanete(m_data[i], police));
+            m_moons.push_back(new Planete(m_data[i], police));
+            assert(m_moons[i-2]);
         }
         
-        m_host_creator = new SimplePlaneteCreator();
-        assert(m_host_creator);
-        assert(m_host_creator->MakingPlanete(m_data[6], police));
-
-        m_atmosphere = new Atmosphere(1.05f, "Jupiter");
-        assert(m_atmosphere);
+        m_host = new Planete(m_data[6], police);
+        assert(m_host);
 
     }
     else if(m_system_name == "Saturnian System")
     {
         for (int i(7); i < 10; i++)
         {
-            m_moons_creator.push_back(new SimplePlaneteCreator());
-            assert(m_moons_creator[i-7]);
-            assert(m_moons_creator[i-7]->MakingPlanete(m_data[i], police));
+            m_moons.push_back(new Planete(m_data[i], police));
+            assert(m_moons[i-7]);
         }
 
-        m_host_creator = new PlaneteRingCreator();
-        assert(m_host_creator);
-        assert(m_host_creator->MakingPlanete(m_data[10], police));
-
-        m_atmosphere = new Atmosphere(1.05f, "Saturn");
-        assert(m_atmosphere);
+        m_host = new Planete(m_data[10], police);
+        assert(m_host);
     }
     else
     {
@@ -144,17 +126,32 @@ void PlanetarySystem::display(RenderData &render_data)
 {
     render_data.initSaveMat();
 
-    m_host_creator->UpdatePositionPlan();
-    m_host_creator->drawPlanete(render_data);
+    for (std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
+    {
+        if((it[0] != nullptr) && (planete_render != nullptr))
+        {
+            it[0]->updatePosition(render_data.getShipPos());
+
+            if(render_data.getShader("one_texture_p") != nullptr)
+            {
+                planete_render->display(render_data, it[0]);
+                
+                render_data.saveViewMat();
+            }
+        }
+        render_data.saveViewMat();
+    }
 
     render_data.saveViewMat();
 
-    for (int i(0); i < m_companion_count; i++)
+    if((m_host != nullptr) && (planete_render != nullptr))
     {
-        m_moons_creator[i]->UpdatePositionPlan();
-        m_moons_creator[i]->drawPlanete(render_data); 
+        m_host->updatePosition(render_data.getShipPos());
 
-        render_data.saveViewMat();
+        if((render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("multi_texture_p") != nullptr))
+        {
+            planete_render->display(render_data, m_host);
+        }
     }
     
     render_data.saveViewMat();
@@ -168,38 +165,39 @@ void PlanetarySystem::displayName(RenderData &render_data)
 {
     render_data.initSaveMat();
 
-    if(render_data.getShader("text") != nullptr)
+    if(m_host->getProximity())
     {
-        if(m_host_creator == nullptr) 
+        for (std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
         {
-            exit(EXIT_FAILURE);
-        }
-        float size_plan = m_host_creator->getSizePlan();
-        float r = m_host_creator->getRadius(render_data.getCamPos());
-
-        if( r >= 400 * size_plan ) // juste to allow the application to display host name or moon name depends on the posiiton of the camera
-        {
-            if( render_data.getShader("text") != nullptr )
-            {
-                m_host_creator->displayName(render_data, 400);
-                render_data.saveViewMat();
-            }
-            render_data.saveViewMat();
-        }
-        else
-        {
-            for (int i(0); i < m_companion_count; i++)
+            if(it[0] != nullptr)
             {
                 if(render_data.getShader("text") != nullptr)
                 {
-                    m_moons_creator[i]->displayName(render_data, 10);
+                    planete_render->displayName(render_data, 10, it[0]);
                     render_data.saveViewMat();
-                }  
-                render_data.saveViewMat();
+                }
             }
+
+            render_data.saveViewMat();
         }
+
         render_data.saveViewMat();
     }
+    
+    if(m_host != nullptr)
+    {
+        if(render_data.getShader("text") != nullptr)
+        {
+            planete_render->displayName(render_data, 30, m_host);
+            render_data.saveViewMat();
+        }
+    }
+
+    
+    
+
+    
+
     render_data.saveViewMat();
 }
 
@@ -208,63 +206,88 @@ void PlanetarySystem::displayName(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::displayAtmo(RenderData &render_data)
 {
-    if((m_system_name == "Earth System") || (m_system_name == "Jovian System") || (m_system_name == "Saturnian System"))
-    {
-        render_data.initSaveMat();
+    render_data.initSaveMat();
 
-        if(m_host_creator != nullptr)
+    if(m_host != nullptr)
+    {
+        if((m_host->getAtmosphere() != nullptr) && (render_data.getShader("atmosphere") != nullptr))
         {
-            if((m_atmosphere != nullptr) && (render_data.getShader("atmosphere") != nullptr))
-            {
-                m_atmosphere->updatePosAtmo(m_host_creator->getPostion());
-                m_atmosphere->display(render_data);
-            }
+            planete_render->displayAtmo(render_data, m_host);
         }
-               
-        render_data.saveViewMat();
     }
+
+    render_data.saveViewMat();
     
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************************** displayInfo **************************************************************************/
+/******************************************************************************** renderInfos **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlanetarySystem::displayInfo(RenderData &render_data, PlaneteInformation *planete_info)
+void PlanetarySystem::renderInfos(RenderData &render_data, PlaneteInformation *planete_info)
 {
     glm::mat4 save = render_data.getViewMat();
 
-    float r = m_host_creator->getRadius(render_data.getCamPos());
-    float size_plan = m_host_creator->getSizePlan();
+    this->displayInfo(render_data, m_host, planete_info);
 
-        if(r <= 10 * size_plan)
-        {
-            // view = lookAt(vec3(0.0, 0.0, 1.71), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
-            render_data.lockViewMat(glm::vec3(0.0, 0.0, 1.71), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+    for(std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
+    {
+        this->displayInfo(render_data, it[0], planete_info);
+    }
 
-            if(m_host_creator == nullptr) //exceptionnaly we exit the program because without 
+    render_data.updateView(save);
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** displayInfos *************************************************************************/
+/***********************************************************************************************************************************************************************/
+void PlanetarySystem::displayInfo(RenderData &render_data, Planete *planete, PlaneteInformation *planete_info)
+{
+    glm::mat4 save = render_data.getViewMat();
+
+    if(planete != nullptr)
+    {
+        float r = planete->getRadiusFromCam(render_data.getShipPos());
+        float size_plan = planete->getSize();
+
+            if(r <= 10 * size_plan)
             {
-                exit(EXIT_FAILURE);
-            }
-            std::string tmp_name = m_host_creator->getName();
-            
-            if(planete_info != nullptr)
-            {
-                if(tmp_name != planete_info->getInfoName())
-                {
-                    planete_info->changeNamePlan(tmp_name);
-                }
+                render_data.lockViewMat(glm::vec3(0.0, 0.0, 1.71), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 
-                if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
+                std::string tmp_name = planete->getName();
+                
+                if(planete_info != nullptr)
                 {
-                    planete_info->renderInfo(render_data);
-                    render_data.updateView(save);
+                    if(tmp_name != planete_info->getInfoName())
+                    {
+                        planete_info->changeNamePlan(tmp_name);
+                    }
+
+                    if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
+                    {
+                        planete_info->renderInfo(render_data);
+                        render_data.updateView(save);
+                    }
                 }
                 
             }
-            
-        }
+    }
+    
+    render_data.updateView(save);
+}
 
-        render_data.updateView(save);
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** displayRing **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void PlanetarySystem::displayRing(RenderData &render_data)
+{
+    render_data.initSaveMat();
+    
+    if( (render_data.getShader("ring") != nullptr) && (m_host != nullptr) )
+    {
+        planete_render->renderRing(render_data, m_host);
+    }
+
+    render_data.saveViewMat();
 }
 
 /***********************************************************************************************************************************************************************/

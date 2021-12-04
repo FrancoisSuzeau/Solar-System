@@ -23,7 +23,6 @@ PURPOSE : header of the Atmosphere class
         #include <glm/gtx/string_cast.hpp>
 
         #include <GL/glew.h>
-        #include <SDL2/SDL.h>
         #include <iostream>
         #include <string>
         #include <cstring>
@@ -31,7 +30,6 @@ PURPOSE : header of the Atmosphere class
         #include <cmath>
 
         #include "../CelestialBody/Geometry/Sphere.hpp"
-        #include "../Shader/Shader.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
         
 

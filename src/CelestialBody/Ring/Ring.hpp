@@ -18,8 +18,8 @@ PURPOSE : header of the Ring class
 
         #include "../../Texture/Texture.hpp"
         #include "../Geometry/Disk.hpp"
-        #include "../../Shader/Shader.hpp"
         #include "../System/System.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
         #include <string>
         #include <cassert>
@@ -52,7 +52,6 @@ PURPOSE : header of the Ring class
                 ~Ring();
 
                 void display(RenderData &render_data);
-                // void displayInfo(glm::mat4 &projection, glm::mat4 &modelview, bool hdr);
                 void load();
                 void updatePosRing(glm::vec3 pos_plan);
                 

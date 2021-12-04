@@ -99,6 +99,7 @@ void Mesh::draw(RenderData &render_data, glm::mat4 &model_mat)
         render_data.getShader("model")->setMat4("view", render_data.getViewMat());
         render_data.getShader("model")->setMat4("model", model_mat);
         render_data.getShader("model")->setVec3("viewPos", render_data.getCamPos());
+        render_data.getShader("model")->setVec3("sunPos", render_data.getSunPos());
 
         render_data.getShader("model")->setInt("hdr", render_data.getHDR());
         

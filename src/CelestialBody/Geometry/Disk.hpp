@@ -27,7 +27,7 @@ PURPOSE : header of the Disk class
         #include <cstring>
 
         #include "../CelestialBody.hpp"
-        #include "../../Shader/Shader.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"  
 
         
 

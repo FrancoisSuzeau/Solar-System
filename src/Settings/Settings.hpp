@@ -22,9 +22,6 @@ PURPOSE : header of the Settings class
         #include <glm/gtc/matrix_inverse.hpp>
         #include <glm/gtx/string_cast.hpp>
 
-        #include <GL/glew.h>
-        #include <SDL2/SDL.h>
-        #include <SDL2/SDL_ttf.h>
         #include <iostream>
         #include <iomanip>
         #include <sstream>
@@ -39,7 +36,6 @@ PURPOSE : header of the Settings class
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
         #include "../Input/Input.hpp"
-        #include "../Shader/Shader.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
 
         namespace ButtonChoice

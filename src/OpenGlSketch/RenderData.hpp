@@ -51,6 +51,8 @@ PURPOSE : header of the RenderData class
                 glm::mat4 save_view;
 
                 glm::vec3 camPos;
+                glm::vec3 shiPos;
+                glm::vec3 sunPos;
 
                 bool hdr;
                 float exposure;
@@ -155,6 +157,8 @@ PURPOSE : header of the RenderData class
                         shader_init.push_back({"../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag", "sun"});
                         shader_init.push_back({"../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag", "ring"});
                         shader_init.push_back({"../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag", "atmosphere"});
+                        shader_init.push_back({"../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag", "screen"});
+                        shader_init.push_back({"../src/Shader/Shaders/blur.vert", "../src/Shader/Shaders/blur.frag", "blur"});
                     }
                     
 
@@ -170,7 +174,12 @@ PURPOSE : header of the RenderData class
                 Shader *getShader(std::string key) {return map_shader[key];}
 
                 void setCamPos(glm::vec3 new_cam_pos) {camPos = new_cam_pos;}
-                glm::vec3 getCamPos() {return camPos;}
+                void setShipPos(glm::vec3 new_ship_pos) {shiPos = new_ship_pos;}
+                glm::vec3 getCamPos() const {return camPos;}
+                glm::vec3 getShipPos() const {return shiPos;}
+
+                void setSunPos(glm::vec3 new_sun_pos) {sunPos = new_sun_pos;}
+                glm::vec3 getSunPos() const {return sunPos;}
  
         };
 

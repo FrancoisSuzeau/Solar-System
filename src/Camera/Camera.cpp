@@ -32,6 +32,8 @@ pitch(0.0f)
        m_ship = ship;
    }
 
+   
+
 }
 
 Camera::~Camera()
@@ -101,9 +103,13 @@ void Camera::calculateCameraPostion(float horizontal_distance, float vertical_di
         float offset_x = (float) horizontal_distance * sin(glm::radians(theta));
         float offset_y = (float) horizontal_distance * -cos(glm::radians(theta));
 
-        m_position.x = m_ship->getPosition().x + offset_x;
-        m_position.y = m_ship->getPosition().y + offset_y;
-        m_position.z = m_ship->getPosition().z + vertical_distance;
+        // m_position.x = m_ship->getPosition().x + offset_x;
+        // m_position.y = m_ship->getPosition().y + offset_y;
+        // m_position.z = m_ship->getPosition().z + vertical_distance;
+
+        m_position.x = 0.0f + offset_x;
+        m_position.y = 0.0f + offset_y;
+        m_position.z = 0.0f + vertical_distance;
 
     }
     
@@ -120,9 +126,10 @@ void Camera::move(Input const &input, bool move)
     float vertical_distance = this->calculateVerticalDistance(input);
     this->calculateCameraPostion(horizontal_distance, vertical_distance, input);
  
-    m_target_point = m_ship->getPosition();
+    // m_target_point = m_ship->getPosition();
+    m_target_point = glm::vec3(0.0);
 
-    this->correctTarget(input);
+    // this->correctTarget(input);
 
 }
 

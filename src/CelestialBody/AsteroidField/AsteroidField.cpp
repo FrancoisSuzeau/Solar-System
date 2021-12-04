@@ -80,6 +80,7 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
             m_model_shader->setMat4("projection", render_data.getProjectionMat());
             m_model_shader->setMat4("view", render_data.getViewMat());
             m_model_shader->setVec3("viewPos", render_data.getCamPos());
+            m_model_shader->setVec3("sunPos", render_data.getSunPos());
 
             if(m_noramal_surface != nullptr)
             {
@@ -125,6 +126,9 @@ void AsteroidField::initModel()
 {           
 
     modelMatrices = new glm::mat4[m_amount];
+    m_positions = new glm::vec3[m_amount];
+    rotAngle = new float[m_amount];
+    scaleM = new float[m_amount];
 
     float radius = 42000.0f;
     float offset = 1000.0f;
@@ -138,26 +142,29 @@ void AsteroidField::initModel()
 
         float angle = (float) i / (float) m_amount * 360.0f;
         float displacement = min + ((float) rand() / RAND_MAX * (max - min + 1.0));
-        float x = cos(glm::radians(angle)) * radius + displacement;
+        // float x = cos(glm::radians(angle)) * radius + displacement;
+        m_positions[i].x = cos(glm::radians(angle)) * radius + displacement;
 
         displacement = min + ((float) rand() / RAND_MAX * (max - min + 1.0));
-        float y = sin(glm::radians(angle)) * radius + displacement;
+        // float y = sin(glm::radians(angle)) * radius + displacement;
+        m_positions[i].y = sin(glm::radians(angle)) * radius + displacement;
 
         min = -500.0f;
         max = 500.0f;
         displacement = min + ((float) rand() / RAND_MAX * (max - min + 1.0));
-        float z = displacement * 0.4f;
+        // float z = displacement * 0.4f;
+        m_positions[i].z = displacement * 0.4f;
 
-        model = glm::translate(model, glm::vec3(x, y, z));
+        model = glm::translate(model, m_positions[i]);
 
-        float rotAngle = (rand() % 360);
-        model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+        rotAngle[i] = (rand() % 360);
+        model = glm::rotate(model, rotAngle[i], glm::vec3(0.4f, 0.6f, 0.8f));
         
 
         min = 1.0f;
         max = 20.0f;
-        float scaleM = min + ((float) rand() / RAND_MAX * (max - min));
-        model = glm::scale(model, glm::vec3(scaleM));
+        scaleM[i] = min + ((float) rand() / RAND_MAX * (max - min));
+        model = glm::scale(model, glm::vec3(scaleM[i]));
         
 
         modelMatrices[i] = model;
@@ -166,7 +173,7 @@ void AsteroidField::initModel()
 }
 
 /***********************************************************************************************************************************************************************/
-/********************************************************************************** initInstance **************************************************************************/
+/********************************************************************************** initInstance ***********************************************************************/
 /***********************************************************************************************************************************************************************/
 void AsteroidField::initInstanced(glm::mat4 *matrice)
 {
@@ -205,4 +212,30 @@ void AsteroidField::initInstanced(glm::mat4 *matrice)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************** updatePostion **********************************************************************/
+/***********************************************************************************************************************************************************************/
+void AsteroidField::updatePostion(glm::vec3 shiPos)
+{
+    for (unsigned int i = 0; i < m_amount; i++)
+    {
+        glm::mat4 model(1.0f);
+
+        model = glm::translate(model, (m_positions[i] - shiPos));
+
+        rotAngle[i] += 0.005f;
+        if(rotAngle[i] >= 360)
+        {
+            rotAngle[i] -= 360;
+        }
+        model = glm::rotate(model, rotAngle[i], glm::vec3(0.4f, 0.6f, 0.8f));
+
+        model = glm::scale(model, glm::vec3(scaleM[i]));
+
+        modelMatrices[i] = model;
+    }
+
+    this->initInstanced(modelMatrices);
 }

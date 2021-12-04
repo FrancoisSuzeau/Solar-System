@@ -34,7 +34,6 @@ PURPOSE : header of the Mesh class
         #include <vector>
         #include <Windows.h>
 
-        #include "../Shader/Shader.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
 
         #define MAX_BONE_INFLUENCE 4

@@ -19,8 +19,6 @@ PURPOSE : header of the Star class
         #include "../Geometry/Sphere.hpp"
         #include "../../Texture/Texture.hpp"
 
-        #include "../../Atmosphere/Atmosphere.hpp"
-        #include "../../Shader/Shader.hpp"
         #include "../../OpenGlSketch/RenderData.hpp"
 
         #include <glm/glm.hpp>

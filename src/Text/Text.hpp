@@ -28,7 +28,6 @@ PURPOSE : header of the Text class
         #include <GL/glew.h>
 
         #include "../Texture/Texture.hpp"
-        #include "../Shader/Shader.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
 
 /********************************************************************* class definition *********************************************************************/

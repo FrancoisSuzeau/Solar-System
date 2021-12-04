@@ -381,6 +381,7 @@ void OpenGlSketch::mainLoop()
         }
 
         render_data.setCamPos(camera->getPosition());
+        render_data.setShipPos(ship->getPosition());
 
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene(render_data);
@@ -555,9 +556,16 @@ void OpenGlSketch::renderScene(RenderData &render_data)
             render_data.saveViewMat();
 
 
+            // /******************************************* ring render *****************************************************/
+
+                solar_system->drawRing(render_data);
+                
+            render_data.saveViewMat();
+
+
             // /******************************************* asteroid field render *****************************************************/
 
-                // solar_system->drawAsteroidField(render_data, camPos);
+                solar_system->drawAsteroidField(render_data);
                 
             render_data.saveViewMat();
 
@@ -575,8 +583,6 @@ void OpenGlSketch::renderInfo(RenderData &render_data)
         if(info_render)
         {
             render_data.initSaveMat();
-
-            // glm::vec3 camPos = camera->getPosition();
 
                 if(render_data.getShader("text") != nullptr)
                 {
