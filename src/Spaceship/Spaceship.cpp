@@ -24,7 +24,7 @@ Spaceship::Spaceship(std::string const path) : m_yaw(0.0f), m_pitch(90.0f), m_sp
 
     m_model_matrice = model;
 
-    m_current_pos = glm::vec3(0.0f, 9000.0f, 0.0f);
+    m_current_pos = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 Spaceship::~Spaceship()
@@ -99,7 +99,7 @@ void Spaceship::positioningShip()
     //it is important to reintitialise the model matrice, if not all the calculation are made by the ancient calculation and we loose the space ship
     m_model_matrice = glm::mat4(1.0f);
 
-    m_model_matrice = glm::translate(m_model_matrice, m_current_pos);
+    // m_model_matrice = glm::translate(m_model_matrice, m_current_pos);
 
     m_model_matrice *= (yaw_mat * pitch_mat);
 

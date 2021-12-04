@@ -103,12 +103,12 @@ PURPOSE : Interface CelestialBody
                     return m_real_size;
                 }
 
-                void updatePosition()
+                void updatePosition(glm::vec3 shipPos = glm::vec3(0.0f))
                 {
                     m_model_mat = glm::mat4(1.0f);
                     // m_current_position = m_initial_pos;
                     //postionning body
-                    translateCelestialBody(m_model_mat, m_current_position);
+                    translateCelestialBody(m_model_mat, (m_current_position + shipPos));
 
                     //making the planete inclinaison
                     inclineCelestialBody(m_model_mat, m_inclinaison_angle);

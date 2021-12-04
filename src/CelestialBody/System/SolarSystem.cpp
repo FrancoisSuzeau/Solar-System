@@ -222,7 +222,7 @@ void SolarSystem::display(RenderData &render_data)
 
         if(sun != nullptr)
         {
-            sun->updatePosition();
+            sun->updatePosition(-render_data.getShipPos());
         
             if(render_data.getShader("sun") != nullptr)
             {

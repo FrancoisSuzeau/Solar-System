@@ -381,6 +381,7 @@ void OpenGlSketch::mainLoop()
         }
 
         render_data.setCamPos(camera->getPosition());
+        render_data.setShipPos(ship->getPosition());
 
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene(render_data);
