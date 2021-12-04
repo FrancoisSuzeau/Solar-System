@@ -9,6 +9,7 @@ uniform bool hdr;
 uniform bool has_normal;
 
 uniform vec3 viewPos;
+uniform vec3 sunPos;
 
 uniform sampler2D texture_diffuse1;
 uniform sampler2D normalMap;
@@ -31,7 +32,8 @@ void main()
         lightColor = vec3(1.0, 1.0, 1.0);
     }
 
-    vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    // vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    vec3 lightPos = sunPos;
 
     vec3 norm;
     vec3 lightDir;

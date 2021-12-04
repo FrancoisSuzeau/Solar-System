@@ -13,6 +13,7 @@ uniform mat4 projection;
 uniform mat4 view;
 
 uniform vec3 viewPos;
+uniform vec3 sunPos;
 out VS_OUT {
 
     vec3 TangentLightPos;
@@ -31,7 +32,8 @@ void main()
     mat3 normalMatrice = mat3(transpose(inverse(aInstanceMatrix)));
     Normal = normalize(normalMatrice * aNormal);
 
-    vec3 lightPos = vec3(0.1, 0.0, 0.0);
+    // vec3 lightPos = vec3(0.1, 0.0, 0.0);
+    vec3 lightPos = sunPos;
 
     vec3 v = vec3(Normal.x + 1, Normal.y, Normal.z);
     vec3 k = Normal * v;

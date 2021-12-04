@@ -51,6 +51,9 @@ PURPOSE : header of the AsteroidField class
                 Shader                          *m_model_shader;
                 unsigned int                    m_amount;
                 glm::mat4                       *modelMatrices;
+                glm::vec3                       *m_positions;
+                float                           *rotAngle;
+                float                           *scaleM;
                 Texture                         *m_noramal_surface;
 
                 unsigned int buffer1;
@@ -65,6 +68,8 @@ PURPOSE : header of the AsteroidField class
                 ~AsteroidField();
 
                 void drawAsteroidField(RenderData &render_data);
+
+                void updatePostion(glm::vec3 shipPos);
 
               
 

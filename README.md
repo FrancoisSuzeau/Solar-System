@@ -121,6 +121,10 @@ Big refactoring session
 + Now there is a planete renderer and texture are stick to ONE sphere
 + No more factory method for planete make easy to modify without taking care witch type of planete this is
 
+### 04/12/2021
+Changing the way of how the navigation is done
++ This not the ship that moving anymore but object around him
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
@@ -134,11 +138,7 @@ For the moment I am working on this following aspect :
 
 + bug correction on skybox (see the borders)
 
-+ rewrite Overlay class to correspond with perspective angle of projection matrix (for now at 70 degree) to pass it at 45 degree
-
 + Implement hit box to prevent to pass through body (have to extract method to calculate radius coming from body position)
-
-+ rescaling object due to a high value error of floating point. Value of translation are too high so error are high to
 
 + Make a Linux version : Have to think twice because I have to change screen adaptation of the overlay
 

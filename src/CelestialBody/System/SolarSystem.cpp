@@ -204,6 +204,7 @@ void SolarSystem::displayAsteroidField(RenderData &render_data)
 
     if(m_asteroid_field != nullptr)
     {
+        m_asteroid_field->updatePostion(render_data.getShipPos());
         m_asteroid_field->drawAsteroidField(render_data);
     }
         
