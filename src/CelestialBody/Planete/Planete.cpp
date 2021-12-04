@@ -165,10 +165,10 @@ Planete::~Planete()
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** updatePosition *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Planete::updatePosition()
+void Planete::updatePosition(glm::vec3 shipPos)
 {
     m_model_mat = glm::mat4(1.0f);
-    m_model_mat = glm::translate(m_model_mat, m_current_position);
+    m_model_mat = glm::translate(m_model_mat, (m_current_position - shipPos));
 
     m_model_mat = rotate(m_model_mat, glm::radians(m_inclinaison_angle), vec3(0.0, 1.0, 0.0));
 

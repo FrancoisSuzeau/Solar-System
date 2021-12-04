@@ -1,6 +1,7 @@
 #version 330 core
 in vec4 texCoords;
 uniform vec3 viewPos;
+uniform vec3 sunPos;
 in vec3 Normal;
 in vec3 FragPos;
 
@@ -47,7 +48,8 @@ void main(void) {
         lightColor = vec3(0.2);
     }
 
-    vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    // vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    vec3 lightPos = sunPos;
 
     vec3 objectColor;
     vec3 norm;

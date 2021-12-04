@@ -2,6 +2,7 @@
 in vec4 texCoords;
 uniform float oppacity;
 uniform vec3 viewPos;
+uniform vec3 sunPos;
 in vec3 Normal;
 in vec3 FragPos;
 
@@ -42,7 +43,8 @@ void main(void) {
 
     vec3 lightColor = vec3(1.0, 1.0, 1.0);
 
-    vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    // vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
+    vec3 lightPos = sunPos;
 
     vec3 objectColor;
     vec3 norm;

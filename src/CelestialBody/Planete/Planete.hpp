@@ -86,7 +86,7 @@ PURPOSE : header of the Planete class
                 bool getProximity() const;
                 void setProximity(bool change);
 
-                void updatePosition();
+                void updatePosition(glm::vec3 shipPos = glm::vec3(0.0f));
                 
         };
 

@@ -67,6 +67,7 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
             render_data.getShader(planete->getTypePlan())->setFloat("oppacity", planete->getOppacity());
 
             render_data.getShader(planete->getTypePlan())->setVec3("viewPos", render_data.getCamPos());
+            render_data.getShader(planete->getTypePlan())->setVec3("sunPos", (render_data.getSunPos() - render_data.getShipPos()));
 
             render_data.getShader(planete->getTypePlan())->setInt("hdr", render_data.getHDR());
             if(planete->getName() == "Jupiter")

@@ -130,7 +130,7 @@ void PlanetarySystem::display(RenderData &render_data)
     {
         if((it[0] != nullptr) && (planete_render != nullptr))
         {
-            it[0]->updatePosition();
+            it[0]->updatePosition(render_data.getShipPos());
 
             if(render_data.getShader("one_texture_p") != nullptr)
             {
@@ -146,7 +146,7 @@ void PlanetarySystem::display(RenderData &render_data)
 
     if((m_host != nullptr) && (planete_render != nullptr))
     {
-        m_host->updatePosition();
+        m_host->updatePosition(render_data.getShipPos());
 
         if((render_data.getShader("one_texture_p") != nullptr) && (render_data.getShader("multi_texture_p") != nullptr))
         {
