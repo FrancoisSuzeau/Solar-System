@@ -26,13 +26,6 @@ AsteroidField::AsteroidField()
     this->initModel();
     this->initInstanced(modelMatrices);
 
-    m_model_shader = new Shader("../src/Shader/Shaders/modelInstanced.vert", "../src/Shader/Shaders/modelInstanced.frag");
-    if(m_model_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_model_shader->loadShader();
-
     m_noramal_surface = new Texture("../assets/textures/normalMap/rock_normalMap.jpg");
     assert(m_noramal_surface);
     assert(m_noramal_surface->loadTexture());
@@ -43,11 +36,6 @@ AsteroidField::~AsteroidField()
     if(asteroid != nullptr)
     {
         delete asteroid;
-    }
-
-    if(m_model_shader != nullptr)
-    {
-        delete m_model_shader;
     }
 
     if(modelMatrices != nullptr)
@@ -71,29 +59,29 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
 {
     glm::mat4 save = render_data.getViewMat();
 
-        if((asteroid != nullptr) && (m_model_shader != nullptr))
+        if((asteroid != nullptr) && (render_data.getShader("INSTmodel") != nullptr))
         {
-            glUseProgram(m_model_shader->getProgramID());
+            glUseProgram(render_data.getShader("INSTmodel")->getProgramID());
 
-            m_model_shader->setTexture("texture_diffuse1", 0);
-            m_model_shader->setInt("hdr", render_data.getHDR());
-            m_model_shader->setMat4("projection", render_data.getProjectionMat());
-            m_model_shader->setMat4("view", render_data.getViewMat());
-            m_model_shader->setVec3("viewPos", render_data.getCamPos());
-            m_model_shader->setVec3("sunPos", render_data.getSunPos());
+            render_data.getShader("INSTmodel")->setTexture("texture_diffuse1", 0);
+            render_data.getShader("INSTmodel")->setInt("hdr", render_data.getHDR());
+            render_data.getShader("INSTmodel")->setMat4("projection", render_data.getProjectionMat());
+            render_data.getShader("INSTmodel")->setMat4("view", render_data.getViewMat());
+            render_data.getShader("INSTmodel")->setVec3("viewPos", render_data.getCamPos());
+            render_data.getShader("INSTmodel")->setVec3("sunPos", render_data.getSunPos());
 
             if(m_noramal_surface != nullptr)
             {
 
-                m_model_shader->setInt("has_normal", true);
-                m_model_shader->setTexture("normalMap", 1);
+                render_data.getShader("INSTmodel")->setInt("has_normal", true);
+                render_data.getShader("INSTmodel")->setTexture("normalMap", 1);
 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_noramal_surface->getID());
             }
             else
             {
-                m_model_shader->setInt("has_normal", false);
+                render_data.getShader("INSTmodel")->setInt("has_normal", false);
 
             }
             glActiveTexture(GL_TEXTURE0);

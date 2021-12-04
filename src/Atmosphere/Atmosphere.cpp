@@ -41,7 +41,8 @@ Atmosphere::Atmosphere(float size, std::string const name)
     }
     else if (name == "Mars")
     {
-        m_color_atmo = glm::vec3(178.0/255.0, 100.0/255.0, 100.0/255.0);
+        // m_color_atmo = glm::vec3(178.0/255.0, 100.0/255.0, 100.0/255.0);
+        m_color_atmo = glm::vec3(255.0/255.0, 160.0/255.0, 122.0/255.0);
         sphere_atmosphere->setInclinaisonAngle(25.19f);
         sphere_atmosphere->setSpeedRot(0.05f);
         sphere_atmosphere->setSize(16.50f);

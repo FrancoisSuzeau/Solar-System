@@ -346,7 +346,7 @@ void OpenGlSketch::mainLoop()
     if(aud != nullptr)
     {
         assert(aud->loadMusic());
-        // aud->playMusic();
+        aud->playMusic();
     }
 
     while(!m_terminate)
@@ -366,7 +366,7 @@ void OpenGlSketch::mainLoop()
             aud->volume(volume);
             aud->pause(pause_music);
             volume = 0;
-            // aud->updateTrack();
+            aud->updateTrack();
         }
 
          /********************************************************************** Framebuffer activation ******************************************************************/
