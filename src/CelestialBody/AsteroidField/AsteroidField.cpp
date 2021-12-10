@@ -124,6 +124,7 @@ void AsteroidField::initModel()
     m_positions = new glm::vec3[m_amount];
     rotAngle = new float[m_amount];
     scaleM = new float[m_amount];
+    m_rot_vector = new glm::vec3[m_amount];
 
     float radius = 42000.0f;
     float offset = 1000.0f;
@@ -153,7 +154,12 @@ void AsteroidField::initModel()
         model = glm::translate(model, m_positions[i]);
 
         rotAngle[i] = (rand() % 360);
-        model = glm::rotate(model, rotAngle[i], glm::vec3(0.4f, 0.6f, 0.8f));
+        min = -1.0f;
+        max = 1.0f;
+        m_rot_vector[i].x = min + ((float) rand() / RAND_MAX * (max - min));
+        m_rot_vector[i].y = min + ((float) rand() / RAND_MAX * (max - min));
+        m_rot_vector[i].z = min + ((float) rand() / RAND_MAX * (max - min));
+        model = glm::rotate(model, rotAngle[i], m_rot_vector[i]);
         
 
         min = 1.0f;
@@ -229,7 +235,7 @@ void AsteroidField::updatePostion(glm::vec3 shiPos)
         {
             rotAngle[i] -= 360;
         }
-        model = glm::rotate(model, rotAngle[i], glm::vec3(0.4f, 0.6f, 0.8f));
+        model = glm::rotate(model, rotAngle[i], m_rot_vector[i]);
 
         model = glm::scale(model, glm::vec3(scaleM[i]));
 
