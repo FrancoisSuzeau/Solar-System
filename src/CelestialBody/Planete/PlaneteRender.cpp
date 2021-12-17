@@ -80,14 +80,8 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
             
             if(planete->getDispTexture() != nullptr)
             {
-                if( heighhtScale > 0.0)
-                {
-                    heighhtScale -= 0.0005f;
-                }
-                else
-                {
-                    heighhtScale = 0.0f;
-                }
+                heighhtScale -= 0.0005f;
+                
                 render_data.getShader(planete->getTypePlan())->setFloat("heightScale", heighhtScale);
                 render_data.getShader(planete->getTypePlan())->setTexture("material.dispMap", planete->getPlanTexture().size() + 1); // nb surface texture + normal texture + displacement texture
                 
@@ -180,8 +174,10 @@ void PlaneteRender::displayName(RenderData &render_data, int threshold, Planete 
         
         if(r >= threshold * planete->getSize())
         {
-            planete->getNameRender()->updatePosition(planete->getPosition() - render_data.getShipPos());
-            planete->getNameRender()->renderMovingText(render_data, planete->getSize(), r, phi, theta, y);
+            glm::vec3 pos = planete->getPosition() - render_data.getShipPos();
+            pos.z += (4.0f + planete->getSize());
+            planete->getNameRender()->updatePosition(pos);
+            planete->getNameRender()->renderMovingText(render_data, r, phi, theta, y);
 
             planete->setProximity(false);
         }

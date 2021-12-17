@@ -27,7 +27,7 @@ PURPOSE : header of the Text class
 
         #include <GL/glew.h>
 
-        #include "../Texture/Texture.hpp"
+        // #include "../Texture/Texture.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
 
 /********************************************************************* class definition *********************************************************************/
@@ -44,10 +44,10 @@ PURPOSE : header of the Text class
                 float           m_texture_coord[12];
                 GLuint          m_id;
 
-                glm::mat4 m_model_mat;
+                glm::mat4 model_mat;
                 
                 SDL_Surface *reversePixels(SDL_Surface *src) const;
-                void rotateText(float const z, double ratio, float phi, float theta, float y);
+                void rotateText(double ratio, float phi, float theta, float y);
                 
             public:
 
@@ -61,7 +61,7 @@ PURPOSE : header of the Text class
                 
                 void            updatePosition(glm::vec3 position);
                 void            updateScale(glm::vec3 scale_data);
-                void            renderMovingText(RenderData &render_data, float const z, double ratio, float phi, float theta, float y);
+                void            renderMovingText(RenderData &render_data, double ratio, float phi, float theta, float y);
                 void            renderText(RenderData &render_data);
                 bool            setText(std::string const text);
                 

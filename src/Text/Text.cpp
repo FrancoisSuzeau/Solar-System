@@ -46,7 +46,7 @@ m_file_path(file_path)
 
 	m_police = nullptr;
 
-	m_model_mat = glm::mat4(1.0f);
+	model_mat = glm::mat4(1.0f);
 
 }
 
@@ -152,8 +152,8 @@ SDL_Surface *Text::reversePixels(SDL_Surface *src) const
 /***********************************************************************************************************************************************************************/
 void Text::updatePosition(glm::vec3 position)
 {
-	m_model_mat = glm::mat4(1.0f);
-	m_model_mat = glm::translate(m_model_mat, position);
+	model_mat = glm::mat4(1.0f);
+	model_mat = glm::translate(model_mat, position);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -161,45 +161,43 @@ void Text::updatePosition(glm::vec3 position)
 /***********************************************************************************************************************************************************************/
 void Text::updateScale(glm::vec3 position)
 {
-	m_model_mat = glm::scale(m_model_mat, position);
+	model_mat = glm::scale(model_mat, position);
 }
 
 /***********************************************************************************************************************************************************************/
 /************************************************************************************** rotateText *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::rotateText(float const z, double ratio, float phi, float theta, float y)
+void Text::rotateText(double ratio, float phi, float theta, float y)
 {
-	float sizet = 4.0f;
 	phi = (float) (phi * 180 / M_PI);
 	theta = (float) (theta * 180 / M_PI);
-		
-	m_model_mat = translate(m_model_mat, vec3(0.0f, sizet - 4.0f, z + 4.0f));
+
 	if((phi < 0.0f) && (y > 0.0f))
 	{
-		m_model_mat = rotate(m_model_mat, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		model_mat = rotate(model_mat, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi > 0.0f) && (y < 0.0f) )
 	{
-		m_model_mat = rotate(m_model_mat, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		model_mat = rotate(model_mat, glm::radians(-90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi > 0.0f) && (y > 0.0f) )
 	{
-		m_model_mat = rotate(m_model_mat, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		model_mat = rotate(model_mat, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 	else if( (phi < 0.0f) && (y < 0.0f) )
 	{
-		m_model_mat = rotate(m_model_mat, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
+		model_mat = rotate(model_mat, glm::radians(90.0f + phi), vec3(0.0f, 0.0f, 1.0f));
 	}
 
-	m_model_mat = rotate(m_model_mat, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
+	model_mat = rotate(model_mat, glm::radians(theta), vec3(1.0f, 0.0f, 0.0f));
 		
-	this->updateScale(glm::vec3(sizet * (ratio/270), (sizet+10)*(ratio/270), 0));
+	
 }
 
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ renderText ***********************************************************************/
 /***********************************************************************************************************************************************************************/
-void Text::renderMovingText(RenderData &render_data, float const z, double ratio, float phi, float theta, float y)
+void Text::renderMovingText(RenderData &render_data, double ratio, float phi, float theta, float y)
 {
 
 	if(render_data.getShader("text") != nullptr)
@@ -207,7 +205,9 @@ void Text::renderMovingText(RenderData &render_data, float const z, double ratio
 		
 		render_data.initSaveMat();
 
-		this->rotateText(z, ratio, phi, theta, y);
+		this->rotateText(ratio, phi, theta, y);
+
+		this->updateScale(glm::vec3(4.0f * (ratio/270), (4.0f+10)*(ratio/270), 0));
 
 		this->renderText(render_data);
 
@@ -238,7 +238,7 @@ void Text::renderText(RenderData &render_data)
 		//send matrices
 		render_data.getShader("text")->setMat4("projection", render_data.getProjectionMat());
 		render_data.getShader("text")->setMat4("view", render_data.getViewMat());
-		render_data.getShader("text")->setMat4("model", m_model_mat);
+		render_data.getShader("text")->setMat4("model", model_mat);
 		render_data.getShader("text")->setTexture("texture0", 0);
 
 		//lock texture
