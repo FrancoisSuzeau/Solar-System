@@ -40,9 +40,13 @@ m_name(data.name)
     assert(m_name_renderer);
     assert(m_name_renderer->loadTTF(m_name));
 
-    m_normal_surface = new Texture(data.normal_path);
+    m_normal_surface = new Texture(data.nom_disp_path[0]);
     assert(m_normal_surface);
     assert(m_normal_surface->loadTexture());
+
+    displacement_map = new Texture(data.nom_disp_path[1]);
+    assert(displacement_map);
+    assert(displacement_map->loadTexture());
     
     //TODO : changing it to a special method
     m_inclinaison_angle = data.inclinaison_angle;
@@ -158,7 +162,11 @@ Planete::~Planete()
     if(m_normal_surface != nullptr)
     {
         delete m_normal_surface;
+    }
 
+    if(displacement_map != nullptr)
+    {
+        delete displacement_map;
     }
 }
 
@@ -232,6 +240,11 @@ std::vector<Texture*> Planete::getPlanTexture() const
 Texture* Planete::getNormalTexture() const
 {
     return m_normal_surface;
+}
+
+Texture* Planete::getDispTexture() const
+{
+    return displacement_map;
 }
 
 glm::mat4 Planete::getModelMat() const
