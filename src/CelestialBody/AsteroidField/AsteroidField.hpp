@@ -48,13 +48,13 @@ PURPOSE : header of the AsteroidField class
             private:
 
                 Model                           *asteroid;
-                Shader                          *m_model_shader;
                 unsigned int                    m_amount;
                 glm::mat4                       *modelMatrices;
                 glm::vec3                       *m_positions;
                 float                           *rotAngle;
                 float                           *scaleM;
                 Texture                         *m_noramal_surface;
+                glm::vec3                       *m_rot_vector;
 
                 unsigned int buffer1;
  

@@ -42,6 +42,7 @@ PURPOSE : header of the Planete class
 
                 std::vector<Texture*>           m_textures;
                 Texture                         *m_normal_surface;
+                Texture                         *displacement_map;
                 std::string                     m_name;
                 Text                            *m_name_renderer;
                 Atmosphere                      *m_atmosphere;
@@ -73,6 +74,7 @@ PURPOSE : header of the Planete class
                 std::string getTypePlan() const;
                 std::vector<Texture*> getPlanTexture() const;
                 Texture* getNormalTexture() const;
+                Texture* getDispTexture() const;
 
                 glm::mat4 getModelMat() const;
                 Text *getNameRender() const;

@@ -27,8 +27,7 @@ using namespace glm;
 PlaneteRender::PlaneteRender() :
 Sphere(1, 70, 70)
 {
-    
-    
+    heighhtScale = 0.1;
 }
 
 PlaneteRender::~PlaneteRender()
@@ -79,11 +78,32 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
                 render_data.getShader(planete->getTypePlan())->setInt("material.shininess", 32);
             }
             
+            if(planete->getDispTexture() != nullptr)
+            {
+                if( heighhtScale > 0.0)
+                {
+                    heighhtScale -= 0.0005f;
+                }
+                else
+                {
+                    heighhtScale = 0.0f;
+                }
+                render_data.getShader(planete->getTypePlan())->setFloat("heightScale", heighhtScale);
+                render_data.getShader(planete->getTypePlan())->setTexture("material.dispMap", planete->getPlanTexture().size() + 1); // nb surface texture + normal texture + displacement texture
+                
+                glActiveTexture(GL_TEXTURE0 + planete->getPlanTexture().size() + 1);
+                glBindTexture(GL_TEXTURE_2D, planete->getDispTexture()->getID());
+            }
+            else
+            {
+                render_data.getShader(planete->getTypePlan())->setInt("has_disp", false);
+            }
+
             if(planete->getNormalTexture() != nullptr)
             {
                 render_data.getShader(planete->getTypePlan())->setInt("has_normal", true);
                 render_data.getShader(planete->getTypePlan())->setTexture("material.normalMap", planete->getPlanTexture().size());
-                
+
                 glActiveTexture(GL_TEXTURE0 + planete->getPlanTexture().size());
                 glBindTexture(GL_TEXTURE_2D, planete->getNormalTexture()->getID());
             }
@@ -104,8 +124,18 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
             
             glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
-            glActiveTexture(GL_TEXTURE0 + planete->getPlanTexture().size());
-            glBindTexture(GL_TEXTURE_2D, 0);
+            if(planete->getDispTexture() != nullptr)
+            {
+                glActiveTexture(GL_TEXTURE0 + planete->getPlanTexture().size() + 1);
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
+
+            if(planete->getNormalTexture() != nullptr)
+            {
+                glActiveTexture(GL_TEXTURE0 + planete->getPlanTexture().size());
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
+            
             
             if(planete->getTypePlan() == "multi_texture_p")
             {
@@ -150,8 +180,10 @@ void PlaneteRender::displayName(RenderData &render_data, int threshold, Planete 
         
         if(r >= threshold * planete->getSize())
         {
-            planete->getNameRender()->updatePosition(planete->getPosition() - render_data.getShipPos());
-            planete->getNameRender()->renderMovingText(render_data, planete->getSize(), r, phi, theta, y);
+            glm::vec3 pos = planete->getPosition() - render_data.getShipPos();
+            pos.z += (4.0f + planete->getSize());
+            planete->getNameRender()->updatePosition(pos);
+            planete->getNameRender()->renderMovingText(render_data, r, phi, theta, y);
 
             planete->setProximity(false);
         }

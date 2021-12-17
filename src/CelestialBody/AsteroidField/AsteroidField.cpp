@@ -26,13 +26,6 @@ AsteroidField::AsteroidField()
     this->initModel();
     this->initInstanced(modelMatrices);
 
-    m_model_shader = new Shader("../src/Shader/Shaders/modelInstanced.vert", "../src/Shader/Shaders/modelInstanced.frag");
-    if(m_model_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_model_shader->loadShader();
-
     m_noramal_surface = new Texture("../assets/textures/normalMap/rock_normalMap.jpg");
     assert(m_noramal_surface);
     assert(m_noramal_surface->loadTexture());
@@ -45,17 +38,15 @@ AsteroidField::~AsteroidField()
         delete asteroid;
     }
 
-    if(m_model_shader != nullptr)
-    {
-        delete m_model_shader;
-    }
-
     if(modelMatrices != nullptr)
     {
         delete modelMatrices;
     }
 
-    glDeleteBuffers(1, &buffer1);
+    if(glIsBuffer(buffer1) == GL_TRUE)
+    {
+        glDeleteBuffers(1, &buffer1);
+    }
 
     if(m_noramal_surface != nullptr)
     {
@@ -71,29 +62,29 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
 {
     glm::mat4 save = render_data.getViewMat();
 
-        if((asteroid != nullptr) && (m_model_shader != nullptr))
+        if((asteroid != nullptr) && (render_data.getShader("INSTmodel") != nullptr))
         {
-            glUseProgram(m_model_shader->getProgramID());
+            glUseProgram(render_data.getShader("INSTmodel")->getProgramID());
 
-            m_model_shader->setTexture("texture_diffuse1", 0);
-            m_model_shader->setInt("hdr", render_data.getHDR());
-            m_model_shader->setMat4("projection", render_data.getProjectionMat());
-            m_model_shader->setMat4("view", render_data.getViewMat());
-            m_model_shader->setVec3("viewPos", render_data.getCamPos());
-            m_model_shader->setVec3("sunPos", render_data.getSunPos());
+            render_data.getShader("INSTmodel")->setTexture("texture_diffuse1", 0);
+            render_data.getShader("INSTmodel")->setInt("hdr", render_data.getHDR());
+            render_data.getShader("INSTmodel")->setMat4("projection", render_data.getProjectionMat());
+            render_data.getShader("INSTmodel")->setMat4("view", render_data.getViewMat());
+            render_data.getShader("INSTmodel")->setVec3("viewPos", render_data.getCamPos());
+            render_data.getShader("INSTmodel")->setVec3("sunPos", render_data.getSunPos());
 
             if(m_noramal_surface != nullptr)
             {
 
-                m_model_shader->setInt("has_normal", true);
-                m_model_shader->setTexture("normalMap", 1);
+                render_data.getShader("INSTmodel")->setInt("has_normal", true);
+                render_data.getShader("INSTmodel")->setTexture("normalMap", 1);
 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_noramal_surface->getID());
             }
             else
             {
-                m_model_shader->setInt("has_normal", false);
+                render_data.getShader("INSTmodel")->setInt("has_normal", false);
 
             }
             glActiveTexture(GL_TEXTURE0);
@@ -106,8 +97,12 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
                 glBindVertexArray(0);
             }
 
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, 0);
+            if(m_noramal_surface != nullptr)
+            {
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
+            
             
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, 0);
@@ -129,6 +124,7 @@ void AsteroidField::initModel()
     m_positions = new glm::vec3[m_amount];
     rotAngle = new float[m_amount];
     scaleM = new float[m_amount];
+    m_rot_vector = new glm::vec3[m_amount];
 
     float radius = 42000.0f;
     float offset = 1000.0f;
@@ -158,7 +154,12 @@ void AsteroidField::initModel()
         model = glm::translate(model, m_positions[i]);
 
         rotAngle[i] = (rand() % 360);
-        model = glm::rotate(model, rotAngle[i], glm::vec3(0.4f, 0.6f, 0.8f));
+        min = -1.0f;
+        max = 1.0f;
+        m_rot_vector[i].x = min + ((float) rand() / RAND_MAX * (max - min));
+        m_rot_vector[i].y = min + ((float) rand() / RAND_MAX * (max - min));
+        m_rot_vector[i].z = min + ((float) rand() / RAND_MAX * (max - min));
+        model = glm::rotate(model, rotAngle[i], m_rot_vector[i]);
         
 
         min = 1.0f;
@@ -179,6 +180,10 @@ void AsteroidField::initInstanced(glm::mat4 *matrice)
 {
     // configure instanced array
     // -------------------------
+    if(glIsBuffer(buffer1) == GL_TRUE)
+    {
+        glDeleteBuffers(1, &buffer1);
+    }
     glGenBuffers(1, &buffer1);
     glBindBuffer(GL_ARRAY_BUFFER, buffer1);
     glBufferData(GL_ARRAY_BUFFER, m_amount * sizeof(glm::mat4), &matrice[0], GL_STATIC_DRAW);
@@ -230,7 +235,7 @@ void AsteroidField::updatePostion(glm::vec3 shiPos)
         {
             rotAngle[i] -= 360;
         }
-        model = glm::rotate(model, rotAngle[i], glm::vec3(0.4f, 0.6f, 0.8f));
+        model = glm::rotate(model, rotAngle[i], m_rot_vector[i]);
 
         model = glm::scale(model, glm::vec3(scaleM[i]));
 
