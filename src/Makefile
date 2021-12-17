@@ -56,7 +56,7 @@ Mesh.o: Model/Mesh.hpp OpenGlSketch/RenderData.hpp
 Model.o: Model/Model.hpp Model/Mesh.hpp OpenGlSketch/RenderData.hpp
 Spaceship.o : Spaceship/Spaceship.hpp Model/Model.hpp Input/Input.hpp OpenGlSketch/RenderData.hpp
 AsteroidField.o: CelestialBody/AsteroidField.hpp Model/Model.hpp OpenGlSketch/RenderData.hpp
-Framebuffer.o: Framebuffer.hpp Shader/Shader.hpp
+Framebuffer.o: Framebuffer/Framebuffer.hpp Shader/Shader.hpp
 Planete.o: CelestialBody/Planete/Planete.hpp Texture/Texture.hpp Text/Text.hpp Atmosphere/Atmosphere.hpp CelestialBody/Ring/Ring.hpp CelestialBody/System/System.hpp 
 
 %.o:%.cpp
