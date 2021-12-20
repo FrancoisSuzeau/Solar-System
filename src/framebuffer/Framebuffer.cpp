@@ -279,7 +279,7 @@ void Framebuffer::drawBlur(RenderData &render_data, bool &horizontal)
 {
     bool first_it = true;
     
-    unsigned int amount = 4;
+    unsigned int amount = 10;
 
         glUseProgram(render_data.getShader("blur")->getProgramID());
 

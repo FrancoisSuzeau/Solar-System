@@ -17,7 +17,7 @@ PURPOSE : class AsteroidField
 /***********************************************************************************************************************************************************************/
 AsteroidField::AsteroidField()
 {
-    m_amount = 4200;
+    m_amount = 10000;
     asteroid = new Model("../assets/model/rock/rock.obj");
     if(asteroid == nullptr)
     {
@@ -127,7 +127,7 @@ void AsteroidField::initModel()
     m_rot_vector = new glm::vec3[m_amount];
 
     float radius = 42000.0f;
-    float offset = 1000.0f;
+    float offset = 5000.0f;
 
     for (unsigned int i = 0; i < m_amount; i++)
     {
