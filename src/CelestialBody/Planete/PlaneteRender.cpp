@@ -27,7 +27,7 @@ using namespace glm;
 PlaneteRender::PlaneteRender() :
 Sphere(1, 70, 70)
 {
-    heighhtScale = 0.1;
+    heighhtScale = 0.0f;
 }
 
 PlaneteRender::~PlaneteRender()
@@ -80,14 +80,19 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
             
             if(planete->getDispTexture() != nullptr)
             {
-                if( heighhtScale > 0.0)
+                heighhtScale += 0.000001f;
+                if(heighhtScale >= 360.0f)
                 {
-                    heighhtScale -= 0.0005f;
+                    heighhtScale -= 360.0f;
                 }
-                else
-                {
-                    heighhtScale = 0.0f;
-                }
+                // if( heighhtScale > 0.0)
+                // {
+                //     heighhtScale -= 0.0005f;
+                // }
+                // else
+                // {
+                //     heighhtScale = 0.0f;
+                // }
                 render_data.getShader(planete->getTypePlan())->setFloat("heightScale", heighhtScale);
                 render_data.getShader(planete->getTypePlan())->setTexture("material.dispMap", planete->getPlanTexture().size() + 1); // nb surface texture + normal texture + displacement texture
                 
