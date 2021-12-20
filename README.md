@@ -10,6 +10,16 @@ The front is the opengGL context that compile shader program written in GLSL and
 
 I try to make it usable directly after the download of the source files but I suggest to re-compile it before. For that a Makefile for windows is available in the parent directory (I am still learning how to configure the build aspect of a project). For now it is only usable on Windows but I strongly consider to make it usable on Linux and Mac system.
 
+For developpment i use this configuration :
++ Intel(R) Xeon(R) CPU E5-2678 v3 2.50GHz
++ 12 Go RAM
++ Nvidia GeForce GTX 1080 (DirectX 12 FL 12.1)
+
+But I can run the simulation on my laptop with good performance :
++ Intel(R) Core(TM) I5-10210U CPU 1.60GHz
++ 8 Go RAM
++ Intel(R) UHD Graphics (DirectX 12 FL 12.1)
+
 ## How to use
 At the launch, all the textures, audio, font files are loaded. You can follow this load on the terminal command if you had launch the program with it.
 After a while the Solar System appears with all planets and moons.
