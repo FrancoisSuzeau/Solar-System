@@ -54,9 +54,12 @@ PURPOSE : header of the AsteroidField class
                 float                           *rotAngle;
                 float                           *scaleM;
                 Texture                         *m_noramal_surface;
+                Texture                         *m_disp_surface;
                 glm::vec3                       *m_rot_vector;
 
                 unsigned int buffer1;
+
+                float   heightScale;
  
                 void initModel();
                 void initInstanced(glm::mat4 *Matrices);

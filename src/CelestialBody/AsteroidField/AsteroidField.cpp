@@ -18,6 +18,7 @@ PURPOSE : class AsteroidField
 AsteroidField::AsteroidField()
 {
     m_amount = 10000;
+    heightScale = 0.0f;
     asteroid = new Model("../assets/model/rock/rock.obj");
     if(asteroid == nullptr)
     {
@@ -29,6 +30,10 @@ AsteroidField::AsteroidField()
     m_noramal_surface = new Texture("../assets/textures/normalMap/rock_normalMap.jpg");
     assert(m_noramal_surface);
     assert(m_noramal_surface->loadTexture());
+
+    m_disp_surface = new Texture("../assets/textures/displacementMap/rock_dispMap.jpg");
+    assert(m_disp_surface);
+    assert(m_disp_surface->loadTexture());
 }
 
 AsteroidField::~AsteroidField()
@@ -53,6 +58,11 @@ AsteroidField::~AsteroidField()
         delete m_noramal_surface;
     }
 
+    if(m_disp_surface != nullptr)
+    {
+        delete m_disp_surface;
+    }
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -72,6 +82,18 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
             render_data.getShader("INSTmodel")->setMat4("view", render_data.getViewMat());
             render_data.getShader("INSTmodel")->setVec3("viewPos", render_data.getCamPos());
             render_data.getShader("INSTmodel")->setVec3("sunPos", render_data.getSunPos());
+
+            if(m_disp_surface != nullptr)
+            {
+                heightScale += 0.000001f;
+                if(heightScale >= 360.0f)
+                {
+                    heightScale -= 360.0f;
+                }
+                render_data.getShader("INSTmodel")->setFloat("heightScale", heightScale);
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
+            }
 
             if(m_noramal_surface != nullptr)
             {
@@ -96,6 +118,13 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
                 glDrawElementsInstanced(GL_TRIANGLES, asteroid->getMeshVectorIndiceSize(i), GL_UNSIGNED_INT, 0, m_amount);
                 glBindVertexArray(0);
             }
+
+            if(m_disp_surface != nullptr)
+            {
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
+
 
             if(m_noramal_surface != nullptr)
             {
