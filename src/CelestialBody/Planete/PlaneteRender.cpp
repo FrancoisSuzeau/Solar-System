@@ -85,14 +85,6 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
                 {
                     heighhtScale -= 360.0f;
                 }
-                // if( heighhtScale > 0.0)
-                // {
-                //     heighhtScale -= 0.0005f;
-                // }
-                // else
-                // {
-                //     heighhtScale = 0.0f;
-                // }
                 render_data.getShader(planete->getTypePlan())->setFloat("heightScale", heighhtScale);
                 render_data.getShader(planete->getTypePlan())->setTexture("material.dispMap", planete->getPlanTexture().size() + 1); // nb surface texture + normal texture + displacement texture
                 
