@@ -205,6 +205,7 @@ std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType
     if(mat != nullptr)
     {
         std::vector<Texturate> textures;
+        std::cout << "TEXTURE COUNT : " << mat->GetTextureCount(type) << std::endl;
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
