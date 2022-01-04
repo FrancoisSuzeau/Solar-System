@@ -185,9 +185,9 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
             textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
             // return a mesh object created from the extracted mesh data
-            // std::cout << "vertice size : " << vertices.size() << std::endl;
-            // std::cout << "indices size : " << indices.size() << std::endl;
-            // std::cout << "textures size : " << textures.size() << std::endl;
+            std::cout << "vertice size : " << vertices.size() << std::endl;
+            std::cout << "indices size : " << indices.size() << std::endl;
+            std::cout << "textures size : " << textures.size() << std::endl;
             return Mesh(vertices, indices, textures);
         }
             

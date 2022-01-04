@@ -208,7 +208,7 @@ void OpenGlSketch::startLoop()
     vec3 color = vec3(0.5f);
     assert(square);
 
-    ship = new Spaceship("../assets/model/spaceship/untitled.obj");
+    ship = new Spaceship("../assets/model/donut/donut.obj", 3.0f);
     assert(ship);
 
     // m_particuleGenerator = new Particule(ship);

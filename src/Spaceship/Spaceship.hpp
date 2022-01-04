@@ -56,6 +56,8 @@ PURPOSE : header of the Spaceship class
                 float           m_sensibility;
                 float           m_speed;
 
+                float m_scale;
+
                 glm::vec3 m_current_pos;
                 glm::vec3 m_ship_orientation;
                 glm::vec3 m_lateral_move;
@@ -78,7 +80,7 @@ PURPOSE : header of the Spaceship class
                 
             public:
             
-                Spaceship(std::string const path);
+                Spaceship(std::string const path, float scale);
                 ~Spaceship();
 
                 void drawSpaceship(RenderData &render_data, Input input);
