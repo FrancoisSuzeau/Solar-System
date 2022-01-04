@@ -157,10 +157,13 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
             }
                          
         }
-        if(mesh->mMaterialIndex >= 0)
-        {
-            // process materials
-            aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];    
+        // if(mesh->mMaterialIndex >= 0)
+        // {
+        //     All the following code can be put there if crash
+        // }
+
+        // process materials
+        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];    
             // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
             // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
             // Same applies to other texture as the following list summarizes:
@@ -168,31 +171,27 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
             // specular: texture_specularN
             // normal: texture_normalN
 
-            // 1. diffuse maps
-            std::vector<Texturate> diffuseMaps = this->loadMaterialTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
-            textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+        // 1. diffuse maps
+        std::vector<Texturate> diffuseMaps = this->loadMaterialTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
+        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-            // 2. specular maps
-            std::vector<Texturate> specularMaps = this->loadMaterialTexture(material, aiTextureType_SPECULAR, "texture_specular");
-            textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+        // 2. specular maps
+        std::vector<Texturate> specularMaps = this->loadMaterialTexture(material, aiTextureType_SPECULAR, "texture_specular");
+        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-            // 3. normal maps
-            std::vector<Texturate> normalMaps = loadMaterialTexture(material, aiTextureType_HEIGHT, "texture_normal");
-            textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+        // 3. normal maps
+        std::vector<Texturate> normalMaps = loadMaterialTexture(material, aiTextureType_HEIGHT, "texture_normal");
+        textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
-            // 4. height maps
-            std::vector<Texturate> heightMaps = loadMaterialTexture(material, aiTextureType_AMBIENT, "texture_height");
-            textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+        // 4. height maps
+        std::vector<Texturate> heightMaps = loadMaterialTexture(material, aiTextureType_AMBIENT, "texture_height");
+        textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-            // return a mesh object created from the extracted mesh data
-            std::cout << "vertice size : " << vertices.size() << std::endl;
-            std::cout << "indices size : " << indices.size() << std::endl;
-            std::cout << "textures size : " << textures.size() << std::endl;
-            return Mesh(vertices, indices, textures);
-        }
-            
-            
-            
+        // return a mesh object created from the extracted mesh data
+        // std::cout << "vertice size : " << vertices.size() << std::endl;
+        // std::cout << "indices size : " << indices.size() << std::endl;
+        // std::cout << "textures size : " << textures.size() << std::endl;
+        return Mesh(vertices, indices, textures);   
     }
     
 }
@@ -205,7 +204,6 @@ std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType
     if(mat != nullptr)
     {
         std::vector<Texturate> textures;
-        std::cout << "TEXTURE COUNT : " << mat->GetTextureCount(type) << std::endl;
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
@@ -213,10 +211,11 @@ std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType
 
             GLboolean skip = false;
 
-            for (unsigned int j = 0; j < textures_loaded.size(); i++)
+            for (unsigned int j = 0; j < textures_loaded.size(); j++)
             {
-                if(std::strcmp(textures_loaded[j].path.data(), str.C_Str()) ==0)
+                if(std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
                 {
+                    
                     textures.push_back(textures_loaded[j]);
                     skip = true;
                     std::cout << ">> Material are loaded : SUCCESS" << std::endl;
