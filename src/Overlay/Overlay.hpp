@@ -31,6 +31,7 @@ PURPOSE : header of the Overlay class
         #include <vector>
         #include <cmath>
         #include <ctime>
+        #include <map>
         #include <cassert>
 
         #if defined(IMGUI_IMPL_OPENGL_ES2)
@@ -46,6 +47,13 @@ PURPOSE : header of the Overlay class
         #include "../../lib/imgui/imgui.h"
         #include "../../lib/imgui/imgui_impl_sdl.h"
         #include "../../lib/imgui/imgui_impl_opengl3.h"
+
+        typedef struct music_data {
+                std::string title;
+                std::string author;
+                std::string studio;
+
+        } music_data;
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -58,12 +66,13 @@ PURPOSE : header of the Overlay class
                 Square          m_rect;
                 std::vector<Text*> m_texts;
 
-                std::string     m_ancient_track;
                 float           m_ancient_radius;
                 float           m_ancient_speed;
 
                 glm::vec3 m_colorBlack;
                 glm::vec3 m_colorGrey;
+
+                std::map<int, music_data> map_music_data;
 
                 void displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates);
 
@@ -73,11 +82,10 @@ PURPOSE : header of the Overlay class
                 ~Overlay();
 
                 void displayGeneralOverlay(RenderData &render_data);
-                void displayMusicOverlay(RenderData &render_data, std::string const track);
+                void displayMusicInfo(RenderData &render_data);
                 void displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed);
                 void displayAppInfo(RenderData &render_data);
 
-                void setMusicInformation(std::string const track);
                 void setSpeedInformation(float const speed);
         };
 

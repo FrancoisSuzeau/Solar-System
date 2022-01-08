@@ -19,6 +19,7 @@ PURPOSE : header of the Audio class
         #include <iostream>
         #include <string>
         #include <vector>
+        #include "../OpenGlSketch/RenderData.hpp"
 
         #include <SDL2/SDL_mixer.h>
 
@@ -31,11 +32,11 @@ PURPOSE : header of the Audio class
             private:
 
                 std::vector<std::string>        m_file_music;
-                std::vector<std::string>        m_track_music;
+
                 Mix_Music                       *m_music;
                 int                             m_volume;
                 bool                            m_in_pause;
-                unsigned int                    m_track;
+                int                             ancient_track;
                 
                 
             public:
@@ -44,14 +45,11 @@ PURPOSE : header of the Audio class
                 ~Audio();
 
 
-                bool loadMusic();
+                bool loadMusic(RenderData &render_data);
                 void playMusic() const;
-                void updateTrack();
+                void updateTrack(RenderData &render_data);
                 void pause(bool pause); 
-                void volume(int change);
-                std::string getTrack() const;
-
-                
+                void changeVolume(int change);
         };
 
 

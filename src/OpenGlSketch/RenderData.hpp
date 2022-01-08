@@ -57,8 +57,10 @@ PURPOSE : header of the RenderData class
                 bool hdr;
                 float exposure;
 
-                // bool pause_music;
-                // int volume;
+                int track_music;
+
+                bool pause_music;
+                int volume;
 
                 bool m_terminate;
 
@@ -80,7 +82,7 @@ PURPOSE : header of the RenderData class
                 RenderData(int width, int height, double angle, bool main_loop)
                 {
                     // pause_music = false;
-                    // volume = 0;
+                    volume = 64;
 
                     frame_rate = 1000 / 50;
                     start_loop = 0;
@@ -190,6 +192,17 @@ PURPOSE : header of the RenderData class
 
                 int getWidth() const {return m_width;}
                 int getHeight() const {return m_height;}
+
+                void setTrackMusic(int const track) {track_music = track;}
+                int getTrack() const {return track_music;}
+
+                int getVolume() const {return volume;}
+                void setVolume(int const new_volume) {volume = new_volume;}
+
+                void setPauseMusic(bool const pause) {pause_music = pause;}
+                bool getPauseMusic() const {return pause_music;}
+
+                
  
         };
 

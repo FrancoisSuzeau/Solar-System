@@ -329,13 +329,14 @@ void OpenGlSketch::startLoop()
 void OpenGlSketch::mainLoop()
 {
     /************************************************* Variables ********************************************************/
-    pause_music = false;
     speed_key_pressed = false;
-    volume = 0;
 
     m_terminate = false;
 
     RenderData render_data(m_window_width, m_window_height, 45.0f, true);
+    render_data.setTrackMusic(1);
+    render_data.setPauseMusic(false);
+    
 
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
     // m_particuleGenerator->initParticles(camera->getTargetPoint());
@@ -363,7 +364,7 @@ void OpenGlSketch::mainLoop()
     //load and play the music
     if(aud != nullptr)
     {
-        assert(aud->loadMusic());
+        assert(aud->loadMusic(render_data));
         // aud->playMusic();
     }
 
@@ -385,13 +386,12 @@ void OpenGlSketch::mainLoop()
     /******************************************************** MANAGING MUSIC *******************************************************************/
         if(aud != nullptr)
         {
-            aud->volume(volume);
-            aud->pause(pause_music);
-            volume = 0;
-            // aud->updateTrack();
+            aud->changeVolume(render_data.getVolume());
+            aud->pause(render_data.getPauseMusic());
+            aud->updateTrack(render_data);
         }
 
-         /********************************************************************** Framebuffer activation ******************************************************************/
+    /********************************************************************** Framebuffer activation ******************************************************************/
             m_framebuffer->bindFramebuffer();
         
     //===========================================================================================================================================
@@ -427,7 +427,11 @@ void OpenGlSketch::mainLoop()
 
         render_data.initSaveMat();
 
-            ship->drawSpaceship(render_data, m_input);
+            if(!menu)
+            {
+                ship->drawSpaceship(render_data, m_input);
+            }
+            
         
         render_data.saveViewMat();
 
@@ -507,7 +511,6 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
     {
         if((aud != nullptr) && (camera != nullptr) && (m_overlay != nullptr))
         {
-            std::string track = aud->getTrack();
             glm::vec3 position = camera->getPosition();
             float speed = ship->getSpeed();
 
@@ -521,7 +524,7 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
 
                 render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayMusicOverlay(render_data, track);
+                    m_overlay->displayMusicInfo(render_data);
 
                 render_data.saveViewMat();
 
@@ -789,22 +792,6 @@ void OpenGlSketch::renderSettings(RenderData &render_data)
                         ship->setSpeed(0.1f);
                     }
                     break;
-
-                // case MUSIC_ON:
-                //     pause_music = false;
-                //     break;
-        
-                // case MUSIC_OFF:
-                //     pause_music = true;
-                //     break;
-
-                // case MUSIC_DEC:
-                //     volume = -2;
-                //     break;
-
-                // case MUSIC_INC:
-                //     volume = 2;
-                //     break;
 
                 case OVERLAY_ON:
                     m_overlay_display = true;

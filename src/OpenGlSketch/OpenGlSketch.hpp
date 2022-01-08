@@ -88,9 +88,7 @@ PURPOSE : header of the OpenGlSketch class
 
                 bool hdr_key_pressed;
 
-                bool pause_music;
                 bool speed_key_pressed;
-                int volume;
 
                 Settings *m_settings;
                 bool menu;

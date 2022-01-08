@@ -21,7 +21,7 @@ PURPOSE :   - load music file
 /***********************************************************************************************************************************************************************/
 Audio::Audio(): m_volume(MIX_MAX_VOLUME / 2), 
 m_music(0), //create a warning but needed after
-m_track(1), m_in_pause(false)
+m_in_pause(false)
 {
     m_file_music = {
 
@@ -29,14 +29,6 @@ m_track(1), m_in_pause(false)
         "../assets/audio/natural_splender.mp3",
         "../assets/audio/dying-star.mp3",
         "../assets/audio/SC-Orizon-theme.mp3"
-    };
-
-    m_track_music = {
-
-        "Mass Effect - Vigil",
-        "Natural Splendor",
-        "Dying Star",
-        "Orizon Theme"
     };
 }
 
@@ -51,22 +43,23 @@ Audio::~Audio()
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* loadMusic ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-bool Audio::loadMusic()
+bool Audio::loadMusic(RenderData &render_data)
 {
-    if(m_track < m_file_music.size())
+    if(render_data.getTrack() < m_file_music.size())
     {
         if(m_music != NULL)
         {
             Mix_FreeMusic(m_music);
         }
         /************************************************* load the file ********************************************************/
-        m_music = Mix_LoadMUS(m_file_music[m_track].c_str());
+        m_music = Mix_LoadMUS(m_file_music[render_data.getTrack()].c_str());
         if(m_music == NULL)
         {
             std::cout << ">> Loading file music : ERROR : " << Mix_GetError() << std::endl;
             return false;
         }
-        std::cout << ">> Loading file music : SUCCESS : " << m_file_music[m_track] << std::endl;
+        std::cout << ">> Loading file music : SUCCESS : " << m_file_music[render_data.getTrack()] << std::endl;
+        ancient_track = render_data.getTrack();
         //===================================================================================================================   
     }
     else
@@ -95,56 +88,67 @@ void Audio::pause(bool pause)
 {
     if(pause)
     {
+        if(Mix_PausedMusic() == 0)
+        {
+            Mix_PauseMusic();
+        }
+    }
+    else
+    {
         if(Mix_PausedMusic() == 1)
         {
             Mix_ResumeMusic();
-            m_in_pause = false;
-
-        }
-        else
-        {
-            Mix_PauseMusic();
-            m_in_pause = true;
         }
     }
+
+
     
 }
 
-void Audio::volume(int change)
+void Audio::changeVolume(int change)
 {
-    if( (m_volume >= 0) && (m_volume <= 128) )
+    if(m_volume != change)
     {
-        m_volume += change;
         Mix_VolumeMusic(m_volume);
+        m_volume = change;
     }
+    
 }
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* updateTrack *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Audio::updateTrack()
+void Audio::updateTrack(RenderData &render_data)
 {
+    int new_track = render_data.getTrack();
+
     if(Mix_PlayingMusic() == 1)
     {
-        //do nothing
+        if(new_track >= m_file_music.size())
+        {
+            render_data.setTrackMusic(0);
+        }
+        if(new_track < 0)
+        {
+            render_data.setTrackMusic(m_file_music.size() - 1);
+            std::cout << "HERE " << std::endl;
+        }
+
+        if(ancient_track != render_data.getTrack())
+        {
+            loadMusic(render_data);
+            playMusic();
+        }
     }
     else if( (Mix_PlayingMusic() != 1) && (m_in_pause == false) )
     {
-        m_track++;
-        if( m_track >= m_file_music.size() )
+        render_data.setTrackMusic(new_track + 1);
+        if( render_data.getTrack() >= m_file_music.size() )
         {
-            m_track = 0;
+            render_data.setTrackMusic(0);
         }
 
-        loadMusic();
+        loadMusic(render_data);
         playMusic();
     }
-}
-
-/***********************************************************************************************************************************************************************/
-/********************************************************************************** getTrack ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-std::string Audio::getTrack() const
-{
-    return m_track_music[m_track];
 }
