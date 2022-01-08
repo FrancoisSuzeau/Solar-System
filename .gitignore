@@ -1,3 +1,4 @@
 #ignore les fichier .o
 *.o
 .vscode
+*.ini

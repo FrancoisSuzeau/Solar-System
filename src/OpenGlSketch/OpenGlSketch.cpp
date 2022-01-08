@@ -40,6 +40,10 @@ OpenGlSketch::OpenGlSketch(std::string window_title, int width, int height): m_w
 
 OpenGlSketch::~OpenGlSketch()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
     SDL_GL_DeleteContext(m_openGL_context);
     SDL_DestroyWindow(m_window);
     Mix_CloseAudio();
@@ -155,6 +159,20 @@ bool OpenGlSketch::initGL()
     //===================================================================================================================
 
     return true; 
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************************ initImGUI ************************************************************************/
+/***********************************************************************************************************************************************************************/
+void OpenGlSketch::initImGUI()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplSDL2_InitForOpenGL(m_window, m_openGL_context);
+    ImGui_ImplOpenGL3_Init("#version 330");
 }
 
 /***********************************************************************************************************************************************************************/
@@ -360,6 +378,10 @@ void OpenGlSketch::mainLoop()
 
     //======================================================================================================================================
 
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
     /******************************************************** MANAGING MUSIC *******************************************************************/
         if(aud != nullptr)
         {
@@ -411,12 +433,16 @@ void OpenGlSketch::mainLoop()
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
 
+        ImGui::Render();
         m_framebuffer->renderFrame(render_data);
         
 
     /************************************************* SWAPPING WINDOWS ********************************************************/
 
         //actualising the window
+
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         SDL_GL_SwapWindow(m_window);
 
         render_data.manageFrameRate();
@@ -507,7 +533,7 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
 
                 render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayTimeInfoOverlay(render_data);
+                    m_overlay->displayAppInfo(render_data);
 
             render_data.saveViewMat();
 

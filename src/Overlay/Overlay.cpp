@@ -41,14 +41,10 @@ m_rect(0.05, 0.1)
         assert(m_texts[i]);
         assert(m_texts[i]->loadTTF(str_init[i]));
     }
-    
-    setTimeInformation();
 
     m_ancient_track = "None";
     m_ancient_radius = 0.0;
     m_ancient_speed = 0.0;
-    m_ancient_time = "None";
-    m_sec = 0;
 
     m_colorBlack = vec3(0.05);
     m_colorGrey = vec3(0.1);
@@ -158,6 +154,9 @@ void Overlay::displayGeneralOverlay(RenderData &render_data)
         }
         
     render_data.updateView(save);
+
+    
+    
     
 }
 
@@ -341,72 +340,55 @@ void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &positio
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayTimeInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayTimeInfoOverlay(RenderData &render_data)
+void Overlay::displayAppInfo(RenderData &render_data)
 {
-    glm::mat4 save = render_data.getViewMat();
-    float constance = 0.05f;
+    time_t local_time = time(0);
+    std::string time = ctime(&local_time);
 
-    float start_top_black_to_left = 0.0f;
-    float start_top_white_to_left = 0.0f;
+    ImGuiWindowFlags window_flags = 0;
+    ImGuiIO& io = ImGui::GetIO();
 
-    float start_top_black_to_right = 0.05f;
-    float start_top_white_to_right = 0.05f;
+    window_flags |= ImGuiWindowFlags_NoTitleBar;
+    // window_flags |= ImGuiWindowFlags_NoScrollbar;
+    // window_flags |= ImGuiWindowFlags_MenuBar;
+    // window_flags |= ImGuiWindowFlags_NoMove;
+    window_flags |= ImGuiWindowFlags_NoResize;
+    // window_flags |= ImGuiWindowFlags_NoCollapse;
+    // window_flags |= ImGuiWindowFlags_NoNav;
+    // window_flags |= ImGuiWindowFlags_NoBackground;
+    // window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+    // window_flags |= ImGuiWindowFlags_UnsavedDocument;
 
-    if(render_data.getShader("square") != nullptr)
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
+    ImGui::SetNextWindowPos(ImVec2(0.0, 0.0f));
+    ImGui::SetNextWindowSize(ImVec2(380, 150));
+    
+    ImGui::Begin("Application Information : ", NULL, window_flags);
+
+    ImGui::Text("Application Information : ");
+
+    std::string tmp = "Time : " + time;
+    ImGui::Bullet();
+    ImGui::Text(tmp.c_str());
+
+    ImGui::Bullet();
+    ImGui::Text("Application average : %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+    if (ImGui::TreeNode("Mouse State"))
     {
-        
-        for (size_t i(0); i < 5; i++)
-        {
-                std::vector<glm::vec3> coordinates;
-                coordinates.push_back(glm::vec3(start_top_white_to_left, 0.670f, -0.01f));
-                coordinates.push_back(glm::vec3(start_top_black_to_left, 0.675f, 0.0f));
-                displaySquares(render_data, coordinates);
-               
-            render_data.updateView(save);
-            start_top_white_to_left = start_top_white_to_left - constance;
-            start_top_black_to_left = start_top_black_to_left - constance;
-        }
+        if (ImGui::IsMousePosValid())
+            ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
+        else
+            ImGui::Text("Mouse pos: <INVALID>");
+        ImGui::Text("Mouse delta: (%g, %g)", io.MouseDelta.x, io.MouseDelta.y);
 
-        for (size_t i(0); i < 4; i++)
-        {
-            std::vector<glm::vec3> coordinates;
-            coordinates.push_back(glm::vec3(start_top_white_to_right, 0.670f, -0.01f));
-            coordinates.push_back(glm::vec3(start_top_black_to_right, 0.675f, 0.0f));
-            displaySquares(render_data, coordinates);
-
-            render_data.updateView(save);
-            start_top_white_to_right = start_top_white_to_right + constance;
-            start_top_black_to_right = start_top_black_to_right + constance;
-        }
-
-        render_data.updateView(save);
-
-            m_rect.updatePosition(glm::vec3(0.0f - 0.043f*5, 0.670f, -0.01f));
-            m_rect.display(render_data, m_colorGrey);
-
-        render_data.updateView(save);
-
-            m_rect.updatePosition(glm::vec3(0.0f + 0.043f * 5, 0.670f, -0.01f));
-            m_rect.display(render_data, m_colorGrey);
-
-        render_data.updateView(save);
-
+        int count = IM_ARRAYSIZE(io.MouseDown);
+        ImGui::Text("Mouse down:");         for (int i = 0; i < count; i++) if (ImGui::IsMouseDown(i))      { ImGui::SameLine(); ImGui::Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]); }
+        ImGui::TreePop();
     }
 
-    render_data.updateView(save);
-
-        if(render_data.getShader("text") != nullptr)
-        {
-            setTimeInformation();
-
-                m_texts[7]->updatePosition(glm::vec3(0.0f, 0.658f, -0.0f));
-                m_texts[7]->updateScale(vec3(0.039f, 0.050f, 0.0f));
-                m_texts[7]->renderText(render_data);
-
-            render_data.updateView(save);
-            
-        }
-        
+    ImGui::PopStyleColor();
+    ImGui::End();
 }
 
 /***********************************************************************************************************************************************************************/
@@ -465,31 +447,4 @@ void Overlay::setSpeedInformation(float const speed)
     }
 
     
-}
-
-/***********************************************************************************************************************************************************************/
-/********************************************************************** setTimeInformation ****************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Overlay::setTimeInformation()
-{
-    time_t local_time = time(0);
-    std::string time = ctime(&local_time);
-    tm *ltm = localtime(&local_time);
-
-    if(time != m_ancient_time)
-    {
-        
-        if(ltm->tm_sec >= m_sec + 8) //reduce updating refresh
-        {
-            assert(m_texts[7]->setText(time));
-            m_ancient_time = time;
-            m_sec = ltm->tm_sec;
-        }
-        
-    }
-
-    if(ltm->tm_sec == 59)
-    {
-        m_sec = 0;
-    }
 }

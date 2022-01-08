@@ -33,9 +33,19 @@ PURPOSE : header of the Overlay class
         #include <ctime>
         #include <cassert>
 
+        #if defined(IMGUI_IMPL_OPENGL_ES2)
+        #include <SDL_opengles2.h>
+        #else
+        #include <SDL2/SDL_opengl.h>
+        #endif
+
         #include "../CelestialBody/Geometry/Square.hpp"
         #include "../Text/Text.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
+
+        #include "../../lib/imgui/imgui.h"
+        #include "../../lib/imgui/imgui_impl_sdl.h"
+        #include "../../lib/imgui/imgui_impl_opengl3.h"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -51,8 +61,6 @@ PURPOSE : header of the Overlay class
                 std::string     m_ancient_track;
                 float           m_ancient_radius;
                 float           m_ancient_speed;
-                std::string     m_ancient_time;
-                int             m_sec;
 
                 glm::vec3 m_colorBlack;
                 glm::vec3 m_colorGrey;
@@ -67,11 +75,10 @@ PURPOSE : header of the Overlay class
                 void displayGeneralOverlay(RenderData &render_data);
                 void displayMusicOverlay(RenderData &render_data, std::string const track);
                 void displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed);
-                void displayTimeInfoOverlay(RenderData &render_data);
+                void displayAppInfo(RenderData &render_data);
 
                 void setMusicInformation(std::string const track);
                 void setSpeedInformation(float const speed);
-                void setTimeInformation();
         };
 
 

@@ -61,6 +61,9 @@ PURPOSE : header of the RenderData class
                 // int volume;
 
                 bool m_terminate;
+
+                int m_width;
+                int m_height;
                 
 
                 unsigned int frame_rate;
@@ -95,6 +98,9 @@ PURPOSE : header of the RenderData class
                     bloom = true;
 
                     m_terminate = false;
+
+                    m_width = width;
+                    m_height = height;
 
                     setShader(main_loop);
 
@@ -181,6 +187,9 @@ PURPOSE : header of the RenderData class
 
                 void setSunPos(glm::vec3 new_sun_pos) {sunPos = new_sun_pos;}
                 glm::vec3 getSunPos() const {return sunPos;}
+
+                int getWidth() const {return m_width;}
+                int getHeight() const {return m_height;}
  
         };
 

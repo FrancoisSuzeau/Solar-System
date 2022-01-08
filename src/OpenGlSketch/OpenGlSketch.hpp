@@ -29,6 +29,12 @@ PURPOSE : header of the OpenGlSketch class
         #include <math.h>
         #include <cassert>
 
+        #if defined(IMGUI_IMPL_OPENGL_ES2)
+        #include <SDL_opengles2.h>
+        #else
+        #include <SDL2/SDL_opengl.h>
+        #endif
+
         #include "RenderData.hpp"
         
         #include "../CelestialBody/System/SystemCreator.hpp"
@@ -47,6 +53,10 @@ PURPOSE : header of the OpenGlSketch class
 
         #include "../Spaceship/Spaceship.hpp"
         #include "../Framebuffer/Framebuffer.hpp"
+
+        #include "../../lib/imgui/imgui.h"
+        #include "../../lib/imgui/imgui_impl_sdl.h"
+        #include "../../lib/imgui/imgui_impl_opengl3.h"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -109,6 +119,7 @@ PURPOSE : header of the OpenGlSketch class
 
                 bool    initWindow();
                 bool    initGL();
+                void    initImGUI();
                 void    initFrameBuffer();
 
                 void    mainLoop();

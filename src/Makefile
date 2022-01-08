@@ -19,6 +19,7 @@ CC=g++
 # on pourrait utiliser une construction automatique a l'aide du joker *.c et la commande wildcard mais il faudra gerer les dépendances vis a vis des .h
 # SRC=$(wildcard *.c)
 SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp CelestialBody/Planete/PlaneteRender.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/Planete.cpp Text/Text.cpp CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp Model/Mesh.cpp Model/Model.cpp Spaceship/Spaceship.cpp CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp CelestialBody/System/PlanetarySystem.cpp
+SRC+=../lib/imgui/imgui_demo.cpp ../lib/imgui/imgui_draw.cpp ../lib/imgui/imgui_impl_opengl3.cpp ../lib/imgui/imgui_impl_sdl.cpp ../lib/imgui/imgui_tables.cpp ../lib/imgui/imgui_widgets.cpp ../lib/imgui/imgui.cpp
 
 OBJET=$(SRC:.cpp=.o)
 
