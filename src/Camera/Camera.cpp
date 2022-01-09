@@ -120,16 +120,21 @@ void Camera::calculateCameraPostion(float horizontal_distance, float vertical_di
 /***********************************************************************************************************************************************************************/
 void Camera::move(Input const &input, bool move)
 {
-    this->calculatePitch(input);
-    this->calculateAngleAroundShip(input);
-    float horizontal_distance = this->calculateHorizontalDistance(input);
-    float vertical_distance = this->calculateVerticalDistance(input);
-    this->calculateCameraPostion(horizontal_distance, vertical_distance, input);
- 
-    // m_target_point = m_ship->getPosition();
-    m_target_point = glm::vec3(0.0);
+    if(!move)
+    {
+        this->calculatePitch(input);
+        this->calculateAngleAroundShip(input);
+        float horizontal_distance = this->calculateHorizontalDistance(input);
+        float vertical_distance = this->calculateVerticalDistance(input);
+        this->calculateCameraPostion(horizontal_distance, vertical_distance, input);
+    
+        // m_target_point = m_ship->getPosition();
+        m_target_point = glm::vec3(0.0);
+        // this->correctTarget(input);
+    }
+    
 
-    // this->correctTarget(input);
+    
 
 }
 

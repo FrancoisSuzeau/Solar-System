@@ -20,7 +20,7 @@ PURPOSE :   - creating OpenGL Context
 #include "OpenGlSketch.hpp"
 
 using namespace glm;
-using namespace ButtonChoice;
+// using namespace ButtonChoice;
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
@@ -213,7 +213,7 @@ void OpenGlSketch::startLoop()
     m_overlay = new Overlay();
     assert(m_overlay);
 
-    m_settings = new Settings(m_police[1]);
+    m_settings = new Settings();
     assert(m_settings);
 
     aud = new Audio();
@@ -345,7 +345,7 @@ void OpenGlSketch::mainLoop()
 
     hdr_key_pressed = false;
 
-    menu = false;
+    render_data.setMenu(false);
     menu_app_key_pressed = false;
 
     info_render = false;
@@ -375,7 +375,7 @@ void OpenGlSketch::mainLoop()
     /********************************************************** MANAGING EVENTS *************************************************************/
         m_input.updateEvents();
 
-        windowProcess();
+        windowProcess(render_data);
 
     //======================================================================================================================================
 
@@ -397,7 +397,7 @@ void OpenGlSketch::mainLoop()
     //===========================================================================================================================================
         if(camera != nullptr)
         {
-            camera->move(m_input, !menu);
+            camera->move(m_input, render_data.getMenu());
 
             camera->lookAt(render_data.getViewMat());
         }
@@ -428,7 +428,7 @@ void OpenGlSketch::mainLoop()
 
         render_data.initSaveMat();
 
-            if(!menu)
+            if(!render_data.getMenu())
             {
                 ship->drawSpaceship(render_data, m_input);
             }
@@ -627,7 +627,7 @@ void OpenGlSketch::renderInfo(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************************** windowProcess *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void OpenGlSketch::windowProcess()
+void OpenGlSketch::windowProcess(RenderData &render_data)
 {
         if(m_input.getKey(SDL_SCANCODE_ESCAPE))
         {
@@ -681,7 +681,7 @@ void OpenGlSketch::windowProcess()
 
         if((m_input.getKey(SDL_SCANCODE_P)) && (!menu_app_key_pressed))
         {
-            menu = !menu;
+            render_data.setMenu(!render_data.getMenu());
             menu_app_key_pressed = true;
         }
         if ((m_input.getKey(SDL_SCANCODE_P)) == false)
@@ -716,116 +716,116 @@ void OpenGlSketch::renderSettings(RenderData &render_data)
 {
     if((camera != nullptr) && (m_settings != nullptr) && (render_data.getShader("square") != nullptr))
     {
-        if(menu)
+        if(render_data.getMenu())
         {
             m_input.capturePointer(false);
             m_input.displayPointer(true);
 
-            render_data.initSaveMat();
+            // render_data.initSaveMat();
 
-            render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            // render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-                m_settings->displayFrameSettings(render_data);
+            //     m_settings->displayFrameSettings(render_data);
 
-            render_data.saveViewMat();
+            // render_data.saveViewMat();
 
-            int button_type = m_settings->manageButton(m_input);
+            // int button_type = m_settings->manageButton(m_input);
 
-            switch (button_type)
-            {
-                case QUIT:
-                    m_terminate = true;
-                    break;
+            // switch (button_type)
+            // {
+            //     case QUIT:
+            //         m_terminate = true;
+            //         break;
 
-                case HDR_ON:
-                    render_data.updateHDR(true);
-                    if(render_data.getExposure() <= 0.5f)
-                    {
-                        render_data.updateExposure(0.8f);
-                    }
-                    break;
+            //     case HDR_ON:
+            //         render_data.updateHDR(true);
+            //         if(render_data.getExposure() <= 0.5f)
+            //         {
+            //             render_data.updateExposure(0.8f);
+            //         }
+            //         break;
 
-                case HDR_OFF:
-                    render_data.updateHDR(false);
-                    render_data.updateExposure(0.5f);
-                    break;
+            //     case HDR_OFF:
+            //         render_data.updateHDR(false);
+            //         render_data.updateExposure(0.5f);
+            //         break;
 
-                case EXPOSURE_DEC:
-                    if( (render_data.getExposure() > 0.5f) && (render_data.getExposure() <= 0.8f))
-                    {
-                        render_data.changeExposure(-0.1f);
-                    }
-                    if(render_data.getExposure() <= 0.5f)
-                    {
-                        render_data.updateHDR(false);
-                        render_data.updateExposure(0.5f);
-                    }
-                    break;
+            //     case EXPOSURE_DEC:
+            //         if( (render_data.getExposure() > 0.5f) && (render_data.getExposure() <= 0.8f))
+            //         {
+            //             render_data.changeExposure(-0.1f);
+            //         }
+            //         if(render_data.getExposure() <= 0.5f)
+            //         {
+            //             render_data.updateHDR(false);
+            //             render_data.updateExposure(0.5f);
+            //         }
+            //         break;
 
-                case EXPOSURE_INC:
-                    if( (render_data.getExposure() >= 0.5f) && (render_data.getExposure() <= 0.8f))
-                    {
-                        render_data.changeExposure(0.1f);
-                    }
-                    if(render_data.getExposure() > 0.8f)
-                    {
-                        render_data.updateExposure(0.8f);
-                    }
-                    if(render_data.getExposure() == 0.8f)
-                    {
-                        render_data.updateHDR(true);
-                    }
-                    break;
+            //     case EXPOSURE_INC:
+            //         if( (render_data.getExposure() >= 0.5f) && (render_data.getExposure() <= 0.8f))
+            //         {
+            //             render_data.changeExposure(0.1f);
+            //         }
+            //         if(render_data.getExposure() > 0.8f)
+            //         {
+            //             render_data.updateExposure(0.8f);
+            //         }
+            //         if(render_data.getExposure() == 0.8f)
+            //         {
+            //             render_data.updateHDR(true);
+            //         }
+            //         break;
 
-                case SPEED_DEC:
-                    if((ship->getSpeed() >= 0.0f))
-                    {
-                        ship->setSpeed(-0.1f);
-                    }
-                    break;
+            //     case SPEED_DEC:
+            //         if((ship->getSpeed() >= 0.0f))
+            //         {
+            //             ship->setSpeed(-0.1f);
+            //         }
+            //         break;
 
-                case SPEED_INC:
-                    if(ship->getSpeed() <= 1.0f)
-                    {
-                        ship->setSpeed(0.1f);
-                    }
-                    break;
+            //     case SPEED_INC:
+            //         if(ship->getSpeed() <= 1.0f)
+            //         {
+            //             ship->setSpeed(0.1f);
+            //         }
+            //         break;
 
-                case OVERLAY_ON:
-                    m_overlay_display = true;
-                    break;
+            //     case OVERLAY_ON:
+            //         m_overlay_display = true;
+            //         break;
 
-                case OVERLAY_OFF:
-                    m_overlay_display = false;
-                    break;
+            //     case OVERLAY_OFF:
+            //         m_overlay_display = false;
+            //         break;
 
-                case PLANETE_INFO_ON:
-                    info_render = true;
-                    break;
+            //     case PLANETE_INFO_ON:
+            //         info_render = true;
+            //         break;
                 
-                case PLANETE_INFO_OFF:
-                    info_render = false;
-                    break;
+            //     case PLANETE_INFO_OFF:
+            //         info_render = false;
+            //         break;
 
-                case SHOW_NAME_ON:
-                    m_name_display = true;
-                    break;
+            //     case SHOW_NAME_ON:
+            //         m_name_display = true;
+            //         break;
 
-                case SHOW_NAME_OFF:
-                    m_name_display = false;
-                    break;
+            //     case SHOW_NAME_OFF:
+            //         m_name_display = false;
+            //         break;
 
-                default:
-                    break;
-            }
-            if(render_data.getHDR())
-            {
-                render_data.updateBloom(true);
-            }
-            else
-            {
-                render_data.updateBloom(false);
-            }
+            //     default:
+            //         break;
+            // }
+            // if(render_data.getHDR())
+            // {
+            //     render_data.updateBloom(true);
+            // }
+            // else
+            // {
+            //     render_data.updateBloom(false);
+            // }
         }
         else
         {

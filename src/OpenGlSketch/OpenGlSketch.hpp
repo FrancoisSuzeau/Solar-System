@@ -91,7 +91,7 @@ PURPOSE : header of the OpenGlSketch class
                 bool speed_key_pressed;
 
                 Settings *m_settings;
-                bool menu;
+                // bool menu;
                 bool menu_app_key_pressed;
 
                 bool info_render;
@@ -122,7 +122,7 @@ PURPOSE : header of the OpenGlSketch class
 
                 void    mainLoop();
                 void    startLoop();
-                void    windowProcess();
+                void    windowProcess(RenderData &render_data);
                 void    renderScene(RenderData &render_data);
                 void    renderInfo(RenderData &render_data);
                 void    renderOverlay(RenderData &render_data);

@@ -71,6 +71,7 @@ PURPOSE : header of the RenderData class
                 int m_width;
                 int m_height;
                 
+                bool menu;
 
                 unsigned int frame_rate;
                 Uint32 start_loop, end_loop, time_past;
@@ -223,6 +224,9 @@ PURPOSE : header of the RenderData class
                         ImGui::EndTooltip();
                     }
                 }
+
+                void setMenu(bool const new_val) {menu = new_val;}
+                bool getMenu() const {return menu;}
 
                 
  
