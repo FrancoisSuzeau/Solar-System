@@ -28,6 +28,10 @@ PURPOSE : header of the RenderData class
         #include <map>
         #include <vector>
 
+        #include "../../lib/imgui/imgui.h"
+        #include "../../lib/imgui/imgui_impl_sdl.h"
+        #include "../../lib/imgui/imgui_impl_opengl3.h"
+
         #include "../Shader/Shader.hpp"
 
         typedef struct shader_datas {
@@ -75,6 +79,8 @@ PURPOSE : header of the RenderData class
                 bool bloom;
 
                 std::map<std::string, Shader*> map_shader;
+
+                float ship_speed;
                 
 
             public:
@@ -201,6 +207,22 @@ PURPOSE : header of the RenderData class
 
                 void setPauseMusic(bool const pause) {pause_music = pause;}
                 bool getPauseMusic() const {return pause_music;}
+
+                void setShipSpeed(float const speed) {ship_speed = speed;}
+                float getShipSpeed() const {return ship_speed;}
+
+                static void HelpMarker(std::string sentence)
+                {
+                    ImGui::TextDisabled("(?)");
+                    if (ImGui::IsItemHovered())
+                    {
+                        ImGui::BeginTooltip();
+                        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+                        ImGui::TextUnformatted(sentence.c_str());
+                        ImGui::PopTextWrapPos();
+                        ImGui::EndTooltip();
+                    }
+                }
 
                 
  

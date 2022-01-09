@@ -41,7 +41,6 @@ PURPOSE : header of the Overlay class
         #endif
 
         #include "../CelestialBody/Geometry/Square.hpp"
-        #include "../Text/Text.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
 
         #include "../../lib/imgui/imgui.h"
@@ -64,7 +63,6 @@ PURPOSE : header of the Overlay class
             private:
 
                 Square          m_rect;
-                std::vector<Text*> m_texts;
 
                 float           m_ancient_radius;
                 float           m_ancient_speed;
@@ -78,15 +76,14 @@ PURPOSE : header of the Overlay class
 
             public:
             
-                Overlay(TTF_Font *police);
+                Overlay();
                 ~Overlay();
 
                 void displayGeneralOverlay(RenderData &render_data);
                 void displayMusicInfo(RenderData &render_data);
-                void displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed);
+                void displayNavigation(RenderData &render_data);
                 void displayAppInfo(RenderData &render_data);
 
-                void setSpeedInformation(float const speed);
         };
 
 

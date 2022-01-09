@@ -210,7 +210,7 @@ void OpenGlSketch::startLoop()
     Camera      *startScreen_cam = new Camera(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     assert(startScreen_cam);
 
-    m_overlay = new Overlay(m_police[1]);
+    m_overlay = new Overlay();
     assert(m_overlay);
 
     m_settings = new Settings(m_police[1]);
@@ -335,7 +335,7 @@ void OpenGlSketch::mainLoop()
 
     RenderData render_data(m_window_width, m_window_height, 45.0f, true);
     render_data.setTrackMusic(1);
-    render_data.setPauseMusic(false);
+    render_data.setPauseMusic(true);
     
 
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
@@ -379,9 +379,9 @@ void OpenGlSketch::mainLoop()
 
     //======================================================================================================================================
 
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+        ImGui::NewFrame();
 
     /******************************************************** MANAGING MUSIC *******************************************************************/
         if(aud != nullptr)
@@ -404,6 +404,7 @@ void OpenGlSketch::mainLoop()
 
         render_data.setCamPos(camera->getPosition());
         render_data.setShipPos(ship->getPosition());
+        render_data.setShipSpeed(ship->getSpeed());
 
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene(render_data);
@@ -511,9 +512,6 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
     {
         if((aud != nullptr) && (camera != nullptr) && (m_overlay != nullptr))
         {
-            glm::vec3 position = camera->getPosition();
-            float speed = ship->getSpeed();
-
             render_data.initSaveMat();
 
                 render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
@@ -530,7 +528,7 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
 
                 render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayMoveInfoOverlay(render_data, position, speed);
+                    m_overlay->displayNavigation(render_data);
 
                 render_data.saveViewMat();
 

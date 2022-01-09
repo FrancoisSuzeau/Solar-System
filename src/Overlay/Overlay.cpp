@@ -22,25 +22,8 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 
-Overlay::Overlay(TTF_Font *police) :
-m_rect(0.05, 0.1)
+Overlay::Overlay() : m_rect(0.05, 0.1)
 {
-    std::string str_init[] = {  "None",
-                                "None",
-                                "None",
-                                "Navigation",
-                                "Position :",
-                                "Speed :",
-                                "None",
-                                "None"
-                                };
-
-    for (int i = 0; i < 8; i++)
-    {
-        m_texts.push_back(new Text(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police));
-        assert(m_texts[i]);
-        assert(m_texts[i]->loadTTF(str_init[i]));
-    }
 
     map_music_data[0].title = "Mass Effect - Vigil";
     map_music_data[0].author = "Jack Wall";
@@ -64,13 +47,7 @@ m_rect(0.05, 0.1)
 
 Overlay::~Overlay()
 {
-    for(std::vector<Text*>::iterator it = m_texts.begin(); it != m_texts.end(); ++it)
-    {
-        if(*it != nullptr)
-        {
-            delete *it;
-        }
-    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -166,10 +143,6 @@ void Overlay::displayGeneralOverlay(RenderData &render_data)
         }
         
     render_data.updateView(save);
-
-    
-    
-    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -217,16 +190,10 @@ void Overlay::displayMusicInfo(RenderData &render_data)
     const char* items[] = { "Epic Orchestra", "-Error Canal Transmission-", "-Error Canal Transmission-", "-Error Canal Transmission-"};
     static int item_current = 0;
     ImGui::Combo("Radio", &item_current, items, IM_ARRAYSIZE(items));
+
     ImGui::SameLine();
-    ImGui::TextDisabled("(?)");
-    if (ImGui::IsItemHovered())
-    {
-        ImGui::BeginTooltip();
-        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-        ImGui::TextUnformatted("For now there only is one radio available until NASA engineers upgrade their Deep Space Network.");
-        ImGui::PopTextWrapPos();
-        ImGui::EndTooltip();
-    }
+    std::string t_mp = "For now there only is one radio available until NASA engineers upgrade their Deep Space Network.";
+    RenderData::HelpMarker(t_mp);
 
     ImGui::PopStyleColor();
     ImGui::End();
@@ -239,108 +206,68 @@ void Overlay::displayMusicInfo(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayMoveInfoOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayMoveInfoOverlay(RenderData &render_data, glm::vec3 &position, float const speed)
+void Overlay::displayNavigation(RenderData &render_data)
 {
-    glm::mat4 save = render_data.getViewMat();
-    float constance = 0.05f;
+    ImGuiWindowFlags window_flags = 0;
 
-    float start_bottom_black_first = -1.265f;
-    float start_bottom_black_second = -1.265f;
-    float start_bottom_black_third = -1.265f;
-    float start_bottom_black_fourth = -1.265f;
-    float start_bottom_white = -1.265f;
+    window_flags |= ImGuiWindowFlags_NoResize;
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
+    ImGui::SetNextWindowPos(ImVec2(0, render_data.getHeight() - 250));
+    ImGui::SetNextWindowSize(ImVec2(380, 250));
+    
+    ImGui::Begin("Navigation : ", NULL, window_flags);
 
-    if(render_data.getShader("square") != nullptr)
+    float progress = render_data.getShipSpeed() / 200;
+
+    
+    ImGui::ProgressBar(progress, ImVec2(0.0f, 0.0f));
+    ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
+    ImGui::Text("Speed");
+
+    bool animate = true;
+    static float values[90] = {};
+    static int values_offset = 0;
+    static double refresh_time = 0.0;
+    if (!animate || refresh_time == 0.0)
+        refresh_time = ImGui::GetTime();
+    while (refresh_time < ImGui::GetTime())
     {
-        for (size_t i(0); i < 10; i++)
-        {
-                m_rect.updatePosition(glm::vec3(start_bottom_black_first, -0.675f, 0.0f));
-                m_rect.display(render_data, m_colorBlack);
-
-            render_data.updateView(save);
-            start_bottom_black_first = start_bottom_black_first + constance;
-        }
-
-        for (size_t i(0); i < 10; i++)
-        {
-                m_rect.updatePosition(glm::vec3(start_bottom_black_second, -0.625f, 0.0f));
-                m_rect.display(render_data, m_colorBlack);
-
-            render_data.updateView(save);
-            start_bottom_black_second = start_bottom_black_second + constance;
-        }
-
-        for (size_t i(0); i < 10; i++)
-        {
-
-                m_rect.updatePosition(glm::vec3(start_bottom_black_third, -0.575f, 0.0f));
-                m_rect.display(render_data, m_colorBlack);
-
-            render_data.updateView(save);
-            start_bottom_black_third = start_bottom_black_third + constance;
-        }
-
-        //fourth and last pass with white border on the top
-        for (size_t i(0); i < 10; i++)
-        {
-                m_rect.updatePosition(glm::vec3(start_bottom_white, -0.525f, -0.01f));
-                m_rect.display(render_data, m_colorGrey);
-
-            render_data.updateView(save);
-            start_bottom_white = start_bottom_white + constance;
-
-                m_rect.updatePosition(glm::vec3(start_bottom_black_fourth, -0.530f, 0.0f));
-                m_rect.display(render_data, m_colorBlack);
-
-            render_data.updateView(save);
-            start_bottom_black_fourth = start_bottom_black_fourth + constance;
-        }
-
-        m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.670f, -0.01f));
-        m_rect.display(render_data, m_colorGrey);
-
-        render_data.updateView(save);
-
-            m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.625f, -0.01f));
-            m_rect.display(render_data, m_colorGrey);
-
-        render_data.updateView(save);
-
-            m_rect.updatePosition(glm::vec3(-1.265f + 0.05f*9, -0.575f, -0.01f));
-            m_rect.display(render_data, m_colorGrey);
+        static float phase = 0.0f;
+        values[values_offset] = cos(phase);
+        values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
+        phase += 0.10f * values_offset;
+        refresh_time += 1.0f / 40.0f;
     }
 
-    render_data.updateView(save);
+    ImGui::BulletText("Solar Radiation");
+    ImGui::PlotLines(" ", values, IM_ARRAYSIZE(values), values_offset, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+    ImGui::SameLine();
+    std::string tmp = "Not realy implemented but later this will be work by the distance of the sun and so the solar radiation intensity.";
+    RenderData::HelpMarker(tmp);
 
-        if(render_data.getShader("text") != nullptr)
-        {
-            std::vector<glm::vec3> coordinates;
-            coordinates.push_back(glm::vec3(-1.03f, -0.525f, -0.0f));
-            coordinates.push_back(glm::vec3(-1.15f, -0.580f, -0.0f));
-            coordinates.push_back(glm::vec3(-1.15f, -0.650f, -0.0f));
-            coordinates.push_back(glm::vec3(-0.95f, -0.650f, -0.0f));
+    ImGui::BulletText("Gravitational Influence");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Sun");
+    ImGui::SameLine();
+    tmp = "Not implemented yet.";
+    RenderData::HelpMarker(tmp);
 
-            std::vector<glm::vec3> scale_datas;
-            scale_datas.push_back(glm::vec3(0.05f, 0.05f, 0.0f));
-            scale_datas.push_back(glm::vec3(0.02f, 0.045f, 0.0f));
-            scale_datas.push_back(glm::vec3(0.02f, 0.038f, 0.0f));
-            scale_datas.push_back(glm::vec3(0.04f, 0.04f, 0.0f));
-
-            setSpeedInformation(speed);
-
-            for (int i = 3; i < 7; i++)
-            {
-                m_texts[i]->updatePosition(coordinates[i - 3]);
-                m_texts[i]->updateScale(scale_datas[i - 3]);
-                m_texts[i]->renderText(render_data);
-
-                render_data.updateView(save);
-            }
-
-            render_data.updateView(save);
-        }
-
-        
+    static float arr1[] = { 0.6f};
+    static float arr2[] = { 0.6f, 1.0f, 0.33f, 0.89f, 0.17f, 0.48f};
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.117f, 0.564f, 1.0f, 1.0f));
+    ImGui::PlotHistogram("          ", arr1, IM_ARRAYSIZE(arr1), 0, " ", 0.0f, 1.0f, ImVec2(30, 80.0f));
+    ImGui::SameLine();
+    ImGui::PlotHistogram(" ", arr2, IM_ARRAYSIZE(arr2), 0, " ", 0.0f, 1.0f, ImVec2(200, 80.0f));
+    ImGui::Text("Host");
+    ImGui::SameLine();
+    ImGui::Text("           Natural companion");
+    ImGui::SameLine();
+    tmp = "Not implemented either.";
+    RenderData::HelpMarker(tmp);
+    
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::End();
 }
 
 /***********************************************************************************************************************************************************************/
@@ -388,33 +315,4 @@ void Overlay::displayAppInfo(RenderData &render_data)
 
     ImGui::PopStyleColor();
     ImGui::End();
-}
-
-
-
-/***********************************************************************************************************************************************************************/
-/********************************************************************** setSpeedInformation **************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Overlay::setSpeedInformation(float const speed)
-{
-    
-    float value_perc = ((speed * 100)/200)/100;
-
-    if(value_perc <= 0.0f)
-    {
-        value_perc = 0.0f;
-    }
-
-    if(m_ancient_speed != speed)
-    {
-        // recover the first two digits
-        std::ostringstream oss_x;
-        oss_x << std::setprecision(3) << value_perc;
-        std::string tmp = oss_x.str() + " time light speed";
-
-        assert(m_texts[6]->setText(tmp));
-        m_ancient_speed = speed;
-    }
-
-    
 }
