@@ -50,7 +50,7 @@ SolarSystem.o: CelestialBody/System/SolarSystem.hpp CelestialBody/System/Planeta
 StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp OpenGlSketch/RenderData.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/Geometry/Sphere.hpp
 Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp OpenGlSketch/RenderData.hpp
-Settings.o: Settings/Settings.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp Input/Input.hpp OpenGlSketch/RenderData.hpp
+Settings.o: Settings/Settings.hpp OpenGlSketch/RenderData.hpp
 PlaneteInformation.o: PlaneteInformation/PlaneteInformation.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp OpenGlSketch/RenderData.hpp
 #Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp Spaceship/Spaceship.hpp
 Mesh.o: Model/Mesh.hpp OpenGlSketch/RenderData.hpp

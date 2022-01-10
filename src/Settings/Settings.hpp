@@ -22,6 +22,7 @@ PURPOSE : header of the Settings class
         #include <glm/gtc/matrix_inverse.hpp>
         #include <glm/gtx/string_cast.hpp>
 
+        #include <GL/glew.h>
         #include <iostream>
         #include <iomanip>
         #include <sstream>
@@ -33,54 +34,18 @@ PURPOSE : header of the Settings class
         #include <Windows.h>
         #include <cassert>
 
-        #include "../CelestialBody/Geometry/Square.hpp"
-        #include "../Text/Text.hpp"
-        #include "../Input/Input.hpp"
+        #if defined(IMGUI_IMPL_OPENGL_ES2)
+        #include <SDL_opengles2.h>
+        #else
+        #include <SDL2/SDL_opengl.h>
+        #endif
+
         #include "../OpenGlSketch/RenderData.hpp"
 
-        namespace ButtonChoice
-        {
-                typedef enum
-                {
-                        NONE,
-                        QUIT,
-                        HDR_ON,
-                        HDR_OFF,
-                        EXPOSURE_DEC,
-                        EXPOSURE_INC,
-                        SPEED_DEC,
-                        SPEED_INC,
-                        MUSIC_ON,
-                        MUSIC_OFF,
-                        MUSIC_DEC,
-                        MUSIC_INC,
-                        OVERLAY_ON,
-                        OVERLAY_OFF,
-                        PLANETE_INFO_ON,
-                        PLANETE_INFO_OFF,
-                        SHOW_NAME_ON,
-                        SHOW_NAME_OFF
+        #include "../../lib/imgui/imgui.h"
+        #include "../../lib/imgui/imgui_impl_sdl.h"
+        #include "../../lib/imgui/imgui_impl_opengl3.h"
 
-                }Button;
-        }
-
-        typedef struct button_coord {
-
-                float     x_left;
-                float     x_right;
-                float     y_up;
-                float     y_down;
-
-                int     button_type;
-
-        } button_coord;
-
-        typedef struct data_render {
-
-                glm::vec3 position;
-                glm::vec3 scale;
-
-        } data_render;
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -90,35 +55,12 @@ PURPOSE : header of the Settings class
             
             private:
 
-                std::vector<button_coord> m_buttons_coord;
-
-                Square          *m_grey_rect;
-
-                std::vector<Text*>      m_texts;
-                std::vector<data_render> datas_renders;
-
-                bool            m_mouse_button_pressed;
-
-                int             screen_width;
-                int             screen_height;
-
-                glm::vec3            colorGrey;
-                glm::vec3            colorBlack;
-
-                void initButtonCoord();
-                int checkCoordButton(Input const &input, button_coord coordinate);
-
-                void initRender();
-
-                void renderAllTexts(RenderData &render_data);
-
             public:
             
-                Settings(TTF_Font *police);
+                Settings();
                 ~Settings();
 
-                void displayFrameSettings(RenderData &render_data);
-                int manageButton(Input const &intput);
+                void manageSettings(RenderData &render_data);
         };
 
 
