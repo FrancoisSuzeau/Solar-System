@@ -151,6 +151,7 @@ void Overlay::displayGeneralOverlay(RenderData &render_data)
 void Overlay::displayMusicInfo(RenderData &render_data)
 {
     ImGuiWindowFlags window_flags = 0;
+    ImGuiStyle& style = ImGui::GetStyle();
 
     int track = render_data.getTrack();
     int vol = render_data.getVolume();
@@ -161,6 +162,11 @@ void Overlay::displayMusicInfo(RenderData &render_data)
     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
     ImGui::SetNextWindowPos(ImVec2(render_data.getWidth() - 380, render_data.getHeight() - 170));
     ImGui::SetNextWindowSize(ImVec2(380, 170));
+
+    float save_frame = style.FrameRounding;
+    float save_grab = style.GrabRounding;
+    style.FrameRounding = 15;
+    style.GrabRounding = 15;
     
     ImGui::Begin("Music Information : ", NULL, window_flags);
     
@@ -182,8 +188,9 @@ void Overlay::displayMusicInfo(RenderData &render_data)
 
     tmp = "Studio :    " + map_music_data[track].studio;
     ImGui::Text(tmp.c_str());
-
+    
     ImGui::SliderInt("Volume", &vol, 0, 128);
+    
 
     ImGui::Checkbox("Mute music", &pause_music);
 
@@ -194,6 +201,9 @@ void Overlay::displayMusicInfo(RenderData &render_data)
     ImGui::SameLine();
     std::string t_mp = "For now there only is one radio available until NASA engineers upgrade their Deep Space Network.";
     RenderData::HelpMarker(t_mp);
+
+    style.FrameRounding = save_frame;
+    style.GrabRounding = save_grab;
 
     ImGui::PopStyleColor();
     ImGui::End();
@@ -209,11 +219,17 @@ void Overlay::displayMusicInfo(RenderData &render_data)
 void Overlay::displayNavigation(RenderData &render_data)
 {
     ImGuiWindowFlags window_flags = 0;
+    ImGuiStyle& style = ImGui::GetStyle();
 
     window_flags |= ImGuiWindowFlags_NoResize;
     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
     ImGui::SetNextWindowPos(ImVec2(0, render_data.getHeight() - 250));
     ImGui::SetNextWindowSize(ImVec2(380, 250));
+
+    float save_frame = style.FrameRounding;
+    float save_grab = style.GrabRounding;
+    style.FrameRounding = 15;
+    style.GrabRounding = 15;
     
     ImGui::Begin("Navigation : ", NULL, window_flags);
 
@@ -254,7 +270,7 @@ void Overlay::displayNavigation(RenderData &render_data)
 
     static float arr1[] = { 0.6f};
     static float arr2[] = { 0.6f, 1.0f, 0.33f, 0.89f, 0.17f, 0.48f};
-    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.117f, 0.564f, 1.0f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.862f, 0.078f, 0.235f, 1.0f));
     ImGui::PlotHistogram("          ", arr1, IM_ARRAYSIZE(arr1), 0, " ", 0.0f, 1.0f, ImVec2(30, 80.0f));
     ImGui::SameLine();
     ImGui::PlotHistogram(" ", arr2, IM_ARRAYSIZE(arr2), 0, " ", 0.0f, 1.0f, ImVec2(200, 80.0f));
@@ -264,6 +280,9 @@ void Overlay::displayNavigation(RenderData &render_data)
     ImGui::SameLine();
     tmp = "Not implemented either.";
     RenderData::HelpMarker(tmp);
+
+    style.FrameRounding = save_frame;
+    style.GrabRounding = save_grab;
     
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();

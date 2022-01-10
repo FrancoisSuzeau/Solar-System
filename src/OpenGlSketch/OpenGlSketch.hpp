@@ -97,8 +97,6 @@ PURPOSE : header of the OpenGlSketch class
                 bool info_render;
                 bool info_render_key_pressed;
 
-                bool m_terminate;
-
                 bool m_overlay_display;
                 bool m_name_display;
 

@@ -331,11 +331,10 @@ void OpenGlSketch::mainLoop()
     /************************************************* Variables ********************************************************/
     speed_key_pressed = false;
 
-    m_terminate = false;
-
     RenderData render_data(m_window_width, m_window_height, 45.0f, true);
     render_data.setTrackMusic(1);
     render_data.setPauseMusic(true);
+    render_data.setTerminate(false);
     
 
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
@@ -368,7 +367,7 @@ void OpenGlSketch::mainLoop()
         // aud->playMusic();
     }
 
-    while(!m_terminate)
+    while(!render_data.getTerminate())
     {
         render_data.initFrameRate();
     
@@ -631,7 +630,7 @@ void OpenGlSketch::windowProcess(RenderData &render_data)
 {
         if(m_input.getKey(SDL_SCANCODE_ESCAPE))
         {
-            m_terminate = true;
+            render_data.setTerminate(true);
         }
 
         int scroll = m_input.getScroll();
@@ -721,111 +720,7 @@ void OpenGlSketch::renderSettings(RenderData &render_data)
             m_input.capturePointer(false);
             m_input.displayPointer(true);
 
-            // render_data.initSaveMat();
-
-            // render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-            //     m_settings->displayFrameSettings(render_data);
-
-            // render_data.saveViewMat();
-
-            // int button_type = m_settings->manageButton(m_input);
-
-            // switch (button_type)
-            // {
-            //     case QUIT:
-            //         m_terminate = true;
-            //         break;
-
-            //     case HDR_ON:
-            //         render_data.updateHDR(true);
-            //         if(render_data.getExposure() <= 0.5f)
-            //         {
-            //             render_data.updateExposure(0.8f);
-            //         }
-            //         break;
-
-            //     case HDR_OFF:
-            //         render_data.updateHDR(false);
-            //         render_data.updateExposure(0.5f);
-            //         break;
-
-            //     case EXPOSURE_DEC:
-            //         if( (render_data.getExposure() > 0.5f) && (render_data.getExposure() <= 0.8f))
-            //         {
-            //             render_data.changeExposure(-0.1f);
-            //         }
-            //         if(render_data.getExposure() <= 0.5f)
-            //         {
-            //             render_data.updateHDR(false);
-            //             render_data.updateExposure(0.5f);
-            //         }
-            //         break;
-
-            //     case EXPOSURE_INC:
-            //         if( (render_data.getExposure() >= 0.5f) && (render_data.getExposure() <= 0.8f))
-            //         {
-            //             render_data.changeExposure(0.1f);
-            //         }
-            //         if(render_data.getExposure() > 0.8f)
-            //         {
-            //             render_data.updateExposure(0.8f);
-            //         }
-            //         if(render_data.getExposure() == 0.8f)
-            //         {
-            //             render_data.updateHDR(true);
-            //         }
-            //         break;
-
-            //     case SPEED_DEC:
-            //         if((ship->getSpeed() >= 0.0f))
-            //         {
-            //             ship->setSpeed(-0.1f);
-            //         }
-            //         break;
-
-            //     case SPEED_INC:
-            //         if(ship->getSpeed() <= 1.0f)
-            //         {
-            //             ship->setSpeed(0.1f);
-            //         }
-            //         break;
-
-            //     case OVERLAY_ON:
-            //         m_overlay_display = true;
-            //         break;
-
-            //     case OVERLAY_OFF:
-            //         m_overlay_display = false;
-            //         break;
-
-            //     case PLANETE_INFO_ON:
-            //         info_render = true;
-            //         break;
-                
-            //     case PLANETE_INFO_OFF:
-            //         info_render = false;
-            //         break;
-
-            //     case SHOW_NAME_ON:
-            //         m_name_display = true;
-            //         break;
-
-            //     case SHOW_NAME_OFF:
-            //         m_name_display = false;
-            //         break;
-
-            //     default:
-            //         break;
-            // }
-            // if(render_data.getHDR())
-            // {
-            //     render_data.updateBloom(true);
-            // }
-            // else
-            // {
-            //     render_data.updateBloom(false);
-            // }
+            m_settings->manageSettings(render_data);
         }
         else
         {

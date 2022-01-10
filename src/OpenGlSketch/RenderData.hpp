@@ -228,6 +228,9 @@ PURPOSE : header of the RenderData class
                 void setMenu(bool const new_val) {menu = new_val;}
                 bool getMenu() const {return menu;}
 
+                void setTerminate(bool const new_val) {m_terminate = new_val;}
+                bool getTerminate() const {return m_terminate;}
+
                 
  
         };
