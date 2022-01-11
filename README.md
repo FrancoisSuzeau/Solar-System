@@ -36,12 +36,9 @@ The initial position of the ship is on the ``0, 9000, 0`` coordinates. You can m
 + LSHIFT : move down
 + Left button mouse (maintain) : orient ship (up, down, right, left)
 + Right button mouse (maintain) : orient camera (all around the ship)
-+ UP : increase the volume of the music (deprecated)
-+ DOWN : decrease the volume (deprecated)
-+ ESCAPE : Quit the program
-+ P : Display the settings menu
++ ESCAPE : Display the settings menu
 + Mouse Wheel : Change the navigation speed by 10% the speed of the light
-+ I : Display body information 
++ I : Display body information
 
 Make sure that the executable file is in the ````bin```` directory.
 
@@ -135,12 +132,26 @@ Big refactoring session
 Changing the way of how the navigation is done
 + This not the ship that moving anymore but object around him
 
+### 11/01/2022
+Integrating Dear ImGui for User interface
++ Overlay : music, Navigation and application information
++ Settings : Three TabMenu (Navigation options, HUD, Performance)
++ Settings display : now using escape
++ Can change music track, volume, mute options (soon radio channel) directly with overlay
++ Settings : Asteroid count influence performance so you can choose the amount
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
 For the moment I am working on this following aspect :
 
-+ Overlay : Display the sphere influence when approching a body or interplanetary travel
++ Overlay : Display gravitational strength influence cause by host and his natural companion
+
++ Overlay : display solar radiation variation
+
++ Overlay and Audio : create radio with his own kind of music
+
++ Settings : Navigation -> possibility to choose your ship
 
 + After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
 

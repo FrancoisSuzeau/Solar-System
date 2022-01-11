@@ -193,9 +193,11 @@ void Settings::managePerformance(RenderData &render_data)
     ImGui::Separator();
 
     ImGui::Text("Asteroid Quantity");
+    ImGui::SameLine();
+    RenderData::HelpMarker("Astroid count influence the performance so you can now chose the amount.");
     ImGui::Bullet();
     int asteroid_count = render_data.getAsteroidCount();
-    ImGui::SliderInt("Count", &asteroid_count, 2500, 10000);
+    ImGui::SliderInt("Count", &asteroid_count, 2000, 10000);
     render_data.setAsteroidCount(asteroid_count);
     ImGui::Separator();
 
