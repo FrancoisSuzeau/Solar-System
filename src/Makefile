@@ -4,7 +4,7 @@
 # $^ la liste des dépendances
 # @$ pour desactiver l'echo des lignes de commandes en cas d'erreur
 
-CFLAGS=-Wall -m64
+CFLAGS=-Wextra -m64
 LD_SDL_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2main -lSDL2
 LD_SDLIMAGE_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_image
 LD_SDLMIXER_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_mixer

@@ -45,7 +45,7 @@ Audio::~Audio()
 /***********************************************************************************************************************************************************************/
 bool Audio::loadMusic(RenderData &render_data)
 {
-    if(render_data.getTrack() < m_file_music.size())
+    if(render_data.getTrack() < (int) m_file_music.size())
     {
         if(m_music != NULL)
         {
@@ -124,7 +124,7 @@ void Audio::updateTrack(RenderData &render_data)
 
     if(Mix_PlayingMusic() == 1)
     {
-        if(new_track >= m_file_music.size())
+        if(new_track >= (int) m_file_music.size())
         {
             render_data.setTrackMusic(0);
         }
@@ -143,7 +143,7 @@ void Audio::updateTrack(RenderData &render_data)
     else if( (Mix_PlayingMusic() != 1) && (m_in_pause == false) )
     {
         render_data.setTrackMusic(new_track + 1);
-        if( render_data.getTrack() >= m_file_music.size() )
+        if( render_data.getTrack() >= (int) m_file_music.size() )
         {
             render_data.setTrackMusic(0);
         }

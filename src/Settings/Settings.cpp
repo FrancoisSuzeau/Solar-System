@@ -40,8 +40,8 @@ void Settings::manageSettings(RenderData &render_data)
     ImVec2 frame_padding_save = style.FramePadding;
     
     window_flags |= ImGuiWindowFlags_NoResize;
-    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 - 200, render_data.getHeight()/2 - 250));
-    ImGui::SetNextWindowSize(ImVec2(400, 500));
+    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 - 200, render_data.getHeight()/2 - 150));
+    ImGui::SetNextWindowSize(ImVec2(400, 300));
     
     
     ImGui::Begin("Settings", NULL, window_flags);
@@ -78,7 +78,7 @@ void Settings::manageSettings(RenderData &render_data)
 
     ImGui::Separator();
 
-    if(ImGui::Button("Stop Simulation", ImVec2(400.0f, 0.0f)))
+    if(ImGui::Button("Stop Simulation", ImVec2(385.0f, 0.0f)))
     {
         terminate = true;
     }
@@ -152,5 +152,17 @@ void Settings::managePerformance(RenderData &render_data, ImGuiStyle& style)
     ImGui::SameLine();
     ImGui::Checkbox("Activated/Disabled", &normal_render);
     render_data.setRenderShadowGround(normal_render);
+
+    bool parallax_render = render_data.getDispMapRender();
+    ImGui::BulletText("Set Parallax");
+    ImGui::SameLine();
+    ImGui::Checkbox("Activate/Deactivate", &parallax_render);
+    render_data.setDispMapRender(parallax_render);
+
+    ImGui::Text("Asteroid Quantity");
+    ImGui::Bullet();
+    int asteroid_count = render_data.getAsteroidCount();
+    ImGui::SliderInt("Count", &asteroid_count, 2500, 10000);
+    render_data.setAsteroidCount(asteroid_count);
     
 }

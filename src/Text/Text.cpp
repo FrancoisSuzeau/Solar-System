@@ -268,7 +268,9 @@ void Text::renderText(RenderData &render_data)
 bool Text::setText(std::string const text)
 {
 	/************************************************* create surface and invert pixel ********************************************************/
-    m_colorText = {192, 192, 192};
+    m_colorText.r = 192;
+    m_colorText.g = 192;
+    m_colorText.b = 192;
     SDL_Surface *tmp = TTF_RenderText_Blended(m_police, text.c_str(), m_colorText);
     if(tmp == nullptr)
     {

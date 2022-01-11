@@ -25,6 +25,11 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
     setupMesh();
 }
 
+Mesh::Mesh()
+{
+    
+}
+
 Mesh::~Mesh()
 {
     //REMEMBER : DO NOT DESTROY VAO, VBO and EBO

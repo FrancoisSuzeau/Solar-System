@@ -13,6 +13,7 @@ uniform vec3 sunPos;
 
 uniform bool hdr;
 uniform bool has_normal;
+uniform bool has_disp;
 
 
 // Uniform
@@ -111,7 +112,10 @@ void main()
         norm = normalize(norm * 2.0 - 1.0);
         lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
         viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
-        texCoord = parallaxMapping(texCoord, viewDir);
+        if(has_disp)
+        {
+            texCoord = parallaxMapping(texCoord, viewDir);
+        }
     }
     else
     {

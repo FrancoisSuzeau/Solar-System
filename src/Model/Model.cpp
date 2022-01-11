@@ -193,6 +193,8 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
         // std::cout << "textures size : " << textures.size() << std::endl;
         return Mesh(vertices, indices, textures);   
     }
+
+    return Mesh();
     
 }
 
@@ -201,9 +203,11 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 /***********************************************************************************************************************************************************************/
 std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, std::string typeName)
 {
+    std::vector<Texturate> textures;
+
     if(mat != nullptr)
     {
-        std::vector<Texturate> textures;
+        
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
@@ -234,8 +238,10 @@ std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType
             }
             
         }
-        return textures;
+        // return textures;
     }
+
+    return textures;
     
 }
 

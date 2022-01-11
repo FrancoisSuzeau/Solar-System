@@ -73,6 +73,8 @@ PURPOSE : header of the RenderData class
                 
                 bool menu;
 
+                unsigned int asteroid_count;
+
                 unsigned int frame_rate;
                 Uint32 start_loop, end_loop, time_past;
 
@@ -80,6 +82,7 @@ PURPOSE : header of the RenderData class
                 unsigned int bloom_str;
 
                 bool normal_map_render;
+                bool disp_map_render;
 
                 std::map<std::string, Shader*> map_shader;
 
@@ -110,8 +113,11 @@ PURPOSE : header of the RenderData class
                     bloom_str = 10;
 
                     normal_map_render = true;
+                    disp_map_render = true;
 
                     m_terminate = false;
+
+                    asteroid_count = 10000;
 
                     m_width = width;
                     m_height = height;
@@ -241,6 +247,12 @@ PURPOSE : header of the RenderData class
 
                 void setRenderShadowGround(bool const new_val) {normal_map_render = new_val;}
                 bool getShadowGround() const {return normal_map_render;}
+
+                void setDispMapRender(bool const new_val) {disp_map_render = new_val;}
+                bool getDispMapRender() const {return disp_map_render;}
+
+                void setAsteroidCount(unsigned int new_val) {asteroid_count = new_val;}
+                unsigned int getAsteroidCount() const {return asteroid_count;}
  
         };
 

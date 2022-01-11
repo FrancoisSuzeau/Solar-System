@@ -228,6 +228,7 @@ void Ring::display(RenderData &render_data)
 
                 glActiveTexture(GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, m_disp_surf->getID());
+                render_data.getShader("ring")->setInt("has_disp", render_data.getDispMapRender());
 
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, m_normal_surf->getID());
@@ -235,6 +236,7 @@ void Ring::display(RenderData &render_data)
             else
             {
                 render_data.getShader("ring")->setInt("has_normal", false);
+                render_data.getShader("ring")->setInt("has_disp", false);
             }
 
             glActiveTexture(GL_TEXTURE0);

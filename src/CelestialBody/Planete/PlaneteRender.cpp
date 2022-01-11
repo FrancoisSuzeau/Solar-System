@@ -86,6 +86,7 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
                     heighhtScale -= 360.0f;
                 }
                 render_data.getShader(planete->getTypePlan())->setFloat("heightScale", heighhtScale);
+                render_data.getShader(planete->getTypePlan())->setInt("has_disp", render_data.getDispMapRender());
                 render_data.getShader(planete->getTypePlan())->setTexture("material.dispMap", planete->getPlanTexture().size() + 1); // nb surface texture + normal texture + displacement texture
                 
                 glActiveTexture(GL_TEXTURE0 + planete->getPlanTexture().size() + 1);
@@ -107,6 +108,7 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
             else
             {
                 render_data.getShader(planete->getTypePlan())->setInt("has_normal", false);
+                render_data.getShader(planete->getTypePlan())->setInt("has_disp", false);
 
             }
 

@@ -84,6 +84,7 @@ PURPOSE : header of the Mesh class
             public:
             
                 Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texturate> textures);
+                Mesh();
                 ~Mesh();
 
                 void draw(RenderData &render_data, glm::mat4 &model_mat);

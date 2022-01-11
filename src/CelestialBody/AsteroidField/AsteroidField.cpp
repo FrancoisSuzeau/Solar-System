@@ -48,6 +48,26 @@ AsteroidField::~AsteroidField()
         delete modelMatrices;
     }
 
+    if(m_positions != nullptr)
+    {
+        delete m_positions;
+    }
+
+    if(rotAngle != nullptr)
+    {
+        delete rotAngle;
+    }
+
+    if(scaleM != nullptr)
+    {
+        delete scaleM;
+    }
+
+    if(m_rot_vector != nullptr)
+    {
+        delete m_rot_vector;
+    }
+
     if(glIsBuffer(buffer1) == GL_TRUE)
     {
         glDeleteBuffers(1, &buffer1);
@@ -91,6 +111,8 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
                     heightScale -= 360.0f;
                 }
                 render_data.getShader("INSTmodel")->setFloat("heightScale", heightScale);
+                render_data.getShader("INSTmodel")->setInt("has_disp", render_data.getDispMapRender());
+                
                 glActiveTexture(GL_TEXTURE2);
                 glBindTexture(GL_TEXTURE_2D, m_disp_surface->getID());
             }
@@ -107,6 +129,7 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
             else
             {
                 render_data.getShader("INSTmodel")->setInt("has_normal", false);
+                render_data.getShader("INSTmodel")->setInt("has_disp", false);
 
             }
             glActiveTexture(GL_TEXTURE0);
@@ -272,4 +295,43 @@ void AsteroidField::updatePostion(glm::vec3 shiPos)
     }
 
     this->initInstanced(modelMatrices);
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************************ updateCount **********************************************************************/
+/***********************************************************************************************************************************************************************/
+void AsteroidField::updateCount(RenderData &render_data)
+{
+    if(render_data.getAsteroidCount() != m_amount)
+    {
+        if(modelMatrices != nullptr)
+        {
+            delete modelMatrices;
+        }
+
+        if(m_positions != nullptr)
+        {
+            delete m_positions;
+        }
+
+        if(rotAngle != nullptr)
+        {
+            delete rotAngle;
+        }
+
+        if(scaleM != nullptr)
+        {
+            delete scaleM;
+        }
+
+        if(m_rot_vector != nullptr)
+        {
+            delete m_rot_vector;
+        }
+
+        m_amount = render_data.getAsteroidCount();
+
+        this->initModel();
+        this->initInstanced(modelMatrices);
+    }
 }
