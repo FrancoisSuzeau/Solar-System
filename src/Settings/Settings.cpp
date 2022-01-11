@@ -164,5 +164,34 @@ void Settings::managePerformance(RenderData &render_data, ImGuiStyle& style)
     int asteroid_count = render_data.getAsteroidCount();
     ImGui::SliderInt("Count", &asteroid_count, 2500, 10000);
     render_data.setAsteroidCount(asteroid_count);
+
+    static int selected = -1;
+    int fps[] = {25, 60, 120, 144, 240};
+    const char* names[] = { "25", "60", "120", "144", "240" };
+    if (ImGui::Button("Select.."))
+        ImGui::OpenPopup("my_select_popup");
+    ImGui::SameLine();
+    ImGui::Text("FPS Count : ");
+    ImGui::SameLine();
+    ImGui::TextUnformatted(selected == -1 ? "default" : names[selected]);
+    if (ImGui::BeginPopup("my_select_popup"))
+    {
+        if(ImGui::Selectable("default"))
+            selected = -1;
+        ImGui::Separator();
+        for (int i = 0; i < IM_ARRAYSIZE(names); i++)
+            if (ImGui::Selectable(names[i]))
+                selected = i;
+        ImGui::EndPopup();
+    }
+
+    if((selected >= 0) && (selected < 5))
+    {
+        render_data.setFPS(fps[selected]);
+    }
+    else
+    {
+        render_data.setFPS(50);
+    }
     
 }

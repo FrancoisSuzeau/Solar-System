@@ -76,6 +76,7 @@ PURPOSE : header of the RenderData class
                 unsigned int asteroid_count;
 
                 unsigned int frame_rate;
+                unsigned int fps;
                 Uint32 start_loop, end_loop, time_past;
 
                 bool bloom;
@@ -96,7 +97,8 @@ PURPOSE : header of the RenderData class
                     // pause_music = false;
                     volume = 64;
 
-                    frame_rate = 1000 / 50;
+                    fps = 50;
+                    frame_rate = 1000 / fps;
                     start_loop = 0;
                     end_loop = 0;
                     time_past = 0;
@@ -152,6 +154,8 @@ PURPOSE : header of the RenderData class
                     {
                         SDL_Delay(frame_rate - time_past);
                     }
+
+                    frame_rate = 1000 / fps;
                 }
 
                 void lockViewMat(glm::vec3 position, glm::vec3 target, glm::vec3 up)
@@ -253,6 +257,9 @@ PURPOSE : header of the RenderData class
 
                 void setAsteroidCount(unsigned int new_val) {asteroid_count = new_val;}
                 unsigned int getAsteroidCount() const {return asteroid_count;}
+
+                void setFPS(unsigned int new_val) {fps = new_val;}
+                unsigned int getFPS() const {return fps;}
  
         };
 
