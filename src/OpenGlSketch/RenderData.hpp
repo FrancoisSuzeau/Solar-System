@@ -76,8 +76,10 @@ PURPOSE : header of the RenderData class
                 unsigned int frame_rate;
                 Uint32 start_loop, end_loop, time_past;
 
-                // bool is_moving;
                 bool bloom;
+                unsigned int bloom_str;
+
+                bool normal_map_render;
 
                 std::map<std::string, Shader*> map_shader;
 
@@ -105,6 +107,9 @@ PURPOSE : header of the RenderData class
                     view = glm::mat4(1.0f);
 
                     bloom = true;
+                    bloom_str = 10;
+
+                    normal_map_render = true;
 
                     m_terminate = false;
 
@@ -231,7 +236,11 @@ PURPOSE : header of the RenderData class
                 void setTerminate(bool const new_val) {m_terminate = new_val;}
                 bool getTerminate() const {return m_terminate;}
 
-                
+                void setBloomStr(unsigned int new_val) {bloom_str = new_val;}
+                unsigned int getBloomStr() const {return bloom_str;}
+
+                void setRenderShadowGround(bool const new_val) {normal_map_render = new_val;}
+                bool getShadowGround() const {return normal_map_render;}
  
         };
 

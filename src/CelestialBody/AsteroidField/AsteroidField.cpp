@@ -98,7 +98,7 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
             if(m_noramal_surface != nullptr)
             {
 
-                render_data.getShader("INSTmodel")->setInt("has_normal", true);
+                render_data.getShader("INSTmodel")->setInt("has_normal", render_data.getShadowGround());
                 render_data.getShader("INSTmodel")->setTexture("normalMap", 1);
 
                 glActiveTexture(GL_TEXTURE1);

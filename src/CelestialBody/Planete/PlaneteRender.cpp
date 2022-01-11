@@ -98,7 +98,7 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
 
             if(planete->getNormalTexture() != nullptr)
             {
-                render_data.getShader(planete->getTypePlan())->setInt("has_normal", true);
+                render_data.getShader(planete->getTypePlan())->setInt("has_normal", render_data.getShadowGround());
                 render_data.getShader(planete->getTypePlan())->setTexture("material.normalMap", planete->getPlanTexture().size());
 
                 glActiveTexture(GL_TEXTURE0 + planete->getPlanTexture().size());

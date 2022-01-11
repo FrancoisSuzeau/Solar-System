@@ -221,7 +221,7 @@ void Ring::display(RenderData &render_data)
                 // }
 
                 render_data.getShader("ring")->setTexture("normalMap", 1);
-                render_data.getShader("ring")->setInt("has_normal", true);
+                render_data.getShader("ring")->setInt("has_normal", render_data.getShadowGround());
 
                 render_data.getShader("ring")->setTexture("depthMap", 2);
                 render_data.getShader("ring")->setFloat("heightScale", heighhtScale);

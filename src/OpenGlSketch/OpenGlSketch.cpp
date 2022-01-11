@@ -335,8 +335,11 @@ void OpenGlSketch::mainLoop()
     render_data.setTrackMusic(1);
     render_data.setPauseMusic(true);
     render_data.setTerminate(false);
-    
 
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+    style.WindowMenuButtonPosition = ImGuiDir_None;
+    
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
     // m_particuleGenerator->initParticles(camera->getTargetPoint());
     

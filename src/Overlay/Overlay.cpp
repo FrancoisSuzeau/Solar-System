@@ -168,7 +168,7 @@ void Overlay::displayMusicInfo(RenderData &render_data)
     style.FrameRounding = 15;
     style.GrabRounding = 15;
     
-    ImGui::Begin("Music Information : ", NULL, window_flags);
+    ImGui::Begin("Music Information", NULL, window_flags);
     
     ImGui::AlignTextToFramePadding();
     ImGui::Text("Title :");
@@ -231,7 +231,7 @@ void Overlay::displayNavigation(RenderData &render_data)
     style.FrameRounding = 15;
     style.GrabRounding = 15;
     
-    ImGui::Begin("Navigation : ", NULL, window_flags);
+    ImGui::Begin("Navigation", NULL, window_flags);
 
     float progress = render_data.getShipSpeed() / 200;
 
@@ -308,7 +308,7 @@ void Overlay::displayAppInfo(RenderData &render_data)
     ImGui::SetNextWindowPos(ImVec2(0.0, 0.0f));
     ImGui::SetNextWindowSize(ImVec2(380, 150));
     
-    ImGui::Begin("Application Information : ", NULL, window_flags);
+    ImGui::Begin("Application Information", NULL, window_flags);
 
     ImGui::Text("Application Information : ");
 

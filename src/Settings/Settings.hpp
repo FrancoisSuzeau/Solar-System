@@ -55,6 +55,8 @@ PURPOSE : header of the Settings class
             
             private:
 
+                void managePerformance(RenderData &render_data, ImGuiStyle& style);
+
             public:
             
                 Settings();
