@@ -35,13 +35,12 @@ Settings::~Settings()
 void Settings::manageSettings(RenderData &render_data)
 {
     ImGuiWindowFlags window_flags = 0;
-    bool terminate = render_data.getTerminate();
     ImGuiStyle& style = ImGui::GetStyle();
     ImVec2 frame_padding_save = style.FramePadding;
     
     window_flags |= ImGuiWindowFlags_NoResize;
-    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 - 200, render_data.getHeight()/2 - 150));
-    ImGui::SetNextWindowSize(ImVec2(400, 300));
+    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 - 200, render_data.getHeight()/2 - 165));
+    ImGui::SetNextWindowSize(ImVec2(400, 330));
     
     
     ImGui::Begin("Settings", NULL, window_flags);
@@ -59,13 +58,14 @@ void Settings::manageSettings(RenderData &render_data)
         if (ImGui::BeginTabItem("HUD"))
         {
             style.FramePadding = frame_padding_save;
+            this->manageHUD(render_data);
             ImGui::EndTabItem();
         }
         style.FramePadding = ImVec2(25, 3);
         if (ImGui::BeginTabItem("Performance"))
         {
             style.FramePadding = frame_padding_save;
-            this->managePerformance(render_data, style);
+            this->managePerformance(render_data);
             ImGui::EndTabItem();
         }
         
@@ -80,18 +80,48 @@ void Settings::manageSettings(RenderData &render_data)
 
     if(ImGui::Button("Stop Simulation", ImVec2(385.0f, 0.0f)))
     {
-        terminate = true;
+        render_data.setTerminate(true);
     }
 
-    ImGui::End();
+    RenderData::HelpMarker("Soon they will be buttons for saving config or reset to default");
 
-    render_data.setTerminate(terminate);
+    ImGui::End();
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************* manageHUD *****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Settings::manageHUD(RenderData &render_data)
+{
+    ImGui::Text("General");
+    bool over_rend = render_data.getOverlayRender();
+    ImGui::Bullet();
+    ImGui::SameLine();
+    ImGui::Checkbox("Display Overlay", &over_rend);
+    render_data.setRenderOverlay(over_rend);
+
+    bool name_rend = render_data.getRenderName();
+    ImGui::Bullet();
+    ImGui::SameLine();
+    ImGui::Checkbox("Display Name", &name_rend);
+    render_data.setRenderName(name_rend);
+
+    bool info_rend = render_data.getRenderInfo();
+    ImGui::Bullet();
+    ImGui::SameLine();
+    ImGui::Checkbox("Display Planete Information", &info_rend);
+    ImGui::SameLine();
+    RenderData::HelpMarker("It is possible to activate this functionality with the 'I' key.");
+    render_data.setRenderInfo(info_rend);
+    ImGui::Separator();
+
+
 }
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** managePerformance *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Settings::managePerformance(RenderData &render_data, ImGuiStyle& style)
+void Settings::managePerformance(RenderData &render_data)
 {
     ImGui::Text("Rendering");
 
@@ -146,7 +176,9 @@ void Settings::managePerformance(RenderData &render_data, ImGuiStyle& style)
             ImGui::CloseCurrentPopup();
         ImGui::EndPopup();
     }
+    ImGui::Separator();
 
+    ImGui::Text("Textures");
     bool normal_render = render_data.getShadowGround();
     ImGui::BulletText("Show Ground Shadow");
     ImGui::SameLine();
@@ -158,12 +190,14 @@ void Settings::managePerformance(RenderData &render_data, ImGuiStyle& style)
     ImGui::SameLine();
     ImGui::Checkbox("Activate/Deactivate", &parallax_render);
     render_data.setDispMapRender(parallax_render);
+    ImGui::Separator();
 
     ImGui::Text("Asteroid Quantity");
     ImGui::Bullet();
     int asteroid_count = render_data.getAsteroidCount();
     ImGui::SliderInt("Count", &asteroid_count, 2500, 10000);
     render_data.setAsteroidCount(asteroid_count);
+    ImGui::Separator();
 
     static int selected = -1;
     int fps[] = {25, 60, 120, 144, 240};

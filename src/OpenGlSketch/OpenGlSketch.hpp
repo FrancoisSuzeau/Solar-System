@@ -94,11 +94,11 @@ PURPOSE : header of the OpenGlSketch class
                 // bool menu;
                 bool menu_app_key_pressed;
 
-                bool info_render;
-                bool info_render_key_pressed;
+                // bool info_render;
+                // bool info_render_key_pressed;
 
-                bool m_overlay_display;
-                bool m_name_display;
+                // bool m_overlay_display;
+                // bool m_name_display;
 
                 Overlay *m_overlay;
 

@@ -88,7 +88,10 @@ PURPOSE : header of the RenderData class
                 std::map<std::string, Shader*> map_shader;
 
                 float ship_speed;
-                
+
+                bool render_overlay;
+                bool render_name;
+                bool render_info;
 
             public:
 
@@ -125,6 +128,10 @@ PURPOSE : header of the RenderData class
                     m_height = height;
 
                     setShader(main_loop);
+
+                    render_overlay = true;
+                    render_name = true;
+                    render_info = false;
 
                 }
                 ~RenderData()
@@ -260,6 +267,15 @@ PURPOSE : header of the RenderData class
 
                 void setFPS(unsigned int new_val) {fps = new_val;}
                 unsigned int getFPS() const {return fps;}
+
+                void setRenderOverlay(bool const new_val) {render_overlay = new_val;}
+                bool getOverlayRender() const {return render_overlay;}
+
+                void setRenderName(bool const new_val) {render_name = new_val;}
+                bool getRenderName() const {return render_name;}
+
+                void setRenderInfo(bool const new_val) {render_info = new_val;}
+                bool getRenderInfo() const {return render_info;}
  
         };
 

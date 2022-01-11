@@ -350,12 +350,6 @@ void OpenGlSketch::mainLoop()
     render_data.setMenu(false);
     menu_app_key_pressed = false;
 
-    info_render = false;
-    info_render_key_pressed = false;
-
-    m_overlay_display = true;
-    m_name_display = true;
-
     is_moving = false;
 
     //==================================================================================================================
@@ -510,7 +504,7 @@ void OpenGlSketch::mainLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::renderOverlay(RenderData &render_data)
 {
-    if((m_overlay_display) && (render_data.getShader("square") != nullptr))
+    if((render_data.getOverlayRender()) && (render_data.getShader("square") != nullptr))
     {
         if((aud != nullptr) && (camera != nullptr) && (m_overlay != nullptr))
         {
@@ -577,7 +571,7 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
             // /******************************************* name render *****************************************************/
 
-                if((render_data.getShader("text") != nullptr) && (m_name_display == true))
+                if((render_data.getShader("text") != nullptr) && (render_data.getRenderName()))
                 {
                     solar_system->drawName(render_data);
                 }
@@ -609,7 +603,7 @@ void OpenGlSketch::renderInfo(RenderData &render_data)
 {
     if((camera != nullptr) && (solar_system != nullptr) && (render_data.getShader("square") != nullptr))
     {
-        if(info_render)
+        if(render_data.getRenderInfo())
         {
             render_data.initSaveMat();
 
@@ -631,11 +625,6 @@ void OpenGlSketch::renderInfo(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::windowProcess(RenderData &render_data)
 {
-        if(m_input.getKey(SDL_SCANCODE_ESCAPE))
-        {
-            render_data.setTerminate(true);
-        }
-
         int scroll = m_input.getScroll();
 
         if(ship != nullptr)
@@ -681,24 +670,14 @@ void OpenGlSketch::windowProcess(RenderData &render_data)
             speed_key_pressed = false;
         }
 
-        if((m_input.getKey(SDL_SCANCODE_P)) && (!menu_app_key_pressed))
+        if((m_input.getKey(SDL_SCANCODE_ESCAPE)) && (!menu_app_key_pressed))
         {
             render_data.setMenu(!render_data.getMenu());
             menu_app_key_pressed = true;
         }
-        if ((m_input.getKey(SDL_SCANCODE_P)) == false)
+        if ((m_input.getKey(SDL_SCANCODE_ESCAPE)) == false)
         {
             menu_app_key_pressed = false;
-        }
-
-        if((m_input.getKey(SDL_SCANCODE_I)) && (!info_render_key_pressed))
-        {
-            info_render = !info_render;
-            info_render_key_pressed = true;
-        }
-        if ((m_input.getKey(SDL_SCANCODE_I)) == false)
-        {
-            info_render_key_pressed = false;
         }
 
         if((m_input.getKey(SDL_SCANCODE_W)) || (m_input.getKey(SDL_SCANCODE_S)) || (m_input.getKey(SDL_SCANCODE_A)) || (m_input.getKey(SDL_SCANCODE_D)))
