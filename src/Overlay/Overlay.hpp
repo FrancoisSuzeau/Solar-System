@@ -53,6 +53,13 @@ PURPOSE : header of the Overlay class
                 std::string studio;
 
         } music_data;
+
+        typedef struct nav_datas {
+
+                ImVec4 color_text;
+                float min_grav_inf;
+
+        } nav_datas;
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -71,6 +78,7 @@ PURPOSE : header of the Overlay class
                 glm::vec3 m_colorGrey;
 
                 std::map<int, music_data> map_music_data;
+                std::map<std::string, nav_datas> map_nav_data;
 
                 void displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates);
 

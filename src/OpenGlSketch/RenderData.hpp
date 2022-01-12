@@ -33,6 +33,7 @@ PURPOSE : header of the RenderData class
         #include "../../lib/imgui/imgui_impl_opengl3.h"
 
         #include "../Shader/Shader.hpp"
+        #include "../CelestialBody/Physique/Physique.hpp"
 
         typedef struct shader_datas {
 
@@ -41,6 +42,13 @@ PURPOSE : header of the RenderData class
             std::string key;
 
         }shader_datas;
+
+        typedef struct grav_influence_datas {
+
+            std::string name_body;
+            float grav_inf;
+
+        } grav_influence_datas;
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -93,6 +101,8 @@ PURPOSE : header of the RenderData class
                 bool render_name;
                 bool render_info;
 
+                grav_influence_datas influence_datas;
+
             public:
 
                 RenderData(int width, int height, double angle, bool main_loop)
@@ -132,6 +142,12 @@ PURPOSE : header of the RenderData class
                     render_overlay = true;
                     render_name = true;
                     render_info = false;
+                    if(main_loop)
+                    {
+                        Physique::InitPhysique();
+                        influence_datas.grav_inf = 0;
+                        influence_datas.name_body = "Sun";
+                    }
 
                 }
                 ~RenderData()
@@ -276,6 +292,12 @@ PURPOSE : header of the RenderData class
 
                 void setRenderInfo(bool const new_val) {render_info = new_val;}
                 bool getRenderInfo() const {return render_info;}
+
+                void setInfName(std::string const new_val) {influence_datas.name_body = new_val;}
+                std::string getInfName() const {return influence_datas.name_body;}
+
+                void setInfVal(float const new_val) {influence_datas.grav_inf = new_val;}
+                float getInfVal() const {return influence_datas.grav_inf;}
  
         };
 

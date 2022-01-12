@@ -38,6 +38,16 @@ Overlay::Overlay() : m_rect(0.05, 0.1)
     map_music_data[3].author = "Pedro Camacho";
     map_music_data[3].studio = "Star Citizen Soundtrack";
 
+    map_nav_data["Sun"] = {ImVec4(1.0f, 1.0f, 0.0f, 1.0f), 0.0f};
+    map_nav_data["Mercury"] = {ImVec4(0.502f, 0.502f, 0.502f, 1.0f), 0.019493f};
+    map_nav_data["Venus"] = {ImVec4(1.0f, 0.894f, 0.710f, 1.0f), 0.0673764f};
+    map_nav_data["Earth"] = {ImVec4(0.0f, 0.749f, 1.0f, 1.0f), 0.0820391f};
+    map_nav_data["Mars"] = {ImVec4(0.698f, 0.133f, 0.133f, 1.0f), 0.0195781f};
+    map_nav_data["Jupiter"] = {ImVec4(0.784f, 0.678f, 0.980f, 1.0f), 0.11756f};
+    map_nav_data["Saturn"] = {ImVec4(1.0f, 0.808f, 0.604f, 1.0f), 0.0534512f};
+    map_nav_data["Uranus"] = {ImVec4(0.454f, 0.815f, 0.945f, 1.0f), 0.047227f};
+    map_nav_data["Neptune"] = {ImVec4(0.192f, 0.549f, 0.906f, 1.0f), 0.0604449f};
+
     m_ancient_radius = 0.0;
     m_ancient_speed = 0.0;
 
@@ -261,15 +271,26 @@ void Overlay::displayNavigation(RenderData &render_data)
     std::string tmp = "Not realy implemented but later this will be work by the distance of the sun and so the solar radiation intensity.";
     RenderData::HelpMarker(tmp);
 
+    float arr1[] = {0.0};
+    static float arr2[] = { 0.6f, 1.0f, 0.33f, 0.89f, 0.17f, 0.48f};    
+    if(render_data.getInfVal() <= map_nav_data[render_data.getInfName()].min_grav_inf)
+    {
+        float dist_sun = Physique::getDistanceFromCam("Sun", render_data.getShipPos());
+        float grav_inf = Physique::getGravInfluence("Sun", dist_sun);
+        arr1[0] = grav_inf;
+        tmp = "Sun";
+    }
+    else
+    {
+        arr1[0] = render_data.getInfVal();
+        tmp = render_data.getInfName();
+    }
     ImGui::BulletText("Gravitational Influence");
     ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Sun");
+    ImGui::TextColored(map_nav_data[tmp].color_text, tmp.c_str());
     ImGui::SameLine();
     tmp = "Not implemented yet.";
     RenderData::HelpMarker(tmp);
-
-    static float arr1[] = { 0.6f};
-    static float arr2[] = { 0.6f, 1.0f, 0.33f, 0.89f, 0.17f, 0.48f};
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.862f, 0.078f, 0.235f, 1.0f));
     ImGui::PlotHistogram("          ", arr1, IM_ARRAYSIZE(arr1), 0, " ", 0.0f, 1.0f, ImVec2(30, 80.0f));
     ImGui::SameLine();

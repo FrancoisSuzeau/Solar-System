@@ -87,6 +87,11 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->displayRing(render_data);
                 }
 
+                void setMostGravInfluence(RenderData &render_data)
+                {
+                        m_system->setMostGravInfluence(render_data);
+                }
+
 
         };
 

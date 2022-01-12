@@ -335,6 +335,9 @@ void OpenGlSketch::mainLoop()
     render_data.setTrackMusic(1);
     render_data.setPauseMusic(true);
     render_data.setTerminate(false);
+    
+    float dist_sun = Physique::getDistanceFromCam("Sun", ship->getPosition());
+    float grav_inf_sun = Physique::getGravInfluence("Sun", dist_sun);
 
     ImGuiStyle& style = ImGui::GetStyle();
     style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
@@ -516,23 +519,23 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
 
                 render_data.saveViewMat();
 
-                render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                // render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayMusicInfo(render_data);
 
-                render_data.saveViewMat();
+                // render_data.saveViewMat();
 
-                render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                // render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayNavigation(render_data);
 
-                render_data.saveViewMat();
+                // render_data.saveViewMat();
 
-                render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                // render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
                     m_overlay->displayAppInfo(render_data);
 
-            render_data.saveViewMat();
+            // render_data.saveViewMat();
 
         }
         
@@ -591,6 +594,9 @@ void OpenGlSketch::renderScene(RenderData &render_data)
                 solar_system->drawAsteroidField(render_data);
                 
             render_data.saveViewMat();
+
+
+                solar_system->setMostGravInfluence(render_data);
 
     }
     

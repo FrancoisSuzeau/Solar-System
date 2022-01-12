@@ -73,6 +73,8 @@ PURPOSE : header of the virtual SolarSystem class
                 void displayAsteroidField(RenderData &render_data) override;
                 void displayRing(RenderData &render_data) override;
 
+                void setMostGravInfluence(RenderData &render_data) override;
+
 
         };
 

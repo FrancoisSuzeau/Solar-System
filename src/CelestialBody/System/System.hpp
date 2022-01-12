@@ -27,6 +27,7 @@ PURPOSE : header of the virtual System class
 
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
         #include "../../OpenGlSketch/RenderData.hpp"
+        #include "../Physique/Physique.hpp"
 
         typedef struct init_data {
 
@@ -75,6 +76,7 @@ PURPOSE : header of the virtual System class
                 virtual void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;
                 virtual void displayAsteroidField(RenderData &redner_data) = 0;
                 virtual void displayRing(RenderData &render_data) = 0;
+                virtual void setMostGravInfluence(RenderData &render_data) = 0;
                 
         };
 

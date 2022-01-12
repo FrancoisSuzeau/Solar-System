@@ -294,6 +294,38 @@ void PlanetarySystem::displayRing(RenderData &render_data)
     render_data.saveViewMat();
 }
 
+/************************************************************************************************************************************************************************/
+/********************************************************************** setMostGravInfluence ****************************************************************************/
+/************************************************************************************************************************************************************************/
+void PlanetarySystem::setMostGravInfluence(RenderData &render_data)
+{
+    if(m_host != nullptr)
+    {
+        float r = m_host->getRadiusFromCam(render_data.getShipPos());
+        float size_plan = m_host->getSize();
+
+        if(r <= 30 * size_plan)
+        {
+            std::string tmp_name = m_host->getName();
+
+            float grav_inf = Physique::getGravInfluence(tmp_name, r);
+
+            render_data.setInfName(tmp_name);
+            render_data.setInfVal(grav_inf);
+
+            std::cout << tmp_name << " : " << render_data.getInfVal() << std::endl;
+        }
+        // else
+        // {
+        //     float dist_from_sun = Physique::getDistanceFromCam("Sun", render_data.getShipPos());
+        //     float grav_sun_inf = Physique::getGravInfluence("Sun", dist_from_sun);
+
+        //     render_data.setInfName("Sun");
+        //     render_data.setInfVal(grav_sun_inf);
+        // }
+    }
+}
+
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** NOT CONCERN **************************************************************************/
 /***********************************************************************************************************************************************************************/
