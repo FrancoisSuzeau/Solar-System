@@ -13,6 +13,9 @@ PURPOSE : class Physique
 #include "Physique.hpp"
 
 float Physique::G_const = 0;
+float Physique::Sun_emittance = 0;
+int Physique::sun_radius = 0;
+std::vector<double> Physique::min_max;
 std::map<std::string, body_datas> Physique::bodys_data;
 
 /***********************************************************************************************************************************************************************/
@@ -35,6 +38,10 @@ void Physique::InitPhysique()
 {
     G_const = 6.6742 * pow(10.0f, -11.0f);
 
+    Sun_emittance = 63200000; //W * m^-2
+    // Sun_emittance = 63,2; //MW * m^-2
+    sun_radius = 696342; //Km
+
     bodys_data["Sun"] = {glm::vec3(0.0f, 0.0f, 0.0f), 1.989 * pow(10, 30), {0.0}};
     bodys_data["Mercury"] = {glm::vec3(5790.0f, 0.0f, 0.0f), 3.285 * pow(10, 23), {0.0}};
     bodys_data["Venus"] = {glm::vec3(0.0f, -10820.0f, 0.0f), 4.867 * pow(10, 24), {0.0}};
@@ -44,6 +51,8 @@ void Physique::InitPhysique()
     bodys_data["Saturn"] = {glm::vec3(0.0f, -14267.0f, 0.0f), 5.683 * pow(10, 26), {3.84 * pow(10, 19), 8.6 * pow(10, 19), 1.345 * pow(10, 23)}};
     bodys_data["Uranus"] = {glm::vec3(-28707.0f, 0.0f, 0.0f), 8.681 * pow(10, 25), {0.0}};
     bodys_data["Neptune"] = {glm::vec3(0.0f, 44984.0f, 0.0f), 1.024 * pow(10, 26), {0.0}};
+
+    min_max = {(3.78336*pow(10, 7)), (8.51255*pow(10, 13))};
 }
 
 /***********************************************************************************************************************************************************************/
@@ -80,4 +89,18 @@ std::vector<double> Physique::getGravInfluence(std::string body_name, std::vecto
     }
 
     return Fab;
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************ getSolarConst ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+float Physique::getSolarConst(glm::vec3 ship_pos)
+{
+    float rad_from_sun = getDistanceFromCam("Sun", ship_pos);
+
+    float value = Sun_emittance * pow((sun_radius / rad_from_sun), 2); //solar const : W * m^-2
+
+    float F = (value - min_max[0]) / (min_max[1] - min_max[0]); // normalisation
+
+    return F;
 }

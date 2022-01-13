@@ -250,26 +250,25 @@ void Overlay::displayNavigation(RenderData &render_data)
     ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
     ImGui::Text("Speed");
 
-    bool animate = true;
+    float phase = Physique::getSolarConst(render_data.getShipPos());
+    std::cout << phase << std::endl;
     static float values[90] = {};
     static int values_offset = 0;
     static double refresh_time = 0.0;
-    if (!animate || refresh_time == 0.0)
+    if (refresh_time == 0.0)
         refresh_time = ImGui::GetTime();
     while (refresh_time < ImGui::GetTime())
     {
-        static float phase = 0.0f;
-        values[values_offset] = cos(phase);
+        
+        values[values_offset] = phase;
         values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
-        phase += 0.10f * values_offset;
         refresh_time += 1.0f / 40.0f;
     }
-
     ImGui::BulletText("Solar Radiation");
-    ImGui::PlotLines(" ", values, IM_ARRAYSIZE(values), values_offset, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
-    ImGui::SameLine();
+    ImGui::PlotLines("W.m^-2", values, IM_ARRAYSIZE(values), values_offset, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+    // ImGui::SameLine();
     std::string tmp = "Not realy implemented but later this will be work by the distance of the sun and so the solar radiation intensity.";
-    RenderData::HelpMarker(tmp);
+    // RenderData::HelpMarker(tmp);
 
     float arr1[] = {0.0};
     float arr2[] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};    

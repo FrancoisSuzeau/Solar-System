@@ -46,13 +46,17 @@ PURPOSE : Interface Physique
             public:
 
                 static float G_const;
+                static float Sun_emittance;
+                static int sun_radius;
                 static std::map<std::string, body_datas> bodys_data;
+                static std::vector<double> min_max;
 
                 Physique();
                 ~Physique();
                 static void InitPhysique();
                 static float getDistanceFromCam(std::string name_body, glm::vec3 ship_pos);
                 static std::vector<double> getGravInfluence(std::string name_body, std::vector<float> distance);
+                static float getSolarConst(glm::vec3 ship_pos);
                 
                 
             
