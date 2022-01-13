@@ -272,24 +272,29 @@ void Overlay::displayNavigation(RenderData &render_data)
     RenderData::HelpMarker(tmp);
 
     float arr1[] = {0.0};
-    static float arr2[] = { 0.6f, 1.0f, 0.33f, 0.89f, 0.17f, 0.48f};    
-    if(render_data.getInfVal() <= map_nav_data[render_data.getInfName()].min_grav_inf)
+    float arr2[] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};    
+    if(render_data.getInfVal()[0] <= map_nav_data[render_data.getInfName()].min_grav_inf)
     {
-        float dist_sun = Physique::getDistanceFromCam("Sun", render_data.getShipPos());
-        float grav_inf = Physique::getGravInfluence("Sun", dist_sun);
+        std::vector<float> dist_sun = {Physique::getDistanceFromCam("Sun", render_data.getShipPos())};
+        float grav_inf = Physique::getGravInfluence("Sun", dist_sun)[0];
         arr1[0] = grav_inf;
         tmp = "Sun";
     }
     else
     {
-        arr1[0] = render_data.getInfVal();
         tmp = render_data.getInfName();
+        std::vector<double> tmp_vect = render_data.getInfVal();
+        arr1[0] = tmp_vect[0];
+        for(int i = 1; i < (int)tmp_vect.size(); i++)
+        {
+            arr2[i-1] = tmp_vect[i];
+        }
     }
     ImGui::BulletText("Gravitational Influence");
     ImGui::SameLine();
     ImGui::TextColored(map_nav_data[tmp].color_text, tmp.c_str());
     ImGui::SameLine();
-    tmp = "Not implemented yet.";
+    tmp = "Display the name of the body or the host name of the planetary disney.";
     RenderData::HelpMarker(tmp);
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.862f, 0.078f, 0.235f, 1.0f));
     ImGui::PlotHistogram("          ", arr1, IM_ARRAYSIZE(arr1), 0, " ", 0.0f, 1.0f, ImVec2(30, 80.0f));
@@ -299,7 +304,7 @@ void Overlay::displayNavigation(RenderData &render_data)
     ImGui::SameLine();
     ImGui::Text("           Natural companion");
     ImGui::SameLine();
-    tmp = "Not implemented either.";
+    tmp = "Those are for the natural moons of the host.";
     RenderData::HelpMarker(tmp);
 
     style.FrameRounding = save_frame;

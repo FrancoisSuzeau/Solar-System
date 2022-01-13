@@ -455,29 +455,19 @@ void SolarSystem::setMostGravInfluence(RenderData &render_data)
     {
         if(it[0] != nullptr)
         {
-            float r = it[0]->getRadiusFromCam(render_data.getShipPos());
+            std::vector<float> r = {it[0]->getRadiusFromCam(render_data.getShipPos())};
             float size_plan = it[0]->getSize();
 
 
-            if(r <= 30 * size_plan)
+            if(r[0] <= 30 * size_plan)
             {
                 std::string tmp_name = it[0]->getName();
-                float grav_inf = Physique::getGravInfluence(tmp_name, r);
+                std::vector<double> grav_inf = Physique::getGravInfluence(tmp_name, r);
 
                 render_data.setInfName(tmp_name);
                 render_data.setInfVal(grav_inf);
 
-                std::cout << tmp_name << " : " << render_data.getInfVal() << std::endl;
-
             }
-            // else
-            // {
-            //     // float dist_from_sun = Physique::getDistanceFromCam("Sun", render_data.getShipPos());
-            //     // float grav_sun_inf = Physique::getGravInfluence("Sun", dist_from_sun);
-
-            //     render_data.setInfName("Sun");
-            //     render_data.setInfVal(grav_sun_inf);
-            // }
         }
     }
 

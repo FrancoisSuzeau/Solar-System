@@ -336,8 +336,8 @@ void OpenGlSketch::mainLoop()
     render_data.setPauseMusic(true);
     render_data.setTerminate(false);
     
-    float dist_sun = Physique::getDistanceFromCam("Sun", ship->getPosition());
-    float grav_inf_sun = Physique::getGravInfluence("Sun", dist_sun);
+    std::vector<float> dist_sun = {Physique::getDistanceFromCam("Sun", ship->getPosition())};
+    float grav_inf_sun = Physique::getGravInfluence("Sun", dist_sun)[0];
 
     ImGuiStyle& style = ImGui::GetStyle();
     style.WindowTitleAlign = ImVec2(0.5f, 0.5f);

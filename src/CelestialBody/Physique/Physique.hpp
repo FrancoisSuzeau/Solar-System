@@ -30,7 +30,7 @@ PURPOSE : Interface Physique
                 glm::vec3 host_position;
                 double host_mass; // in kilograme
                 // std::vector<glm::vec3> companion_position;
-                // std::vector<float> mass_companion;
+                std::vector<double> mass_companion;
 
         } planete_datas;
 
@@ -52,7 +52,7 @@ PURPOSE : Interface Physique
                 ~Physique();
                 static void InitPhysique();
                 static float getDistanceFromCam(std::string name_body, glm::vec3 ship_pos);
-                static float getGravInfluence(std::string name_body, float distance);
+                static std::vector<double> getGravInfluence(std::string name_body, std::vector<float> distance);
                 
                 
             

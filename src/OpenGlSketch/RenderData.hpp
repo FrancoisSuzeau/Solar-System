@@ -46,7 +46,7 @@ PURPOSE : header of the RenderData class
         typedef struct grav_influence_datas {
 
             std::string name_body;
-            float grav_inf;
+            std::vector<double> grav_inf;
 
         } grav_influence_datas;
         
@@ -145,7 +145,7 @@ PURPOSE : header of the RenderData class
                     if(main_loop)
                     {
                         Physique::InitPhysique();
-                        influence_datas.grav_inf = 0;
+                        influence_datas.grav_inf = {0.0f};
                         influence_datas.name_body = "Sun";
                     }
 
@@ -296,8 +296,8 @@ PURPOSE : header of the RenderData class
                 void setInfName(std::string const new_val) {influence_datas.name_body = new_val;}
                 std::string getInfName() const {return influence_datas.name_body;}
 
-                void setInfVal(float const new_val) {influence_datas.grav_inf = new_val;}
-                float getInfVal() const {return influence_datas.grav_inf;}
+                void setInfVal(std::vector<double> new_val) {influence_datas.grav_inf = new_val;}
+                std::vector<double> getInfVal() const {return influence_datas.grav_inf;}
  
         };
 

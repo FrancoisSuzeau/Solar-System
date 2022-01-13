@@ -301,28 +301,23 @@ void PlanetarySystem::setMostGravInfluence(RenderData &render_data)
 {
     if(m_host != nullptr)
     {
-        float r = m_host->getRadiusFromCam(render_data.getShipPos());
+        std::vector<float> r = {m_host->getRadiusFromCam(render_data.getShipPos())};
         float size_plan = m_host->getSize();
 
-        if(r <= 30 * size_plan)
+        if(r[0] <= 30 * size_plan)
         {
             std::string tmp_name = m_host->getName();
 
-            float grav_inf = Physique::getGravInfluence(tmp_name, r);
+            for(std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
+            {
+                r.push_back(it[0]->getRadiusFromCam(render_data.getShipPos()));
+            }
+
+            std::vector<double> grav_inf = Physique::getGravInfluence(tmp_name, r);
 
             render_data.setInfName(tmp_name);
             render_data.setInfVal(grav_inf);
-
-            std::cout << tmp_name << " : " << render_data.getInfVal() << std::endl;
         }
-        // else
-        // {
-        //     float dist_from_sun = Physique::getDistanceFromCam("Sun", render_data.getShipPos());
-        //     float grav_sun_inf = Physique::getGravInfluence("Sun", dist_from_sun);
-
-        //     render_data.setInfName("Sun");
-        //     render_data.setInfVal(grav_sun_inf);
-        // }
     }
 }
 
