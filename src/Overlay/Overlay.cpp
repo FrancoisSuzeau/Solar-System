@@ -251,7 +251,11 @@ void Overlay::displayNavigation(RenderData &render_data)
     ImGui::Text("Speed");
 
     float phase = Physique::getSolarConst(render_data.getShipPos());
-    std::cout << phase << std::endl;
+    std::string unit[5] = {"W.m^-2", "KW.m^-2", "MW.m^-2", "GW.m^-2", "TW.m^-2"};
+    int exponent = (int) log10(phase);
+    int index = exponent;
+    exponent = -exponent;
+    phase *= pow(10, exponent - 1);
     static float values[90] = {};
     static int values_offset = 0;
     static double refresh_time = 0.0;
@@ -259,17 +263,25 @@ void Overlay::displayNavigation(RenderData &render_data)
         refresh_time = ImGui::GetTime();
     while (refresh_time < ImGui::GetTime())
     {
-        
         values[values_offset] = phase;
         values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
         refresh_time += 1.0f / 40.0f;
     }
     ImGui::BulletText("Solar Radiation");
-    ImGui::PlotLines("W.m^-2", values, IM_ARRAYSIZE(values), values_offset, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
-    // ImGui::SameLine();
-    std::string tmp = "Not realy implemented but later this will be work by the distance of the sun and so the solar radiation intensity.";
-    // RenderData::HelpMarker(tmp);
-
+    ImGui::SameLine();
+    std::string tmp = "Keep in mind that the value is display between 0 and 1 so you have to multiply by 10 000.\n(Example : for Earth\n-value display : 0.1362 W.m^-2\n-reality : 1 362 W.m^-2)";
+    RenderData::HelpMarker(tmp);
+    if(index - 9 < 5)
+    {
+        ImGui::PlotLines(unit[index - 9].c_str(), values, IM_ARRAYSIZE(values), values_offset, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+    }
+    else
+    {
+        float tmp[2] = {1.0, 1.0};
+        ImGui::PlotLines("You're dead", tmp, IM_ARRAYSIZE(tmp), 0, NULL, 0.0f, 1.0f, ImVec2(0, 40.0f));
+    }
+    //TODO : make this with real scale
+    
     float arr1[] = {0.0};
     float arr2[] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};    
     if(render_data.getInfVal()[0] <= map_nav_data[render_data.getInfName()].min_grav_inf)

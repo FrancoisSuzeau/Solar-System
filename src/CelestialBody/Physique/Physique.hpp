@@ -49,7 +49,6 @@ PURPOSE : Interface Physique
                 static float Sun_emittance;
                 static int sun_radius;
                 static std::map<std::string, body_datas> bodys_data;
-                static std::vector<double> min_max;
 
                 Physique();
                 ~Physique();
