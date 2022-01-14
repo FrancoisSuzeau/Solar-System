@@ -73,8 +73,6 @@ void Settings::manageSettings(RenderData &render_data)
         ImGui::EndTabBar();
     }
     style.FramePadding = frame_padding_save;
-    
-
 
     ImGui::Separator();
 

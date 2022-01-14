@@ -28,8 +28,6 @@ PURPOSE : header of the PlaneteInformation class
         #include <vector>
         #include <cassert>
         
-        #include "../CelestialBody/Geometry/Square.hpp"
-        #include "../Text/Text.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
         
 
@@ -40,31 +38,14 @@ PURPOSE : header of the PlaneteInformation class
             
             private:
 
-                Square          *m_rect;
-
-                Text            m_text_name;
-                
-                std::string     m_name_plan;
-                glm::vec3       m_plan_pos;
-
-                int             screen_w;
-                int             screen_h;
-
-                glm::vec3       colorGrey;
-                glm::vec3       colorBlack;
+                std::map<std::string, ImVec4> map_color;
 
             public:
             
-                PlaneteInformation(std::string const name_plan, TTF_Font *police);
                 PlaneteInformation();
                 ~PlaneteInformation();
 
-                void renderInfo(RenderData &render_data);
-                void setPosPlan(glm::vec3 const &posPlan);
-                void changeNamePlan(std::string const name);
-                std::string getInfoName() const;
-
-
+                void renderInfo(RenderData &render_data, std::string name_body);
         };
 
 

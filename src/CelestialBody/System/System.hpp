@@ -25,6 +25,8 @@ PURPOSE : header of the virtual System class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
+        #include <SDL2/SDL_ttf.h>
+
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
         #include "../../OpenGlSketch/RenderData.hpp"
         #include "../Physique/Physique.hpp"

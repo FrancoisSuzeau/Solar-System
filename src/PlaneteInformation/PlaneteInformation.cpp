@@ -12,153 +12,44 @@ PURPOSE : class PlaneteInformation
 
 #include "PlaneteInformation.hpp"
 
-using namespace glm;
-
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlaneteInformation::PlaneteInformation(std::string const name_plan, TTF_Font *police) : m_name_plan(name_plan),
-m_text_name(3.0, 0.2, 6, "../assets/font/aAtmospheric.ttf", police)
-{
-    screen_h = GetSystemMetrics(SM_CXSCREEN);
-    screen_w = GetSystemMetrics(SM_CYSCREEN);
-
-    assert(m_text_name.loadTTF(m_name_plan));
-    m_name_plan = "None";
-
-    m_rect = new Square(0.05, 0.7);
-    assert(m_rect);
-
-    colorGrey = vec3(0.7);
-    colorBlack = vec3(0.1);
-}
-
 PlaneteInformation::PlaneteInformation()
 {
-
+    map_color["Sun"] = {ImVec4(1.0f, 1.0f, 0.0f, 1.0f)};
+    map_color["Mercury"] = {ImVec4(0.502f, 0.502f, 0.502f, 1.0f)};
+    map_color["Venus"] = {ImVec4(1.0f, 0.894f, 0.710f, 1.0f)};
+    map_color["Earth"] = {ImVec4(0.0f, 0.749f, 1.0f, 1.0f)};
+    map_color["Mars"] = {ImVec4(0.698f, 0.133f, 0.133f, 1.0f)};
+    map_color["Jupiter"] = {ImVec4(0.784f, 0.678f, 0.980f, 1.0f)};
+    map_color["Saturn"] = {ImVec4(1.0f, 0.808f, 0.604f, 1.0f)};
+    map_color["Uranus"] = {ImVec4(0.454f, 0.815f, 0.945f, 1.0f)};
+    map_color["Neptune"] = {ImVec4(0.192f, 0.549f, 0.906f, 1.0f)};
 }
 
 PlaneteInformation::~PlaneteInformation()
 {
-    if(m_rect != nullptr)
-    {
-        delete m_rect;
-    }
+
 }
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* renderInfo **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void PlaneteInformation::renderInfo(RenderData &render_data)
+void PlaneteInformation::renderInfo(RenderData &render_data, std::string name_body)
 {
-    glm::mat4 save = render_data.getViewMat();
-    float constance = 0.05;
+    ImGuiWindowFlags window_flags = 0;
 
-    float start_x_black = -0.8;
-    float start_y = 0.5;
-
-    if((render_data.getShader("square") != nullptr) && (m_rect != nullptr))
-    {
-        //black fill
-        for (size_t i(0); i < 11; i++)
-        {
-            for (size_t j(0); j < 9; j++)
-            {
-                    m_rect->updatePosition(glm::vec3(start_x_black, start_y, 0.0));
-                    m_rect->display(render_data, colorBlack);
-                
-                render_data.updateView(save);
-                start_x_black = start_x_black + constance;
-            }
-
-            start_y = start_y - constance;
-            start_x_black = -0.8;
-        }
-
-        //white border top and bottom
-        float start_x_white = -0.8;
-
-        for (size_t i(0); i < 9; i++)
-        {
-                m_rect->updatePosition(glm::vec3(start_x_white, 0.51, 0.0));
-                m_rect->display(render_data, colorGrey);
-                
-            render_data.updateView(save);
-
-                m_rect->updatePosition(glm::vec3(start_x_white, -0.01, 0.0));
-                m_rect->display(render_data, colorGrey);
-
-            render_data.updateView(save);
-
-            start_x_white = start_x_white + constance;
-        }
-
-        //white border left and right
-        float start_y_white = 0.51;
-
-        for (size_t i(0); i < 11; i++)
-        {
-                m_rect->updatePosition(glm::vec3(-0.81, start_y_white, 0.0));
-                m_rect->display(render_data, colorGrey);
-                
-            render_data.updateView(save);
-
-                m_rect->updatePosition(glm::vec3(-0.39, start_y_white, 0.0));
-                m_rect->display(render_data, colorGrey);
-                
-            render_data.updateView(save);
-
-            start_y_white = start_y_white - constance;
-        }
-
-        //the last to white on the bottom corner left and right
-
-            m_rect->updatePosition(glm::vec3(-0.81, -0.01, 0.0));
-            m_rect->display(render_data, colorGrey);
-                
-        render_data.updateView(save);
-
-            m_rect->updatePosition(glm::vec3(-0.39, -0.01, 0.0));
-            m_rect->display(render_data, colorGrey);
-    }
-
+    window_flags |= ImGuiWindowFlags_NoResize;
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
+    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 + 200, render_data.getHeight()/2 - 300));
+    ImGui::SetNextWindowSize(ImVec2(300, 330));
     
+    ImGui::Begin("Informations", NULL, window_flags);
+    std::string tmp = "                 " + name_body;
 
-    render_data.updateView(save);
+    ImGui::TextColored(map_color[name_body], tmp.c_str());
 
-    if(render_data.getShader("text") != nullptr)
-    {
-            m_text_name.updatePosition(glm::vec3(-0.585, 0.49, -0.0));
-            m_text_name.updateScale(glm::vec3(0.03, 0.05, 0.0));
-            m_text_name.renderText(render_data);
-
-        render_data.updateView(save);
-    }
-
-    
-}
-
-/***********************************************************************************************************************************************************************/
-/********************************************************************************* setPlanPos **************************************************************************/
-/***********************************************************************************************************************************************************************/
-void PlaneteInformation::setPosPlan(glm::vec3 const &planPos)
-{
-    m_plan_pos = planPos;
-}
-
-/***********************************************************************************************************************************************************************/
-/***************************************************************************** changeNamePlan **************************************************************************/
-/***********************************************************************************************************************************************************************/
-void PlaneteInformation::changeNamePlan(std::string const name)
-{
-    assert(m_text_name.setText(name));
-    m_name_plan = name;
-}
-
-/***********************************************************************************************************************************************************************/
-/******************************************************************************** getInfoName **************************************************************************/
-/***********************************************************************************************************************************************************************/
-std::string PlaneteInformation::getInfoName() const
-{
-    return m_name_plan;
+    ImGui::PopStyleColor();
+    ImGui::End();
 }

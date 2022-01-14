@@ -229,16 +229,12 @@ void PlanetarySystem::displayAtmo(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::renderInfos(RenderData &render_data, PlaneteInformation *planete_info)
 {
-    glm::mat4 save = render_data.getViewMat();
-
     this->displayInfo(render_data, m_host, planete_info);
 
     for(std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
     {
         this->displayInfo(render_data, it[0], planete_info);
     }
-
-    render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -246,8 +242,6 @@ void PlanetarySystem::renderInfos(RenderData &render_data, PlaneteInformation *p
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::displayInfo(RenderData &render_data, Planete *planete, PlaneteInformation *planete_info)
 {
-    glm::mat4 save = render_data.getViewMat();
-
     if(planete != nullptr)
     {
         float r = planete->getRadiusFromCam(render_data.getShipPos());
@@ -255,28 +249,15 @@ void PlanetarySystem::displayInfo(RenderData &render_data, Planete *planete, Pla
 
             if(r <= 10 * size_plan)
             {
-                render_data.lockViewMat(glm::vec3(0.0, 0.0, 1.71), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
-
-                std::string tmp_name = planete->getName();
                 
                 if(planete_info != nullptr)
                 {
-                    if(tmp_name != planete_info->getInfoName())
-                    {
-                        planete_info->changeNamePlan(tmp_name);
-                    }
-
-                    if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
-                    {
-                        planete_info->renderInfo(render_data);
-                        render_data.updateView(save);
-                    }
+                    std::string tmp_name = planete->getName();
+                    planete_info->renderInfo(render_data, tmp_name);
                 }
                 
             }
     }
-    
-    render_data.updateView(save);
 }
 
 /***********************************************************************************************************************************************************************/

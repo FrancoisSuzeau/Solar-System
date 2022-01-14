@@ -19,7 +19,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police)
 {
-    m_planete_info = new PlaneteInformation("None", police);
+    m_planete_info = new PlaneteInformation();
     assert(m_planete_info);
 
     planete_render = new PlaneteRender();
@@ -367,10 +367,6 @@ void SolarSystem::displayAtmo(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void SolarSystem::renderInfos(RenderData &render_data, PlaneteInformation *plan_info)
 {
-    
-    glm::mat4 save = render_data.getViewMat();
-
-
     for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
     {
 
@@ -381,42 +377,23 @@ void SolarSystem::renderInfos(RenderData &render_data, PlaneteInformation *plan_
 
             if(r <= 10 * size_plan)
             {
-                render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+               
                 std::string tmp_name = it[0]->getName();
-                    
-                if(tmp_name != m_planete_info->getInfoName())
-                {
-                    m_planete_info->changeNamePlan(tmp_name);
-                }
 
-
-                if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
-                {
-                    m_planete_info->renderInfo(render_data);
-                    render_data.updateView(save);
-                }
+                m_planete_info->renderInfo(render_data, tmp_name);
             }
         }
-        render_data.updateView(save);
     }
-    render_data.updateView(save);
 
     // display information of planetof the planetary system
     for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
     {
         if(it[0] != nullptr)
         {
-            if((render_data.getShader("text") != nullptr) && (render_data.getShader("square") != nullptr))
-            {
-                it[0]->drawInfo(render_data, m_planete_info);
-                render_data.updateView(save);
-            }
+            it[0]->drawInfo(render_data, m_planete_info);
         }
         
-        render_data.updateView(save);
     }
-
-    render_data.updateView(save);
     
 }
 
