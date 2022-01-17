@@ -39,8 +39,8 @@ void Settings::manageSettings(RenderData &render_data)
     ImVec2 frame_padding_save = style.FramePadding;
     
     window_flags |= ImGuiWindowFlags_NoResize;
-    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 - 200, render_data.getHeight()/2 - 165));
-    ImGui::SetNextWindowSize(ImVec2(400, 330));
+    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 - 200, render_data.getHeight()/2 - 175));
+    ImGui::SetNextWindowSize(ImVec2(400, 350));
     
     
     ImGui::Begin("Settings", NULL, window_flags);
@@ -76,12 +76,15 @@ void Settings::manageSettings(RenderData &render_data)
 
     ImGui::Separator();
 
-    if(ImGui::Button("Stop Simulation", ImVec2(385.0f, 0.0f)))
+    if(ImGui::Button("Save Configuration", ImVec2(385.0f, 30.0f)))
+    {
+        Saving::writeConfig(render_data);
+    }
+
+    if(ImGui::Button("Stop Simulation", ImVec2(385.0f, 30.0f)))
     {
         render_data.setTerminate(true);
     }
-
-    RenderData::HelpMarker("Soon they will be buttons for saving config or reset to default");
 
     ImGui::End();
 }

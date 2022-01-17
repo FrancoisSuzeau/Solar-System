@@ -107,6 +107,7 @@ PURPOSE : header of the RenderData class
 
                 RenderData(int width, int height, double angle, bool main_loop)
                 {
+                    
                     // pause_music = false;
                     volume = 64;
 

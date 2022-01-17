@@ -46,6 +46,8 @@ PURPOSE : header of the Settings class
         #include "../../lib/imgui/imgui_impl_sdl.h"
         #include "../../lib/imgui/imgui_impl_opengl3.h"
 
+        #include "../Saving/Saving.hpp"
+
         
 
 /********************************************************************* class definition *********************************************************************/

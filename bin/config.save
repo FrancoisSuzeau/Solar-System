@@ -1,0 +1,24 @@
+HDR : (Enabled/Disabled)
+Enabled
+
+Exposure : (min : 0.5, max : 0.8)
+0.8
+
+Bloom : (Enabled/Disabled)
+Enabled
+
+Bloom strength : (min : 2, max : 10)
+10
+
+Ground Shadow : (Enabled/Disabled)
+Enabled
+
+Parallax : (Enabled/Disabled)
+Enabled
+
+Asteroid count : (min : 2000, max : 10000)
+10000
+
+Asteroid count : [25, 60, 120, 144, 240]
+144
+

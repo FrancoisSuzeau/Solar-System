@@ -335,6 +335,17 @@ void OpenGlSketch::mainLoop()
     render_data.setTrackMusic(1);
     render_data.setPauseMusic(true);
     render_data.setTerminate(false);
+
+    if(Saving::verifingFileExistence())
+    {
+        Saving::setSettings(render_data);
+    }
+    else
+    {
+        Saving::writeConfig(render_data);
+    }
+
+    
     
     std::vector<float> dist_sun = {Physique::getDistanceFromCam("Sun", ship->getPosition())};
     float grav_inf_sun = Physique::getGravInfluence("Sun", dist_sun)[0];
@@ -347,8 +358,6 @@ void OpenGlSketch::mainLoop()
     // m_particuleGenerator->initParticles(camera->getTargetPoint());
     
     assert(camera);
-
-    hdr_key_pressed = false;
 
     render_data.setMenu(false);
     menu_app_key_pressed = false;
@@ -364,7 +373,7 @@ void OpenGlSketch::mainLoop()
     if(aud != nullptr)
     {
         assert(aud->loadMusic(render_data));
-        // aud->playMusic();
+        aud->playMusic();
     }
 
     while(!render_data.getTerminate())
@@ -513,29 +522,17 @@ void OpenGlSketch::renderOverlay(RenderData &render_data)
         {
             render_data.initSaveMat();
 
-                render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+            render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-                    m_overlay->displayGeneralOverlay(render_data);
+                m_overlay->displayGeneralOverlay(render_data);
 
-                render_data.saveViewMat();
+            render_data.saveViewMat();
 
-                // render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+                m_overlay->displayMusicInfo(render_data);
 
-                    m_overlay->displayMusicInfo(render_data);
+                m_overlay->displayNavigation(render_data);
 
-                // render_data.saveViewMat();
-
-                // render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-
-                    m_overlay->displayNavigation(render_data);
-
-                // render_data.saveViewMat();
-
-                // render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-
-                    m_overlay->displayAppInfo(render_data);
-
-            // render_data.saveViewMat();
+                m_overlay->displayAppInfo(render_data);
 
         }
         
@@ -550,8 +547,6 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 {
     if( (camera != nullptr) && (solar_system != nullptr))
     {
-        // glm::vec3 camPos = camera->getPosition();
-
             render_data.initSaveMat();
 
             /****************************************** skybox render **************************************************/

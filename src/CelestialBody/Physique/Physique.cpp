@@ -1,7 +1,7 @@
 /*
 AUTHOR : SUZEAU François
 
-DATE : 27/11/2021
+DATE : 14/01/2021
 
 MODULE : CelestialBody.Physique
 

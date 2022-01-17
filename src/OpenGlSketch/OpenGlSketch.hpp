@@ -54,6 +54,8 @@ PURPOSE : header of the OpenGlSketch class
         #include "../Spaceship/Spaceship.hpp"
         #include "../Framebuffer/Framebuffer.hpp"
 
+        #include "../Saving/Saving.hpp"
+
         #include "../../lib/imgui/imgui.h"
         #include "../../lib/imgui/imgui_impl_sdl.h"
         #include "../../lib/imgui/imgui_impl_opengl3.h"
@@ -86,19 +88,11 @@ PURPOSE : header of the OpenGlSketch class
 
                 Spaceship *ship;
 
-                bool hdr_key_pressed;
-
                 bool speed_key_pressed;
 
                 Settings *m_settings;
-                // bool menu;
+
                 bool menu_app_key_pressed;
-
-                // bool info_render;
-                // bool info_render_key_pressed;
-
-                // bool m_overlay_display;
-                // bool m_name_display;
 
                 Overlay *m_overlay;
 
@@ -126,7 +120,6 @@ PURPOSE : header of the OpenGlSketch class
                 void    renderOverlay(RenderData &render_data);
                 void    renderParticles();
 
-                
                 void renderSettings(RenderData &render_data);
 
         };

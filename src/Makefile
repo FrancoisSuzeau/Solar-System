@@ -22,7 +22,7 @@ SRC=Main.cpp OpenGlSketch/OpenGlSketch.cpp Shader/Shader.cpp Input/Input.cpp Tex
 SRC+=CelestialBody/Planete/PlaneteRender.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/Planete.cpp Text/Text.cpp
 SRC+=CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp 
 SRC+=Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp Model/Mesh.cpp Model/Model.cpp Spaceship/Spaceship.cpp 
-SRC+=CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/Physique/Physique.cpp
+SRC+=CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/Physique/Physique.cpp Saving/Saving.cpp
 SRC+=../lib/imgui/imgui_demo.cpp ../lib/imgui/imgui_draw.cpp ../lib/imgui/imgui_impl_opengl3.cpp ../lib/imgui/imgui_impl_sdl.cpp ../lib/imgui/imgui_tables.cpp ../lib/imgui/imgui_widgets.cpp ../lib/imgui/imgui.cpp
 
 OBJET=$(SRC:.cpp=.o)
@@ -35,7 +35,7 @@ ${EXEC}: ${OBJET}
 # au cas ou .h est modifié
 
 main.o: OpenGlSketch/OpenGlSketch.hpp 
-OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.hpp Overlay/Overlay.hpp Settings/Settings.hpp Spaceship/Spaceship.hpp Framebuffer/Framebuffer.hpp OpenGlSketch/RenderData.hpp
+OpenGlSketch.o: OpenGlSketch/OpenGlSketch.hpp Input/Input.hpp Audio/Audio.hpp Camera/Camera.hpp CelestialBody/System/SystemCreator.hpp CelestialBody/System/SolarSystemCreator.hpp StartScreen/StartScreen.hpp CelestialBody/Geometry/Square.hpp Overlay/Overlay.hpp Settings/Settings.hpp Spaceship/Spaceship.hpp Framebuffer/Framebuffer.hpp OpenGlSketch/RenderData.hpp Saving/Saving.hpp
 Shader.o: Shader/Shader.hpp
 Input.o: Input/Input.hpp
 Texture.o: Texture/Texture.hpp
@@ -54,7 +54,7 @@ SolarSystem.o: CelestialBody/System/SolarSystem.hpp CelestialBody/System/Planeta
 StartScreen/StartScreen.o: StartScreen/StartScreen.hpp Text/Text.hpp OpenGlSketch/RenderData.hpp
 Atmosphere.o: Atmosphere/Atmosphere.hpp CelestialBody/Geometry/Sphere.hpp
 Overlay.o: Overlay/Overlay.hpp CelestialBody/Geometry/Square.hpp OpenGlSketch/RenderData.hpp
-Settings.o: Settings/Settings.hpp OpenGlSketch/RenderData.hpp
+Settings.o: Settings/Settings.hpp OpenGlSketch/RenderData.hpp Saving/Saving.hpp
 PlaneteInformation.o: PlaneteInformation/PlaneteInformation.hpp CelestialBody/Geometry/Square.hpp Text/Text.hpp OpenGlSketch/RenderData.hpp
 #Particule.o: Particule/Particule.hpp Shader/Shader.hpp CelestialBody/Geometry/Sphere.hpp Input/Input.hpp Spaceship/Spaceship.hpp
 Mesh.o: Model/Mesh.hpp OpenGlSketch/RenderData.hpp
