@@ -305,7 +305,7 @@ void Overlay::displayNavigation(RenderData &render_data)
     ImGui::SameLine();
     ImGui::TextColored(map_nav_data[tmp].color_text, tmp.c_str());
     ImGui::SameLine();
-    tmp = "Display the name of the body or the host name of the planetary disney.";
+    tmp = "Display the name of the body or the host name of the planetary system.";
     RenderData::HelpMarker(tmp);
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.862f, 0.078f, 0.235f, 1.0f));
     ImGui::PlotHistogram("          ", arr1, IM_ARRAYSIZE(arr1), 0, " ", 0.0f, 1.0f, ImVec2(30, 80.0f));

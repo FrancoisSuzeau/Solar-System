@@ -52,6 +52,7 @@ void Settings::manageSettings(RenderData &render_data)
         if (ImGui::BeginTabItem("Navigation Options"))
         {
             style.FramePadding = frame_padding_save;
+            this->manageNavigation(render_data);
             ImGui::EndTabItem();
         }
         style.FramePadding = ImVec2(25, 3);
@@ -116,6 +117,7 @@ void Settings::manageHUD(RenderData &render_data)
     render_data.setRenderInfo(info_rend);
     ImGui::Separator();
 
+    RenderData::HelpMarker("More in coming like the possibility to manage the style of the different windows.");
 
 }
 
@@ -231,4 +233,12 @@ void Settings::managePerformance(RenderData &render_data)
         render_data.setFPS(50);
     }
     
+}
+
+/***********************************************************************************************************************************************************************/
+/*********************************************************************** manageNavigation ******************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Settings::manageNavigation(RenderData &render_data)
+{
+    RenderData::HelpMarker("More in coming like the possibility to jump directly near to a body.");
 }

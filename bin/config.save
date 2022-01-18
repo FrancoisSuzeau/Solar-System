@@ -20,5 +20,23 @@ Asteroid count : (min : 2000, max : 10000)
 10000
 
 Asteroid count : [25, 60, 120, 144, 240]
-144
+50
+
+Display Overlay : (Enabled/Disabled)
+Enabled
+
+Display Name : (Enabled/Disabled)
+Enabled
+
+Display Info : (Enabled/Disabled)
+Disabled
+
+Mute music : (Enabled/Disabled)
+Disabled
+
+Volume : (min : 0, max : 128)
+99
+
+Track : 
+2
 

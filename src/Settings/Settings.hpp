@@ -58,7 +58,8 @@ PURPOSE : header of the Settings class
             private:
 
                 void managePerformance(RenderData &render_data);
-                void manageHUD(RenderData &redner_data);
+                void manageHUD(RenderData &render_data);
+                void manageNavigation(RenderData &render_data);
 
             public:
             

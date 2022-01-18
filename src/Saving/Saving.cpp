@@ -72,6 +72,13 @@ void Saving::writeConfig(RenderData &render_data)
     bool render_parallax = render_data.getDispMapRender();
     float asteroid_count = render_data.getAsteroidCount();
     float fps_count = render_data.getFPS();
+    bool render_overlay = render_data.getOverlayRender();
+    bool render_name = render_data.getRenderName();
+    bool render_info = render_data.getRenderInfo();
+    bool pause_music = render_data.getPauseMusic();
+    float volume = render_data.getVolume();
+    float track = render_data.getTrack();
+
     flux_out.open("config.save");
     if(flux_out)
     {
@@ -83,6 +90,12 @@ void Saving::writeConfig(RenderData &render_data)
         writeBool(render_parallax, "Parallax : (Enabled/Disabled)");
         writeNumber(asteroid_count, "Asteroid count : (min : 2000, max : 10000)");
         writeNumber(fps_count, "Asteroid count : [25, 60, 120, 144, 240]");
+        writeBool(render_overlay, "Display Overlay : (Enabled/Disabled)");
+        writeBool(render_name, "Display Name : (Enabled/Disabled)");
+        writeBool(render_info, "Display Info : (Enabled/Disabled)");
+        writeBool(pause_music, "Mute music : (Enabled/Disabled)");
+        writeNumber(volume, "Volume : (min : 0, max : 128)");
+        writeNumber(track, "Track : ");
 
         flux_out.close();
     }
@@ -116,6 +129,18 @@ void Saving::setSettings(RenderData &render_data)
         render_data.setAsteroidCount(asteroid_count);
         int fps_count = readNumber();
         render_data.setFPS(fps_count);
+        bool render_overlay = readBool();
+        render_data.setRenderOverlay(render_overlay);
+        bool render_name = readBool();
+        render_data.setRenderName(render_name);
+        bool render_info = readBool();
+        render_data.setRenderInfo(render_info);
+        bool pause_music = readBool();
+        render_data.setPauseMusic(pause_music);
+        int volume = (int) readNumber();
+        render_data.setVolume(volume);
+        int track = (int) readNumber();
+        render_data.setTrackMusic(track);
 
         flux_in.close();
     }
