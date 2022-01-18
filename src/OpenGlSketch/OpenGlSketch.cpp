@@ -361,6 +361,7 @@ void OpenGlSketch::mainLoop()
 
     render_data.setMenu(false);
     menu_app_key_pressed = false;
+    info_key_pressed = false;
 
     is_moving = false;
 
@@ -658,6 +659,16 @@ void OpenGlSketch::windowProcess(RenderData &render_data)
             speed_key_pressed = false;
         }
 
+        if((m_input.getKey(SDL_SCANCODE_SPACE)) && (!info_key_pressed))
+        {
+            render_data.setRenderInfo(!render_data.getRenderInfo());
+            info_key_pressed = true;
+        }
+        if ((m_input.getKey(SDL_SCANCODE_SPACE)) == false)
+        {
+            info_key_pressed = false;
+        }
+        
         if((m_input.getKey(SDL_SCANCODE_E)) && (!speed_key_pressed))
         {
             if(ship->getSpeed() >= 0.6f)

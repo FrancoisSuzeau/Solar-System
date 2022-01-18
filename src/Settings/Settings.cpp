@@ -113,7 +113,7 @@ void Settings::manageHUD(RenderData &render_data)
     ImGui::SameLine();
     ImGui::Checkbox("Display Planete Information", &info_rend);
     ImGui::SameLine();
-    RenderData::HelpMarker("It is possible to activate this functionality with the 'I' key.");
+    RenderData::HelpMarker("It is possible to activate this functionality with the 'SPACE' key.");
     render_data.setRenderInfo(info_rend);
     ImGui::Separator();
 

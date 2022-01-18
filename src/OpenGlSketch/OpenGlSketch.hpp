@@ -89,6 +89,7 @@ PURPOSE : header of the OpenGlSketch class
                 Spaceship *ship;
 
                 bool speed_key_pressed;
+                bool info_key_pressed;
 
                 Settings *m_settings;
 
