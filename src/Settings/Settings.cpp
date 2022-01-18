@@ -9,6 +9,8 @@ NAMEFILE : Settings.cpp
 
 PURPOSE : class Settings
 */
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
 
 #include "Settings.hpp"
 
@@ -19,14 +21,28 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Settings::Settings()
 {
-    
+    textures_data.push_back({0, 0, 0, "../assets/textures/imguiDonut.png"});
+    textures_data.push_back({0, 0, 0, "../assets/textures/imguiSpaceship.png"});
+
+    for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
+    {
+        assert(this->loadTextureFromFile(it[0]));
+    }
+
+    index = 0;
 
 }
 
 Settings::~Settings()
 {
-    
-    
+    for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
+    {
+        glDeleteTextures(1, &it[0].text_id);
+        if(glIsTexture(it[0].text_id) == GL_FALSE)
+        {
+            std::cout << "TEXTURE :: delete >>> SUCESS" << std::endl;
+        }
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -240,5 +256,73 @@ void Settings::managePerformance(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void Settings::manageNavigation(RenderData &render_data)
 {
+
+    float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
+
+    ImGui::BulletText("Choose your vessel : ");
+    ImGui::SameLine();
+    RenderData::HelpMarker("It is not possible to really choose a vessel, but the will come soon ...");
+    ImGui::PushButtonRepeat(true);
+    if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { index--; }
+    this->verifIndex();
+    ImGui::SameLine(0.0f, spacing);
+    if(ImGui::ImageButton((void*)(intptr_t)textures_data[index].text_id, ImVec2(textures_data[index].img_width *0.5f, textures_data[index].img_height * 0.5f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f)))
+    {
+
+    }
+    ImGui::SameLine(0.0f, spacing);
+    if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { index++; }
+    this->verifIndex();
+    ImGui::PopButtonRepeat();
+
+    ImGui::Separator();
+    
     RenderData::HelpMarker("More in coming like the possibility to jump directly near to a body.");
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************** loadTextureFromFile ******************************************************************************/
+/***********************************************************************************************************************************************************************/
+bool Settings::loadTextureFromFile(imguiTexture_datas &data)
+{
+    unsigned char* image_data = stbi_load(data.filepath.c_str(), &data.img_width, &data.img_height, NULL, 4);
+    if (image_data == NULL)
+        return false;
+
+    // Create a OpenGL texture identifier
+    glGenTextures(1, &data.text_id);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, data.text_id);
+
+    // Setup filtering parameters for display
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+
+    // Upload pixels into texture
+#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+#endif
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.img_width, data.img_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+    stbi_image_free(image_data);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return true;
+}
+
+void Settings::verifIndex()
+{
+    if(index < 0)
+    {
+        index = textures_data.size() - 1;
+    }
+
+    if(index >= (int) textures_data.size())
+    {
+        index = 0;
+    }
 }

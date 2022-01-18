@@ -48,6 +48,15 @@ PURPOSE : header of the Settings class
 
         #include "../Saving/Saving.hpp"
 
+        typedef struct imguiTexture_datas {
+
+                int img_width;
+                int img_height;
+                GLuint text_id;
+                std::string filepath;
+
+        } imguiTexture_datas;
+
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -60,6 +69,12 @@ PURPOSE : header of the Settings class
                 void managePerformance(RenderData &render_data);
                 void manageHUD(RenderData &render_data);
                 void manageNavigation(RenderData &render_data);
+                void verifIndex();
+
+                bool loadTextureFromFile(imguiTexture_datas &data);
+
+                std::vector<imguiTexture_datas> textures_data;
+                int index;
 
             public:
             
