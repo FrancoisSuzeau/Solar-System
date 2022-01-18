@@ -21,7 +21,7 @@ But I can run the simulation on my laptop with good performance :
 + Intel(R) UHD Graphics (DirectX 12 FL 12.1)
 
 ## How to use
-At the launch, all the textures, audio, font files are loaded. You can follow this load on the terminal command if you had launch the program with it.
+At the launch, all the textures, audio, font files are loaded and config file. You can follow this load on the terminal command if you had launch the program with it.
 After a while the Solar System appears with all planets and moons.
 For now, planets and moons are only rotating, I haven't create orbital mechanics yet
 
@@ -38,9 +38,11 @@ The initial position of the ship is on the ``0, 9000, 0`` coordinates. You can m
 + Right button mouse (maintain) : orient camera (all around the ship)
 + ESCAPE : Display the settings menu
 + Mouse Wheel : Change the navigation speed by 10% the speed of the light
-+ I : Display body information
++ SPACE : Display body information
 
 Make sure that the executable file is in the ````bin```` directory.
+You will see a ````config.save```` file in the same directory where configuration are saved. You can change them before launch but make sure you respect the value that are available.
+It is possible now to change musique option but you have to pause the simulation to display the mouse.
 
 ## ====================== Added features ======================
 
@@ -140,27 +142,21 @@ Integrating Dear ImGui for User interface
 + Can change music track, volume, mute options (soon radio channel) directly with overlay
 + Settings : Asteroid count influence performance so you can choose the amount
 
+### 18/01/2022
++ Now overlay navigation display solar radiation and gravitational influence by body (if near to a planete then display his gravitational influcence and his possible moon's influence)
++ Create a config file management and a button for saving preferences for performance and HUD tab menu
++ Body's information : integrating DearImgui and change display key
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
 For the moment I am working on this following aspect :
-
-+ Overlay : Display gravitational strength influence cause by host and his natural companion
-
-+ Overlay : display solar radiation variation
-
 + Overlay and Audio : create radio with his own kind of music
-
 + Settings : Navigation -> possibility to choose your ship
-
 + After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
-
 + Change particule movement by ship movement not by camera movement
-
 + bug correction on skybox (see the borders)
-
 + Implement hit box to prevent to pass through body (have to extract method to calculate radius coming from body position)
-
 + Make a Linux version : Have to think twice because I have to change screen adaptation of the overlay
 
 Many of these ideas came to me while I am coding, so I hope more come too.
