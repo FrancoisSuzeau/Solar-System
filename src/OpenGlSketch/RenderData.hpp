@@ -103,6 +103,8 @@ PURPOSE : header of the RenderData class
 
                 grav_influence_datas influence_datas;
 
+                int index_ship;
+
             public:
 
                 RenderData(int width, int height, double angle, bool main_loop)
@@ -149,6 +151,8 @@ PURPOSE : header of the RenderData class
                         influence_datas.grav_inf = {0.0f};
                         influence_datas.name_body = "Sun";
                     }
+
+                    index_ship = 0;
 
                 }
                 ~RenderData()
@@ -299,6 +303,9 @@ PURPOSE : header of the RenderData class
 
                 void setInfVal(std::vector<double> new_val) {influence_datas.grav_inf = new_val;}
                 std::vector<double> getInfVal() const {return influence_datas.grav_inf;}
+
+                void setIndexShip(int const new_val) {index_ship = new_val;}
+                int getIndexShip() const {return index_ship;}
  
         };
 

@@ -226,7 +226,7 @@ void OpenGlSketch::startLoop()
     vec3 color = vec3(0.5f);
     assert(square);
 
-    ship = new Spaceship("../assets/model/spaceship/untitled.obj", 0.1f);
+    ship = new Spaceship();
     assert(ship);
 
     // m_particuleGenerator = new Particule(ship);
@@ -335,6 +335,7 @@ void OpenGlSketch::mainLoop()
     render_data.setTrackMusic(1);
     render_data.setPauseMusic(true);
     render_data.setTerminate(false);
+    render_data.setIndexShip(1);
 
     if(Saving::verifingFileExistence())
     {
@@ -440,6 +441,7 @@ void OpenGlSketch::mainLoop()
             if(!render_data.getMenu())
             {
                 ship->drawSpaceship(render_data, m_input);
+                // std::cout << render_data.getIndexShip() << std::endl;
             }
             
         

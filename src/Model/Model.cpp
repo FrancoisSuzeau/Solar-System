@@ -222,7 +222,7 @@ std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType
                     
                     textures.push_back(textures_loaded[j]);
                     skip = true;
-                    std::cout << ">> Material are loaded : SUCCESS" << std::endl;
+                    // std::cout << ">> Material are loaded : SUCCESS" << std::endl;
                     break;
                 }
             }
