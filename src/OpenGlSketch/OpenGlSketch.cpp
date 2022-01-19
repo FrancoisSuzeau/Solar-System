@@ -335,7 +335,7 @@ void OpenGlSketch::mainLoop()
     render_data.setTrackMusic(1);
     render_data.setPauseMusic(true);
     render_data.setTerminate(false);
-    render_data.setIndexShip(1);
+    render_data.setIndexShip(0);
 
     if(Saving::verifingFileExistence())
     {

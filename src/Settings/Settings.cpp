@@ -268,7 +268,7 @@ void Settings::manageNavigation(RenderData &render_data)
     ImGui::SameLine(0.0f, spacing);
     if(ImGui::ImageButton((void*)(intptr_t)textures_data[index].text_id, ImVec2(textures_data[index].img_width *0.5f, textures_data[index].img_height * 0.5f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f)))
     {
-
+        render_data.setIndexShip(index);
     }
     ImGui::SameLine(0.0f, spacing);
     if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { index++; }
