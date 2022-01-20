@@ -54,6 +54,7 @@ PURPOSE : header of the Settings class
                 int img_height;
                 GLuint text_id;
                 std::string filepath;
+                std::string name_disp;
 
         } imguiTexture_datas;
 

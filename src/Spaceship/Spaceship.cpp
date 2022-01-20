@@ -16,16 +16,15 @@ PURPOSE : class Spaceship
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f), m_sensibility(0.3f)
-{
+{   
+
+    file_paths.push_back("../assets/model/spaceship/untitled.obj");
+    file_paths.push_back("../assets/model/donut/donut.obj");
     
+    m_spaceship_models = nullptr;
     
-    m_spaceship_models.push_back(new Model("../assets/model/donut/donut.obj"));
-    assert(m_spaceship_models[0]);
-    // m_spaceship_models.push_back(new Model("../assets/model/spaceship/untitled.obj"));
-    // assert(m_spaceship_models[1]);
-    
+    m_scales.push_back(0.1f);
     m_scales.push_back(3.0f);
-    // m_scales.push_back(0.1f);
 
     glm::mat4 model(1.0f);
 
@@ -36,12 +35,9 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f), m_sensibi
 
 Spaceship::~Spaceship()
 {
-    for(std::vector<Model*>::iterator it = m_spaceship_models.begin(); it != m_spaceship_models.end(); ++it)
+    if(m_spaceship_models != nullptr)
     {
-        if(it[0] != nullptr)
-        {
-            delete it[0];
-        }
+        delete m_spaceship_models;
     }
 }
 
@@ -50,8 +46,7 @@ Spaceship::~Spaceship()
 /***********************************************************************************************************************************************************************/
 void Spaceship::drawSpaceship(RenderData &render_data, Input input)
 {
-    
-    if((m_spaceship_models[render_data.getIndexShip()] != nullptr) && ((render_data.getShader("model") != nullptr)))
+    if((m_spaceship_models != nullptr) && ((render_data.getShader("model") != nullptr)))
     {
         
         this->move(input);
@@ -62,9 +57,7 @@ void Spaceship::drawSpaceship(RenderData &render_data, Input input)
         this->positioningShip();
         this->scalingShip(render_data.getIndexShip());
         
-        m_spaceship_models[render_data.getIndexShip()]->draw(render_data, m_model_matrice);
-
-        
+        m_spaceship_models->draw(render_data, m_model_matrice);
     }
 }
 
@@ -180,7 +173,29 @@ void Spaceship::rotateFromYaw(Input input)
 /***********************************************************************************************************************************************************************/
 void Spaceship::scalingShip(int index)
 {
+    // std::cout << m_scales[index] << std::endl;
     m_model_matrice = glm::scale(m_model_matrice, glm::vec3(m_scales[index]));
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************* loadModelShip *************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Spaceship::loadModelShip(RenderData &render_data)
+{
+    if(render_data.getChangeModel())
+    {
+        std::cout << file_paths[render_data.getIndexShip()] << std::endl;
+
+        if(m_spaceship_models != nullptr)
+        {
+            delete m_spaceship_models;
+        }
+
+        m_spaceship_models = new Model(file_paths[render_data.getIndexShip()]);
+        render_data.setChangeModel(false);
+
+        
+    }
 }
 
 /***********************************************************************************************************************************************************************/

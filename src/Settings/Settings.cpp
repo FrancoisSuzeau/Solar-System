@@ -21,8 +21,8 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Settings::Settings()
 {
-    textures_data.push_back({0, 0, 0, "../assets/textures/imguiDonut.png"});
-    textures_data.push_back({0, 0, 0, "../assets/textures/imguiSpaceship.png"});
+    textures_data.push_back({0, 0, 0, "../assets/textures/imguiSpaceship.png", "  Star Hunter - Class Eviscerator"});
+    textures_data.push_back({0, 0, 0, "../assets/textures/imguiDonut.png", "  Donut X37 - Class Yummi Yummi !"});
 
     for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
     {
@@ -256,13 +256,11 @@ void Settings::managePerformance(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void Settings::manageNavigation(RenderData &render_data)
 {
-    // index = render_data.getIndexShip();
-
     float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
 
     ImGui::BulletText("Choose your vessel : ");
     ImGui::SameLine();
-    RenderData::HelpMarker("It is not possible to really choose a vessel, but the will come soon ...");
+    RenderData::HelpMarker("Choose between " + std::to_string(textures_data.size()) + " skins available.");
     ImGui::PushButtonRepeat(true);
     if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { index--; }
     this->verifIndex();
@@ -270,18 +268,21 @@ void Settings::manageNavigation(RenderData &render_data)
     // ImGui::Text("%d", index);
     if(ImGui::ImageButton((void*)(intptr_t)textures_data[index].text_id, ImVec2(textures_data[index].img_width *0.5f, textures_data[index].img_height * 0.5f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f)))
     {
-        // render_data.setIndexShip(index);
+        if(index != render_data.getIndexShip())
+        {
+            render_data.setIndexShip(index);
+            render_data.setChangeModel(true);
+        }
     }
     ImGui::SameLine(0.0f, spacing);
     if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { index++; }
     this->verifIndex();
     ImGui::PopButtonRepeat();
+    ImGui::Text(textures_data[index].name_disp.c_str());
 
     ImGui::Separator();
     
     RenderData::HelpMarker("More in coming like the possibility to jump directly near to a body.");
-
-    // render_data.setIndexShip(index);
 }
 
 /***********************************************************************************************************************************************************************/

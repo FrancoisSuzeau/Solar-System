@@ -48,8 +48,10 @@ PURPOSE : header of the Spaceship class
             
             private:
 
-                std::vector<Model*> m_spaceship_models;
+                Model *m_spaceship_models;
                 glm::mat4  m_model_matrice;
+
+                std::vector<std::string> file_paths;
 
                 float m_pitch;
                 float m_yaw;
@@ -93,6 +95,7 @@ PURPOSE : header of the Spaceship class
                 void setSpeed(float speed);
                 void setMinimumSpeed();
                 void setMaximumSpeed();
+                void loadModelShip(RenderData &render_data);
 
                 
         };

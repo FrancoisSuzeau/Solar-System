@@ -74,6 +74,8 @@ PURPOSE : header of the RenderData class
                 bool pause_music;
                 int volume;
 
+                bool change_model;
+
                 bool m_terminate;
 
                 int m_width;
@@ -306,6 +308,9 @@ PURPOSE : header of the RenderData class
 
                 void setIndexShip(int const new_val) {index_ship = new_val;}
                 int getIndexShip() const {return index_ship;}
+
+                void setChangeModel(bool const new_val) {change_model = new_val;}
+                bool getChangeModel() const {return change_model;}
  
         };
 

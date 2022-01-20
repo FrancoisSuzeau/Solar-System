@@ -78,6 +78,7 @@ void Saving::writeConfig(RenderData &render_data)
     bool pause_music = render_data.getPauseMusic();
     float volume = render_data.getVolume();
     float track = render_data.getTrack();
+    float ship_index = render_data.getIndexShip();
 
     flux_out.open("config.save");
     if(flux_out)
@@ -96,6 +97,7 @@ void Saving::writeConfig(RenderData &render_data)
         writeBool(pause_music, "Mute music : (Enabled/Disabled)");
         writeNumber(volume, "Volume : (min : 0, max : 128)");
         writeNumber(track, "Track : ");
+        writeNumber(ship_index, "Ship skin : [0, max available]");
 
         flux_out.close();
     }
@@ -141,6 +143,8 @@ void Saving::setSettings(RenderData &render_data)
         render_data.setVolume(volume);
         int track = (int) readNumber();
         render_data.setTrackMusic(track);
+        int ship_index = readNumber();
+        render_data.setIndexShip(ship_index);
 
         flux_in.close();
     }

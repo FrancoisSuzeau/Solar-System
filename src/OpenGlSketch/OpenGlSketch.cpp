@@ -339,7 +339,7 @@ void OpenGlSketch::mainLoop()
     render_data.setTrackMusic(1);
     render_data.setPauseMusic(true);
     render_data.setTerminate(false);
-    render_data.setIndexShip(0);
+    render_data.setChangeModel(true);
 
     if(Saving::verifingFileExistence())
     {
@@ -347,11 +347,12 @@ void OpenGlSketch::mainLoop()
     }
     else
     {
+        render_data.setIndexShip(0); //if we enter here then no choice are made
         Saving::writeConfig(render_data);
     }
 
-    
-    
+    ship->loadModelShip(render_data);
+
     std::vector<float> dist_sun = {Physique::getDistanceFromCam("Sun", ship->getPosition())};
     float grav_inf_sun = Physique::getGravInfluence("Sun", dist_sun)[0];
 
@@ -446,16 +447,22 @@ void OpenGlSketch::mainLoop()
             // renderParticles();
     //=======================================================================================================================================================
 
-        render_data.initSaveMat();
+    /******************************************************************* RENDER SHIP ********************************************************************/
+
+            ship->loadModelShip(render_data);
+
+            render_data.initSaveMat();
 
             if(!render_data.getMenu())
             {
                 ship->drawSpaceship(render_data, m_input);
                 // std::cout << render_data.getIndexShip() << std::endl;
             }
-            
-        
+
         render_data.saveViewMat();
+
+    //=======================================================================================================================================================
+
 
     /**************************************************************** SWAPPING FRAMEBUFFER *****************************************************************/
 
