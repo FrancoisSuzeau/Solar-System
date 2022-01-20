@@ -1,6 +1,6 @@
 // Version du GLSL
 
-#version 330 core
+#version 460 core
 
 
 // Entr�es

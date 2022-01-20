@@ -1,10 +1,10 @@
-#version 330 core
+#version 460 core
 
 //input vertex data, different for all execution of this shader
-attribute vec3 in_Vertex;
+in vec3 in_Vertex;
 
 //output data : will be interpolated for each element
-varying vec2 UV;
+// varying vec2 UV;
 
 uniform mat4 projection;
 uniform mat4 view;

@@ -113,7 +113,7 @@ PURPOSE : header of the RenderData class
                     // pause_music = false;
                     volume = 64;
 
-                    fps = 50;
+                    fps = 60;
                     frame_rate = 1000 / fps;
                     start_loop = 0;
                     end_loop = 0;

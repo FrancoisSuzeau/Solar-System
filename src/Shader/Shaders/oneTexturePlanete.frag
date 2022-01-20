@@ -1,4 +1,5 @@
-#version 330 core
+#version 460 core
+
 in vec4 texCoords;
 uniform vec3 viewPos;
 uniform vec3 sunPos;

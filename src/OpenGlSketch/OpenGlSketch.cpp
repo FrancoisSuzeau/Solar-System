@@ -95,8 +95,8 @@ bool OpenGlSketch::initWindow()
 
     /************************************************* setting attribute for openGL context ********************************************************/
     //openGL version
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
     /*
         - SDL_GL_CONTEXT_PROFILE_CORE : erradicate all ancient implementation OpenGL fonctionnality
@@ -132,6 +132,8 @@ bool OpenGlSketch::initWindow()
         return false;
     }
     std::cout << ">> Creating context OpenGL : SUCCESS" << std::endl;
+
+    
     //===================================================================================================================
 
     return true;
@@ -155,6 +157,8 @@ bool OpenGlSketch::initGL()
         return false;
     }
     std::cout << ">> Initialize Glew : SUCCESS" << std::endl;
+
+    std::cout << ">>>>>>>> OpenGL version : " << glGetString(GL_VERSION) << std::endl;
     glEnable(GL_DEPTH_TEST);
     //===================================================================================================================
 
@@ -415,6 +419,12 @@ void OpenGlSketch::mainLoop()
         render_data.setCamPos(camera->getPosition());
         render_data.setShipPos(ship->getPosition());
         render_data.setShipSpeed(ship->getSpeed());
+
+        //make sure we clear the framebuffer's content
+    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    // //cleaning the screen
+    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene(render_data);

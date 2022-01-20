@@ -1,7 +1,7 @@
-#version 330 core
+#version 460 core
 
-attribute vec3 in_Vertex;
-varying vec4 texCoords;
+in vec3 in_Vertex;
+// in vec4 texCoords;
 uniform mat4 view;
 uniform mat4 model;
 uniform mat4 projection;
@@ -11,6 +11,7 @@ uniform vec3 sunPos;
 
 out vec3 Normal;
 out vec3 FragPos;
+out vec4 texCoords;
 
 out VS_OUT {
 

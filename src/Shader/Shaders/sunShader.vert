@@ -1,12 +1,13 @@
-#version 330 core
+#version 460 core
 
-attribute vec3 in_Vertex;
-varying vec4 texCoords;
+in vec3 in_Vertex;
+// varying vec4 texCoords;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 model;
 
 out vec3 Normal;
+out vec4 texCoords;
 out vec3 FragPos;
 
 uniform bool inverse_normals;
