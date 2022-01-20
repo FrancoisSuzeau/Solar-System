@@ -147,16 +147,19 @@ Integrating Dear ImGui for User interface
 + Create a config file management and a button for saving preferences for performance and HUD tab menu
 + Body's information : integrating DearImgui and change display key
 
+### 20/01/2022
++ Can now chose the skin of the ship
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
 For the moment I am working on this following aspect :
 + Overlay and Audio : create radio with his own kind of music
-+ Settings : Navigation -> possibility to choose your ship
 + After all of that, I will implements the most consequent part for me : celestial mechanics (I have allready begin researches).
 + Change particule movement by ship movement not by camera movement
 + bug correction on skybox (see the borders)
 + Implement hit box to prevent to pass through body (have to extract method to calculate radius coming from body position)
 + Make a Linux version : Have to think twice because I have to change screen adaptation of the overlay
++ Implement ship maneuverability
 
 Many of these ideas came to me while I am coding, so I hope more come too.
