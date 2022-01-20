@@ -6,7 +6,7 @@
 // Entr�es
 
 in vec3 in_Vertex;
-in vec3 in_Color;
+in vec3 in_Normal;
 
 
 // Uniform
@@ -32,5 +32,5 @@ void main()
 
     // Envoi de la couleur au Fragment Shader
 
-    color = in_Color;
+    color = in_Normal;
 }

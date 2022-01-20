@@ -18,12 +18,13 @@ PURPOSE : class Spaceship
 Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f), m_sensibility(0.3f)
 {
     
-    m_spaceship_models.push_back(new Model("../assets/model/donut/donut.obj"));
-    assert(m_spaceship_models[0]);
+    
+    // m_spaceship_models.push_back(new Model("../assets/model/donut/donut.obj"));
+    // assert(m_spaceship_models[0]);
     m_spaceship_models.push_back(new Model("../assets/model/spaceship/untitled.obj"));
-    assert(m_spaceship_models[1]);
-
-    m_scales.push_back(3.0f);
+    assert(m_spaceship_models[0]);
+    
+    // m_scales.push_back(3.0f);
     m_scales.push_back(0.1f);
 
     glm::mat4 model(1.0f);

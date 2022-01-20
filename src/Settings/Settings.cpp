@@ -256,6 +256,7 @@ void Settings::managePerformance(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void Settings::manageNavigation(RenderData &render_data)
 {
+    // index = render_data.getIndexShip();
 
     float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
 
@@ -266,9 +267,10 @@ void Settings::manageNavigation(RenderData &render_data)
     if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { index--; }
     this->verifIndex();
     ImGui::SameLine(0.0f, spacing);
+    // ImGui::Text("%d", index);
     if(ImGui::ImageButton((void*)(intptr_t)textures_data[index].text_id, ImVec2(textures_data[index].img_width *0.5f, textures_data[index].img_height * 0.5f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f)))
     {
-        render_data.setIndexShip(index);
+        // render_data.setIndexShip(index);
     }
     ImGui::SameLine(0.0f, spacing);
     if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { index++; }
@@ -278,6 +280,8 @@ void Settings::manageNavigation(RenderData &render_data)
     ImGui::Separator();
     
     RenderData::HelpMarker("More in coming like the possibility to jump directly near to a body.");
+
+    // render_data.setIndexShip(index);
 }
 
 /***********************************************************************************************************************************************************************/
