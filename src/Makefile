@@ -4,7 +4,13 @@
 # $^ list all dependencies
 # @$ Deactivate echo
 
-CFLAGS=-Wextra -m64
+DEBUG ?= 1
+ifeq ($(DEBUG), 1)
+	CFLAGS = -Wextra -m64 -g
+else
+	CFLAGS = -Wextra -m64
+endif
+
 LD_SDL_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2main -lSDL2
 LD_SDLIMAGE_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_image
 LD_SDLMIXER_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_mixer
@@ -26,6 +32,11 @@ OBJET=$(SRC:.cpp=.o)
 DEP=$(SRC:.cpp=.d)
 
 all:${EXEC}
+ifeq ($(DEBUG), 1)
+	@echo "GENERATING IN DEBUG MODE -> DONE"
+else
+	@echo "GENERATING IN RELEASE MODE -> DONE"
+endif
 
 # Comile target with modules
 ${EXEC}: ${OBJET}
