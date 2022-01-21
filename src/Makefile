@@ -29,7 +29,7 @@ SRC+=CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp C
 SRC+=../lib/imgui/imgui_demo.cpp ../lib/imgui/imgui_draw.cpp ../lib/imgui/imgui_impl_opengl3.cpp ../lib/imgui/imgui_impl_sdl.cpp ../lib/imgui/imgui_tables.cpp ../lib/imgui/imgui_widgets.cpp ../lib/imgui/imgui.cpp
 
 OBJET=$(SRC:.cpp=.o)
-DEP=$(SRC:.cpp=.d)
+DEP=$(OBJ:.o=.d)
 
 all:${EXEC}
 ifeq ($(DEBUG), 1)
@@ -42,16 +42,19 @@ endif
 ${EXEC}: ${OBJET}
 	@${CC}  -o $@ $^ ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${LD_ASSIMP_MINGW32} ${CFLAGS}
 
+# include all .d files
+-include $(DEP)
+
 # Compile all modules
 %.o:%.cpp
+	@echo Compiling : $<
 	@$(CC) -o $@ -c $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${LD_ASSIMP_MINGW32} ${CFLAGS}
-	@echo $<
 
 # Config all dependencies (header files)
 %.d:%.cpp
 	@$(CC) -MM -MD -o $@ $< ${LD_SDL_MINGW32} ${LD_SDLIMAGE_MINGW32} ${LD_SDLMIXER_MINGW32} ${LD_SDLTTF_MINGW32} ${LD_GLEW_MINGW32} ${LD_ASSIMP_MINGW32} ${CFLAGS}
 
--include $(DEP)
+
 
 # Window only
 .PHONY: clean mrpoper
