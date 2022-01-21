@@ -280,13 +280,13 @@ PURPOSE : header of the RenderData class
 
                     window_flags |= ImGuiWindowFlags_NoTitleBar;
                     window_flags |= ImGuiWindowFlags_NoResize;
-                    // window_flags |= ImGuiWindowFlags_NoBackground;
+                    window_flags |= ImGuiWindowFlags_NoBackground;
                     window_flags |= ImGuiWindowFlags_NoScrollbar;
 
 
                     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
                     int y_offset = 320;
-                    if(height <= 1080)
+                    if(height < 1080)
                     {
                         y_offset = 200;
                     }

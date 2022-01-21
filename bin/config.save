@@ -8,7 +8,7 @@ Bloom : (Enabled/Disabled)
 Enabled
 
 Bloom strength : (min : 2, max : 10)
-2
+10
 
 Ground Shadow : (Enabled/Disabled)
 Enabled
@@ -17,7 +17,7 @@ Parallax : (Enabled/Disabled)
 Enabled
 
 Asteroid count : (min : 2000, max : 10000)
-2000
+10000
 
 Frame Per Second : [25, 60, 120, 144, 240]
 60
