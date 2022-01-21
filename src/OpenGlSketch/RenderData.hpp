@@ -270,6 +270,27 @@ PURPOSE : header of the RenderData class
                     }
                 }
 
+                static void renderLog(std::string sentence)
+                {
+                    ImGuiWindowFlags window_flags = 0;
+                    ImGuiIO& io = ImGui::GetIO();
+
+                    window_flags |= ImGuiWindowFlags_NoTitleBar;
+                    window_flags |= ImGuiWindowFlags_NoResize;
+                    window_flags |= ImGuiWindowFlags_NoBackground;
+                    window_flags |= ImGuiWindowFlags_NoScrollbar;
+
+
+                    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
+                    ImGui::SetNextWindowPos(ImVec2(1920/2 - 200, 1080/2 + 320));
+                    ImGui::SetNextWindowSize(ImVec2(400, 150));
+                    
+                    ImGui::Begin("Log", NULL, window_flags);
+                    ImGui::Text(sentence.c_str());
+                    ImGui::PopStyleColor();
+                    ImGui::End();
+                }
+
                 void setMenu(bool const new_val) {menu = new_val;}
                 bool getMenu() const {return menu;}
 

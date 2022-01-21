@@ -33,20 +33,25 @@ m_name(data.name)
         m_textures.push_back(new Texture(data.texture_path[i]));
         assert(m_textures[i]);
         assert(m_textures[i]->loadTexture());
+        RenderData::renderLog(data.texture_path[i]);
     }
     
     assert(police);
     m_name_renderer = new Text(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police);
     assert(m_name_renderer);
     assert(m_name_renderer->loadTTF(m_name));
+    // RenderData::renderLog("../assets/font/aAtmospheric.ttf");
+
 
     m_normal_surface = new Texture(data.nom_disp_path[0]);
     assert(m_normal_surface);
     assert(m_normal_surface->loadTexture());
+    // RenderData::renderLog(data.nom_disp_path[0]);
 
     displacement_map = new Texture(data.nom_disp_path[1]);
     assert(displacement_map);
     assert(displacement_map->loadTexture());
+    // RenderData::renderLog(data.nom_disp_path[1]);
     
     //TODO : changing it to a special method
     m_inclinaison_angle = data.inclinaison_angle;

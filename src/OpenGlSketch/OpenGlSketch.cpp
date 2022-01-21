@@ -248,6 +248,9 @@ void OpenGlSketch::startLoop()
     //loading system and making start screen
     while(nb_loaded < 9)
     {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+        ImGui::NewFrame();
 
         //cleaning the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -281,8 +284,13 @@ void OpenGlSketch::startLoop()
         //restaure the modelview matrix
         render.saveViewMat();
 
-        //actualising the window
-        SDL_GL_SwapWindow(m_window);
+        // RenderData::renderLog("Log, some log, more log ...");
+
+        // ImGui::Render();
+        // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        // //actualising the window
+        // SDL_GL_SwapWindow(m_window);
 
         if(nb_loaded == 0)
         {
@@ -304,6 +312,12 @@ void OpenGlSketch::startLoop()
             }
             
         }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        //actualising the window
+        SDL_GL_SwapWindow(m_window);
         
     }
 
