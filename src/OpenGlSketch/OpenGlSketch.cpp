@@ -19,8 +19,11 @@ PURPOSE :   - creating OpenGL Context
 
 #include "OpenGlSketch.hpp"
 
+int RenderData::width = 0;
+int RenderData::height = 0;
+
+
 using namespace glm;
-// using namespace ButtonChoice;
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
@@ -244,6 +247,8 @@ void OpenGlSketch::startLoop()
     m_input.displayPointer(false);
 
     RenderData render(m_window_width, m_window_height, 70.0f, false);
+    RenderData::setWidth(m_window_width);
+    RenderData::setHeight(m_window_height);
 
     //loading system and making start screen
     while(nb_loaded < 9)

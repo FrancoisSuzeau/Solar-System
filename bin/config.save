@@ -8,7 +8,7 @@ Bloom : (Enabled/Disabled)
 Enabled
 
 Bloom strength : (min : 2, max : 10)
-10
+2
 
 Ground Shadow : (Enabled/Disabled)
 Enabled
@@ -17,9 +17,9 @@ Parallax : (Enabled/Disabled)
 Enabled
 
 Asteroid count : (min : 2000, max : 10000)
-10000
+2000
 
-Asteroid count : [25, 60, 120, 144, 240]
+Frame Per Second : [25, 60, 120, 144, 240]
 60
 
 Display Overlay : (Enabled/Disabled)
@@ -41,5 +41,5 @@ Track :
 1
 
 Ship skin : [0, max available]
-0
+1
 

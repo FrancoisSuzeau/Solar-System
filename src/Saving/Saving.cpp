@@ -90,7 +90,7 @@ void Saving::writeConfig(RenderData &render_data)
         writeBool(render_shadow, "Ground Shadow : (Enabled/Disabled)");
         writeBool(render_parallax, "Parallax : (Enabled/Disabled)");
         writeNumber(asteroid_count, "Asteroid count : (min : 2000, max : 10000)");
-        writeNumber(fps_count, "Asteroid count : [25, 60, 120, 144, 240]");
+        writeNumber(fps_count, "Frame Per Second : [25, 60, 120, 144, 240]");
         writeBool(render_overlay, "Display Overlay : (Enabled/Disabled)");
         writeBool(render_name, "Display Name : (Enabled/Disabled)");
         writeBool(render_info, "Display Info : (Enabled/Disabled)");

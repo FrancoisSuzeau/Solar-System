@@ -109,6 +109,9 @@ PURPOSE : header of the RenderData class
 
             public:
 
+                static int width;
+                static int height;
+
                 RenderData(int width, int height, double angle, bool main_loop)
                 {
                     
@@ -282,7 +285,7 @@ PURPOSE : header of the RenderData class
 
 
                     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
-                    ImGui::SetNextWindowPos(ImVec2(1920/2 - 200, 1080/2 + 320));
+                    ImGui::SetNextWindowPos(ImVec2(width/2 - 200, height/2 + 320));
                     ImGui::SetNextWindowSize(ImVec2(400, 150));
                     
                     ImGui::Begin("Log", NULL, window_flags);
@@ -332,6 +335,9 @@ PURPOSE : header of the RenderData class
 
                 void setChangeModel(bool const new_val) {change_model = new_val;}
                 bool getChangeModel() const {return change_model;}
+
+                static void setWidth(int const new_val) {width = new_val;}
+                static void setHeight(int const new_val) {height = new_val;}
  
         };
 
