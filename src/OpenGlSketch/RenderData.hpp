@@ -285,7 +285,12 @@ PURPOSE : header of the RenderData class
 
 
                     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
-                    ImGui::SetNextWindowPos(ImVec2(width/2 - 200, height/2 + 320));
+                    int y_offset = 320;
+                    if(height <= 1080)
+                    {
+                        y_offset = 200;
+                    }
+                    ImGui::SetNextWindowPos(ImVec2(width/2 - 200, height/2 + y_offset));
                     ImGui::SetNextWindowSize(ImVec2(400, 150));
                     
                     ImGui::Begin("Log", NULL, window_flags);
