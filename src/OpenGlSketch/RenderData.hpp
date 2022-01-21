@@ -280,7 +280,7 @@ PURPOSE : header of the RenderData class
 
                     window_flags |= ImGuiWindowFlags_NoTitleBar;
                     window_flags |= ImGuiWindowFlags_NoResize;
-                    window_flags |= ImGuiWindowFlags_NoBackground;
+                    // window_flags |= ImGuiWindowFlags_NoBackground;
                     window_flags |= ImGuiWindowFlags_NoScrollbar;
 
 

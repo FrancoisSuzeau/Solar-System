@@ -1,4 +1,5 @@
-#ignore les fichier .o
+#ignore .o, .d, .init files and .vscode repertory 
 *.o
 .vscode
 *.ini
+*.d

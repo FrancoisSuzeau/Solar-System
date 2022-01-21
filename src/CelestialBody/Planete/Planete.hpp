@@ -21,6 +21,7 @@ PURPOSE : header of the Planete class
         #include "../../Atmosphere/Atmosphere.hpp"
         #include "../Ring/Ring.hpp"
         #include "../System/System.hpp"
+        #include "../../OpenGlSketch/RenderData.hpp"
 
         #include <string>
         #include <vector>
