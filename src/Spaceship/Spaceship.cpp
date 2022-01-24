@@ -20,11 +20,13 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f), m_sensibi
 
     file_paths.push_back("../assets/model/spaceship/untitled.obj");
     file_paths.push_back("../assets/model/donut/donut.obj");
-    
+    file_paths.push_back("../assets/model/spaceshuttle/spaceshuttle.obj");
+
     m_spaceship_models = nullptr;
-    
+
     m_scales.push_back(0.1f);
     m_scales.push_back(3.0f);
+    m_scales.push_back(0.1f);
 
     glm::mat4 model(1.0f);
 
