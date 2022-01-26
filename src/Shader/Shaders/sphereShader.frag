@@ -1,4 +1,4 @@
-#version 460 core
+#version 400 core
 
 uniform vec3 viewPos;
 uniform vec3 sunPos;

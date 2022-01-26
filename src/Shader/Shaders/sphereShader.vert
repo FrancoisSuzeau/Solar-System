@@ -1,4 +1,4 @@
-#version 460 core
+#version 400 core
 
 //input vertex data, different for all execution of this shader
 in vec3 in_Vertex;

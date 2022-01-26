@@ -1,4 +1,4 @@
-#version 460 core
+#version 400 core
 
 in vec3 in_Vertex;
 in vec2 in_TexCoord0;

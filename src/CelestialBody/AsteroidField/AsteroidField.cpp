@@ -106,9 +106,9 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
             if(m_disp_surface != nullptr)
             {
                 heightScale += 0.000001f;
-                if(heightScale >= 360.0f)
+                if(heightScale >= 0.01f)
                 {
-                    heightScale -= 360.0f;
+                    heightScale = 0.0f;
                 }
                 render_data.getShader("INSTmodel")->setFloat("heightScale", heightScale);
                 render_data.getShader("INSTmodel")->setInt("has_disp", render_data.getDispMapRender());

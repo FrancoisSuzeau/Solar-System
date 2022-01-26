@@ -1,4 +1,4 @@
-#version 460 core
+#version 400 core
 
 in vec4 texCoords;
 uniform vec3 viewPos;

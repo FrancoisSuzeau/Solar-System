@@ -98,8 +98,16 @@ bool OpenGlSketch::initWindow()
 
     /************************************************* setting attribute for openGL context ********************************************************/
     //openGL version
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+    if(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4) < 0)
+    {
+        std::cout << ">> Set GL attribute ERROR : MAJOR VERSION " << SDL_GetError() << std::endl;
+    }
+    
+    if(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0) < 0)
+    {
+        std::cout << ">> Set GL attribute ERROR : MINOR VERSION " << SDL_GetError() << std::endl;
+    }
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
     /*
         - SDL_GL_CONTEXT_PROFILE_CORE : erradicate all ancient implementation OpenGL fonctionnality
@@ -159,9 +167,14 @@ bool OpenGlSketch::initGL()
         SDL_Quit();
         return false;
     }
-    std::cout << ">> Initialize Glew : SUCCESS" << std::endl;
+    
+    int major_version;
+    int minor_version;
 
-    std::cout << ">>>>>>>> OpenGL version : " << glGetString(GL_VERSION) << std::endl;
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &major_version);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minor_version);
+
+    std::cout << ">>>>>>>> OpenGL version : " << major_version << "." << minor_version << std::endl;
     glEnable(GL_DEPTH_TEST);
     //===================================================================================================================
 
@@ -288,14 +301,6 @@ void OpenGlSketch::startLoop()
             
         //restaure the modelview matrix
         render.saveViewMat();
-
-        // RenderData::renderLog("Log, some log, more log ...");
-
-        // ImGui::Render();
-        // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        // //actualising the window
-        // SDL_GL_SwapWindow(m_window);
 
         if(nb_loaded == 0)
         {

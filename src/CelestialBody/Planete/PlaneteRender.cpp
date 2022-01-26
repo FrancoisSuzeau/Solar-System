@@ -81,9 +81,9 @@ void PlaneteRender::display(RenderData &render_data, Planete *planete)
             if(planete->getDispTexture() != nullptr)
             {
                 heighhtScale += 0.000001f;
-                if(heighhtScale >= 360.0f)
+                if(heighhtScale >=  0.01f)
                 {
-                    heighhtScale -= 360.0f;
+                    heighhtScale = 0.0f;
                 }
                 render_data.getShader(planete->getTypePlan())->setFloat("heightScale", heighhtScale);
                 render_data.getShader(planete->getTypePlan())->setInt("has_disp", render_data.getDispMapRender());

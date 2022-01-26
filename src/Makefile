@@ -29,7 +29,7 @@ SRC+=CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp C
 SRC+=../lib/imgui/imgui_demo.cpp ../lib/imgui/imgui_draw.cpp ../lib/imgui/imgui_impl_opengl3.cpp ../lib/imgui/imgui_impl_sdl.cpp ../lib/imgui/imgui_tables.cpp ../lib/imgui/imgui_widgets.cpp ../lib/imgui/imgui.cpp
 
 OBJET=$(SRC:.cpp=.o)
-DEP=$(OBJ:.o=.d)
+DEP=$(SRC:.cpp=.d)
 
 all:${EXEC}
 ifeq ($(DEBUG), 1)

@@ -207,9 +207,9 @@ void Ring::display(RenderData &render_data)
             if(m_normal_surf != nullptr)
             {
                 heighhtScale += 0.000001f;
-                if(heighhtScale >= 360.0f)
+                if(heighhtScale >= 0.01f)
                 {
-                    heighhtScale -= 360.0f;
+                    heighhtScale = 0.0f;
                 }
                 // if( heighhtScale > 0.0)
                 // {
