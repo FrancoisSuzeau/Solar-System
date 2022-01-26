@@ -44,6 +44,10 @@ Make sure that the executable file is in the ````bin```` directory.
 You will see a ````config.save```` file in the same directory where configuration are saved. You can change them before launch but make sure you respect the value that are available.
 It is possible now to change musique option but you have to pause the simulation to display the mouse.
 
+## Possible issues
++ The program require OpenGL version 4.0 or more. It is possible that the program doesn't run if you don't have this version. You can check your version with this tool : https://www.realtech-vr.com/home/glview
+
+
 ## ====================== Added features ======================
 
 ### 29/06/2021
