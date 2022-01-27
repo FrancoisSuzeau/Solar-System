@@ -24,7 +24,7 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Skybox::Skybox()
 {
-    Shader s("../src/Shader/Shaders/skybox.vert", "../src/Shader/Shaders/skybox.frag");
+    Shader s("../../src/Shader/Shaders/skybox.vert", "../../src/Shader/Shaders/skybox.frag");
     m_shader = s;
     
     GLfloat skyboxVertices[108] = 
@@ -84,12 +84,12 @@ Skybox::Skybox()
 
     m_faces = {
 
-            "../assets/textures/SkyboxMap/right.png",
-            "../assets/textures/SkyboxMap/left.png",
-            "../assets/textures/SkyboxMap/up.png",
-            "../assets/textures/SkyboxMap/bottom.png",
-            "../assets/textures/SkyboxMap/front.png",
-            "../assets/textures/SkyboxMap/back.png"
+            "../../assets/textures/SkyboxMap/right.png",
+            "../../assets/textures/SkyboxMap/left.png",
+            "../../assets/textures/SkyboxMap/up.png",
+            "../../assets/textures/SkyboxMap/bottom.png",
+            "../../assets/textures/SkyboxMap/front.png",
+            "../../assets/textures/SkyboxMap/back.png"
 
                 };
     m_texture_id = this->loadSybox();

@@ -38,11 +38,11 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
         m_inclinaison_angle = 26.73f;
         m_real_size = 300.0f;
 
-        m_normal_surf = new Texture("../assets/textures/normalMap/ring_sat_normalMap.jpg");
+        m_normal_surf = new Texture("../../assets/textures/normalMap/ring_sat_normalMap.jpg");
         assert(m_normal_surf);
         assert(m_normal_surf->loadTexture());
 
-        m_disp_surf = new Texture("../assets/textures/displacementMap/sat_ring_dispMap.jpg");
+        m_disp_surf = new Texture("../../assets/textures/displacementMap/sat_ring_dispMap.jpg");
         assert(m_disp_surf);
         assert(m_disp_surf->loadTexture());
     }
@@ -51,11 +51,11 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
         m_inclinaison_angle = 97.77f;
         m_real_size = 100.0f;
 
-        m_normal_surf = new Texture("../assets/textures/normalMap/ring_ur_normalMap.jpg");
+        m_normal_surf = new Texture("../../assets/textures/normalMap/ring_ur_normalMap.jpg");
         assert(m_normal_surf);
         assert(m_normal_surf->loadTexture());
 
-        m_disp_surf = new Texture("../assets/textures/displacementMap/ur_ring_dispMap.jpg");
+        m_disp_surf = new Texture("../../assets/textures/displacementMap/ur_ring_dispMap.jpg");
         assert(m_disp_surf);
         assert(m_disp_surf->loadTexture());
     }
@@ -64,11 +64,11 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
         m_inclinaison_angle = 26.32f;
         m_real_size = 100.0f;
 
-        m_normal_surf = new Texture("../assets/textures/normalMap/ring_nep_normalMap.jpg");
+        m_normal_surf = new Texture("../../assets/textures/normalMap/ring_nep_normalMap.jpg");
         assert(m_normal_surf);
         assert(m_normal_surf->loadTexture());
 
-        m_disp_surf = new Texture("../assets/textures/displacementMap/nep_ring_dispMap.jpg");
+        m_disp_surf = new Texture("../../assets/textures/displacementMap/nep_ring_dispMap.jpg");
         assert(m_disp_surf);
         assert(m_disp_surf->loadTexture());
     }

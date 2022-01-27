@@ -209,20 +209,20 @@ PURPOSE : header of the RenderData class
                 void setShader(bool main_loop)
                 {
                     std::vector<shader_datas> shader_init;
-                    shader_init.push_back({"../src/Shader/Shaders/textShader.vert", "../src/Shader/Shaders/textShader.frag", "text"});
-                    shader_init.push_back({"../src/Shader/Shaders/couleur3D.vert", "../src/Shader/Shaders/couleur3D.frag", "square"});
+                    shader_init.push_back({"../../src/Shader/Shaders/textShader.vert", "../../src/Shader/Shaders/textShader.frag", "text"});
+                    shader_init.push_back({"../../src/Shader/Shaders/couleur3D.vert", "../../src/Shader/Shaders/couleur3D.frag", "square"});
 
                     if(main_loop)
                     {
-                        shader_init.push_back({"../src/Shader/Shaders/model.vert", "../src/Shader/Shaders/model.frag", "model"});
-                        shader_init.push_back({"../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/oneTexturePlanete.frag", "one_texture_p"});
-                        shader_init.push_back({"../src/Shader/Shaders/planeteTexture.vert", "../src/Shader/Shaders/MultiPlaneteTexture.frag", "multi_texture_p"});
-                        shader_init.push_back({"../src/Shader/Shaders/sunShader.vert", "../src/Shader/Shaders/sunShader.frag", "sun"});
-                        shader_init.push_back({"../src/Shader/Shaders/texture.vert", "../src/Shader/Shaders/texture.frag", "ring"});
-                        shader_init.push_back({"../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/sphereShader.frag", "atmosphere"});
-                        shader_init.push_back({"../src/Shader/Shaders/screenShader.vert", "../src/Shader/Shaders/screenShader.frag", "screen"});
-                        shader_init.push_back({"../src/Shader/Shaders/blur.vert", "../src/Shader/Shaders/blur.frag", "blur"});
-                        shader_init.push_back({"../src/Shader/Shaders/modelInstanced.vert", "../src/Shader/Shaders/modelInstanced.frag", "INSTmodel"});
+                        shader_init.push_back({"../../src/Shader/Shaders/model.vert", "../../src/Shader/Shaders/model.frag", "model"});
+                        shader_init.push_back({"../../src/Shader/Shaders/planeteTexture.vert", "../../src/Shader/Shaders/oneTexturePlanete.frag", "one_texture_p"});
+                        shader_init.push_back({"../../src/Shader/Shaders/planeteTexture.vert", "../../src/Shader/Shaders/MultiPlaneteTexture.frag", "multi_texture_p"});
+                        shader_init.push_back({"../../src/Shader/Shaders/sunShader.vert", "../../src/Shader/Shaders/sunShader.frag", "sun"});
+                        shader_init.push_back({"../../src/Shader/Shaders/texture.vert", "../../src/Shader/Shaders/texture.frag", "ring"});
+                        shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});
+                        shader_init.push_back({"../../src/Shader/Shaders/screenShader.vert", "../../src/Shader/Shaders/screenShader.frag", "screen"});
+                        shader_init.push_back({"../../src/Shader/Shaders/blur.vert", "../../src/Shader/Shaders/blur.frag", "blur"});
+                        shader_init.push_back({"../../src/Shader/Shaders/modelInstanced.vert", "../../src/Shader/Shaders/modelInstanced.frag", "INSTmodel"});
                     }
                     
 

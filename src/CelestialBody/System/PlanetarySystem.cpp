@@ -62,9 +62,9 @@ PlanetarySystem::~PlanetarySystem()
 /***********************************************************************************************************************************************************************/
 void PlanetarySystem::initData()
 {
-    std::string surface_path = "../assets/textures/CelestialBody/";
-    std::string norma_path = "../assets/textures/normalMap/";
-    std::string disp_paht = "../assets/textures/displacementMap/";
+    std::string surface_path = "../../assets/textures/CelestialBody/";
+    std::string norma_path = "../../assets/textures/normalMap/";
+    std::string disp_paht = "../../assets/textures/displacementMap/";
 
     m_data.push_back({{surface_path + "MoonMap.jpg"}, {norma_path + "moon_normalMap.jpg", disp_paht + "moon_dispMap.jpg"}, "Moon", "one_texture_p", 8.19f, 5.145f, 0.1f, glm::vec3(-15000, 3800, 0)});
     m_data.push_back({{surface_path + "EarthDayMap.jpg", surface_path + "CloudMap.jpg"}, {norma_path + "earth_normalMap.jpg", disp_paht + "earth_dispMap.jpg"}, "Earth", "multi_texture_p", 30.0f, 23.26f, 0.1f, glm::vec3(-15000, 0, 0)});

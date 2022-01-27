@@ -107,7 +107,7 @@ m_name(data.name)
         m_atmosphere = new Atmosphere(1.05f, m_name);
         assert(m_atmosphere);
 
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/SaturnRing.png", data);
+        m_ring = new Ring(4, "../../assets/textures/CelestialBody/SaturnRing.png", data);
         assert(m_ring);
 
     }
@@ -116,7 +116,7 @@ m_name(data.name)
         m_atmosphere = new Atmosphere(1.05f, m_name);
         assert(m_atmosphere);
 
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/UranusRing.png", data);
+        m_ring = new Ring(4, "../../assets/textures/CelestialBody/UranusRing.png", data);
         assert(m_ring);
     }
     else if(m_name == "Neptune")
@@ -124,7 +124,7 @@ m_name(data.name)
         m_atmosphere = new Atmosphere(1.05f, m_name);
         assert(m_atmosphere);
 
-        m_ring = new Ring(4, "../assets/textures/CelestialBody/NeptuneRing.png", data);
+        m_ring = new Ring(4, "../../assets/textures/CelestialBody/NeptuneRing.png", data);
         assert(m_ring);
     }
     else

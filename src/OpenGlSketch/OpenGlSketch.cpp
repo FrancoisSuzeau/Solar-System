@@ -192,7 +192,7 @@ void OpenGlSketch::initImGUI()
     (void)io;
     ImGui::StyleColorsDark();
     ImGui_ImplSDL2_InitForOpenGL(m_window, m_openGL_context);
-    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplOpenGL3_Init("#version 400");
 }
 
 /***********************************************************************************************************************************************************************/
@@ -210,19 +210,19 @@ void OpenGlSketch::startLoop()
 {
     /************************************************* Variables ********************************************************/
     /************************************************* load police ********************************************************/
-    m_police.push_back(TTF_OpenFont("../assets/font/venus rising rg.ttf", 300));
+    m_police.push_back(TTF_OpenFont("../../assets/font/venus rising rg.ttf", 300));
     if(m_police[0] == nullptr)
     {
         std::cout << ">> Loading font file : ERROR : " << TTF_GetError() << std::endl;
     }
-    std::cout << ">> Loading font file  " << "../assets/font/venus rising rg.ttf" << " : SUCCESS" << std::endl;
+    std::cout << ">> Loading font file  " << "venus rising rg.ttf" << " : SUCCESS" << std::endl;
 
-    m_police.push_back(TTF_OpenFont("../assets/font/aAtmospheric.ttf", 300));
+    m_police.push_back(TTF_OpenFont("../../assets/font/aAtmospheric.ttf", 300));
     if(m_police[1] == nullptr)
     {
         std::cout << ">> Loading font file : ERROR : " << TTF_GetError() << std::endl;
     }
-    std::cout << ">> Loading font file  " << "../assets/font/aAtmospheric.ttf" << " : SUCCESS" << std::endl;
+    std::cout << ">> Loading font file  " << "aAtmospheric.ttf" << " : SUCCESS" << std::endl;
 
     StartScreen *startScreen = new StartScreen(m_police[0]);
     assert(startScreen);
@@ -445,12 +445,6 @@ void OpenGlSketch::mainLoop()
         render_data.setShipPos(ship->getPosition());
         render_data.setShipSpeed(ship->getSpeed());
 
-        //make sure we clear the framebuffer's content
-    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    // //cleaning the screen
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     /************************************************************** RENDER OF ALL THE SCENE *****************************************************************/
             renderScene(render_data);
     //=======================================================================================================================================================
@@ -480,7 +474,6 @@ void OpenGlSketch::mainLoop()
             if(!render_data.getMenu())
             {
                 ship->drawSpaceship(render_data, m_input);
-                // std::cout << render_data.getIndexShip() << std::endl;
             }
 
         render_data.saveViewMat();
@@ -492,7 +485,6 @@ void OpenGlSketch::mainLoop()
 
         ImGui::Render();
         m_framebuffer->renderFrame(render_data);
-        
 
     /************************************************* SWAPPING WINDOWS ********************************************************/
 

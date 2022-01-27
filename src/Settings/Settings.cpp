@@ -21,9 +21,9 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Settings::Settings()
 {
-    textures_data.push_back({0, 0, 0, "../assets/textures/imguiSpaceship.png", "  Star Hunter - Class Eviscerator"});
-    textures_data.push_back({0, 0, 0, "../assets/textures/imguiDonut.png", "  Donut X37 - Class Yummi Yummi !"});
-    textures_data.push_back({0, 0, 0, "../assets/textures/imguiSpaceshuttle.png", "Spaceshuttle Atlantis Fuel Tank Booster"});
+    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceship.png", "  Star Hunter - Class Eviscerator"});
+    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiDonut.png", "  Donut X37 - Class Yummi Yummi !"});
+    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceshuttle.png", "Spaceshuttle Atlantis Fuel Tank Booster"});
 
     for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
     {

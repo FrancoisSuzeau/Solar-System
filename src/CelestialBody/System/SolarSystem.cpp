@@ -33,8 +33,8 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police)
     skybox = new Skybox();
     assert(skybox);
 
-    sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 500);
-    // sun = new Star(1, 70, 70, "../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
+    sun = new Star(1, 70, 70, "../../assets/textures/CelestialBody/SunMap.jpg", "Sun", 500);
+    // sun = new Star(1, 70, 70, "../../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
     assert(sun);
 
     m_asteroid_field = new AsteroidField();
@@ -100,9 +100,9 @@ SolarSystem::~SolarSystem()
 /***********************************************************************************************************************************************************************/
 void SolarSystem::initData()
 {
-    std::string surface_path = "../assets/textures/CelestialBody/";
-    std::string norma_path = "../assets/textures/normalMap/";
-    std::string disp_paht = "../assets/textures/displacementMap/";
+    std::string surface_path = "../../assets/textures/CelestialBody/";
+    std::string norma_path = "../../assets/textures/normalMap/";
+    std::string disp_paht = "../../assets/textures/displacementMap/";
 
     m_data.push_back({{surface_path + "MercuryMap.jpg"}, {norma_path + "mercury_normalMap.jpg", disp_paht + "mercury_dispMap.jpg"}, "Mercury", "one_texture_p", 11.49f, 0.01f, 0.1f, glm::vec3(5790.0f, 0.0f, 0.0f)});
     m_data.push_back({{surface_path + "VenusMap.jpg", surface_path + "VenusCloud.jpg"}, {norma_path + "venus_normalMap.jpg", disp_paht + "venus_dispMap.jpg"}, "Venus", "multi_texture_p", 28.47f, 177.3f, 0.1f, glm::vec3(0.0f, -10820.0f, 0.0f)});

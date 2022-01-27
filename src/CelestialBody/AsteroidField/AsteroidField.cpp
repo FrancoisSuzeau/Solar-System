@@ -19,7 +19,7 @@ AsteroidField::AsteroidField()
 {
     m_amount = 10000;
     heightScale = 0.0f;
-    asteroid = new Model("../assets/model/rock/rock.obj");
+    asteroid = new Model("../../assets/model/rock/rock.obj");
     if(asteroid == nullptr)
     {
         exit(EXIT_FAILURE);
@@ -27,11 +27,11 @@ AsteroidField::AsteroidField()
     this->initModel();
     this->initInstanced(modelMatrices);
 
-    m_noramal_surface = new Texture("../assets/textures/normalMap/rock_normalMap.jpg");
+    m_noramal_surface = new Texture("../../assets/textures/normalMap/rock_normalMap.jpg");
     assert(m_noramal_surface);
     assert(m_noramal_surface->loadTexture());
 
-    m_disp_surface = new Texture("../assets/textures/displacementMap/rock_dispMap.jpg");
+    m_disp_surface = new Texture("../../assets/textures/displacementMap/rock_dispMap.jpg");
     assert(m_disp_surface);
     assert(m_disp_surface->loadTexture());
 }
