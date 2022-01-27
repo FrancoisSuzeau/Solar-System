@@ -40,7 +40,7 @@ The initial position of the ship is on the ``0, 9000, 0`` coordinates. You can m
 + Mouse Wheel : Change the navigation speed by 10% the speed of the light
 + SPACE : Display body information
 
-Make sure that the executable file is in the ````bin```` directory.
+Make sure that the executable file is in the ````build/debug```` ````or build/release```` directory.
 You will see a ````config.save```` file in the same directory where configuration are saved. You can change them before launch but make sure you respect the value that are available.
 It is possible now to change musique option but you have to pause the simulation to display the mouse.
 
