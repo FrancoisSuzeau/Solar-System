@@ -69,7 +69,6 @@ bool OpenGlSketch::initWindow()
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         std::cout << ">> Initialise SDL : ERROR : " << SDL_GetError() << std::endl;
-        SDL_Quit();
         return false;
     }
     std::cout << ">> Initialise SDL : SUCCESS" << std::endl;
