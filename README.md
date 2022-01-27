@@ -8,7 +8,7 @@ I would like to make it the most accurate as possible using celestial mechanics 
 This program works with a back C++ application to load textures files, calculate  all the vertices of the objects and their orbit, and to capture keyboard/mouse events.
 The front is the opengGL context that compile shader program written in GLSL and use it to represent object in the 3D world as well.
 
-I try to make it usable directly after the download of the source files but I suggest to re-compile it before. For that a Makefile for windows is available in the parent directory (I am still learning how to configure the build aspect of a project). For now it is only usable on Windows but I strongly consider to make it usable on Linux and Mac system.
+I try to make it usable directly after the download of the source files but I suggest to re-compile it before. For that a Makefile for windows is available in the parent directory. You have the possibility to build the project for a release or debug version with : ``DEBUG=0`` or ``DEBUG=1`` option when you call the make feature of your compilator. For now it is only usable on Windows but I strongly consider to make it usable on Linux and Mac system.
 
 For developpment i use this configuration :
 + Intel(R) Xeon(R) CPU E5-2678 v3 2.50GHz
@@ -67,7 +67,7 @@ It is possible now to change musique option but you have to pause the simulation
 + Sound : Add a playist feature, now six track are playing one after the other. (Had to initialize pointer to struct Mix_music to NULL -> drop a warning)
 
 ### 02/08/2021
-+ Framebuffer : Use it to make an HDR mode (For now I cannot make a bloom effect on the light -> skybox not displaying and blur effect not working)
++ Framebuffer : Use it to make an HDR mode
 + Overlay : a simple overlay displaying some information using the framebuffer API
     - Music : Name of the track, compositor and (the record studio or the orchestra)
     - Navigation information : the navigation speed based on the light speed multiply by the camera speed (from 0 to 200).
@@ -77,7 +77,6 @@ It is possible now to change musique option but you have to pause the simulation
 
 ### 04/08/2021
 + Settings frame : a simple frame where we can choose settings (hdr, exposure, speed navigation, music, music volume and if overlay is display or not)
-+ Cliking on a setting button : It adatps on the screen dimension
 
 ### 14/09/2021
 + We can now have a little window showing planete information (for now it is only displaying the name of the body)
