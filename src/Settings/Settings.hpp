@@ -75,6 +75,7 @@ PURPOSE : header of the Settings class
                 bool loadTextureFromFile(imguiTexture_datas &data);
 
                 std::vector<imguiTexture_datas> textures_data;
+                std::vector<float> min_distance;
                 int index;
 
             public:

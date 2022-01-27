@@ -73,6 +73,9 @@ PURPOSE : header of the Camera class
                 glm::vec3 getVerticalaxe() const;
                 glm::vec3 getTargetPoint() const;
 
+                void setDistFromShip(float const new_val);
+                float getDistFromShip() const;
+
                 
         };
 

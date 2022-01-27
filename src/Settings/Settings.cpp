@@ -25,6 +25,10 @@ Settings::Settings()
     textures_data.push_back({0, 0, 0, "../../assets/textures/imguiDonut.png", "  Donut X37 - Class Yummi Yummi !"});
     textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceshuttle.png", "Spaceshuttle Atlantis Fuel Tank Booster"});
 
+    min_distance.push_back(2.0f);
+    min_distance.push_back(1.180f);
+    min_distance.push_back(1.6f);
+
     for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
     {
         assert(this->loadTextureFromFile(it[0]));
@@ -56,8 +60,8 @@ void Settings::manageSettings(RenderData &render_data)
     ImVec2 frame_padding_save = style.FramePadding;
     
     window_flags |= ImGuiWindowFlags_NoResize;
-    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 - 200, render_data.getHeight()/2 - 175));
-    ImGui::SetNextWindowSize(ImVec2(400, 350));
+    ImGui::SetNextWindowPos(ImVec2(render_data.getWidth()/2 - 200, render_data.getHeight()/2 - 200));
+    ImGui::SetNextWindowSize(ImVec2(400, 400));
     
     
     ImGui::Begin("Settings", NULL, window_flags);
@@ -259,6 +263,8 @@ void Settings::manageNavigation(RenderData &render_data)
 {
     float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
 
+    float distance = render_data.getDist();
+
     ImGui::BulletText("Choose your vessel : ");
     ImGui::SameLine();
     RenderData::HelpMarker("Choose between " + std::to_string(textures_data.size()) + " skins available.");
@@ -282,6 +288,12 @@ void Settings::manageNavigation(RenderData &render_data)
     ImGui::Text(textures_data[index].name_disp.c_str());
 
     ImGui::Separator();
+
+    ImGui::BulletText("Distance from ship");
+    if(ImGui::SliderFloat(" ", &distance, min_distance[index], 10.0f))
+    {
+        render_data.setDist(distance);
+    }
     
     RenderData::HelpMarker("More in coming like the possibility to jump directly near to a body.");
 }

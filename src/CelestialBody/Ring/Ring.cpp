@@ -31,7 +31,7 @@ m_texture(texture), m_bytes_coord_size(12 * sizeof(float))
     m_rotation_angle = 0.0f;
     m_speed_rotation = 0.1f;
 
-    heighhtScale = 0.0;
+    heighhtScale = 0.000001f;
 
     if(data.name == "Saturn")
     {
@@ -209,16 +209,8 @@ void Ring::display(RenderData &render_data)
                 heighhtScale += 0.000001f;
                 if(heighhtScale >= 0.01f)
                 {
-                    heighhtScale = 0.0f;
+                    heighhtScale = 0.000001f;
                 }
-                // if( heighhtScale > 0.0)
-                // {
-                //     heighhtScale -= 0.0005f;
-                // }
-                // else
-                // {
-                //     heighhtScale = 0.0f;
-                // }
 
                 render_data.getShader("ring")->setTexture("normalMap", 1);
                 render_data.getShader("ring")->setInt("has_normal", render_data.getShadowGround());

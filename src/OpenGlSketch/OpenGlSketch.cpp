@@ -364,6 +364,8 @@ void OpenGlSketch::mainLoop()
     render_data.setTerminate(false);
     render_data.setChangeModel(true);
 
+    // camera->setDistFromShip(render_data.getDist());
+
     if(Saving::verifingFileExistence())
     {
         Saving::setSettings(render_data);
@@ -474,6 +476,8 @@ void OpenGlSketch::mainLoop()
             {
                 ship->drawSpaceship(render_data, m_input);
             }
+
+            camera->setDistFromShip(render_data.getDist());
 
         render_data.saveViewMat();
 

@@ -18,7 +18,7 @@ PURPOSE : class AsteroidField
 AsteroidField::AsteroidField()
 {
     m_amount = 10000;
-    heightScale = 0.0f;
+    heightScale = 0.000001f;
     asteroid = new Model("../../assets/model/rock/rock.obj");
     if(asteroid == nullptr)
     {
@@ -108,7 +108,7 @@ void AsteroidField::drawAsteroidField(RenderData &render_data)
                 heightScale += 0.000001f;
                 if(heightScale >= 0.01f)
                 {
-                    heightScale = 0.0f;
+                    heightScale = 0.000001f;
                 }
                 render_data.getShader("INSTmodel")->setFloat("heightScale", heightScale);
                 render_data.getShader("INSTmodel")->setInt("has_disp", render_data.getDispMapRender());

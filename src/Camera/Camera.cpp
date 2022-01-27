@@ -218,3 +218,13 @@ glm::vec3 Camera::getTargetPoint() const
 {
     return m_target_point;
 }
+
+void Camera::setDistFromShip(float const new_val)
+{
+    distance_from_ship = new_val;
+}
+
+float Camera::getDistFromShip() const
+{
+    return distance_from_ship;
+}

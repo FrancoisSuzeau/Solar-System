@@ -66,6 +66,8 @@ PURPOSE : header of the RenderData class
                 glm::vec3 shiPos;
                 glm::vec3 sunPos;
 
+                float dist_from_ship;
+
                 bool hdr;
                 float exposure;
 
@@ -144,6 +146,8 @@ PURPOSE : header of the RenderData class
 
                     m_width = width;
                     m_height = height;
+
+                    dist_from_ship = 3.0f;
 
                     setShader(main_loop);
 
@@ -343,6 +347,9 @@ PURPOSE : header of the RenderData class
 
                 static void setWidth(int const new_val) {width = new_val;}
                 static void setHeight(int const new_val) {height = new_val;}
+
+                void setDist(float const new_val) {dist_from_ship = new_val;}
+                float getDist() const {return dist_from_ship;}
  
         };
 
