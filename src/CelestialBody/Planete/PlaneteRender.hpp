@@ -38,7 +38,6 @@ PURPOSE : header of the PlaneteRender class
             protected:
 
                 std::string     m_name;
-                float heighhtScale;
                 
             public:
 

@@ -27,6 +27,7 @@ using namespace glm;
 Planete::Planete(init_data data, TTF_Font *police) :
 m_name(data.name)
 {
+    heighhtScale = 0.000001f;
 
     for (size_t i = 0; i < data.texture_path.size(); i++)
     {
@@ -295,4 +296,18 @@ bool Planete::getProximity() const
 void Planete::setProximity(bool change)
 {
     is_near = change;
+}
+
+void Planete::updateHeightScale()
+{
+    heighhtScale += 0.000001f;
+    if(heighhtScale >=  0.01f)
+    {
+        heighhtScale = 0.000001f;
+    }
+}
+
+float Planete::getHeightScale() const
+{
+    return heighhtScale;
 }

@@ -61,6 +61,8 @@ PURPOSE : header of the Planete class
 
                 float                           m_oppacity;
                 bool                            is_near;
+                float heighhtScale;
+
                 
             public:
 
@@ -90,6 +92,8 @@ PURPOSE : header of the Planete class
                 void setProximity(bool change);
 
                 void updatePosition(glm::vec3 shipPos = glm::vec3(0.0f));
+                void updateHeightScale();
+                float getHeightScale() const;
                 
         };
 

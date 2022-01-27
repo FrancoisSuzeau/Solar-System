@@ -26,9 +26,14 @@ m_in_pause(false)
     m_file_music = {
 
         "../assets/audio/mass_effect.mp3",
+        "../assets/audio/critical-mass.mp3",
         "../assets/audio/natural_splender.mp3",
         "../assets/audio/dying-star.mp3",
-        "../assets/audio/SC-Orizon-theme.mp3"
+        "../assets/audio/SC-Orizon-theme.mp3",
+        "../assets/audio/engine-of-creation.mp3",
+        "../assets/audio/mass-effect_map-theme.mp3",
+        "../assets/audio/unbound.mp3",
+        "../assets/audio/dreamscape.mp3"
     };
 }
 
