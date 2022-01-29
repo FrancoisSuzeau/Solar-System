@@ -15,7 +15,7 @@ PURPOSE : class Spaceship
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f), m_sensibility(0.3f)
+Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f)
 {   
 
     file_paths.push_back("../../assets/model/spaceship/untitled.obj");
@@ -39,6 +39,12 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f), m_sensibi
     m_acceleration[3] = 0.0f;
     m_acceleration[4] = 0.0f;
     m_acceleration[5] = 0.0f;
+
+    m_sensibility[0] = 0.0f;
+    m_sensibility[1] = 0.0f;
+
+    y_dir = 0.0f;
+    x_dir = 0.0f;
 }
 
 Spaceship::~Spaceship()
@@ -219,7 +225,30 @@ void Spaceship::rotateFromPitch(Input input)
 
     if( input.getMouseButton(SDL_BUTTON_LEFT) )
     {
-        m_pitch += input.getYRel() * m_sensibility;
+        y_dir = input.getYRel();
+        m_pitch += y_dir * m_sensibility[0];
+        if(m_sensibility[0] < 0.3)
+        {
+            m_sensibility[0] += 0.01;
+        }
+
+        if(m_pitch > 179.0f)
+        {
+            m_pitch = 179.0f;
+        }
+        else if (m_pitch < -0.1f)
+        {
+            m_pitch = -0.1f;
+        }
+    }
+    else if(!input.getMouseButton(SDL_BUTTON_LEFT))
+    {
+        if(m_sensibility[0] >= 0.01)
+        {
+            m_sensibility[0] -= 0.01;
+        }
+
+        m_pitch += y_dir * m_sensibility[0];
 
         if(m_pitch > 179.0f)
         {
@@ -243,7 +272,22 @@ void Spaceship::rotateFromYaw(Input input)
 
     if(input.getMouseButton(SDL_BUTTON_LEFT))
     {
-        m_yaw -= input.getXRel() * m_sensibility;
+        x_dir = input.getXRel();
+        m_yaw -= x_dir * m_sensibility[1];
+
+        if(m_sensibility[1] < 0.3)
+        {
+            m_sensibility[1] += 0.01;
+        }
+    }
+    else if(!input.getMouseButton(SDL_BUTTON_LEFT))
+    {
+        if(m_sensibility[1] >= 0.01)
+        {
+            m_sensibility[1] -= 0.01;
+        }
+
+        m_yaw -= x_dir * m_sensibility[1];
     }
     
     yaw_mat = glm::rotate(yaw_mat, glm::radians(m_yaw), glm::vec3(0.0f, 0.0f, 1.0f));
