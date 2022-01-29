@@ -33,6 +33,12 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f), m_sensibi
     m_model_matrice = model;
 
     m_current_pos = glm::vec3(0.0f, 9000.0f, 0.0f);
+    m_acceleration[0] = 0.0f;
+    m_acceleration[1] = 0.0f;
+    m_acceleration[2] = 0.0f;
+    m_acceleration[3] = 0.0f;
+    m_acceleration[4] = 0.0f;
+    m_acceleration[5] = 0.0f;
 }
 
 Spaceship::~Spaceship()
@@ -70,29 +76,102 @@ void Spaceship::move(Input input)
 {
     if(input.getKey(SDL_SCANCODE_W))
     {
-        m_current_pos += m_ship_orientation * m_speed;
+        m_current_pos += m_ship_orientation * m_speed * m_acceleration[0];
+        if(m_acceleration[0] < 1.0)
+        {
+            m_acceleration[0] += 0.02;
+        }
+    }
+    else if(!input.getKey(SDL_SCANCODE_W))
+    {
+        if(m_acceleration[0] >= 0.04)
+        {
+            m_acceleration[0] -= 0.02;
+            m_current_pos += m_ship_orientation * m_speed * m_acceleration[0];
+        }
+        
     }
     if(input.getKey(SDL_SCANCODE_S))
     {
-        m_current_pos -= m_ship_orientation * m_speed;
+        m_current_pos -= m_ship_orientation * m_speed * m_acceleration[1];
+        if(m_acceleration[1] < 1.0)
+        {
+            m_acceleration[1] += 0.02;
+        }
+    }
+    else if(!input.getKey(SDL_SCANCODE_S))
+    {
+        if(m_acceleration[1] >= 0.04)
+        {
+            m_acceleration[1] -= 0.02;
+            m_current_pos -= m_ship_orientation * m_speed * m_acceleration[1];
+        }
     }
 
     if(input.getKey(SDL_SCANCODE_A))
     {
-       m_current_pos += m_lateral_move * m_speed;
+       m_current_pos += m_lateral_move * m_speed * m_acceleration[2];
+       if(m_acceleration[2] < 1.0)
+        {
+            m_acceleration[2] += 0.02;
+        }
+    }
+    else if(!input.getKey(SDL_SCANCODE_A))
+    {
+        if(m_acceleration[2] >= 0.04)
+        {
+            m_acceleration[2] -= 0.02;
+            m_current_pos += m_lateral_move * m_speed * m_acceleration[2];
+        }
     }
 
     if(input.getKey(SDL_SCANCODE_D))
     {
-       m_current_pos -= m_lateral_move * m_speed;
+       m_current_pos -= m_lateral_move * m_speed * m_acceleration[3];
+       if(m_acceleration[3] < 1.0)
+        {
+            m_acceleration[3] += 0.02;
+        }
+    }
+    else if(!input.getKey(SDL_SCANCODE_D))
+    {
+        if(m_acceleration[3] >= 0.04)
+        {
+            m_acceleration[3] -= 0.02;
+            m_current_pos -= m_lateral_move * m_speed * m_acceleration[3];
+        }
     }
     if(input.getKey(SDL_SCANCODE_LSHIFT))
     {
-       m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+       m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed * m_acceleration[4];
+       if(m_acceleration[4] < 1.0)
+       {
+           m_acceleration[4] += 0.02;
+       }
+    }
+    else if(!input.getKey(SDL_SCANCODE_LSHIFT))
+    {
+        if(m_acceleration[4] >= 0.04)
+        {
+            m_acceleration[4] -= 0.02;
+            m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed * m_acceleration[4];
+        }
     }
     if(input.getKey(SDL_SCANCODE_LCTRL))
     {
-        m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+        m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed * m_acceleration[5];
+        if(m_acceleration[5] < 1.0)
+       {
+           m_acceleration[5] += 0.02;
+       }
+    }
+    else if(!input.getKey(SDL_SCANCODE_LCTRL))
+    {
+        if(m_acceleration[5] >= 0.04)
+        {
+            m_acceleration[5] -= 0.02;
+            m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed * m_acceleration[5];
+        }
     }
 }
 

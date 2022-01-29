@@ -57,6 +57,7 @@ PURPOSE : header of the Spaceship class
                 float m_yaw;
                 float           m_sensibility;
                 float           m_speed;
+                float           m_acceleration[6];
 
                 std::vector<float> m_scales;
 
