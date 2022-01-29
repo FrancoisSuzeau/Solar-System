@@ -153,6 +153,9 @@ Integrating Dear ImGui for User interface
 ### 20/01/2022
 + Can now chose the skin of the ship
 
+### 29/01/2022
++ Implement ship maneuverability
+
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.
 
@@ -163,6 +166,5 @@ For the moment I am working on this following aspect :
 + bug correction on skybox (see the borders)
 + Implement hit box to prevent to pass through body (have to extract method to calculate radius coming from body position)
 + Make a Linux version : Have to think twice because I have to change screen adaptation of the overlay
-+ Implement ship maneuverability
 
 Many of these ideas came to me while I am coding, so I hope more come too.
