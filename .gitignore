@@ -3,4 +3,3 @@
 .vscode
 *.ini
 *.d
-build/debug
