@@ -155,6 +155,7 @@ Integrating Dear ImGui for User interface
 
 ### 29/01/2022
 + Implement ship maneuverability
++ Implement speed reducing when approching a body
 
 ## More in coming ...
 At the end, I will try to render planets and moons proceduraly. For now these objects are only textured with static view. I will also implements a clicking interactive window when you clik on a planet to show his orbital informations and others.

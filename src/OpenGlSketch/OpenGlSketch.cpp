@@ -632,6 +632,8 @@ void OpenGlSketch::renderScene(RenderData &render_data)
 
                 solar_system->setMostGravInfluence(render_data);
 
+                solar_system->approchBody(ship);
+
     }
     
 }

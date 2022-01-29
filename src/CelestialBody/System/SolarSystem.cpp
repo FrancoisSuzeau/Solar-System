@@ -41,6 +41,10 @@ SolarSystem::SolarSystem(sys_init_data data, TTF_Font *police)
     assert(m_asteroid_field);
     
     this->initData();
+
+    mini_speed = false;
+    maxi_speed = true;
+    current_speed = 200.0f;
 }
 
 SolarSystem::SolarSystem() : sun()
@@ -453,6 +457,53 @@ void SolarSystem::setMostGravInfluence(RenderData &render_data)
         if(it[0] != nullptr)
         {
             it[0]->setMostGravInfluence(render_data);
+        }
+    }
+}
+
+/************************************************************************************************************************************************************************/
+/*************************************************************************** approchBody ********************************************************************************/
+/************************************************************************************************************************************************************************/
+void SolarSystem::approchBody(Spaceship *ship)
+{
+    std::string tmp = "none";
+
+    for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
+    {
+        float r = it[0]->getRadiusFromCam(ship->getPosition());
+        float size_plan = it[0]->getSize();
+
+        if(r <= 50 * size_plan)
+        {
+            tmp = it[0]->getName();
+        }
+    }
+
+    if(tmp != "none")
+    {
+        if(mini_speed == false)
+        {
+            current_speed = ship->getSpeed();
+            ship->setMinimumSpeed();
+            mini_speed = true;
+            maxi_speed = false;
+        }
+    }
+    else
+    {
+        if(maxi_speed == false)
+        {
+            ship->updateSpeed(current_speed);
+            maxi_speed = true;
+            mini_speed = false;
+        }
+    }
+
+     for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            it[0]->approchBody(ship);
         }
     }
 }

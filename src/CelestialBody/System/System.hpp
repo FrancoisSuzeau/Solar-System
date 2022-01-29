@@ -30,6 +30,7 @@ PURPOSE : header of the virtual System class
         #include "../../PlaneteInformation/PlaneteInformation.hpp"
         #include "../../OpenGlSketch/RenderData.hpp"
         #include "../Physique/Physique.hpp"
+        #include "../../Spaceship/Spaceship.hpp"
 
         typedef struct init_data {
 
@@ -63,6 +64,9 @@ PURPOSE : header of the virtual System class
 
                 std::vector<init_data>          m_data;
                 std::vector<sys_init_data>     sys_data;
+                bool mini_speed;
+                bool maxi_speed;
+                float current_speed;
 
                 virtual void initData() = 0;
                 
@@ -79,6 +83,7 @@ PURPOSE : header of the virtual System class
                 virtual void displayAsteroidField(RenderData &redner_data) = 0;
                 virtual void displayRing(RenderData &render_data) = 0;
                 virtual void setMostGravInfluence(RenderData &render_data) = 0;
+                virtual void approchBody(Spaceship *ship) = 0;
                 
         };
 

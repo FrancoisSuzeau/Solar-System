@@ -28,6 +28,10 @@ PlanetarySystem::PlanetarySystem(sys_init_data data, TTF_Font *police)
     assert(planete_render);
 
     this->initData();
+
+    mini_speed = false;
+    maxi_speed = true;
+    current_speed = 200.0f;
 }
 
 PlanetarySystem::PlanetarySystem()
@@ -298,6 +302,41 @@ void PlanetarySystem::setMostGravInfluence(RenderData &render_data)
 
             render_data.setInfName(tmp_name);
             render_data.setInfVal(grav_inf);
+        }
+    }
+}
+
+/************************************************************************************************************************************************************************/
+/*************************************************************************** approchBody ********************************************************************************/
+/************************************************************************************************************************************************************************/
+void PlanetarySystem::approchBody(Spaceship *ship)
+{
+    std::string tmp = "none";
+
+    float r = m_host->getRadiusFromCam(ship->getPosition());
+    float size_plan = m_host->getSize();
+    if(r < 50 * size_plan)
+    {
+        tmp = m_host->getName();
+    }
+
+    if(tmp != "none")
+    {
+        if(mini_speed == false)
+        {
+            current_speed = ship->getSpeed();
+            ship->setMinimumSpeed();
+            mini_speed = true;
+            maxi_speed = false;
+        }
+    }
+    else
+    {
+        if(maxi_speed == false)
+        {
+            ship->updateSpeed(current_speed);
+            maxi_speed = true;
+            mini_speed = false;
         }
     }
 }

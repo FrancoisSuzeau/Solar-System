@@ -100,6 +100,8 @@ PURPOSE : header of the Spaceship class
                 void setMaximumSpeed();
                 void loadModelShip(RenderData &render_data);
 
+                void updateSpeed(float const new_val);
+
                 
         };
 

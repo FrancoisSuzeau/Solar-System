@@ -57,6 +57,7 @@ PURPOSE : header of the virtual SolarSystem class
 
                 void initData() override;
                 
+                
             public:
 
                 SolarSystem(sys_init_data data, TTF_Font *police);
@@ -74,6 +75,7 @@ PURPOSE : header of the virtual SolarSystem class
                 void displayRing(RenderData &render_data) override;
 
                 void setMostGravInfluence(RenderData &render_data) override;
+                void approchBody(Spaceship *ship) override;
 
 
         };

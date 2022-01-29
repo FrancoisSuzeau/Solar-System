@@ -92,6 +92,11 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->setMostGravInfluence(render_data);
                 }
 
+                void approchBody(Spaceship *ship)
+                {
+                        m_system->approchBody(ship);
+                }
+
 
         };
 

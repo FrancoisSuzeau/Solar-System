@@ -379,3 +379,11 @@ float Spaceship::getRotX() const
 {
     return m_yaw;
 }
+
+void Spaceship::updateSpeed(float const new_val)
+{
+    if((new_val >= 0.0) && (new_val <= 200.0))
+    {
+        m_speed = new_val;
+    }
+}
