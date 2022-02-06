@@ -49,13 +49,10 @@ Shader& Shader::operator=(Shader const &shader_to_copy)
 
 Shader::~Shader()
 {
-    glDeleteShader(m_program_ID);
-    glDeleteShader(m_vertex_ID);
-    glDeleteShader(m_fragment_ID);
-    
-
-    std::cout << "SHADER :: delete >>> SUCCESS" << m_vertex_src << std::endl;
-    std::cout << "SHADER :: delete >>> SUCCESS" << m_fragment_src << std::endl;
+    if(glIsProgram(m_program_ID) == GL_TRUE)
+    {
+        glDeleteProgram(m_program_ID);
+    }
 
 }
 
@@ -72,21 +69,12 @@ GLuint Shader::getProgramID() const
 /***********************************************************************************************************************************************************************/
 bool Shader::loadShader()
 {
-    /************************************************* managin existent shader ********************************************************/
-    if( glIsShader(m_vertex_ID) == GL_TRUE)
+    deleteShader(m_vertex_ID, false);
+    deleteShader(m_fragment_ID, false);
+    if(glIsProgram(m_program_ID) == GL_TRUE)
     {
-        glDeleteShader(m_vertex_ID);
+        glDeleteProgram(m_program_ID);
     }
-    if( glIsShader(m_fragment_ID) == GL_TRUE)
-    {
-        glDeleteShader(m_fragment_ID);
-    }
-    if( glIsShader(m_program_ID) == GL_TRUE)
-    {
-        glDeleteShader(m_program_ID);
-    }
-    //======================================================================================================================================
-
     /************************************************* compiling shader source code ********************************************************/
     if( !compileShader(m_vertex_ID, GL_VERTEX_SHADER, m_vertex_src))
     {
@@ -151,6 +139,15 @@ bool Shader::loadShader()
     else
     {
         std::cout << ">> Linking program : SUCCESS" << std::endl;
+        // glDetachShader(m_program_ID, m_vertex_ID);
+        // glDetachShader(m_program_ID, m_fragment_ID);
+        // glDeleteShader(m_vertex_ID);
+        // glDeleteShader(m_fragment_ID);
+        deleteShader(m_vertex_ID, link_error);
+        deleteShader(m_fragment_ID, link_error);
+    
+        std::cout << "SHADER :: delete >>> SUCCESS" << m_vertex_src << std::endl;
+        std::cout << "SHADER :: delete >>> SUCCESS" << m_fragment_src << std::endl;
         return true;
     }
     //======================================================================================================================================
@@ -177,7 +174,8 @@ bool Shader::compileShader(GLuint &shader, GLenum type, std::string const &file_
     if( !file)
     {
         std::cout << ">> Read file (" << file_src << ") : ERROR" << std::endl;
-        glDeleteShader(shader);
+        // glDeleteShader(shader);
+        deleteShader(shader, false);
         return false;
     }
     std::cout << ">> Read file (" << file_src << ") : SUCCESS" << std::endl;
@@ -229,7 +227,8 @@ bool Shader::compileShader(GLuint &shader, GLenum type, std::string const &file_
 
         //memory release
         delete[] error;
-        glDeleteShader(shader);
+        // glDeleteShader(shader);
+        deleteShader(shader, false);
 
         return false;
 
@@ -241,6 +240,34 @@ bool Shader::compileShader(GLuint &shader, GLenum type, std::string const &file_
     }
     //======================================================================================================================================
 
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* deleteShader ************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Shader::deleteShader(GLuint &shader, GLint detach_shader)
+{
+    
+    if(glIsShader(shader) == GL_TRUE)
+    {
+        if(detach_shader == GL_TRUE)
+        {
+            glDetachShader(m_program_ID, shader);
+        }
+        glDeleteShader(shader);
+    }
+    // if( glIsShader(m_vertex_ID) == GL_TRUE)
+    // {
+    //     glDeleteShader(m_vertex_ID);
+    // }
+    // if( glIsShader(m_fragment_ID) == GL_TRUE)
+    // {
+    //     glDeleteShader(m_fragment_ID);
+    // }
+    // if( glIsShader(m_program_ID) == GL_TRUE)
+    // {
+    //     glDeleteShader(m_program_ID);
+    // }
 }
 
 /***********************************************************************************************************************************************************************/
