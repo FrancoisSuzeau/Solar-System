@@ -85,7 +85,7 @@ void main()
 {
     // *********************************************** calculate png transparency ***************************************************
     vec4 alpha_color = texture2D(texture0, coordTexture);
-    if(alpha_color.r < 0.1)
+    if(alpha_color.a < 0.1)
     {
         discard;
     }
