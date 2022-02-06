@@ -42,11 +42,11 @@ PURPOSE : Interface FlareTexture
 
             public:
 
-                FlareTexture(float size, std::string const text_path, glm::vec3 pos);
+                FlareTexture(float size, std::string const text_path);
                 FlareTexture();
                 ~FlareTexture();
 
-                void display(RenderData &render_data);
+                void display(RenderData &render_data, float brightness);
 
                 void setPositionFlareText(glm::vec3 new_pos);
                 void transformMat();

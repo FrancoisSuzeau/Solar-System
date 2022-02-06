@@ -20,7 +20,7 @@ PURPOSE : class FlareTexture
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-FlareTexture::FlareTexture(float size, std::string const text_path, glm::vec3 pos) : Disk(size),
+FlareTexture::FlareTexture(float size, std::string const text_path) : Disk(size),
 m_texture(text_path), m_bytes_coord_size(12 * sizeof(float))
 {
     assert(m_texture.loadTexture());
@@ -42,7 +42,7 @@ m_texture(text_path), m_bytes_coord_size(12 * sizeof(float))
 
     transform_mat = glm::mat4(1.0f);
 
-    m_pos = pos;
+    m_pos = glm::vec3(0.0);
 }
 
 FlareTexture::FlareTexture() : Disk()
@@ -126,7 +126,7 @@ void FlareTexture::load()
 /***********************************************************************************************************************************************************************/
 /************************************************************************************ display **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void FlareTexture::display(RenderData &render_data)
+void FlareTexture::display(RenderData &render_data, float brightness)
 {
     if(render_data.getShader("flare") != nullptr)
     {
@@ -140,6 +140,7 @@ void FlareTexture::display(RenderData &render_data)
             render_data.getShader("flare")->setMat4("view", render_data.getViewMat());
             render_data.getShader("flare")->setMat4("projection", render_data.getProjectionMat());
             render_data.getShader("flare")->setMat4("model", transform_mat);
+            render_data.getShader("flare")->setFloat("brightness", brightness);
 
             render_data.getShader("flare")->setTexture("texture0", 0);
 
@@ -170,4 +171,6 @@ void FlareTexture::transformMat()
     transform_mat = glm::mat4(1.0f);
 
     transform_mat = glm::translate(transform_mat, m_pos);
+
+      
 }

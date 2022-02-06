@@ -30,7 +30,11 @@ PURPOSE : Interface FlareManager
                 
                 std::vector<FlareTexture*> flare_textures;
 
-                void calculateFlarePos();
+                float spacing; 
+
+                void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, FlareTexture *flare_text, int i);
+
+                glm::vec2 convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::mat4 projMat);
 
             public:
 
