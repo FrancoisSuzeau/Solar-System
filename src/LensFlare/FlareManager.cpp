@@ -17,7 +17,15 @@ PURPOSE : class FlareManager
 /***********************************************************************************************************************************************************************/
 FlareManager::FlareManager()
 {
-   flare_textures.push_back(new FlareTexture(0.3f, "../../assets/textures/lensFlareTextures/tex8.png", glm::vec3(0.0, 0.0, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex1.png", glm::vec3(0.5, 0.5, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.2f, "../../assets/textures/lensFlareTextures/tex2.png", glm::vec3(-0.5, -0.5, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex3.png", glm::vec3(0.5, -0.5, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.2f, "../../assets/textures/lensFlareTextures/tex4.png", glm::vec3(-0.5, 0.5, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex5.png", glm::vec3(0.2, 0.2, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex6.png", glm::vec3(-0.2, -0.2, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.2f, "../../assets/textures/lensFlareTextures/tex7.png", glm::vec3(-0.4, 0.0, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.2f, "../../assets/textures/lensFlareTextures/tex8.png", glm::vec3(0.0, 0.0, 0.0)));
+   flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex9.png", glm::vec3(-0.2, 0.2, 0.0)));
    
    for(std::vector<FlareTexture*>::iterator it = flare_textures.begin(); it != flare_textures.end(); it++)
    {
