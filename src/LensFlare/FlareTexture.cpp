@@ -3,11 +3,11 @@ AUTHOR : SUZEAU François
 
 DATE : 06/02/2021
 
-MODULE : LensFlare
+MODULE : FlareTexture
 
-NAMEFILE : LensFlare.cpp
+NAMEFILE : FlareTexture.cpp
 
-PURPOSE : class LensFlare
+PURPOSE : class FlareTexture
 */
 
 //usefull macro for VBO

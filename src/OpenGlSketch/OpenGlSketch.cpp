@@ -355,7 +355,7 @@ void OpenGlSketch::startLoop()
 /***********************************************************************************************************************************************************************/
 void OpenGlSketch::mainLoop()
 {
-    FlareTexture fl(0.3f, "../../assets/textures/lensFlareTextures/tex8.png");
+    FlareManager fm;
     /************************************************* Variables ********************************************************/
     speed_key_pressed = false;
 
@@ -468,15 +468,8 @@ void OpenGlSketch::mainLoop()
     //=======================================================================================================================================================
 
     /******************************************************************* RENDER SHIP ********************************************************************/
-            render_data.initSaveMat();
-
-                render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-                fl.setPositionFlareText(glm::vec3(0.0, 0.0, 0.0));
-                fl.transformMat();
-                fl.display(render_data);
-
-            render_data.saveViewMat();
-
+            
+            fm.renderLensFlare(render_data);
 
             ship->loadModelShip(render_data);
 
