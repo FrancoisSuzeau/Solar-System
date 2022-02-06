@@ -49,9 +49,10 @@ Shader& Shader::operator=(Shader const &shader_to_copy)
 
 Shader::~Shader()
 {
+    glDeleteShader(m_program_ID);
     glDeleteShader(m_vertex_ID);
     glDeleteShader(m_fragment_ID);
-    glDeleteShader(m_program_ID);
+    
 
     std::cout << "SHADER :: delete >>> SUCCESS" << m_vertex_src << std::endl;
     std::cout << "SHADER :: delete >>> SUCCESS" << m_fragment_src << std::endl;
