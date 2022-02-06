@@ -40,7 +40,7 @@ void main()
 {
     // Position finale du vertex en 3D
 
-    gl_Position = projection * view * model * vec4(in_Vertex, 1.0);
+    gl_Position = projection * view * (model * vec4(in_Vertex, 1.0));
 
 
     // Envoi des coordonn�es de texture au Fragment Shader

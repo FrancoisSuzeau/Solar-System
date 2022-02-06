@@ -14,8 +14,8 @@ uniform bool inverse_normals;
 
 
 void main(void) {
-    mat4 mp = projection * view * model;
-    gl_Position = mp * vec4(in_Vertex, 1.0);
+
+    gl_Position = projection * view * (model * vec4(in_Vertex, 1.0));
     texCoords = vec4(in_Vertex, 1.0);
 
     FragPos = vec3(model * vec4(in_Vertex, 1.0));
@@ -23,5 +23,4 @@ void main(void) {
 
     vec3 n = inverse_normals ? - in_Vertex : in_Vertex;
     Normal = normalize(normalMatrice * n);
-    // Normal = mat3(transpose(inverse(model))) * in_Vertex;
 }

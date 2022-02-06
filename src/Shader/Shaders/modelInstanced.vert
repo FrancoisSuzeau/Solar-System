@@ -25,7 +25,7 @@ out VS_OUT {
 void main()
 {
     TexCoords = aTexCoords;
-    gl_Position = projection * view * aInstanceMatrix * vec4(aPos, 1.0f); 
+    gl_Position = projection * view * (aInstanceMatrix * vec4(aPos, 1.0f)); 
 
     // Normal = mat3(transpose(inverse(aInstanceMatrix))) * aNormal;
     FragPos = vec3(aInstanceMatrix * vec4(aPos, 1.0));

@@ -23,9 +23,7 @@ out VS_OUT {
 
 void main(void) {
 
-    mat4 mp = projection * view * model;
-
-    gl_Position = mp * vec4(in_Vertex, 1.0);
+    gl_Position = projection * view * (model * vec4(in_Vertex, 1.0));
     texCoords = vec4(in_Vertex, 1.0);
 
     FragPos = vec3(model * vec4(in_Vertex, 1.0));
