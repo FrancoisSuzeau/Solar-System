@@ -30,6 +30,7 @@ SRC+=CelestialBody/Planete/PlaneteRender.cpp CelestialBody/Geometry/Disk.cpp Cel
 SRC+=CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp 
 SRC+=Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp Model/Mesh.cpp Model/Model.cpp Spaceship/Spaceship.cpp 
 SRC+=CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/Physique/Physique.cpp Saving/Saving.cpp
+SRC+=LensFlare/LensFlare.cpp
 SRC+=../lib/imgui/imgui_demo.cpp ../lib/imgui/imgui_draw.cpp ../lib/imgui/imgui_impl_opengl3.cpp ../lib/imgui/imgui_impl_sdl.cpp ../lib/imgui/imgui_tables.cpp ../lib/imgui/imgui_widgets.cpp ../lib/imgui/imgui.cpp
 
 OBJET=$(SRC:.cpp=.o)
