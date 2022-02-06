@@ -37,6 +37,8 @@ PURPOSE : header of the Shader class
                 std::string     m_fragment_src;
 
                 void            deleteShader(GLuint &shader, GLint detach_shader);
+                void            deleteProgram();
+                GLint           checkStatus(GLuint obj_id, std::string type);
 
             public:
 

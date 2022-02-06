@@ -49,10 +49,7 @@ Shader& Shader::operator=(Shader const &shader_to_copy)
 
 Shader::~Shader()
 {
-    if(glIsProgram(m_program_ID) == GL_TRUE)
-    {
-        glDeleteProgram(m_program_ID);
-    }
+    deleteProgram();
 
 }
 
@@ -69,12 +66,9 @@ GLuint Shader::getProgramID() const
 /***********************************************************************************************************************************************************************/
 bool Shader::loadShader()
 {
-    deleteShader(m_vertex_ID, false);
-    deleteShader(m_fragment_ID, false);
-    if(glIsProgram(m_program_ID) == GL_TRUE)
-    {
-        glDeleteProgram(m_program_ID);
-    }
+    deleteShader(m_vertex_ID, GL_FALSE);
+    deleteShader(m_fragment_ID, GL_FALSE);
+    deleteProgram();
     /************************************************* compiling shader source code ********************************************************/
     if( !compileShader(m_vertex_ID, GL_VERTEX_SHADER, m_vertex_src))
     {
@@ -111,8 +105,7 @@ bool Shader::loadShader()
     glLinkProgram(m_program_ID);
 
     //linkage verification
-    GLint link_error(0);
-    glGetProgramiv(m_program_ID, GL_LINK_STATUS, &link_error);
+    GLint link_error = checkStatus(m_program_ID, "linking");
 
     if( link_error != GL_TRUE)//there is an link error
     {
@@ -132,17 +125,15 @@ bool Shader::loadShader()
 
         //memory release
         delete[] error;
-        glDeleteProgram(m_program_ID);
+        deleteProgram();
+        deleteShader(m_vertex_ID, link_error);
+        deleteShader(m_fragment_ID, link_error);
 
         return false;
     }
     else
     {
         std::cout << ">> Linking program : SUCCESS" << std::endl;
-        // glDetachShader(m_program_ID, m_vertex_ID);
-        // glDetachShader(m_program_ID, m_fragment_ID);
-        // glDeleteShader(m_vertex_ID);
-        // glDeleteShader(m_fragment_ID);
         deleteShader(m_vertex_ID, link_error);
         deleteShader(m_fragment_ID, link_error);
     
@@ -174,7 +165,6 @@ bool Shader::compileShader(GLuint &shader, GLenum type, std::string const &file_
     if( !file)
     {
         std::cout << ">> Read file (" << file_src << ") : ERROR" << std::endl;
-        // glDeleteShader(shader);
         deleteShader(shader, false);
         return false;
     }
@@ -206,9 +196,7 @@ bool Shader::compileShader(GLuint &shader, GLenum type, std::string const &file_
 
     /************************************************* compile verification ********************************************************/
     //status recovery
-    GLint   compile_error(0);
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_error);
-
+    GLint   compile_error = checkStatus(shader, "compiling");
     if(compile_error != GL_TRUE) //there is an error
     {
         //size error recovery
@@ -227,7 +215,6 @@ bool Shader::compileShader(GLuint &shader, GLenum type, std::string const &file_
 
         //memory release
         delete[] error;
-        // glDeleteShader(shader);
         deleteShader(shader, false);
 
         return false;
@@ -247,7 +234,6 @@ bool Shader::compileShader(GLuint &shader, GLenum type, std::string const &file_
 /***********************************************************************************************************************************************************************/
 void Shader::deleteShader(GLuint &shader, GLint detach_shader)
 {
-    
     if(glIsShader(shader) == GL_TRUE)
     {
         if(detach_shader == GL_TRUE)
@@ -256,18 +242,37 @@ void Shader::deleteShader(GLuint &shader, GLint detach_shader)
         }
         glDeleteShader(shader);
     }
-    // if( glIsShader(m_vertex_ID) == GL_TRUE)
-    // {
-    //     glDeleteShader(m_vertex_ID);
-    // }
-    // if( glIsShader(m_fragment_ID) == GL_TRUE)
-    // {
-    //     glDeleteShader(m_fragment_ID);
-    // }
-    // if( glIsShader(m_program_ID) == GL_TRUE)
-    // {
-    //     glDeleteShader(m_program_ID);
-    // }
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* deleteProgram ************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Shader::deleteProgram()
+{
+    if(glIsProgram(m_program_ID) == GL_TRUE)
+    {
+        glDeleteProgram(m_program_ID);
+    }
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* checkStatus ************************************************************************/
+/***********************************************************************************************************************************************************************/
+GLint Shader::checkStatus(GLuint obj_id, std::string type)
+{
+    GLint error(0);
+
+    if(type == "linking")
+    {
+        glGetProgramiv(obj_id, GL_LINK_STATUS, &error);
+    }
+
+    if(type == "compiling")
+    {
+        glGetShaderiv(obj_id, GL_COMPILE_STATUS, &error);
+    }
+
+    return error;
 }
 
 /***********************************************************************************************************************************************************************/
