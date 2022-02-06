@@ -15,14 +15,25 @@ PURPOSE : class FlareManager
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-FlareManager::FlareManager() : fl(0.3f, "../../assets/textures/lensFlareTextures/tex8.png")
+FlareManager::FlareManager()
 {
+   flare_textures.push_back(new FlareTexture(0.3f, "../../assets/textures/lensFlareTextures/tex8.png", glm::vec3(0.0, 0.0, 0.0)));
    
+   for(std::vector<FlareTexture*>::iterator it = flare_textures.begin(); it != flare_textures.end(); it++)
+   {
+       assert(it[0]);
+   }
 }
 
 FlareManager::~FlareManager()
 {
-
+    for(std::vector<FlareTexture*>::iterator it = flare_textures.begin(); it != flare_textures.end(); it++)
+    {
+        if(*it != nullptr)
+        {
+            delete *it;
+        }
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -34,7 +45,15 @@ void FlareManager::renderLensFlare(RenderData &render_data)
 
         render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
         calculateFlarePos();
-        fl.display(render_data);
+
+        for(std::vector<FlareTexture*>::iterator it = flare_textures.begin(); it != flare_textures.end(); it++)
+        {
+            if(*it != nullptr)
+            {
+                it[0]->display(render_data);
+            }
+            
+        }
 
     render_data.saveViewMat();
 }
@@ -44,6 +63,14 @@ void FlareManager::renderLensFlare(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void FlareManager::calculateFlarePos()
 {
-    fl.setPositionFlareText(glm::vec3(0.0, 0.0, 0.0));
-    fl.transformMat();
+    for(std::vector<FlareTexture*>::iterator it = flare_textures.begin(); it != flare_textures.end(); it++)
+    {
+        if(*it != nullptr)
+        {
+            // it[0]->setPositionFlareText(glm::vec3(0.0, 0.0, 0.0));
+            it[0]->transformMat();
+        }
+        
+    }
+    
 }

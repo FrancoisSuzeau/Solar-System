@@ -20,6 +20,7 @@ PURPOSE : Interface FlareManager
 
         #include "../OpenGlSketch/RenderData.hpp"
         #include "FlareTexture.hpp"
+        #include <vector>
 
 /********************************************************************* class definition *********************************************************************/
         
@@ -27,7 +28,7 @@ PURPOSE : Interface FlareManager
         {
             private:
                 
-                FlareTexture fl;
+                std::vector<FlareTexture*> flare_textures;
 
                 void calculateFlarePos();
 

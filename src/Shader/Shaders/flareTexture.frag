@@ -32,5 +32,6 @@ void main()
     vec3 objectColor = texture(texture0, texCoord).rgb;
     
     FragColor = vec4(objectColor, 1.0);
+    // FragColor.a *= 0.1;
     
 }

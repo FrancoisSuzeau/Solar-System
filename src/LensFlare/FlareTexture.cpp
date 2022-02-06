@@ -20,7 +20,7 @@ PURPOSE : class FlareTexture
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-FlareTexture::FlareTexture(float size, std::string const text_path) : Disk(size),
+FlareTexture::FlareTexture(float size, std::string const text_path, glm::vec3 pos) : Disk(size),
 m_texture(text_path), m_bytes_coord_size(12 * sizeof(float))
 {
     assert(m_texture.loadTexture());
@@ -41,6 +41,8 @@ m_texture(text_path), m_bytes_coord_size(12 * sizeof(float))
     m_real_size = 1.0f;
 
     transform_mat = glm::mat4(1.0f);
+
+    m_pos = pos;
 }
 
 FlareTexture::FlareTexture() : Disk()

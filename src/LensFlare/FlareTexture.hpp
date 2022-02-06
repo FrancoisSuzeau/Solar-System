@@ -42,7 +42,7 @@ PURPOSE : Interface FlareTexture
 
             public:
 
-                FlareTexture(float size, std::string const text_path);
+                FlareTexture(float size, std::string const text_path, glm::vec3 pos);
                 FlareTexture();
                 ~FlareTexture();
 
