@@ -21,6 +21,7 @@ PURPOSE : Interface FlareManager
         #include "../OpenGlSketch/RenderData.hpp"
         #include "FlareTexture.hpp"
         #include <vector>
+        #include <algorithm>
 
 /********************************************************************* class definition *********************************************************************/
         

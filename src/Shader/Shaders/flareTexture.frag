@@ -33,14 +33,14 @@ void main()
     
 
     vec3 objectColor = texture(texture0, texCoord).rgb;
-
-    // float brightness2 = dot(objectColor, vec3(0.2126, 0.7152, 0.0722));
-    // if(brightness2 > 1.0)
-    //     BrightColor = vec4(objectColor, 1.0);
-    // else
-    //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-    
     FragColor = vec4(objectColor, 1.0);
-    FragColor.a *= brightness * 0.8;
-    
+    FragColor.a *= brightness;
+
+    float brightness2 = dot(objectColor, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness2 > 0.1)
+        BrightColor = vec4(objectColor, 1.0);
+    else
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);    
+
+    BrightColor.a *= brightness;
 }
