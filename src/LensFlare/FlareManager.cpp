@@ -17,17 +17,18 @@ PURPOSE : class FlareManager
 /***********************************************************************************************************************************************************************/
 FlareManager::FlareManager()
 {
-    flare_textures.push_back(new FlareTexture(0.7f, "../../assets/textures/lensFlareTextures/tex8.png"));
+    flare_textures.push_back(new FlareTexture(0.8f, "../../assets/textures/lensFlareTextures/tex8.png"));
     flare_textures.push_back(new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/tex4.png"));
     flare_textures.push_back(new FlareTexture(0.4f, "../../assets/textures/lensFlareTextures/tex5.png"));
     flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
     flare_textures.push_back(new FlareTexture(0.05f, "../../assets/textures/lensFlareTextures/tex9.png"));
-    flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex7.png"));
+    flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex10.png"));
     flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex1.png"));
     flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex5.png"));
     flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
     flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex2.png"));
-    flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex1.png"));
+    flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex10.png"));
+    flare_textures.push_back(new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/tex4.png"));
 
     spacing = 0.4f;
    
@@ -72,8 +73,6 @@ void FlareManager::renderLensFlare(RenderData &render_data)
         glm::vec2 sunToCenter = glm::vec2(0.5f) - sunScreenCoords;
 
         float brightness = 1 - (glm::length(sunToCenter) / 0.6f);
-
-        std::cout << brightness << std::endl;
         
         if(brightness > 0)
         {
