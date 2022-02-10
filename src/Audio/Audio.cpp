@@ -33,7 +33,8 @@ m_in_pause(false)
         "../../assets/audio/engine-of-creation.mp3",
         "../../assets/audio/mass-effect_map-theme.mp3",
         "../../assets/audio/unbound.mp3",
-        "../../assets/audio/dreamscape.mp3"
+        "../../assets/audio/dreamscape.mp3",
+        "../../assets/audio/two-moons.mp3"
     };
 }
 

@@ -52,6 +52,9 @@ Overlay::Overlay() : m_rect(0.05, 0.1)
     map_music_data[8].title = "Dreamscape";
     map_music_data[8].author = " ";
     map_music_data[8].studio = " ";
+    map_music_data[9].title = "Two Moons";
+    map_music_data[9].author = "Bobby Richards";
+    map_music_data[9].studio = "YouTube Audio Library";
     
 
     map_nav_data["Sun"] = {ImVec4(1.0f, 1.0f, 0.0f, 1.0f), 0.0f};
