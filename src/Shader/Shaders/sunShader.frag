@@ -4,6 +4,8 @@ in vec4 texCoords;
 
 uniform sampler2D texture0;
 
+uniform bool displayText;
+
 in vec3 Normal;
 in vec3 FragPos;
 uniform vec3 viewPos;
@@ -33,15 +35,21 @@ void main(void) {
     vec3 lightDir = normalize(lightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor * objectColor;
-
-    vec3 ambiant = 0.0 * objectColor;
-
-    FragColor = vec4(ambiant + diffuse, 1.0);
-
-    if(FragColor.r > 0.05f)
+   
+    if(displayText)
     {
-        FragColor.r *= 1.5f;
+        FragColor = vec4(diffuse, 1.0);
+        if(FragColor.r > 0.05f)
+        {
+            FragColor.r *= 1.5f;
+        }
     }
+    else
+    {
+        FragColor = vec4((lightColor * diff), 1.0);
+    }
+
+    
 
     // *********************************************** for bloom effect ***************************************************
     float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));

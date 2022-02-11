@@ -49,6 +49,7 @@ PURPOSE : header of the Star class
                 Star();
                 ~Star();
                 void display(RenderData &render_data);
+                bool displayTexture(RenderData &render_data);
                 
                 
         };

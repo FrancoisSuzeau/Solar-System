@@ -68,6 +68,8 @@ void Star::display(RenderData &render_data)
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
+            render_data.getShader("sun")->setInt("displayText", this->displayTexture(render_data));
+
             render_data.getShader("sun")->setMat4("view", render_data.getViewMat());
             render_data.getShader("sun")->setMat4("projection", render_data.getProjectionMat());
             render_data.getShader("sun")->setMat4("model", m_model_mat);
@@ -100,5 +102,20 @@ void Star::display(RenderData &render_data)
 
         glUseProgram(0);
     }
-    
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************ displayTexture *******************************************************************************/
+/***********************************************************************************************************************************************************************/
+bool Star::displayTexture(RenderData &render_data)
+{
+    bool ret = true;
+    float distance = Physique::getDistanceFromCam("Sun", render_data.getShipPos());
+
+    if(distance >= 1900)
+    {
+        ret = false;
+    }
+
+    return ret;
 }
