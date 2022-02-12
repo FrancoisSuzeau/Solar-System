@@ -28,7 +28,7 @@ FlareManager::FlareManager()
     flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
     flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex2.png"));
     flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex10.png"));
-    flare_textures.push_back(new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/tex4.png"));
+    // flare_textures.push_back(new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/tex4.png"));
 
     spacing = 0.4f;
    

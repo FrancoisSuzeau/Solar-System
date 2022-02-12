@@ -21,6 +21,8 @@ PURPOSE : header of the Star class
 
         #include "../../OpenGlSketch/RenderData.hpp"
 
+        #include "../../LensFlare/FlareTexture.hpp"
+
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
@@ -41,7 +43,14 @@ PURPOSE : header of the Star class
             private:
 
                 Texture         m_cloud_texture;
+                FlareTexture    *m_flare;
                 std::string     m_name;
+
+                void renderFlare(RenderData &render_data);
+                void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords);
+
+                glm::vec2 convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::mat4 projMat);
+               
         
             public:
 

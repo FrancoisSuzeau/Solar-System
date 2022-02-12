@@ -10,6 +10,9 @@ NAMEFILE : FlareTexture.cpp
 PURPOSE : class FlareTexture
 */
 
+// #define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+
 //usefull macro for VBO
 #ifndef BUFFER_OFFSET
 #define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
@@ -21,9 +24,8 @@ PURPOSE : class FlareTexture
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 FlareTexture::FlareTexture(float size, std::string const text_path) : Disk(size),
-m_texture(text_path), m_bytes_coord_size(12 * sizeof(float))
+m_bytes_coord_size(12 * sizeof(float))
 {
-    assert(m_texture.loadTexture());
 
     float temp_coord[] = {0, 0,   1, 0,   1, 1,
                           0, 0,   0, 1,   1, 1,
@@ -36,6 +38,7 @@ m_texture(text_path), m_bytes_coord_size(12 * sizeof(float))
     }
 
     this->load();
+    assert(this->loadTextureFromFile(text_path));
 
     m_inclinaison_angle = 90.0f;
     m_real_size = 1.0f;
@@ -52,7 +55,10 @@ FlareTexture::FlareTexture() : Disk()
 
 FlareTexture::~FlareTexture()
 {
-
+    if(glIsTexture(texture_id) == GL_TRUE)
+    {
+        glDeleteTextures(1, &texture_id);
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -145,7 +151,7 @@ void FlareTexture::display(RenderData &render_data, float brightness)
             render_data.getShader("flare")->setTexture("texture0", 0);
 
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, m_texture.getID());
+            glBindTexture(GL_TEXTURE_2D, texture_id);
 
             
             //display the form
@@ -171,6 +177,38 @@ void FlareTexture::transformMat()
     transform_mat = glm::mat4(1.0f);
 
     transform_mat = glm::translate(transform_mat, m_pos);
+}
 
-      
+/***********************************************************************************************************************************************************************/
+/******************************************************************** loadTextureFromFile ******************************************************************************/
+/***********************************************************************************************************************************************************************/
+bool FlareTexture::loadTextureFromFile(std::string text_path)
+{
+    unsigned char* image_data = stbi_load(text_path.c_str(), &texture_w, &texture_h, NULL, 4);
+    if (image_data == NULL)
+        return false;
+
+    // Create a OpenGL texture identifier
+    glGenTextures(1, &texture_id);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+
+    // Setup filtering parameters for display
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+
+        // Upload pixels into texture
+    #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    #endif
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+    stbi_image_free(image_data);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return true;
 }

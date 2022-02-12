@@ -19,7 +19,6 @@ PURPOSE : Interface FlareTexture
         #include <iostream>
 
         #include "../CelestialBody/Geometry/Disk.hpp"
-        #include "../Texture/Texture.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
         #include <cassert>
 
@@ -29,17 +28,19 @@ PURPOSE : Interface FlareTexture
         {
             private:
             
-                Texture         m_texture;
                 int             m_bytes_coord_size;
                 float           m_coord[12];
 
                 glm::mat4       transform_mat;
                 glm::vec3       m_pos;
+                int             texture_w;
+                int             texture_h;
+                GLuint          texture_id;
 
                 void load();
-                
-                
 
+                bool loadTextureFromFile(std::string text_path);
+                
             public:
 
                 FlareTexture(float size, std::string const text_path);

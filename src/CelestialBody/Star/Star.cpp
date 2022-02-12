@@ -35,6 +35,9 @@ m_name(name)
     m_current_position = m_initial_pos;
     m_speed_rotation = 0.1f;
     m_rotation_angle = 0.0f;
+
+    m_flare = new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/sunSpikes.png");
+    assert(m_flare);
 }
 
 Star::Star()
@@ -44,7 +47,10 @@ Star::Star()
 
 Star::~Star()
 {
-    
+    if(m_flare)
+    {
+        delete m_flare;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -102,6 +108,8 @@ void Star::display(RenderData &render_data)
 
         glUseProgram(0);
     }
+
+    this->renderFlare(render_data);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -118,4 +126,85 @@ bool Star::displayTexture(RenderData &render_data)
     }
 
     return ret;
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************ renderFlare *******************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Star::renderFlare(RenderData &render_data)
+{
+    if(m_flare != nullptr)
+    {
+        glm::mat4 tmp_view_mat = render_data.getViewMat();
+        render_data.initSaveMat();
+
+        render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.7f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+        // m_flare->setPositionFlareText(glm::vec3(0.0, 0.0, -0.2));
+        // m_flare->transformMat();
+
+        //calculate sun position on the screen
+        glm::vec2 sunScreenCoords = convertToScreenSpace(render_data.getSunPos(), tmp_view_mat, render_data.getProjectionMat());
+
+        if(sunScreenCoords == glm::vec2(-100))
+        {
+            return;
+        }
+
+        //calculate line form sun through center screen
+        glm::vec2 sunToCenter = glm::vec2(0.5f) - sunScreenCoords;
+
+        float brightness = 1 - (glm::length(sunToCenter) / 0.6f);
+        
+        if(brightness > 0)
+        {
+            calculateFlarePos(sunToCenter, sunScreenCoords);
+            m_flare->display(render_data, brightness);
+        }
+
+        render_data.saveViewMat();
+    }
+}
+
+/***********************************************************************************************************************************************************************/
+/**************************************************************************** calculateFlarePos **************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Star::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords)
+{
+    if(m_flare != nullptr)
+    {
+        
+        /*
+            Just a reminder : we calculate the sun coord on the screen with origin at the left hight corner of the screen (with 0.5, 0.5 as the center)
+            but the position of the flares are calculate with the OpenGL screen coord with origin in the center of the screen because of the lock on the view matrice
+            so we had to substract 0.5 at each calculation of the flare position
+        */
+
+        glm::vec2 flarePos = glm::vec2(sunCoords - glm::vec2(0.5));
+
+        flarePos.y *= -1;
+        flarePos.x *= -1;
+
+        m_flare->setPositionFlareText(glm::vec3(flarePos, -0.2));
+        m_flare->transformMat();
+    }
+}
+
+/***********************************************************************************************************************************************************************/
+/*********************************************************************** convertToScreenSpace **************************************************************************/
+/***********************************************************************************************************************************************************************/
+glm::vec2 Star::convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::mat4 projMat)
+{
+
+    glm::vec4 clipSpacePos = projMat * (viewMat * glm::vec4(sunPos, 1.0f));
+
+    if(clipSpacePos.w <= 0)
+    {
+        return glm::vec2(-100); // NULL
+    }
+
+    float x = (clipSpacePos.x / clipSpacePos.w + 1) / 2.0f; 
+    float y = 1 - ((clipSpacePos.y / clipSpacePos.w + 1) / 2.0f);
+
+    return glm::vec2(x, y);
 }
