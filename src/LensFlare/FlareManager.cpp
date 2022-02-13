@@ -17,24 +17,19 @@ PURPOSE : class FlareManager
 /***********************************************************************************************************************************************************************/
 FlareManager::FlareManager()
 {
-    // flare_textures.push_back(new FlareTexture(0.8f, "../../assets/textures/lensFlareTextures/tex8.png"));
-    flare_textures.push_back(new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost1.png"));
-    // flare_textures.push_back(new FlareTexture(0.4f, "../../assets/textures/lensFlareTextures/tex5.png"));
-    // flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
-    // flare_textures.push_back(new FlareTexture(0.05f, "../../assets/textures/lensFlareTextures/tex9.png"));
-    // flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex10.png"));
-    // flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex1.png"));
-    // flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex5.png"));
-    // flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
-    // flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex2.png"));
-    // flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex10.png"));
-    // flare_textures.push_back(new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/tex4.png"));
+    // flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/.png"), glm::vec3(0.3), -0.53, 0.005});
+    flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost2.png"), glm::vec3(0.3), -0.51, 0.005});
+    flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost2.png"), glm::vec3(0.3), -0.49, 0.005});
+    flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost2.png"), glm::vec3(0.3), -0.47, 0.005});
+    flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost2.png"), glm::vec3(0.3), -0.45, 0.005});
+    flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost1.png"), glm::vec3(0.5), -0.43, 0.03});
+    flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/tex4.png"), glm::vec3(1.9, 1.3, 1.3), -0.4, 0.003});
 
     spacing = 0.4f;
    
-   for(std::vector<FlareTexture*>::iterator it = flare_textures.begin(); it != flare_textures.end(); it++)
+   for(std::vector<flare_datas>::iterator it = flares.begin(); it != flares.end(); it++)
    {
-       assert(it[0]);
+       assert(it[0].flare);
    }
 
 
@@ -42,11 +37,11 @@ FlareManager::FlareManager()
 
 FlareManager::~FlareManager()
 {
-    for(std::vector<FlareTexture*>::iterator it = flare_textures.begin(); it != flare_textures.end(); it++)
+    for(std::vector<flare_datas>::iterator it = flares.begin(); it != flares.end(); it++)
     {
-        if(*it != nullptr)
+        if(it[0].flare != nullptr)
         {
-            delete *it;
+            delete it[0].flare;
         }
     }
 }
@@ -59,7 +54,7 @@ void FlareManager::renderLensFlare(RenderData &render_data)
     glm::mat4 tmp_view_mat = render_data.getViewMat();
     render_data.initSaveMat();
 
-        render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 0.1f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+        render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
         //calculate sun position on the screen
         glm::vec2 sunScreenCoords = convertToScreenSpace(render_data.getSunPos(), tmp_view_mat, render_data.getProjectionMat());
@@ -77,13 +72,13 @@ void FlareManager::renderLensFlare(RenderData &render_data)
         if(brightness > 0)
         {
 
-            int i = -3; //make it more align with sun and deplace it more to the opposite border
-            for(std::vector<FlareTexture*>::iterator it = flare_textures.begin(); it != flare_textures.end(); it++)
+            int i = 0; //make it more align with sun and deplace it more to the opposite border
+            for(std::vector<flare_datas>::iterator it = flares.begin(); it != flares.end(); it++)
             {
-                if(*it != nullptr)
+                if(it[0].flare != nullptr)
                 {
                     calculateFlarePos(sunToCenter, sunScreenCoords, it[0], i);
-                    // it[0]->display(render_data, brightness*0.005);
+                    it[0].flare->display(render_data, brightness*it[0].strength);
                 }
 
                 i++;
@@ -96,9 +91,9 @@ void FlareManager::renderLensFlare(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 /**************************************************************************** calculateFlarePos **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void FlareManager::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, FlareTexture *flare_text, int i)
+void FlareManager::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, flare_datas fd, int i)
 {
-    if(flare_text != nullptr)
+    if(fd.flare != nullptr)
     {
         glm::vec2 direction = glm::vec2(sunToCenter);
         direction = direction * (i * spacing);
@@ -115,8 +110,8 @@ void FlareManager::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords,
 
         flarePos.x *= -1;
 
-        flare_text->setPositionFlareText(glm::vec3(flarePos, -1.0));
-        flare_text->transformMat();
+        fd.flare->setPositionFlareText(glm::vec3(flarePos, fd.depth_size));
+        fd.flare->transformMat(true, fd.size);
     }
 }
 

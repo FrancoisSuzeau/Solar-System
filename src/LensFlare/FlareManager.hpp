@@ -23,17 +23,26 @@ PURPOSE : Interface FlareManager
         #include <vector>
         #include <algorithm>
 
+        typedef struct flare_datas {
+
+                FlareTexture    *flare;
+                glm::vec3       size;
+                float           depth_size;
+                float           strength;
+
+        } flare_datas;
+
 /********************************************************************* class definition *********************************************************************/
         
         class FlareManager
         {
             private:
                 
-                std::vector<FlareTexture*> flare_textures;
+                std::vector<flare_datas> flares;
 
                 float spacing; 
 
-                void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, FlareTexture *flare_text, int i);
+                void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, flare_datas fd, int i);
 
                 glm::vec2 convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::mat4 projMat);
 
