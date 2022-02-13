@@ -36,8 +36,12 @@ m_name(name)
     m_speed_rotation = 0.1f;
     m_rotation_angle = 0.0f;
 
-    m_flare = new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/sunSpikes.png");
-    assert(m_flare);
+    m_flares.push_back({new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/sunSpikes.png"), glm::vec3(2.8, 0.1, 0.1), -0.3, 0.15});
+    m_flares.push_back({new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/sunFlare.png"), glm::vec3(1.5, 1.5, 1.5), -0.2, 0.09});
+    for(std::vector<flare_data>::iterator it = m_flares.begin(); it != m_flares.end(); ++it)
+    {
+        assert(it[0].flare);
+    }
 }
 
 Star::Star()
@@ -47,9 +51,12 @@ Star::Star()
 
 Star::~Star()
 {
-    if(m_flare)
+    for(std::vector<flare_data>::iterator it = m_flares.begin(); it != m_flares.end(); ++it)
     {
-        delete m_flare;
+        if(it[0].flare != nullptr)
+        {
+            delete it[0].flare;
+        }
     }
 }
 
@@ -108,8 +115,6 @@ void Star::display(RenderData &render_data)
 
         glUseProgram(0);
     }
-
-    // this->renderFlare(render_data);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -133,8 +138,7 @@ bool Star::displayTexture(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 void Star::renderFlare(RenderData &render_data)
 {
-    if(m_flare != nullptr)
-    {
+
         glm::mat4 tmp_view_mat = render_data.getViewMat();
         render_data.initSaveMat();
 
@@ -155,20 +159,26 @@ void Star::renderFlare(RenderData &render_data)
         
         if(brightness > 0)
         {
-            calculateFlarePos(sunToCenter, sunScreenCoords);
-            m_flare->display(render_data, brightness * 0.1);
+            for(std::vector<flare_data>::iterator it = m_flares.begin(); it != m_flares.end(); ++it)
+            {
+                if(it[0].flare != nullptr)
+                {
+                    calculateFlarePos(sunToCenter, sunScreenCoords, it[0]);
+                    it[0].flare->display(render_data, brightness * it[0].strenght);
+                }
+            }
+            
         }
 
         render_data.saveViewMat();
-    }
 }
 
 /***********************************************************************************************************************************************************************/
 /**************************************************************************** calculateFlarePos **************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords)
+void Star::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, flare_data f_d)
 {
-    if(m_flare != nullptr)
+    if(f_d.flare != nullptr)
     {
         glm::vec2 flarePos = glm::vec2(sunCoords);
 
@@ -182,8 +192,9 @@ void Star::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords)
         //     flarePos.x = flarePos.x + 0.01;
         // }
 
-        m_flare->setPositionFlareText(glm::vec3(flarePos, -0.2));
-        m_flare->transformMat();
+        f_d.flare->setPositionFlareText(glm::vec3(flarePos, f_d.depth_size));
+        f_d.flare->transformMat(true, f_d.size);
+        
     }
 }
 

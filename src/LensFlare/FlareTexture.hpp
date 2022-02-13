@@ -50,7 +50,7 @@ PURPOSE : Interface FlareTexture
                 void display(RenderData &render_data, float brightness);
 
                 void setPositionFlareText(glm::vec3 new_pos);
-                void transformMat();
+                void transformMat(bool do_scale = false, glm::vec3 scale = glm::vec3(1.0));
             
         };
 

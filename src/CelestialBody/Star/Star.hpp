@@ -33,6 +33,15 @@ PURPOSE : header of the Star class
         #include <cstring>
         #include <vector>
         #include <cassert>
+
+        typedef struct flare_data {
+
+                FlareTexture    *flare;
+                glm::vec3       size;
+                float           depth_size;
+                float           strenght;
+
+        } flare_data;
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -43,10 +52,10 @@ PURPOSE : header of the Star class
             private:
 
                 Texture         m_cloud_texture;
-                FlareTexture    *m_flare;
+                std::vector<flare_data>      m_flares;
                 std::string     m_name;
 
-                void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords);
+                void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, flare_data f_d);
 
                 glm::vec2 convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::mat4 projMat);
                 bool displayTexture(RenderData &render_data);

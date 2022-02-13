@@ -172,11 +172,16 @@ void FlareTexture::setPositionFlareText(glm::vec3 new_pos)
     m_pos = new_pos;
 }
 
-void FlareTexture::transformMat()
+void FlareTexture::transformMat(bool do_scale, glm::vec3 scale)
 {
     transform_mat = glm::mat4(1.0f);
 
     transform_mat = glm::translate(transform_mat, m_pos);
+
+    if(do_scale)
+    {
+        transform_mat = glm::scale(transform_mat, scale);
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -194,11 +199,12 @@ bool FlareTexture::loadTextureFromFile(std::string text_path)
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
-    // Setup filtering parameters for display
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // // Setup filtering parameters for display
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
 
         // Upload pixels into texture
     #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
