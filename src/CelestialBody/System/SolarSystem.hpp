@@ -48,6 +48,8 @@ PURPOSE : header of the virtual SolarSystem class
                 Skybox                          *skybox;
                 AsteroidField                   *m_asteroid_field;
 
+                FlareManager                    fm;
+
                 std::vector<Planete*>              m_planetes;
                 PlaneteRender *planete_render;
 
@@ -76,6 +78,8 @@ PURPOSE : header of the virtual SolarSystem class
 
                 void setMostGravInfluence(RenderData &render_data) override;
                 void approchBody(Spaceship *ship) override;
+
+                void renderFlareSun(RenderData &render_data) override;
 
 
         };

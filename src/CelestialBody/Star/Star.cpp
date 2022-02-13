@@ -109,7 +109,7 @@ void Star::display(RenderData &render_data)
         glUseProgram(0);
     }
 
-    this->renderFlare(render_data);
+    // this->renderFlare(render_data);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -138,10 +138,7 @@ void Star::renderFlare(RenderData &render_data)
         glm::mat4 tmp_view_mat = render_data.getViewMat();
         render_data.initSaveMat();
 
-        render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.7f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-
-        // m_flare->setPositionFlareText(glm::vec3(0.0, 0.0, -0.2));
-        // m_flare->transformMat();
+        render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
         //calculate sun position on the screen
         glm::vec2 sunScreenCoords = convertToScreenSpace(render_data.getSunPos(), tmp_view_mat, render_data.getProjectionMat());
@@ -152,14 +149,14 @@ void Star::renderFlare(RenderData &render_data)
         }
 
         //calculate line form sun through center screen
-        glm::vec2 sunToCenter = glm::vec2(0.5f) - sunScreenCoords;
+        glm::vec2 sunToCenter = sunScreenCoords;
 
-        float brightness = 1 - (glm::length(sunToCenter) / 0.6f);
+        float brightness = 1 - (glm::length(sunToCenter) / 1.0f);
         
         if(brightness > 0)
         {
             calculateFlarePos(sunToCenter, sunScreenCoords);
-            m_flare->display(render_data, brightness);
+            m_flare->display(render_data, brightness * 0.1);
         }
 
         render_data.saveViewMat();
@@ -173,17 +170,17 @@ void Star::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords)
 {
     if(m_flare != nullptr)
     {
-        
-        /*
-            Just a reminder : we calculate the sun coord on the screen with origin at the left hight corner of the screen (with 0.5, 0.5 as the center)
-            but the position of the flares are calculate with the OpenGL screen coord with origin in the center of the screen because of the lock on the view matrice
-            so we had to substract 0.5 at each calculation of the flare position
-        */
+        glm::vec2 flarePos = glm::vec2(sunCoords);
 
-        glm::vec2 flarePos = glm::vec2(sunCoords - glm::vec2(0.5));
+        // if(sunToCenter.x > 0)
+        // {
+        //     flarePos.x = flarePos.x - 0.01;
+        // }
 
-        flarePos.y *= -1;
-        flarePos.x *= -1;
+        // if(sunToCenter.x < 0)
+        // {
+        //     flarePos.x = flarePos.x + 0.01;
+        // }
 
         m_flare->setPositionFlareText(glm::vec3(flarePos, -0.2));
         m_flare->transformMat();
@@ -203,8 +200,8 @@ glm::vec2 Star::convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::m
         return glm::vec2(-100); // NULL
     }
 
-    float x = (clipSpacePos.x / clipSpacePos.w + 1) / 2.0f; 
-    float y = 1 - ((clipSpacePos.y / clipSpacePos.w + 1) / 2.0f);
+    float x = (float) clipSpacePos.x / (float) clipSpacePos.w;
+    float y = ((float) clipSpacePos.y / (float) clipSpacePos.w) / (float) 2.0;
 
     return glm::vec2(x, y);
 }

@@ -59,8 +59,6 @@ PURPOSE : header of the OpenGlSketch class
         #include "../../lib/imgui/imgui.h"
         #include "../../lib/imgui/imgui_impl_sdl.h"
         #include "../../lib/imgui/imgui_impl_opengl3.h"
-
-        #include "../LensFlare/FlareManager.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/

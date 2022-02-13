@@ -354,3 +354,7 @@ void PlanetarySystem::displayAsteroidField(RenderData &render_data)
     //do nothing and doesn't have
 }
 
+void PlanetarySystem::renderFlareSun(RenderData &render_data)
+{
+    //do nothing and doesn't have
+}

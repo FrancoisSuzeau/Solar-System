@@ -32,6 +32,9 @@ PURPOSE : header of the virtual System class
         #include "../Physique/Physique.hpp"
         #include "../../Spaceship/Spaceship.hpp"
 
+        #include "../../LensFlare/FlareManager.hpp"
+
+
         typedef struct init_data {
 
                 std::vector<std::string> texture_path;
@@ -84,6 +87,7 @@ PURPOSE : header of the virtual System class
                 virtual void displayRing(RenderData &render_data) = 0;
                 virtual void setMostGravInfluence(RenderData &render_data) = 0;
                 virtual void approchBody(Spaceship *ship) = 0;
+                virtual void renderFlareSun(RenderData &render_data) = 0;
                 
         };
 

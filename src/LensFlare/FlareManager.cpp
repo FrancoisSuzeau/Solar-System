@@ -17,17 +17,17 @@ PURPOSE : class FlareManager
 /***********************************************************************************************************************************************************************/
 FlareManager::FlareManager()
 {
-    flare_textures.push_back(new FlareTexture(0.8f, "../../assets/textures/lensFlareTextures/tex8.png"));
-    flare_textures.push_back(new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/tex4.png"));
-    flare_textures.push_back(new FlareTexture(0.4f, "../../assets/textures/lensFlareTextures/tex5.png"));
-    flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
-    flare_textures.push_back(new FlareTexture(0.05f, "../../assets/textures/lensFlareTextures/tex9.png"));
-    flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex10.png"));
-    flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex1.png"));
-    flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex5.png"));
-    flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
-    flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex2.png"));
-    flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex10.png"));
+    // flare_textures.push_back(new FlareTexture(0.8f, "../../assets/textures/lensFlareTextures/tex8.png"));
+    flare_textures.push_back(new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost1.png"));
+    // flare_textures.push_back(new FlareTexture(0.4f, "../../assets/textures/lensFlareTextures/tex5.png"));
+    // flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
+    // flare_textures.push_back(new FlareTexture(0.05f, "../../assets/textures/lensFlareTextures/tex9.png"));
+    // flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex10.png"));
+    // flare_textures.push_back(new FlareTexture(0.02f, "../../assets/textures/lensFlareTextures/tex1.png"));
+    // flare_textures.push_back(new FlareTexture(0.1f, "../../assets/textures/lensFlareTextures/tex5.png"));
+    // flare_textures.push_back(new FlareTexture(0.04f, "../../assets/textures/lensFlareTextures/tex3.png"));
+    // flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex2.png"));
+    // flare_textures.push_back(new FlareTexture(0.15f, "../../assets/textures/lensFlareTextures/tex10.png"));
     // flare_textures.push_back(new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/tex4.png"));
 
     spacing = 0.4f;
@@ -59,7 +59,7 @@ void FlareManager::renderLensFlare(RenderData &render_data)
     glm::mat4 tmp_view_mat = render_data.getViewMat();
     render_data.initSaveMat();
 
-        render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.7f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+        render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 0.1f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
         //calculate sun position on the screen
         glm::vec2 sunScreenCoords = convertToScreenSpace(render_data.getSunPos(), tmp_view_mat, render_data.getProjectionMat());
@@ -83,7 +83,7 @@ void FlareManager::renderLensFlare(RenderData &render_data)
                 if(*it != nullptr)
                 {
                     calculateFlarePos(sunToCenter, sunScreenCoords, it[0], i);
-                    it[0]->display(render_data, brightness*0.005);
+                    // it[0]->display(render_data, brightness*0.005);
                 }
 
                 i++;
@@ -115,7 +115,7 @@ void FlareManager::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords,
 
         flarePos.x *= -1;
 
-        flare_text->setPositionFlareText(glm::vec3(flarePos, -0.2));
+        flare_text->setPositionFlareText(glm::vec3(flarePos, -1.0));
         flare_text->transformMat();
     }
 }

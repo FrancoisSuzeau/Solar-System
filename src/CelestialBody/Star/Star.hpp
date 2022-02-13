@@ -46,10 +46,10 @@ PURPOSE : header of the Star class
                 FlareTexture    *m_flare;
                 std::string     m_name;
 
-                void renderFlare(RenderData &render_data);
                 void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords);
 
                 glm::vec2 convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::mat4 projMat);
+                bool displayTexture(RenderData &render_data);
                
         
             public:
@@ -58,8 +58,8 @@ PURPOSE : header of the Star class
                 Star();
                 ~Star();
                 void display(RenderData &render_data);
-                bool displayTexture(RenderData &render_data);
                 
+                void renderFlare(RenderData &render_data);
                 
         };
 

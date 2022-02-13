@@ -97,6 +97,11 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->approchBody(ship);
                 }
 
+                void renderFlareSun(RenderData &render_data)
+                {
+                        m_system->renderFlareSun(render_data);
+                }
+
 
         };
 

@@ -66,6 +66,8 @@ PURPOSE : header of the virtual PlanetarySystem class
                 void setMostGravInfluence(RenderData &render_data) override;
                 void approchBody(Spaceship *ship) override;
 
+                void renderFlareSun(RenderData &render_data) override;
+
 
         };
 
