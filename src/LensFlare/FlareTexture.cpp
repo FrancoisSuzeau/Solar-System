@@ -189,6 +189,7 @@ void FlareTexture::transformMat(bool do_scale, glm::vec3 scale)
 /***********************************************************************************************************************************************************************/
 bool FlareTexture::loadTextureFromFile(std::string text_path)
 {
+    stbi_set_flip_vertically_on_load(true);
     unsigned char* image_data = stbi_load(text_path.c_str(), &texture_w, &texture_h, NULL, 4);
     if (image_data == NULL)
         return false;
@@ -215,6 +216,8 @@ bool FlareTexture::loadTextureFromFile(std::string text_path)
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    stbi_set_flip_vertically_on_load(false);
 
     return true;
 }

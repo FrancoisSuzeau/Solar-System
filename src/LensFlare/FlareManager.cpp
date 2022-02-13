@@ -17,7 +17,7 @@ PURPOSE : class FlareManager
 /***********************************************************************************************************************************************************************/
 FlareManager::FlareManager()
 {
-    // flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/.png"), glm::vec3(0.3), -0.53, 0.005});
+    flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/tex8.png"), glm::vec3(1.0), -0.53, 0.001});
     flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost2.png"), glm::vec3(0.3), -0.51, 0.005});
     flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost2.png"), glm::vec3(0.3), -0.49, 0.005});
     flares.push_back({new FlareTexture(0.5f, "../../assets/textures/lensFlareTextures/Ghost2.png"), glm::vec3(0.3), -0.47, 0.005});

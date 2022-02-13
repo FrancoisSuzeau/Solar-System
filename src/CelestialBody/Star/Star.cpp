@@ -36,7 +36,7 @@ m_name(name)
     m_speed_rotation = 0.1f;
     m_rotation_angle = 0.0f;
 
-    m_flares.push_back({new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/sunSpikes.png"), glm::vec3(2.5, 0.8, 0.8), -0.3, 0.05});
+    m_flares.push_back({new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/sunSpikes.png"), glm::vec3(2.0, 0.8, 0.8), -0.3, 0.09});
     // m_flares.push_back({new FlareTexture(0.33f, "../../assets/textures/lensFlareTextures/Ghost2.png"), glm::vec3(1.0, 1.0, 1.0), -0.2, 0.008});
     for(std::vector<flare_data>::iterator it = m_flares.begin(); it != m_flares.end(); ++it)
     {
@@ -81,7 +81,8 @@ void Star::display(RenderData &render_data)
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
 
-            render_data.getShader("sun")->setInt("displayText", this->displayTexture(render_data));
+            // render_data.getShader("sun")->setInt("displayText", this->displayTexture(render_data));
+            render_data.getShader("sun")->setInt("displayText", true);
 
             render_data.getShader("sun")->setMat4("view", render_data.getViewMat());
             render_data.getShader("sun")->setMat4("projection", render_data.getProjectionMat());
