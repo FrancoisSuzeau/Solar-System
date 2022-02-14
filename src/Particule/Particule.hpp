@@ -26,23 +26,9 @@ PURPOSE : header of the Particule class
         #include <string>
         #include <math.h>
         #include <Windows.h>
-
-        #include "../Shader/Shader.hpp"
-        #include "../CelestialBody/Geometry/Sphere.hpp"
-        #include "../Input/Input.hpp"
-        #include "../Spaceship/Spaceship.hpp"
-
-        #define MAX_PARTICLES 1000
-
-        typedef struct particles {
-
-                    double      x;
-                    double      y;
-                    double      z;
-
-                    int         id;
-
-        } particles;
+        #include <cassert>
+        
+        #include "../OpenGlSketch/RenderData.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -52,42 +38,27 @@ PURPOSE : header of the Particule class
             
             private:
 
-                particles   m_particle_data1[MAX_PARTICLES];
-                particles   m_particle_data2[MAX_PARTICLES];
-
-                Sphere      *m_sphere_particle;
-                Shader      *m_sphere_shader;
-                Spaceship       *m_ship;
-                float x_change;
-                float y_change;
-                float z_change;
-                glm::vec3 ship_pos;
-
-                double myRand(double const min, double const max);
-                void moveParticleFandB(particles &particle); // forward and backward
-                void moveParticleLandR(particles &particle); //left and right
                 
-                void drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle, bool is_moving);
-                void determineOrientation(glm::mat4 &projection, glm::mat4 &modelview, Input input);
+                GLuint                          m_vbo;
+                GLuint                          m_ibo;
+                GLsizei                         m_element_count;
+                unsigned int                    m_vertCount;
+                GLushort                        *m_tris;
+                float                           m_radius;
 
-                int             m_directionFandB;
-                int             m_directionLandR;
-                float           m_speed;
+                glm::mat4                       transform_mat;
+                glm::vec3                       position;
+                glm::vec3                       scale;
+
 
             public:
             
-                Particule(Spaceship *ship);
+                Particule(const float radius, const unsigned int longSegs, const unsigned int latSegs);
                 ~Particule();
 
-                void initParticles(glm::vec3 target_point);
-                void drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, bool is_moving, glm::vec3 target_point);
-                
-                
-
-                
-
-                
-
+                void setPositionParticule(glm::vec3 new_pos);
+                void transformMat();
+                void renderParticule(RenderData &render_data);
 
         };
 

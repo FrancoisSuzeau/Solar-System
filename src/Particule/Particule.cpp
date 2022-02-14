@@ -10,241 +10,219 @@ NAMEFILE : Particule.cpp
 PURPOSE : class Particule
 */
 
-#include "Particule.hpp"
+//usefull macro for VBO
+#ifndef BUFFER_OFFSET
+#define BUFFER_OFFSET(offset) ((char*)0 + (offset))
+#endif
+#define VERT_NUM_FLOATS 8
 
-using namespace glm;
+#include "Particule.hpp"
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Particule::Particule(Spaceship *ship) : m_directionFandB(0), m_directionLandR(0), m_speed(0)
+Particule::Particule(const float radius, const unsigned int longSegs, const unsigned int latSegs) : m_vbo(0), m_ibo(0), m_element_count(0), m_radius(radius)
 {
+   /************************************************* calculate vertex position ********************************************************/
+    const unsigned int longVerts = longSegs + 1;
+    const unsigned int latVerts = latSegs + 1;
+    m_vertCount = longVerts * latVerts;
+
+    //HACK : this static inititialisation of the array is only available for mingw c++ compilor not for the Microsoft c++ compilor for example
+    //      -> Useless to have longSegs and LatSegs as parameter because there is only two instance type : 
+    //              - atmosphere with 70 longitude segments and 70 latitude segment
+    //              - particule with 5 longitude segments and 5 latitude segments
+    GLfloat verts[longVerts][latVerts][VERT_NUM_FLOATS];
     
 
-    m_sphere_particle = new Sphere(1, 5, 5);
-    if(m_sphere_particle == nullptr)
+    for (unsigned int i(0); i < longVerts; i++)
     {
-        exit(EXIT_FAILURE);
+        const float iDivLong  = i / (float)longSegs;
+        const float theta     = i == 0 || i == longSegs ? 0.0 : iDivLong * 2.0 * M_PI;
+
+        for (unsigned int j = 0; j < latVerts; j++)
+        {
+            const float jDivLat = j / (float)latSegs;
+            const float phi     = jDivLat * M_PI;
+
+            // Normal
+            verts[i][j][3]  = cos(theta) * sin(phi);
+            verts[i][j][4]  = cos(phi);
+            verts[i][j][5]  = sin(theta) * sin(phi);
+
+            // Position
+            verts[i][j][0]  = verts[i][j][3] * radius;
+            verts[i][j][1]  = verts[i][j][4] * radius;
+            verts[i][j][2]  = verts[i][j][5] * radius;
+
+            // Texture coordinates
+            verts[i][j][6]  = iDivLong;
+            verts[i][j][7]  = jDivLat;
+        }
+    }
+    
+    //===================================================================================================================================
+
+    /************************************************* build triangle ********************************************************/
+    const unsigned int triCount = longSegs * latSegs * 2;
+    m_element_count = triCount * 3;
+    GLushort tris[m_element_count];
+    unsigned int index = 0;
+    for (unsigned int i = 0; i < longSegs; i++)
+    {
+        for (unsigned int j = 0; j < latSegs; j++)
+        {
+            // Vertex indices
+            const unsigned int v0 = j + latVerts * i;
+            const unsigned int v1 = j + latVerts * (i + 1);
+            const unsigned int v2 = v1 + 1;
+            const unsigned int v3 = v0 + 1;
+
+            // First triangle
+            tris[index++]         = v0;
+            tris[index++]         = v1;
+            tris[index++]         = v2;
+
+            // Second triangle
+            tris[index++]         = v0;
+            tris[index++]         = v2;
+            tris[index++]         = v3;
+        }
     }
 
-    m_sphere_shader = new Shader("../src/Shader/Shaders/sphereShader.vert", "../src/Shader/Shaders/simpleSphereShader.frag");
-    if(m_sphere_shader == nullptr)
-    {
-        exit(EXIT_FAILURE);
-    }
-    m_sphere_shader->loadShader();
+    m_tris = tris;
+    
+    //===================================================================================================================================
 
-    m_ship = ship;
-    if(m_ship == nullptr)
+    /************************************************* VBO management ********************************************************/
+    //destroy a possible ancient VBO
+    if(glIsBuffer(m_vbo) == GL_TRUE)
     {
-        exit(EXIT_FAILURE);
+        glDeleteBuffers(1, &m_vbo);
     }
 
+    //generate Vertex Buffer Object ID
+    glGenBuffers(1, &m_vbo);
+
+    //lock VBO
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
+        //memory allocation
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * VERT_NUM_FLOATS * m_vertCount, 0, GL_STATIC_DRAW);
+
+        /*
+            - GL_STATIC_DRAW : data with few updating
+            - GL_DYNAMIC_DRAW : data with frequently updating (many times per second but not each frame
+            - GL_STREAM_DRAW : data with each frame updating
+        there is 6 other possible values
+        */
+
+       //vertices transfert$
+       glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * VERT_NUM_FLOATS * m_vertCount, verts);
+
+
+    //unlock VBO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //===================================================================================================================
+
+    /************************************************* IBO management ********************************************************/
+    //destroy a possible ancient IBO
+    if(glIsBuffer(m_ibo) == GL_TRUE)
+    {
+        glDeleteBuffers(1, &m_ibo);
+    }
+
+    //generate Index Buffer Object ID
+    glGenBuffers(1, &m_ibo);
+
+    //lock IBO
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+    
+
+        //memory allocation
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * m_element_count, 0, GL_DYNAMIC_DRAW);
+
+
+        /*
+            - GL_STATIC_DRAW : data with few updating
+            - GL_DYNAMIC_DRAW : data with frequently updating (many times per second but not each frame
+            - GL_STREAM_DRAW : data with each frame updating
+        there is 6 other possible values
+        */
+
+       //Indices transfert
+       glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(GLushort) * m_element_count, m_tris);
+
+    //unlock IBO
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    //===================================================================================================================
+
+    transform_mat = glm::mat4(1.0);
+    position = glm::vec3(0.0);
+    scale = glm::vec3(100.0);
 }
 
 Particule::~Particule()
 {
-    if(m_sphere_shader != nullptr)
-    {
-        delete m_sphere_shader;
-    }
+    glDeleteBuffers(1, &m_ibo);
+    glDeleteBuffers(1, &m_vbo);
 
-    if(m_sphere_particle != nullptr)
+    if( (glIsBuffer(m_vbo) == GL_FALSE) && (glIsBuffer(m_ibo) == GL_FALSE))
     {
-        delete m_sphere_particle;
+        std::cout << "PARTICULE :: delete >>> SUCESS" << std::endl;
     }
 }
 
 /***********************************************************************************************************************************************************************/
-/************************************************************************************ myRand ***************************************************************************/
+/************************************************************************ renderParticule ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-double Particule::myRand(double const min, double const max)
+void Particule::renderParticule(RenderData &render_data)
 {
-    return (double) (min + ((float) rand() / RAND_MAX * (max - min + 1.0)));
-}
-
-/***********************************************************************************************************************************************************************/
-/***************************************************************************** initParticles ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Particule::initParticles(glm::vec3 target_point)
-{
-    for (int i(0); i < MAX_PARTICLES; i++)
+    if(render_data.getShader("particule") != nullptr)
     {
+        glUseProgram(render_data.getShader("particule")->getProgramID());
+        /************************************************* bind VBO and IBO ********************************************************/
+        glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glTexCoordPointer(2,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3 * 2));
+        glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
+        glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
+        //===================================================================================================================================
 
-        m_particle_data1[i].x = target_point.x + myRand(-5.0, 5.0);
-        m_particle_data1[i].y = target_point.y + myRand(-200.0, 200.0);
-        m_particle_data1[i].z = target_point.z + myRand(-5.0, 5.0);
-        m_particle_data1[i].id = 1;
 
-        m_particle_data2[i].x = target_point.x + myRand(-5.0, 5.0);
-        m_particle_data2[i].y = target_point.y + myRand(-10.0, 10.0);
-        m_particle_data2[i].z = target_point.z + myRand(-5.0, 5.0);
-        m_particle_data2[i].id = 2;
+        render_data.getShader("particule")->setMat4("view", render_data.getViewMat());
+        render_data.getShader("particule")->setMat4("projection", render_data.getProjectionMat());
+        render_data.getShader("particule")->setMat4("model", transform_mat);
 
-    }
-}
-
-/***********************************************************************************************************************************************************************/
-/***************************************************************************** drawParticles ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Particule::drawParticles(glm::mat4 &projection, glm::mat4 &modelview, Input input, bool is_moving, glm::vec3 target_point)
-{
-    glm::mat4 save = modelview;
-
-        determineOrientation(projection, modelview, input);
-        m_speed = 1 * m_ship->getSpeed() / 200;
-        ship_pos = target_point;
-        x_change = m_speed * sin(glm::radians(m_ship->getRotX()));
-        y_change = m_speed * -cos(glm::radians(m_ship->getRotX()));
-        z_change = m_speed * cos(glm::radians(m_ship->getRotY()));
-
-        if(m_speed < 0.3)
-        {
-            m_speed = 0.3;
-        }
-
-        for (int i(0); i < MAX_PARTICLES; i++)
-        {
-            moveParticleFandB(m_particle_data1[i]);
-            moveParticleFandB(m_particle_data2[i]);
-
-            // moveParticleLandR(m_particle_data1[i]);
-            // moveParticleLandR(m_particle_data2[i]);
-
-            drawOneParticle(projection, modelview, m_particle_data1[i], is_moving);
-            drawOneParticle(projection, modelview, m_particle_data2[i], is_moving);
-
-        }
         
+        glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 
-    modelview = save;
-}
+        /************************************************* unbind VBO and IBO ********************************************************/
+        glBindBuffer(GL_ARRAY_BUFFER,         0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        //===================================================================================================================================
 
-/***********************************************************************************************************************************************************************/
-/***************************************************************************** drawOneParticle ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Particule::drawOneParticle(glm::mat4 &projection, glm::mat4 &modelview, particles &particle, bool is_moving)
-{
-    glm::mat4 save = modelview;
-
-    if(is_moving)
-    {
-        modelview = translate(modelview, vec3(particle.x, particle.y, particle.z));
-        modelview = scale(modelview, (vec3(0.002f)));
-
-        if((m_sphere_particle != nullptr) && (m_sphere_shader != nullptr))
-        {
-            glm::mat4 light(1.0f);
-            glm::vec3 campos(0.0f);
-            m_sphere_particle->display(projection, modelview, campos, true, m_sphere_shader);
-
-            modelview = save;
-
-        }
-    }   
-
-    modelview = save;
-}
-
-/***********************************************************************************************************************************************************************/
-/***************************************************************************** moveParticle ****************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Particule::moveParticleFandB(particles &particle)
-{
-    if((particle.y >= -10.0f + ship_pos.y) && (particle.y <= 10.0 + ship_pos.y))
-    {
-        switch(particle.id)
-        {
-            case 1:
-                // particle.x += 0.06 * m_directionFandB * m_speed;
-                particle.y += 0.006 * m_directionFandB;
-                // particle.z += 0.06 * m_directionFandB * m_speed;
-                break;
-            case 2:
-                // particle.x += 0.02 * m_directionFandB * m_speed;
-                particle.y += 0.002 * m_directionFandB;
-                // particle.z += 0.02 * m_directionFandB * m_speed;
-                break;
-            default:
-                break;
-        }
-    }
-    
-    if((particle.y > 200.0f + ship_pos.y) || (particle.y < -200.0 + ship_pos.y))
-    {
-        particle.y = ship_pos.y + myRand(-200.0, 200.0);
+        glUseProgram(0);
     }
     
 }
 
-/***********************************************************************************************************************************************************************/
-/***************************************************************************** moveParticle ****************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Particule::moveParticleLandR(particles &particle)
+void Particule::setPositionParticule(glm::vec3 new_pos)
 {
-    // if((particle.x >= -5.0) && (particle.x <= 5.0))
-    // {
-    //     switch(particle.id)
-    //     {
-    //         case 1:
-    //             particle.x += (0.06 * m_directionFandB * x_change);
-    //             particle.y += (0.06 * m_directionFandB * y_change);
-    //             particle.z += (0.06 * m_directionFandB * z_change);
-    //             break;
-    //         case 2:
-    //             particle.x += (0.02 * m_directionFandB * x_change);
-    //             particle.y += (0.02 * m_directionFandB * y_change);
-    //             particle.z += (0.02 * m_directionFandB * z_change);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-    
-
-    // if((particle.x > 5.0) || (particle.x < -5.0))
-    // {
-    //     particle.x = ship_pos.x + myRand(-5.0 , 5.0);
-    //     particle.y = ship_pos.y + myRand(-5.0, 5.0);
-    //     particle.z = ship_pos.z + myRand(-3.0, 0.0);
-    // }
-    
-
-    
+    position = new_pos;
 }
 
-/***********************************************************************************************************************************************************************/
-/*********************************************************************** determineOrientation **************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Particule::determineOrientation(glm::mat4 &projection, glm::mat4 &modelview, Input input)
+void Particule::transformMat()
 {
-    if(input.getKey(SDL_SCANCODE_A))
-    {
-        m_directionLandR = 1;
-        m_directionFandB = 0;
+    transform_mat = glm::mat4(1.0f);
 
-    }
-    else if(input.getKey(SDL_SCANCODE_D))
-    {
-        m_directionLandR = -1;
-        m_directionFandB = 0;
+    transform_mat = glm::translate(transform_mat, position);
 
-    }
-    else if(input.getKey(SDL_SCANCODE_S))
-    {
-        m_directionFandB = -1;
-        m_directionLandR = 0;
-
-    }
-    else if(input.getKey(SDL_SCANCODE_W))
-    {
-        m_directionFandB = 1;
-        m_directionLandR = 0;
-
-    }
-    else
-    {
-        m_directionLandR = 0;
-        m_directionFandB = 0;
-    }
+    transform_mat = glm::scale(transform_mat, scale);
 }

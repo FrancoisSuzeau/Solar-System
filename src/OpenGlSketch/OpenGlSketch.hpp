@@ -49,7 +49,7 @@ PURPOSE : header of the OpenGlSketch class
         #include "../Overlay/Overlay.hpp"
 
         #include "../Settings/Settings.hpp"
-        #include "../Particule/Particule.hpp"
+        #include "../Particule/ParticuleManager.hpp"
 
         #include "../Spaceship/Spaceship.hpp"
         #include "../Framebuffer/Framebuffer.hpp"
@@ -97,7 +97,7 @@ PURPOSE : header of the OpenGlSketch class
 
                 Overlay *m_overlay;
 
-                // Particule *m_particuleGenerator;
+                ParticuleManager *m_particule_manager;
 
                 bool is_moving;
                 
@@ -119,7 +119,7 @@ PURPOSE : header of the OpenGlSketch class
                 void    renderScene(RenderData &render_data);
                 void    renderInfo(RenderData &render_data);
                 void    renderOverlay(RenderData &render_data);
-                void    renderParticles();
+                void    renderParticles(RenderData &render_data);
 
                 void renderSettings(RenderData &render_data);
 

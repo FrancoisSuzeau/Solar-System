@@ -40,7 +40,6 @@ m_bytes_coord_size(12 * sizeof(float))
     this->load();
     assert(this->loadTextureFromFile(text_path));
 
-    m_inclinaison_angle = 90.0f;
     m_real_size = 1.0f;
 
     transform_mat = glm::mat4(1.0f);

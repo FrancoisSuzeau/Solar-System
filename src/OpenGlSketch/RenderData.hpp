@@ -225,6 +225,7 @@ PURPOSE : header of the RenderData class
                         shader_init.push_back({"../../src/Shader/Shaders/texture.vert", "../../src/Shader/Shaders/texture.frag", "ring"});
                         shader_init.push_back({"../../src/Shader/Shaders/flareTexture.vert", "../../src/Shader/Shaders/flareTexture.frag", "flare"});
                         shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});
+                        shader_init.push_back({"../../src/Shader/Shaders/particule.vert", "../../src/Shader/Shaders/particule.frag", "particule"});
                         shader_init.push_back({"../../src/Shader/Shaders/screenShader.vert", "../../src/Shader/Shaders/screenShader.frag", "screen"});
                         shader_init.push_back({"../../src/Shader/Shaders/blur.vert", "../../src/Shader/Shaders/blur.frag", "blur"});
                         shader_init.push_back({"../../src/Shader/Shaders/modelInstanced.vert", "../../src/Shader/Shaders/modelInstanced.frag", "INSTmodel"});

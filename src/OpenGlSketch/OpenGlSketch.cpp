@@ -248,8 +248,8 @@ void OpenGlSketch::startLoop()
     ship = new Spaceship();
     assert(ship);
 
-    // m_particuleGenerator = new Particule(ship);
-    // assert(m_particuleGenerator);
+    m_particule_manager = new ParticuleManager();
+    assert(m_particule_manager);
 
     int nb_loaded(0);
    
@@ -364,8 +364,6 @@ void OpenGlSketch::mainLoop()
     render_data.setTerminate(false);
     render_data.setChangeModel(true);
 
-    // camera->setDistFromShip(render_data.getDist());
-
     if(Saving::verifingFileExistence())
     {
         Saving::setSettings(render_data);
@@ -386,7 +384,6 @@ void OpenGlSketch::mainLoop()
     style.WindowMenuButtonPosition = ImGuiDir_None;
     
     camera = new Camera(vec3(1.0f, 9000.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f), ship);
-    // m_particuleGenerator->initParticles(camera->getTargetPoint());
     
     assert(camera);
 
@@ -478,7 +475,7 @@ void OpenGlSketch::mainLoop()
     //======================================================================================================================================================
 
     /******************************************************************* RENDER PARTICLES ******************************************************************/
-            // renderParticles();
+            renderParticles(render_data);
     //======================================================================================================================================================
 
     /******************************************************************* RENDER FLARE ***********************************************************************/
@@ -528,10 +525,10 @@ void OpenGlSketch::mainLoop()
         delete m_settings;
     }
 
-    // if(m_particuleGenerator != nullptr)
-    // {
-    //     delete m_particuleGenerator;
-    // }
+    if(m_particule_manager != nullptr)
+    {
+        delete m_particule_manager;
+    }
 
     for (int i(0); i < 2; i++)
     {
@@ -766,24 +763,10 @@ void OpenGlSketch::renderSettings(RenderData &render_data)
 /***********************************************************************************************************************************************************************/
 /********************************************************************************* renderParticles *********************************************************************/
 /***********************************************************************************************************************************************************************/
-void OpenGlSketch::renderParticles()
+void OpenGlSketch::renderParticles(RenderData &render_data)
 {
-    // glm::mat4 save = view;
-
-    //     // view = lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-    //     // glm::vec3 target_point = camera->getTargetPoint();
-        
-    //     // if(m_particuleGenerator != nullptr)
-    //     // {
-    //     //     if((m_input.getKey(SDL_SCANCODE_W)) && (m_input.getKey(SDL_SCANCODE_S)))
-    //     //     {
-    //     //         //do nothing
-    //     //     }
-    //     //     else
-    //     //     {
-    //     //         // m_particuleGenerator->drawParticles(projection, view, m_input, is_moving, target_point);
-    //     //     }
-    //     // }
-
-    // view = save;
+   if(m_particule_manager != nullptr)
+   {
+       m_particule_manager->renderParticules(render_data);
+   }
 }
