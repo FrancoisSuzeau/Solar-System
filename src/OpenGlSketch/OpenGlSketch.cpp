@@ -250,6 +250,7 @@ void OpenGlSketch::startLoop()
 
     m_particule_manager = new ParticuleManager();
     assert(m_particule_manager);
+    m_particule_manager->initParticules(ship->getPosition());
 
     int nb_loaded(0);
    
@@ -767,6 +768,6 @@ void OpenGlSketch::renderParticles(RenderData &render_data)
 {
    if(m_particule_manager != nullptr)
    {
-       m_particule_manager->renderParticules(render_data);
+       m_particule_manager->renderParticules(render_data, ship);
    }
 }

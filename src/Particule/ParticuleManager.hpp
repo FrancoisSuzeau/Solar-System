@@ -29,6 +29,8 @@ PURPOSE : header of the ParticuleManager class
 
         #include "Particule.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
+        #include "../Spaceship/Spaceship.hpp"
+        #include "../Input/Input.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -40,12 +42,17 @@ PURPOSE : header of the ParticuleManager class
 
                 Particule       *m_particule;
 
+                void orienteParticules(Spaceship *ship);
+
+                
+
             public:
             
                 ParticuleManager();
                 ~ParticuleManager();
 
-                void renderParticules(RenderData &render_data);
+                void renderParticules(RenderData &render_data, Spaceship *ship);
+                void initParticules(glm::vec3 posShip);
 
         };
 

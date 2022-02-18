@@ -109,6 +109,8 @@ PURPOSE : header of the RenderData class
 
                 int index_ship;
 
+                glm::vec3 ship_orientation;
+
             public:
 
                 static int width;

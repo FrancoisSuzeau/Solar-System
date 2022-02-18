@@ -59,6 +59,7 @@ PURPOSE : header of the Particule class
                 void setPositionParticule(glm::vec3 new_pos);
                 void transformMat();
                 void renderParticule(RenderData &render_data);
+                void updatePosParticule(glm::vec3 add);
 
         };
 
