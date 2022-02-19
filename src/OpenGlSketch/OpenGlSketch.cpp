@@ -250,7 +250,6 @@ void OpenGlSketch::startLoop()
 
     m_particule_manager = new ParticuleManager();
     assert(m_particule_manager);
-    m_particule_manager->initParticules(ship->getPosition());
 
     int nb_loaded(0);
    
@@ -499,36 +498,43 @@ void OpenGlSketch::mainLoop()
     if(m_framebuffer != nullptr)
     {
         delete m_framebuffer;
+        m_framebuffer = nullptr;
     }
 
     if(solar_system != nullptr)
     {
         delete solar_system;
+        solar_system = nullptr;
     }
     
     if(camera != nullptr)
     {
         delete camera;
+        camera = nullptr;
     }
     
     if(aud != nullptr)
     {
         delete aud;
+        aud = nullptr;
     }
 
     if(m_overlay != nullptr)
     {
         delete m_overlay;
+        m_overlay = nullptr;
     }
     
     if(m_settings != nullptr)
     {
         delete m_settings;
+        m_settings = nullptr;
     }
 
     if(m_particule_manager != nullptr)
     {
         delete m_particule_manager;
+        m_particule_manager = nullptr;
     }
 
     for (int i(0); i < 2; i++)
@@ -542,6 +548,7 @@ void OpenGlSketch::mainLoop()
     if(ship != nullptr)
     {
         delete ship;
+        ship = nullptr;
     }
 }
 
@@ -768,6 +775,6 @@ void OpenGlSketch::renderParticles(RenderData &render_data)
 {
    if(m_particule_manager != nullptr)
    {
-       m_particule_manager->renderParticules(render_data, ship);
+       m_particule_manager->renderParticules(render_data, ship, m_input);
    }
 }

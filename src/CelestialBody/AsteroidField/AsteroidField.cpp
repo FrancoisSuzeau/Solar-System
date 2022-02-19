@@ -41,31 +41,32 @@ AsteroidField::~AsteroidField()
     if(asteroid != nullptr)
     {
         delete asteroid;
+        asteroid = nullptr;
     }
 
     if(modelMatrices != nullptr)
     {
-        delete modelMatrices;
+        delete [] modelMatrices;
     }
 
     if(m_positions != nullptr)
     {
-        delete m_positions;
+        delete [] m_positions;
     }
 
     if(rotAngle != nullptr)
     {
-        delete rotAngle;
+        delete [] rotAngle;
     }
 
     if(scaleM != nullptr)
     {
-        delete scaleM;
+        delete [] scaleM;
     }
 
     if(m_rot_vector != nullptr)
     {
-        delete m_rot_vector;
+        delete [] m_rot_vector;
     }
 
     if(glIsBuffer(buffer1) == GL_TRUE)
@@ -76,11 +77,13 @@ AsteroidField::~AsteroidField()
     if(m_noramal_surface != nullptr)
     {
         delete m_noramal_surface;
+        m_noramal_surface = nullptr;
     }
 
     if(m_disp_surface != nullptr)
     {
         delete m_disp_surface;
+        m_disp_surface = nullptr;
     }
 
 }
@@ -306,27 +309,27 @@ void AsteroidField::updateCount(RenderData &render_data)
     {
         if(modelMatrices != nullptr)
         {
-            delete modelMatrices;
+            delete [] modelMatrices;
         }
 
         if(m_positions != nullptr)
         {
-            delete m_positions;
+            delete [] m_positions;
         }
 
         if(rotAngle != nullptr)
         {
-            delete rotAngle;
+            delete [] rotAngle;
         }
 
         if(scaleM != nullptr)
         {
-            delete scaleM;
+            delete [] scaleM;
         }
 
         if(m_rot_vector != nullptr)
         {
-            delete m_rot_vector;
+            delete [] m_rot_vector;
         }
 
         m_amount = render_data.getAsteroidCount();

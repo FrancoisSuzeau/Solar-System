@@ -26,6 +26,7 @@ PURPOSE : header of the ParticuleManager class
         #include <string>
         #include <math.h>
         #include <Windows.h>
+        #include <vector>
 
         #include "Particule.hpp"
         #include "../OpenGlSketch/RenderData.hpp"
@@ -40,9 +41,16 @@ PURPOSE : header of the ParticuleManager class
             
             private:
 
-                Particule       *m_particule;
+                Particule                       *m_particule;
+                float                           *dist_from_ship;
+                glm::vec3                       *offset;
+                int                             amount;
+                float                           m_acceleration[2];
 
-                void orienteParticules(Spaceship *ship);
+
+                void orienteParticules(Spaceship *ship, int i);
+                void moveParticule(Input input, float ship_speed, int i);
+                void initParticule(int i, float min,float max);
 
                 
 
@@ -51,8 +59,7 @@ PURPOSE : header of the ParticuleManager class
                 ParticuleManager();
                 ~ParticuleManager();
 
-                void renderParticules(RenderData &render_data, Spaceship *ship);
-                void initParticules(glm::vec3 posShip);
+                void renderParticules(RenderData &render_data, Spaceship *ship, Input input);
 
         };
 

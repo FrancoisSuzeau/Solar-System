@@ -159,7 +159,7 @@ Particule::Particule(const float radius, const unsigned int longSegs, const unsi
 
     transform_mat = glm::mat4(1.0);
     position = glm::vec3(0.0);
-    scale = glm::vec3(1.0);
+    scale = glm::vec3(0.0035);
 }
 
 Particule::~Particule()
