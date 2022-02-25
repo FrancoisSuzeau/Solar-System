@@ -57,7 +57,8 @@ PURPOSE : header of the Spaceship class
                 float m_yaw;
                 float           m_sensibility[2];
                 float           m_speed;
-                float           m_acceleration[6];
+                float           speed_limit;
+                bool           directions[6];
                 float           y_dir;
                 float           x_dir;
 

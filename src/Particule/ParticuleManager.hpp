@@ -46,6 +46,7 @@ PURPOSE : header of the ParticuleManager class
                 glm::vec3                       *offset;
                 int                             amount;
                 float                           m_acceleration[2];
+                bool                            directions[4];
 
 
                 void orienteParticules(Spaceship *ship, int i);

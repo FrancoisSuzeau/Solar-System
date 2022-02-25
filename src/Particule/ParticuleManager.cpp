@@ -31,8 +31,10 @@ ParticuleManager::ParticuleManager()
        this->initParticule(i, min, max);
    }
 
-   m_acceleration[0] = 0.0f;
-   m_acceleration[1] = 0.0f;
+   directions[0] = false;
+   directions[1] = false;
+//    directions[2] = false;
+//    directions[3] = false;
 }
 
 ParticuleManager::~ParticuleManager()
@@ -63,7 +65,7 @@ void ParticuleManager::renderParticules(RenderData &render_data, Spaceship *ship
 
     if((render_data.getShader("particule") != nullptr) && (m_particule != nullptr))
     {
-        if((input.getKey(SDL_SCANCODE_W)) || input.getKey(SDL_SCANCODE_S))
+        if(ship->getSpeed() >= 5.0f)
         {
             for(int i(0); i < amount; i++)
             {
@@ -71,7 +73,14 @@ void ParticuleManager::renderParticules(RenderData &render_data, Spaceship *ship
                 this->orienteParticules(ship, i);
                 m_particule->transformMat();
                 m_particule->renderParticule(render_data);
-            }   
+            }
+        }
+        else
+        {
+            directions[0] = false;
+            directions[1] = false;
+            // directions[2] = false;
+            // directions[3] = false;
         }
     }
 
@@ -88,6 +97,7 @@ void ParticuleManager::initParticule(int i, float min, float max)
     float x = -2.0 + ((float) rand() / RAND_MAX * (2.0 - -2.0 + 1.0));
     float y = -2.0 + ((float) rand() / RAND_MAX * (2.0 - -2.0 + 1.0));
     float z = -2.0 + ((float) rand() / RAND_MAX * (2.0 - -2.0 + 1.0));
+    
     offset[i] = glm::vec3(x, y, z);
 }
 
@@ -97,15 +107,16 @@ void ParticuleManager::initParticule(int i, float min, float max)
 void ParticuleManager::orienteParticules(Spaceship *ship, int i)
 {
 
-    float horizontal_dist = dist_from_ship[i] * cos(glm::radians((ship->getRotY() - 90.0f)));
-    float vertical_dist = dist_from_ship[i] * sin(glm::radians((ship->getRotY() - 90.0f)));
+    float vertical_angle = ship->getRotY() - 90.0f;
+    float horizontal_dist = dist_from_ship[i] * cos(glm::radians(vertical_angle));
+    float vertical_dist = dist_from_ship[i] * sin(glm::radians(vertical_angle));
 
     float horizontal_angle = ship->getRotX() - 90.0f;
 
     float x = offset[i].x + (float) horizontal_dist * cos(glm::radians(horizontal_angle));
     float y = offset[i].y + (float) horizontal_dist * sin(glm::radians(horizontal_angle));
 
-    m_particule->setPositionParticule(glm::vec3(x, y, -(vertical_dist + offset[i].z)));
+    m_particule->setPositionParticule(glm::vec3(x, y, -(vertical_dist + offset[i].z))); //along Ur unit vectcor
 }
 
 /***********************************************************************************************************************************************************************/
@@ -116,44 +127,48 @@ void ParticuleManager::moveParticule(Input input, float ship_speed, int i)
     float percent_speed = ship_speed / 200.0f;
     if(input.getKey(SDL_SCANCODE_W))
     {
-        dist_from_ship[i] -= 0.1 * percent_speed * m_acceleration[0];
-        if(m_acceleration[0] < 1.0)
-        {
-            std::cout << m_acceleration[0] << std::endl;
-            m_acceleration[0] += 0.0005;
-        }
+        dist_from_ship[i] -= 0.1 * percent_speed;
         if(dist_from_ship[i] < -5.0f)
         {
             this->initParticule(i, 0.0f, 5.0f);
         }
+
+        directions[0] = true;
     }
-    else if(!input.getKey(SDL_SCANCODE_W))
+    else if(!input.getKey(SDL_SCANCODE_W) && directions[0])
     {
-        if(m_acceleration[0] >= 0.04)
-        {
-            m_acceleration[0] -= 0.0002;
-            dist_from_ship[i] -= 0.1 * percent_speed * m_acceleration[0];
-        }
+        dist_from_ship[i] -= 0.1 * percent_speed;
     }
 
     if(input.getKey(SDL_SCANCODE_S))
     {
-        dist_from_ship[i] += 0.1 * percent_speed * m_acceleration[1];
-        if(m_acceleration[1] < 1.0)
-        {
-            m_acceleration[1] += 0.0005;
-        }
+        dist_from_ship[i] += 0.1 * percent_speed;
         if(dist_from_ship[i] > 5.0f)
         {
             this->initParticule(i, -5.0f, 0.0f);
         }
+        directions[1] = true;
     }
-    else if(!input.getKey(SDL_SCANCODE_S))
+    else if(!input.getKey(SDL_SCANCODE_S) && directions[1])
     {
-        if(m_acceleration[1] >= 0.04)
-        {
-            m_acceleration[1] -= 0.0002;
-            dist_from_ship[i] += 0.1 * percent_speed * m_acceleration[1];
-        }
+        dist_from_ship[i] += 0.1 * percent_speed;
     }
+
+    // if(input.getKey(SDL_SCANCODE_A))
+    // {
+    //     directions[2] = true;
+    // }
+    // else if(!input.getKey(SDL_SCANCODE_A) && directions[2])
+    // {
+
+    // }
+
+    // if(input.getKey(SDL_SCANCODE_D))
+    // {
+    //     directions[3] = true;
+    // }
+    // else if(!input.getKey(SDL_SCANCODE_D) && directions[3])
+    // {
+
+    // }
 }

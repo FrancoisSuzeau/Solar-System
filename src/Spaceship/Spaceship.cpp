@@ -15,7 +15,7 @@ PURPOSE : class Spaceship
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f)
+Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit(200.0f)
 {   
 
     file_paths.push_back("../../assets/model/spaceship/untitled.obj");
@@ -33,12 +33,12 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(200.0f)
     m_model_matrice = model;
 
     m_current_pos = glm::vec3(0.0f, 9000.0f, 0.0f);
-    m_acceleration[0] = 0.0f;
-    m_acceleration[1] = 0.0f;
-    m_acceleration[2] = 0.0f;
-    m_acceleration[3] = 0.0f;
-    m_acceleration[4] = 0.0f;
-    m_acceleration[5] = 0.0f;
+    directions[0] = false;
+    directions[1] = false;
+    directions[2] = false;
+    directions[3] = false;
+    directions[4] = false;
+    directions[5] = false;
 
     m_sensibility[0] = 0.0f;
     m_sensibility[1] = 0.0f;
@@ -52,6 +52,8 @@ Spaceship::~Spaceship()
     if(m_spaceship_models != nullptr)
     {
         delete m_spaceship_models;
+        m_spaceship_models = nullptr;
+
     }
 }
 
@@ -82,102 +84,141 @@ void Spaceship::move(Input input)
 {
     if(input.getKey(SDL_SCANCODE_W))
     {
-        m_current_pos += m_ship_orientation * m_speed * m_acceleration[0];
-        if(m_acceleration[0] < 1.0)
+        m_current_pos += m_ship_orientation * m_speed;
+        if(m_speed < speed_limit)
         {
-            m_acceleration[0] += 0.02;
+            m_speed += 5.0f;
         }
+        directions[0] = true;
     }
-    else if(!input.getKey(SDL_SCANCODE_W))
+    else if(!input.getKey(SDL_SCANCODE_W) && directions[0])
     {
-        if(m_acceleration[0] >= 0.04)
+        if(m_speed >= 5.0f)
         {
-            m_acceleration[0] -= 0.02;
-            m_current_pos += m_ship_orientation * m_speed * m_acceleration[0];
+            m_speed -= 5.0f;
+            m_current_pos += m_ship_orientation * m_speed;
+        }
+        else
+        {
+            directions[0] = false;
         }
         
     }
+
     if(input.getKey(SDL_SCANCODE_S))
     {
-        m_current_pos -= m_ship_orientation * m_speed * m_acceleration[1];
-        if(m_acceleration[1] < 1.0)
+        m_current_pos -= m_ship_orientation * m_speed;
+        if(m_speed < speed_limit)
         {
-            m_acceleration[1] += 0.02;
+            m_speed += 5.0f;
         }
+        directions[1] = true;
     }
-    else if(!input.getKey(SDL_SCANCODE_S))
+    else if(!input.getKey(SDL_SCANCODE_S) && directions[1])
     {
-        if(m_acceleration[1] >= 0.04)
+        if(m_speed >= 5.0f)
         {
-            m_acceleration[1] -= 0.02;
-            m_current_pos -= m_ship_orientation * m_speed * m_acceleration[1];
+            m_speed -= 5.0f;
+            m_current_pos -= m_ship_orientation * m_speed;
+        }
+        else
+        {
+            directions[1] = false;
         }
     }
 
     if(input.getKey(SDL_SCANCODE_A))
     {
-       m_current_pos += m_lateral_move * m_speed * m_acceleration[2];
-       if(m_acceleration[2] < 1.0)
+       m_current_pos += m_lateral_move * m_speed;
+       if(m_speed < speed_limit)
         {
-            m_acceleration[2] += 0.02;
+            m_speed += 5.0f;
         }
+
+        directions[2] = true;
     }
-    else if(!input.getKey(SDL_SCANCODE_A))
+    else if(!input.getKey(SDL_SCANCODE_A) && directions[2])
     {
-        if(m_acceleration[2] >= 0.04)
+        if(m_speed >= 5.0f)
         {
-            m_acceleration[2] -= 0.02;
-            m_current_pos += m_lateral_move * m_speed * m_acceleration[2];
+            m_speed -= 5.0f;
+            m_current_pos += m_lateral_move * m_speed;
+        }
+        else
+        {
+            directions[2] = false;
         }
     }
 
     if(input.getKey(SDL_SCANCODE_D))
     {
-       m_current_pos -= m_lateral_move * m_speed * m_acceleration[3];
-       if(m_acceleration[3] < 1.0)
+       m_current_pos -= m_lateral_move * m_speed;
+       if(m_speed < speed_limit)
         {
-            m_acceleration[3] += 0.02;
+            m_speed += 5.0f;
         }
+        directions[3] = true;
     }
-    else if(!input.getKey(SDL_SCANCODE_D))
+    else if(!input.getKey(SDL_SCANCODE_D) && directions[3])
     {
-        if(m_acceleration[3] >= 0.04)
+        if(m_speed >= 5.0f)
         {
-            m_acceleration[3] -= 0.02;
-            m_current_pos -= m_lateral_move * m_speed * m_acceleration[3];
+            m_speed -= 5.0f;
+            m_current_pos -= m_lateral_move * m_speed;
+        }
+        else
+        {
+            directions[3] = false;
         }
     }
+
     if(input.getKey(SDL_SCANCODE_LSHIFT))
     {
-       m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed * m_acceleration[4];
-       if(m_acceleration[4] < 1.0)
+       m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+       if(m_speed < speed_limit)
        {
-           m_acceleration[4] += 0.02;
+           m_speed += 5.0f;
        }
+       directions[4] = true;
     }
-    else if(!input.getKey(SDL_SCANCODE_LSHIFT))
+    else if(!input.getKey(SDL_SCANCODE_LSHIFT) && directions[4])
     {
-        if(m_acceleration[4] >= 0.04)
+        if(m_speed >= 5.0f)
         {
-            m_acceleration[4] -= 0.02;
-            m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed * m_acceleration[4];
+            m_speed -= 5.0f;
+            m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+        }
+        else
+        {
+            directions[4] = false;
         }
     }
+
     if(input.getKey(SDL_SCANCODE_LCTRL))
     {
-        m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed * m_acceleration[5];
-        if(m_acceleration[5] < 1.0)
-       {
-           m_acceleration[5] += 0.02;
-       }
-    }
-    else if(!input.getKey(SDL_SCANCODE_LCTRL))
-    {
-        if(m_acceleration[5] >= 0.04)
+        m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+        if(m_speed < speed_limit)
         {
-            m_acceleration[5] -= 0.02;
-            m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed * m_acceleration[5];
+            m_speed += 5.0f;
         }
+        directions[5] = true;
+    }
+    else if(!input.getKey(SDL_SCANCODE_LCTRL) && directions[5])
+    {
+        if(m_speed >= 5.0f)
+        {
+            m_speed -= 5.0f;
+            m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+        }
+        else
+        {
+            directions[5] = false;
+        }
+    }
+
+    if(m_speed > speed_limit)
+    {
+        m_speed = speed_limit;
     }
 }
 
@@ -314,6 +355,7 @@ void Spaceship::loadModelShip(RenderData &render_data)
         if(m_spaceship_models != nullptr)
         {
             delete m_spaceship_models;
+            m_spaceship_models = nullptr;
         }
 
         m_spaceship_models = new Model(file_paths[render_data.getIndexShip()]);
@@ -348,26 +390,26 @@ float Spaceship::getSpeed() const
 
 void Spaceship::setSpeed(float speed)
 {
-    m_speed = m_speed + speed;
-    if(m_speed < 0.0f)
+    speed_limit = speed_limit + speed;
+    if(speed_limit < 0.0f)
     {
-        m_speed = 0.0f;
+        speed_limit = 0.0f;
     }
 
-    if(m_speed > 200.0f)
+    if(speed_limit > 200.0f)
     {
-        m_speed = 200.0f;
+        speed_limit = 200.0f;
     }
 }
 
 void Spaceship::setMinimumSpeed()
 {
-    m_speed = 0.6f;
+    speed_limit = 0.6f;
 }
 
 void Spaceship::setMaximumSpeed()
 {
-    m_speed = 200.0f;
+    speed_limit = 200.0f;
 }
 
 float Spaceship::getRotY() const
@@ -384,6 +426,6 @@ void Spaceship::updateSpeed(float const new_val)
 {
     if((new_val >= 0.0) && (new_val <= 200.0))
     {
-        m_speed = new_val;
+        speed_limit = new_val;
     }
 }
