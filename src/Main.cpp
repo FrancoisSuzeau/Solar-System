@@ -8,35 +8,37 @@ NAMEFILE : Main.cpp
 PURPOSE : main loop of the executable
 */
 
-
-#include <Windows.h>
-#include "OpenGlSketch/OpenGlSketch.hpp"
-
+#include "ContextManager.hpp"
+#include <cassert>
 
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
-    
-    int cx = GetSystemMetrics(SM_CXSCREEN);
-    int cy = GetSystemMetrics(SM_CYSCREEN);
 
-    //std::cout << "width : " << cx << " height : " << cy << std::endl;
+    Sdl_manage sdl_manager;
+    SDL_GLContext opengl_context = 0;
+    GLenum init_glew = 0;
 
-    OpenGlSketch sketch("Solar System", cx, cy);
+    bool status = ContextManager::Init(sdl_manager);
+    assert(status);
+    status = ContextManager::Init(opengl_context, sdl_manager.window);
+    assert(status);
+    status = ContextManager::Init(init_glew, opengl_context, sdl_manager.window);
+    assert(status);
 
-    if((sketch.initWindow() == false) || (sketch.initGL() == false))
-    {
-        return EXIT_FAILURE;
-    }
+    ContextManager::DeInit(opengl_context);
+    ContextManager::DeInit(sdl_manager);
 
-    sketch.initImGUI();
+    // OpenGlSketch sketch("Solar System", cx, cy);
+
+    // sketch.initImGUI();
   
-    sketch.startLoop();
+    // sketch.startLoop();
 
-    sketch.initFrameBuffer();
+    // sketch.initFrameBuffer();
     
-    sketch.mainLoop();
+    // sketch.mainLoop();
     
     return EXIT_SUCCESS;
 

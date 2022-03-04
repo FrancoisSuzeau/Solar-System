@@ -16,49 +16,49 @@ PURPOSE : header of the OpenGlSketch class
 
 /********************************************************************* includes *********************************************************************/
 
-        #include <glm/glm.hpp>
-        #include <glm/gtx/transform.hpp>
-        #include <glm/gtc/type_ptr.hpp>
+        // #include <glm/glm.hpp>
+        // #include <glm/gtx/transform.hpp>
+        // #include <glm/gtc/type_ptr.hpp>
 
         #include <GL/glew.h>
         #include <SDL2/SDL.h>
         #include <SDL2/SDL_mixer.h>
         #include <SDL2/SDL_ttf.h>
         #include <iostream>
-        #include <string>
-        #include <math.h>
-        #include <cassert>
+        // #include <string>
+        // #include <math.h>
+        // #include <cassert>
 
-        #if defined(IMGUI_IMPL_OPENGL_ES2)
-        #include <SDL_opengles2.h>
-        #else
-        #include <SDL2/SDL_opengl.h>
-        #endif
+        // #if defined(IMGUI_IMPL_OPENGL_ES2)
+        // #include <SDL_opengles2.h>
+        // #else
+        // #include <SDL2/SDL_opengl.h>
+        // #endif
 
-        #include "RenderData.hpp"
+        // #include "RenderData.hpp"
         
-        #include "../CelestialBody/System/SystemCreator.hpp"
-        #include "../CelestialBody/System/SolarSystemCreator.hpp"
+        // #include "../CelestialBody/System/SystemCreator.hpp"
+        // #include "../CelestialBody/System/SolarSystemCreator.hpp"
         
-        #include "../Input/Input.hpp"
-        #include "../Audio/Audio.hpp"
-        #include "../Camera/Camera.hpp"
-        #include "../StartScreen/StartScreen.hpp"
+        // #include "../Input/Input.hpp"
+        // #include "../Audio/Audio.hpp"
+        // #include "../Camera/Camera.hpp"
+        // #include "../StartScreen/StartScreen.hpp"
 
-        #include "../CelestialBody/Geometry/Square.hpp"
-        #include "../Overlay/Overlay.hpp"
+        // #include "../CelestialBody/Geometry/Square.hpp"
+        // #include "../Overlay/Overlay.hpp"
 
-        #include "../Settings/Settings.hpp"
-        #include "../Particule/ParticuleManager.hpp"
+        // #include "../Settings/Settings.hpp"
+        // #include "../Particule/ParticuleManager.hpp"
 
-        #include "../Spaceship/Spaceship.hpp"
-        #include "../Framebuffer/Framebuffer.hpp"
+        // #include "../Spaceship/Spaceship.hpp"
+        // #include "../Framebuffer/Framebuffer.hpp"
 
-        #include "../Saving/Saving.hpp"
+        // #include "../Saving/Saving.hpp"
 
-        #include "../../lib/imgui/imgui.h"
-        #include "../../lib/imgui/imgui_impl_sdl.h"
-        #include "../../lib/imgui/imgui_impl_opengl3.h"
+        // #include "../../lib/imgui/imgui.h"
+        // #include "../../lib/imgui/imgui_impl_sdl.h"
+        // #include "../../lib/imgui/imgui_impl_opengl3.h"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -72,34 +72,34 @@ PURPOSE : header of the OpenGlSketch class
                 int             m_window_width;
                 int             m_window_height;
 
-                Input           m_input;
-                Audio           *aud;
+                // Input           m_input;
+                // Audio           *aud;
 
-                Camera	*camera;
+                // Camera	*camera;
                 
                 SDL_Window      *m_window;
                 SDL_GLContext   m_openGL_context;
                 GLenum          m_initiGLEW;
-                std::vector<TTF_Font*>  m_police;
+                // std::vector<TTF_Font*>  m_police;
 
-                SystemCreator   *solar_system;
+                // SystemCreator   *solar_system;
 
-                Framebuffer     *m_framebuffer;
+                // Framebuffer     *m_framebuffer;
 
-                Spaceship *ship;
+                // Spaceship *ship;
 
-                bool speed_key_pressed;
-                bool info_key_pressed;
+                // bool speed_key_pressed;
+                // bool info_key_pressed;
 
-                Settings *m_settings;
+                // Settings *m_settings;
 
-                bool menu_app_key_pressed;
+                // bool menu_app_key_pressed;
 
-                Overlay *m_overlay;
+                // Overlay *m_overlay;
 
-                ParticuleManager *m_particule_manager;
+                // ParticuleManager *m_particule_manager;
 
-                bool is_moving;
+                // bool is_moving;
                 
 
             public:
@@ -110,18 +110,19 @@ PURPOSE : header of the OpenGlSketch class
 
                 bool    initWindow();
                 bool    initGL();
-                void    initImGUI();
-                void    initFrameBuffer();
+                
+                // void    initImGUI();
+                // void    initFrameBuffer();
 
-                void    mainLoop();
-                void    startLoop();
-                void    windowProcess(RenderData &render_data);
-                void    renderScene(RenderData &render_data);
-                void    renderInfo(RenderData &render_data);
-                void    renderOverlay(RenderData &render_data);
-                void    renderParticles(RenderData &render_data);
+                // void    mainLoop();
+                // void    startLoop();
+                // void    windowProcess(RenderData &render_data);
+                // void    renderScene(RenderData &render_data);
+                // void    renderInfo(RenderData &render_data);
+                // void    renderOverlay(RenderData &render_data);
+                // void    renderParticles(RenderData &render_data);
 
-                void renderSettings(RenderData &render_data);
+                // void renderSettings(RenderData &render_data);
 
         };
 
