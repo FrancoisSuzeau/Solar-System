@@ -215,11 +215,6 @@ void Spaceship::move(Input input)
             directions[5] = false;
         }
     }
-
-    if(m_speed > speed_limit)
-    {
-        m_speed = speed_limit;
-    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -404,7 +399,12 @@ void Spaceship::setSpeed(float speed)
 
 void Spaceship::setMinimumSpeed()
 {
-    speed_limit = 0.6f;
+    speed_limit = 5.0f;
+
+    if(m_speed > speed_limit)
+    {
+        m_speed = speed_limit;
+    }
 }
 
 void Spaceship::setMaximumSpeed()

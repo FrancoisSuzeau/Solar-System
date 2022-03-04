@@ -65,7 +65,7 @@ void ParticuleManager::renderParticules(RenderData &render_data, Spaceship *ship
 
     if((render_data.getShader("particule") != nullptr) && (m_particule != nullptr))
     {
-        if(ship->getSpeed() >= 5.0f)
+        if(ship->getSpeed() > 5.0f)
         {
             for(int i(0); i < amount; i++)
             {
