@@ -34,6 +34,8 @@ ContextManager::~ContextManager()
 bool ContextManager::Init(Sdl_manage &sdl_manager)
 {
     sdl_manager.title = "Solar System Simulator";
+    // sdl_manager.win_width = 800;
+    // sdl_manager.win_height = 800;
     sdl_manager.win_width = GetSystemMetrics(SM_CXSCREEN);
     sdl_manager.win_height = GetSystemMetrics(SM_CYSCREEN);
     /************************************************* initialize SDL ********************************************************/
@@ -161,9 +163,31 @@ bool ContextManager::Init(GLenum init_glew, SDL_GLContext gl_context, SDL_Window
     return true;
 }
 
+void ContextManager::Init(SDL_GLContext opengl_context, SDL_Window *window, ImGuiIO& io)
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    io = ImGui::GetIO();
+    ImGui::StyleColorsDark();
+    ImGui_ImplSDL2_InitForOpenGL(window, opengl_context);
+    ImGui_ImplOpenGL3_Init("#version 400");
+
+    std::cout << ">> Initialize ImGui : SUCCESS" << std::endl;
+}
+
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** DeInit ************************************************************************/
 /***********************************************************************************************************************************************************************/
+void ContextManager::DeInit()
+{
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+    std::cout << std::endl;
+    std::cout << ">> Destroying ImGui context : SUCCESS" << std::endl;
+}
+
 void ContextManager::DeInit(SDL_GLContext opengl_context)
 {
     std::string status_msg = ">> Destroying OpenGL Context : ";
