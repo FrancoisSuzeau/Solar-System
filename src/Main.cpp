@@ -40,12 +40,19 @@ int main(int argc, char **argv)
     ContextManager::Init(opengl_context, sdl_manager.window, io);
 
     Input *input = new Input();
-    Application scene(sdl_manager.win_width, sdl_manager.win_height, sdl_manager.window, input);
+    assert(input);
+    Audio *audio = new Audio();
+    assert(audio);
+    
+    Application scene(sdl_manager.win_width, sdl_manager.win_height, sdl_manager.window, input, audio);
 
     scene.mainLoop();
 
     delete input;
     input = nullptr;
+    delete audio;
+    audio = nullptr;
+
     ContextManager::DeInit();
     ContextManager::DeInit(opengl_context);
     ContextManager::DeInit(sdl_manager);

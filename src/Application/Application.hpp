@@ -22,6 +22,7 @@ PURPOSE : header of the Application class
         
         #include "DataManager.hpp"
         #include "../InOut/Input/Input.hpp"
+        #include "../InOut/Audio/Audio.hpp"
         #include "Settings/Settings.hpp"
 
         #define BEGIN   0
@@ -53,6 +54,7 @@ PURPOSE : header of the Application class
                 Input                   *m_input;
                 Settings                m_setting;
                 SDL_Window              *m_window;
+                Audio                   *m_audio;
 
                 bool menu_app_key_pressed;
                 bool render_menu;
@@ -63,12 +65,13 @@ PURPOSE : header of the Application class
                 void    inputProcess();
                 void    fpsCalculation(int moment);
 
+                void    renderAudio();
                 void    renderSettings();
                 
 
             public:
 
-                Application(int width, int height, SDL_Window *window, Input *input);
+                Application(int width, int height, SDL_Window *window, Input *input, Audio *audio);
                 ~Application();
 
                 void    mainLoop();

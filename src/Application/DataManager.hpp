@@ -31,6 +31,9 @@ PURPOSE : header of the DataManager class
                 int             m_height;
                 bool            m_terminate;
                 unsigned int    m_fps;
+                int             m_volume;
+                bool            m_pause_music;
+                int             m_track;
                 
 
             public:
@@ -44,9 +47,14 @@ PURPOSE : header of the DataManager class
                 bool            getTerminate() const;
                 void            setFps(unsigned int const fps);
                 unsigned int    getFps() const;
+                void            setVolume(int const volume);
+                int             getVolume() const;
+                void            setPause(bool const pause);
+                bool            getPause() const;
+                void            setTrack(int const track);
+                int             getTrack() const;
 
-                
- 
+
         };
 
 

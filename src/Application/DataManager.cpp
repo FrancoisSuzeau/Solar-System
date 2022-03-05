@@ -58,3 +58,33 @@ unsigned int DataManager::getFps() const
 {
     return m_fps;
 }
+
+void DataManager::setVolume(int const volume)
+{
+    m_volume = volume;
+}
+
+int DataManager::getVolume() const
+{
+    return m_volume;
+}
+
+void DataManager::setPause(bool const pause)
+{
+    m_pause_music = pause;
+} 
+
+bool DataManager::getPause() const
+{
+    return m_pause_music;
+}
+
+void DataManager::setTrack(int const track)
+{
+    m_track = track;
+}
+
+int DataManager::getTrack() const
+{
+    return m_track;
+}

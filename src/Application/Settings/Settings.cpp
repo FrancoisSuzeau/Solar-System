@@ -45,7 +45,7 @@ Settings::~Settings()
         glDeleteTextures(1, &it[0].text_id);
         if(glIsTexture(it[0].text_id) == GL_FALSE)
         {
-            std::cout << "TEXTURE :: delete >>> SUCESS" << std::endl;
+            std::cout << ">> TEXTURE :: delete " << it[0].filepath << " : SUCESS" << std::endl;
         }
     }
 }
@@ -98,10 +98,10 @@ void Settings::manageSettings(DataManager &data_manager)
 
     ImGui::Separator();
 
-    if(ImGui::Button("Save Configuration", ImVec2(385.0f, 30.0f)))
-    {
-        // Saving::writeConfig(render_data);
-    }
+    // if(ImGui::Button("Save Configuration", ImVec2(385.0f, 30.0f)))
+    // {
+    //     Saving::writeConfig(render_data);
+    // }
 
     if(ImGui::Button("Stop Simulation", ImVec2(385.0f, 30.0f)))
     {

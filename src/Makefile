@@ -27,7 +27,7 @@ CC=g++
 # Generate source files list
 SRC=Main.cpp ContextManager.cpp
 SRC+=Application/Application.cpp Application/DataManager.cpp Application/Settings/Settings.cpp
-SRC+=InOut/Input/Input.cpp
+SRC+=InOut/Input/Input.cpp InOut/Audio/Audio.cpp
 # SRC+=Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp 
 # SRC+=CelestialBody/Planete/PlaneteRender.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/Planete.cpp Text/Text.cpp
 # SRC+=CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp 
