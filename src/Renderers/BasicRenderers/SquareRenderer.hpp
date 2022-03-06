@@ -39,7 +39,7 @@ PURPOSE : header of the SquareRenderer class
                 ~SquareRenderer();
 
                 void load() override;
-                void render(DataManager &data_manager, Square *square);
+                void render(DataManager &data_manager, Object *square) override;
         };
 
 

@@ -29,6 +29,9 @@ PURPOSE : header of the Application class
         #include "../Objects/BasicObjects/Square.hpp"
         #include "../Renderers/BasicRenderers/SquareRenderer.hpp"
 
+        #include "../Objects/BasicObjects/Sphere.hpp"
+        #include "../Renderers/BasicRenderers/SphereRenderer.hpp"
+
         #define BEGIN   0
         #define END     1
         

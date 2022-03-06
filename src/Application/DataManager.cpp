@@ -99,7 +99,8 @@ int DataManager::getTrack() const
 void DataManager::setShader(bool main_loop)
 {
     std::vector<shader_datas> shader_init;
-    shader_init.push_back({"../../src/Shader/Shaders/couleur3D.vert", "../../src/Shader/Shaders/couleur3D.frag", "square"});               
+    shader_init.push_back({"../../src/Shader/Shaders/couleur3D.vert", "../../src/Shader/Shaders/couleur3D.frag", "square"});
+    shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
 
     for(std::vector<shader_datas>::iterator it = shader_init.begin(); it != shader_init.end(); ++it)
     {

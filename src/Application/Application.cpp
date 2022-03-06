@@ -205,8 +205,12 @@ void Application::mainLoop()
     time_past = 0;
 
     Square square(1.5);
-    Renderer *renderer = new SquareRenderer(1.0);
-    square.updatePosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    Sphere sphere(1.8);
+    Renderer *SquareRender = new SquareRenderer(1.0);
+    Renderer *SphereRender = new SphereRenderer(1.0f, 70.0f, 70.0f);
+
+    square.updatePosition(glm::vec3(2.0f, 0.0f, 0.0f));
+    sphere.updatePosition(glm::vec3(-2.0f, 0.0f, 0.0f));
     //=====================================================================================================================================================
 
 
@@ -232,7 +236,9 @@ void Application::mainLoop()
 
             m_data_manager.lockView(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             square.transform();
-            // square.render(m_data_manager);
+            sphere.transform();
+            SquareRender->render(m_data_manager, &square);
+            SphereRender->render(m_data_manager, &sphere);
 
         /******************************************************************* RENDER AUDIO **********************************************************************/
             this->renderAudio();
@@ -254,6 +260,11 @@ void Application::mainLoop()
 
             this->fpsCalculation(END);
     }
+
+    delete SquareRender;
+    SquareRender = nullptr;
+    delete SphereRender;
+    SphereRender = nullptr;
 
 }
 

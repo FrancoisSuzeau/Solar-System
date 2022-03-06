@@ -5,7 +5,7 @@ DATE : 29/06/2021
 
 MODULE : Objects::BasicObjects
 
-NAMEFILE : Square.hpp
+NAMEFILE : Square.cpp
 
 PURPOSE : class Square
 */
