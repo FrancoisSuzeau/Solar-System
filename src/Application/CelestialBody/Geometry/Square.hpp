@@ -26,8 +26,6 @@ PURPOSE : header of the Square class
         #include <string>
         #include <cstring>
 
-        #include "../../OpenGlSketch/RenderData.hpp"
-
 /********************************************************************* class definition *********************************************************************/
 
         class Square
@@ -55,13 +53,13 @@ PURPOSE : header of the Square class
                 Square();
                 ~Square();
 
-                void load();
-                void display(RenderData &render_data, glm::vec3 color);
-                void drawLoad(int count, RenderData &render_data, glm::vec3 color);
+                // void load();
+                // void display(RenderData &render_data, glm::vec3 color);
+                // void drawLoad(int count, RenderData &render_data, glm::vec3 color);
 
-                void updatePosition(glm::vec3 position);
+                // void updatePosition(glm::vec3 position);
                 
-                void updateVBO(void *data, int size_bytes, int offset);
+                // void updateVBO(void *data, int size_bytes, int offset);
                 
         };
 

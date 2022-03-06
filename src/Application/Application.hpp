@@ -24,6 +24,9 @@ PURPOSE : header of the Application class
         #include "../InOut/Input/Input.hpp"
         #include "../InOut/Audio/Audio.hpp"
         #include "Settings/Settings.hpp"
+        #include "Overlay/Overlay.hpp"
+
+        #include "../Objects/BasicObjects/Square.hpp"
 
         #define BEGIN   0
         #define END     1
@@ -46,7 +49,7 @@ PURPOSE : header of the Application class
                 // bool speed_key_pressed;
                 // bool info_key_pressed;
                 // Settings *m_settings;
-                // Overlay *m_overlay;
+                
                 // ParticuleManager *m_particule_manager;
                 // bool is_moving;
 
@@ -55,6 +58,7 @@ PURPOSE : header of the Application class
                 Settings                m_setting;
                 SDL_Window              *m_window;
                 Audio                   *m_audio;
+                Overlay                 m_overlay;
 
                 bool menu_app_key_pressed;
                 bool render_menu;

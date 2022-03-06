@@ -17,9 +17,9 @@ PURPOSE :   - creating OpenGL Context
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Application::Application(int width, int height, SDL_Window *window, Input *input, Audio *audio): m_data_manager(width, height),
+Application::Application(int width, int height, SDL_Window *window, Input *input, Audio *audio): m_data_manager(width, height, 45.0),
 m_window(window), 
-m_input(input), m_setting(), m_audio(audio)
+m_input(input), m_setting(), m_audio(audio), m_overlay()
 {
     render_menu = false;
     menu_app_key_pressed = false;
@@ -197,11 +197,15 @@ void Application::mainLoop()
     m_data_manager.setTerminate(false);
     m_data_manager.setVolume(64);
     m_data_manager.setTrack(0);
+    m_data_manager.setShader(true);
 
     frame_rate = 1000 / m_data_manager.getFps();
     start_loop = 0;
     end_loop = 0;
     time_past = 0;
+
+    Square square(1.5, 1.0);
+    square.updatePosition(glm::vec3(0.0f, 0.0f, 0.0f));
     //=====================================================================================================================================================
 
 
@@ -221,6 +225,14 @@ void Application::mainLoop()
             ImGui_ImplSDL2_NewFrame();
             ImGui::NewFrame();
 
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glEnable(GL_DEPTH_TEST);
+
+            m_data_manager.lockView(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            square.transform();
+            square.render(m_data_manager);
+
         /******************************************************************* RENDER AUDIO **********************************************************************/
             this->renderAudio();
         //======================================================================================================================================================
@@ -234,6 +246,10 @@ void Application::mainLoop()
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             SDL_GL_SwapWindow(m_window);
         //=======================================================================================================================================================
+
+            glDisable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
             this->fpsCalculation(END);
     }
@@ -397,7 +413,7 @@ void Application::inputProcess()
 
     if((m_input->getKey(SDL_SCANCODE_ESCAPE)) && (!menu_app_key_pressed))
     {
-        render_menu = true;
+        render_menu = !render_menu;
         menu_app_key_pressed = true;
     }
     if ((m_input->getKey(SDL_SCANCODE_ESCAPE)) == false)
