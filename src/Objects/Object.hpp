@@ -26,10 +26,7 @@ PURPOSE : Interface Object
 
         #include "../Application/DataManager.hpp"
 
-        //usefull macro for VBO
-        #ifndef BUFFER_OFFSET
-        #define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
-        #endif
+        
 
 /********************************************************************* class definition ***************************************************************/
 
@@ -51,8 +48,6 @@ PURPOSE : Interface Object
                 Object();
                 virtual ~Object();
 
-                virtual void render(DataManager &data_manager) = 0;
-                virtual void load() = 0;
                 virtual void transform() = 0;
 
                 void updatePosition(glm::vec3 const new_pos);
@@ -63,7 +58,7 @@ PURPOSE : Interface Object
 
                 glm::vec3 getSize() const;
                 glm::vec3 getPosition() const;
-                // glm::mat4 getModelMat();
+                glm::mat4 getModelMat();
             
         };
 

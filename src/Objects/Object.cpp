@@ -63,7 +63,7 @@ glm::vec3 Object::getSize() const
     return m_size;
 }
 
-// glm::mat4 Object::getModelMat()
-// {
-//     return m_model_mat;
-// }
+glm::mat4 Object::getModelMat()
+{
+    return m_model_mat;
+}

@@ -204,7 +204,8 @@ void Application::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    Square square(1.5, 1.0);
+    Square square(1.5);
+    Renderer *renderer = new SquareRenderer(1.0);
     square.updatePosition(glm::vec3(0.0f, 0.0f, 0.0f));
     //=====================================================================================================================================================
 
@@ -231,7 +232,7 @@ void Application::mainLoop()
 
             m_data_manager.lockView(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             square.transform();
-            square.render(m_data_manager);
+            // square.render(m_data_manager);
 
         /******************************************************************* RENDER AUDIO **********************************************************************/
             this->renderAudio();
