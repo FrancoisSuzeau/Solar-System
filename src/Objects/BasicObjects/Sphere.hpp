@@ -24,13 +24,6 @@ PURPOSE : header of the Sphere class
         {
             
             protected:
-
-                // GLuint                          m_vbo;
-                // GLuint                          m_ibo;
-                // GLsizei                         m_element_count;
-                // unsigned int                    m_vertCount;
-                // GLushort                        *m_tris;
-                // float                           m_radius;
  
                 
             public:

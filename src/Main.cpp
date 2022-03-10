@@ -21,14 +21,6 @@ int main(int argc, char **argv)
     SDL_GLContext opengl_context = 0;
     GLenum init_glew = 0;
     ImGuiIO io;
-
-    unsigned int fps = 60;
-    unsigned int frame_rate = 1000 / fps;
-    Uint32 start_loop, end_loop, time_past = 0;
-
-    bool terminate = false;
-    SDL_Event event;
-
     bool status;
 
     status = ContextManager::Init(sdl_manager);

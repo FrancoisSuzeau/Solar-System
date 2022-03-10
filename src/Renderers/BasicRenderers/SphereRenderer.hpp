@@ -35,8 +35,8 @@ PURPOSE : header of the SphereRenderer class
                 GLushort                        *m_tris;
                 float                           m_radius;
                 GLfloat                         ***tmp;
-                unsigned int longVerts;
-                unsigned int latVerts;
+                unsigned int                    longVerts;
+                unsigned int                    latVerts;
  
                 
             public:

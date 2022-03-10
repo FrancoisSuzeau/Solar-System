@@ -8,8 +8,10 @@ DEBUG ?= 1
 ifeq ($(DEBUG), 1)
 	CFLAGS = -Wextra -m64 -g
 else
-	CFLAGS = -Wextra -m64
+	CFLAGS = -Wextra -m64 -DNDEBUG
 endif
+
+PATH_FLAG_GPP=-L./../lib -I./../include
 
 LD_SDL_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2main -lSDL2
 LD_SDLIMAGE_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_image
@@ -17,15 +19,17 @@ LD_SDLMIXER_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_mixer
 LD_SDLTTF_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_ttf
 LD_GLEW_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lglew32 -lopengl32 -lglu32 -lgdi32
 LD_ASSIMP_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lassimp
+
 ifeq ($(DEBUG), 1)
-	EXEC=../build/debug/SolarSystemSim(debug)
+	EXEC=../build/debug/SolarSystem
 else
-	EXEC=../build/release/SolarSystemSim
+	EXEC=../build/release/SolarSystem
 endif
 CC=g++
 
 # Generate source files list
 SRC=Main.cpp ContextManager.cpp
+SRC+=ErrorHandler/ErrorHandler.cpp
 SRC+=Application/Application.cpp Application/DataManager.cpp Application/Settings/Settings.cpp Application/Overlay/Overlay.cpp
 SRC+=InOut/Input/Input.cpp InOut/Audio/Audio.cpp
 SRC+=Objects/Object.cpp Objects/BasicObjects/Square.cpp Objects/BasicObjects/Sphere.cpp
