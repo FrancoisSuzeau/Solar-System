@@ -19,6 +19,7 @@ PURPOSE : header of the Application class
         #include <SDL2/SDL.h>
 
         #include <iostream>
+        #include <cassert>
         
         #include "DataManager.hpp"
         #include "../InOut/Input/Input.hpp"
@@ -75,6 +76,7 @@ PURPOSE : header of the Application class
 
                 void    renderAudio();
                 void    renderSettings();
+                void    renderOverlay();
                 
 
             public:
@@ -82,13 +84,13 @@ PURPOSE : header of the Application class
                 Application(int width, int height, SDL_Window *window, Input *input, Audio *audio);
                 ~Application();
 
-                void    mainLoop();
+                void            loadAssets();
+                void            mainLoop();
                 
                 // void    initFrameBuffer();
-                // void    startLoop();
+                
                 // void    renderScene(RenderData &render_data);
                 // void    renderInfo(RenderData &render_data);
-                // void    renderOverlay(RenderData &render_data);
                 // void    renderParticles(RenderData &render_data);
 
                 

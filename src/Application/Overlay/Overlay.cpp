@@ -25,58 +25,68 @@ using namespace glm;
 Overlay::Overlay() //: m_rect(0.05, 0.1)
 {
 
-    map_music_data[0].title = "Mass Effect - Vigil";
-    map_music_data[0].author = "Jack Wall";
-    map_music_data[0].studio = "EA Games Soundtrack";
-    map_music_data[1].title = "Critical Mass";
-    map_music_data[1].author = " ";
-    map_music_data[1].studio = "Epic Hybrid Orchestra";
-    map_music_data[2].title = "Natural Splendor";
-    map_music_data[2].author = "Gerald M. Dorai";
-    map_music_data[2].studio = "Le Phonarium - Nantes";
-    map_music_data[3].title = "Dying Star";
-    map_music_data[3].author = "Utho Riley";
-    map_music_data[3].studio = "Symphonic Orchestral Music";
-    map_music_data[4].title = "Orizon Theme";
-    map_music_data[4].author = "Pedro Camacho";
-    map_music_data[4].studio = "Star Citizen Soundtrack";
-    map_music_data[5].title = "Engine of Creation";
-    map_music_data[5].author = "Utho Riley";
-    map_music_data[5].studio = "Epic Hybrid Orchestra";
-    map_music_data[6].title = "Mass Effect - Map Theme";
-    map_music_data[6].author = "Jack Wall";
-    map_music_data[6].studio = "EA Games Soundtrack";
-    map_music_data[7].title = "Unbound";
-    map_music_data[7].author = "Utho Riley";
-    map_music_data[7].studio = "Epic Hybrid Orchestra";
-    map_music_data[8].title = "Dreamscape";
-    map_music_data[8].author = " ";
-    map_music_data[8].studio = " ";
-    map_music_data[9].title = "Two Moons";
-    map_music_data[9].author = "Bobby Richards";
-    map_music_data[9].studio = "YouTube Audio Library";
+    // map_music_data[0].title = "Mass Effect - Vigil";
+    // map_music_data[0].author = "Jack Wall";
+    // map_music_data[0].studio = "EA Games Soundtrack";
+    // map_music_data[1].title = "Critical Mass";
+    // map_music_data[1].author = " ";
+    // map_music_data[1].studio = "Epic Hybrid Orchestra";
+    // map_music_data[2].title = "Natural Splendor";
+    // map_music_data[2].author = "Gerald M. Dorai";
+    // map_music_data[2].studio = "Le Phonarium - Nantes";
+    // map_music_data[3].title = "Dying Star";
+    // map_music_data[3].author = "Utho Riley";
+    // map_music_data[3].studio = "Symphonic Orchestral Music";
+    // map_music_data[4].title = "Orizon Theme";
+    // map_music_data[4].author = "Pedro Camacho";
+    // map_music_data[4].studio = "Star Citizen Soundtrack";
+    // map_music_data[5].title = "Engine of Creation";
+    // map_music_data[5].author = "Utho Riley";
+    // map_music_data[5].studio = "Epic Hybrid Orchestra";
+    // map_music_data[6].title = "Mass Effect - Map Theme";
+    // map_music_data[6].author = "Jack Wall";
+    // map_music_data[6].studio = "EA Games Soundtrack";
+    // map_music_data[7].title = "Unbound";
+    // map_music_data[7].author = "Utho Riley";
+    // map_music_data[7].studio = "Epic Hybrid Orchestra";
+    // map_music_data[8].title = "Dreamscape";
+    // map_music_data[8].author = " ";
+    // map_music_data[8].studio = " ";
+    // map_music_data[9].title = "Two Moons";
+    // map_music_data[9].author = "Bobby Richards";
+    // map_music_data[9].studio = "YouTube Audio Library";
     
 
-    map_nav_data["Sun"] = {ImVec4(1.0f, 1.0f, 0.0f, 1.0f), 0.0f};
-    map_nav_data["Mercury"] = {ImVec4(0.502f, 0.502f, 0.502f, 1.0f), 0.019493f};
-    map_nav_data["Venus"] = {ImVec4(1.0f, 0.894f, 0.710f, 1.0f), 0.0673764f};
-    map_nav_data["Earth"] = {ImVec4(0.0f, 0.749f, 1.0f, 1.0f), 0.0820391f};
-    map_nav_data["Mars"] = {ImVec4(0.698f, 0.133f, 0.133f, 1.0f), 0.0195781f};
-    map_nav_data["Jupiter"] = {ImVec4(0.784f, 0.678f, 0.980f, 1.0f), 0.11756f};
-    map_nav_data["Saturn"] = {ImVec4(1.0f, 0.808f, 0.604f, 1.0f), 0.0534512f};
-    map_nav_data["Uranus"] = {ImVec4(0.454f, 0.815f, 0.945f, 1.0f), 0.047227f};
-    map_nav_data["Neptune"] = {ImVec4(0.192f, 0.549f, 0.906f, 1.0f), 0.0604449f};
+    // map_nav_data["Sun"] = {ImVec4(1.0f, 1.0f, 0.0f, 1.0f), 0.0f};
+    // map_nav_data["Mercury"] = {ImVec4(0.502f, 0.502f, 0.502f, 1.0f), 0.019493f};
+    // map_nav_data["Venus"] = {ImVec4(1.0f, 0.894f, 0.710f, 1.0f), 0.0673764f};
+    // map_nav_data["Earth"] = {ImVec4(0.0f, 0.749f, 1.0f, 1.0f), 0.0820391f};
+    // map_nav_data["Mars"] = {ImVec4(0.698f, 0.133f, 0.133f, 1.0f), 0.0195781f};
+    // map_nav_data["Jupiter"] = {ImVec4(0.784f, 0.678f, 0.980f, 1.0f), 0.11756f};
+    // map_nav_data["Saturn"] = {ImVec4(1.0f, 0.808f, 0.604f, 1.0f), 0.0534512f};
+    // map_nav_data["Uranus"] = {ImVec4(0.454f, 0.815f, 0.945f, 1.0f), 0.047227f};
+    // map_nav_data["Neptune"] = {ImVec4(0.192f, 0.549f, 0.906f, 1.0f), 0.0604449f};
 
-    m_ancient_radius = 0.0;
-    m_ancient_speed = 0.0;
+    // m_ancient_radius = 0.0;
+    // m_ancient_speed = 0.0;
 
-    m_colorBlack = vec3(0.05);
-    m_colorGrey = vec3(0.1);
+    // m_colorBlack = vec3(0.05);
+    // m_colorGrey = vec3(0.1);
 }
 
 Overlay::~Overlay()
 {
-    
+    if(m_square_ptr != nullptr)
+    {
+        delete m_square_ptr;
+        m_square_ptr = nullptr;
+    }
+
+    if(m_square_renderer != nullptr)
+    {
+        delete m_square_renderer;
+        m_square_renderer = nullptr;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -391,3 +401,14 @@ Overlay::~Overlay()
 //     ImGui::PopStyleColor();
 //     ImGui::End();
 // }
+
+
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************* initOverlayAssets ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Overlay::initOverlayAssets(Renderer *square_rend, Square *square)
+{
+    m_square_renderer = square_rend;
+    m_square_ptr = square;
+}

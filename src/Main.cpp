@@ -38,6 +38,7 @@ int main(int argc, char **argv)
     
     Application scene(sdl_manager.win_width, sdl_manager.win_height, sdl_manager.window, input, audio);
 
+    scene.loadAssets();
     scene.mainLoop();
 
     delete input;

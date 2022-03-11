@@ -40,12 +40,12 @@ PURPOSE : header of the Overlay class
         #include <SDL2/SDL_opengl.h>
         #endif
 
-        // #include "../CelestialBody/Geometry/Square.hpp"
-        // #include "../OpenGlSketch/RenderData.hpp"
-
         #include "../../../lib/imgui/imgui.h"
         #include "../../../lib/imgui/imgui_impl_sdl.h"
         #include "../../../lib/imgui/imgui_impl_opengl3.h"
+
+        #include "../../Objects/BasicObjects/Square.hpp"
+        #include "../../Renderers/BasicRenderers/SquareRenderer.hpp"
 
         typedef struct music_data {
                 std::string title;
@@ -69,16 +69,17 @@ PURPOSE : header of the Overlay class
             
             private:
 
-                // Square          m_rect;
+                Square          *m_square_ptr;
+                Renderer        *m_square_renderer;
 
-                float           m_ancient_radius;
-                float           m_ancient_speed;
+                // float           m_ancient_radius;
+                // float           m_ancient_speed;
 
-                glm::vec3 m_colorBlack;
-                glm::vec3 m_colorGrey;
+                // glm::vec3 m_colorBlack;
+                // glm::vec3 m_colorGrey;
 
-                std::map<int, music_data> map_music_data;
-                std::map<std::string, nav_datas> map_nav_data;
+                // std::map<int, music_data> map_music_data;
+                // std::map<std::string, nav_datas> map_nav_data;
 
                 // void displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates);
 
@@ -86,6 +87,8 @@ PURPOSE : header of the Overlay class
             
                 Overlay();
                 ~Overlay();
+
+                void            initOverlayAssets(Renderer *square_rend, Square *square);
 
                 // void displayGeneralOverlay(RenderData &render_data);
                 // void displayMusicInfo(RenderData &render_data);

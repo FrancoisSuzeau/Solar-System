@@ -70,6 +70,7 @@ PURPOSE : header of the DataManager class
                 void            setShader(bool main_loop);
                 Shader          *getShader(std::string key);
                 glm::mat4       getViewMat() const;
+                void            resetViewMat(glm::mat4 const new_mat);
                 glm::mat4       getProjMat() const;
                 void            lockView(glm::vec3 position, glm::vec3 target, glm::vec3 up);
 

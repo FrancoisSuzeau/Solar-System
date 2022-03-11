@@ -137,8 +137,8 @@ bool Shader::loadShader()
         deleteShader(m_vertex_ID, link_error);
         deleteShader(m_fragment_ID, link_error);
     
-        std::cout << "SHADER :: delete >>> SUCCESS" << m_vertex_src << std::endl;
-        std::cout << "SHADER :: delete >>> SUCCESS" << m_fragment_src << std::endl;
+        std::cout << ">> SHADER :: delete >>> SUCCESS" << m_vertex_src << std::endl;
+        std::cout << ">> SHADER :: delete >>> SUCCESS" << m_fragment_src << std::endl;
         return true;
     }
     //======================================================================================================================================

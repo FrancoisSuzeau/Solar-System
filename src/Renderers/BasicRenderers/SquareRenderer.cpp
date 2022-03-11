@@ -52,7 +52,7 @@ SquareRenderer::~SquareRenderer()
 
     if( (glIsBuffer(m_vboID) == GL_FALSE) && (glIsVertexArray(m_vaoID) == GL_FALSE))
     {
-        std::cout << "SQUARE RENDERER :: delete >>> SUCESS" << std::endl;
+        std::cout << ">> SQUARE RENDERER :: delete >>> SUCESS" << std::endl;
     }
 }
 

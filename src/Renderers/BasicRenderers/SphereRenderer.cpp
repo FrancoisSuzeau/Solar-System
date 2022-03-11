@@ -31,12 +31,7 @@ m_vbo(0), m_ibo(0), m_element_count(0), m_radius(radius)
     longVerts = longSegs + 1;
     latVerts = latSegs + 1;
     m_vertCount = longVerts * latVerts;
-
-    //HACK : this static inititialisation of the array is only available for mingw c++ compilor not for the Microsoft c++ compilor for example
-    //      -> Useless to have longSegs and LatSegs as parameter because there is only two instance type : 
-    //              - atmosphere with 70 longitude segments and 70 latitude segment
-    //              - particule with 5 longitude segments and 5 latitude segments
-    // GLfloat verts[longVerts][latVerts][VERT_NUM_FLOATS];
+    
     tmp = new GLfloat**[longVerts];
     
     for (unsigned int i(0); i < longVerts; i++)
@@ -112,7 +107,7 @@ SphereRenderer::~SphereRenderer()
 
     if( (glIsBuffer(m_vbo) == GL_FALSE) && (glIsBuffer(m_ibo) == GL_FALSE))
     {
-        std::cout << "SPHERE :: delete >>> SUCESS" << std::endl;
+        std::cout << ">> SPHERE :: delete >>> SUCESS" << std::endl;
     }
 
     for(unsigned int i(0); i < longVerts; i++)

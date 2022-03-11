@@ -129,3 +129,8 @@ void DataManager::lockView(glm::vec3 position, glm::vec3 target, glm::vec3 up)
 {
     view_mat = glm::lookAt(position, target, up);
 }
+
+void DataManager::resetViewMat(glm::mat4 const new_val)
+{
+    view_mat = new_val;
+}
