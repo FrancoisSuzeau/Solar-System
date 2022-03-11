@@ -70,7 +70,7 @@ PURPOSE : header of the Settings class
 
                 void managePerformance(DataManager &data_manager);
         
-                // void manageHUD(RenderData &render_data);
+                void manageHUD(DataManager &data_manager);
                 // void manageNavigation(RenderData &render_data);
                 // void verifIndex();
 

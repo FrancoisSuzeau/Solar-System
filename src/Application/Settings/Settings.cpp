@@ -80,7 +80,7 @@ void Settings::manageSettings(DataManager &data_manager)
         if (ImGui::BeginTabItem("HUD"))
         {
             style.FramePadding = frame_padding_save;
-            // this->manageHUD(render_data);
+            this->manageHUD(data_manager);
             ImGui::EndTabItem();
         }
         style.FramePadding = ImVec2(25, 3);
@@ -114,33 +114,33 @@ void Settings::manageSettings(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* manageHUD *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Settings::manageHUD(RenderData &render_data)
-// {
-//     ImGui::Text("General");
-//     bool over_rend = render_data.getOverlayRender();
-//     ImGui::Bullet();
-//     ImGui::SameLine();
-//     ImGui::Checkbox("Display Overlay", &over_rend);
-//     render_data.setRenderOverlay(over_rend);
+void Settings::manageHUD(DataManager &data_manager)
+{
+    ImGui::Text("General");
+    bool over_rend = data_manager.getRenderOverlay();
+    ImGui::Bullet();
+    ImGui::SameLine();
+    ImGui::Checkbox("Display Overlay", &over_rend);
+    data_manager.setRenderOverlay(over_rend);
 
-//     bool name_rend = render_data.getRenderName();
-//     ImGui::Bullet();
-//     ImGui::SameLine();
-//     ImGui::Checkbox("Display Name", &name_rend);
-//     render_data.setRenderName(name_rend);
+    bool name_rend = data_manager.getRenderName();
+    ImGui::Bullet();
+    ImGui::SameLine();
+    ImGui::Checkbox("Display Name", &name_rend);
+    data_manager.setRenderName(name_rend);
 
-//     bool info_rend = render_data.getRenderInfo();
-//     ImGui::Bullet();
-//     ImGui::SameLine();
-//     ImGui::Checkbox("Display Planete Information", &info_rend);
-//     ImGui::SameLine();
-//     RenderData::HelpMarker("It is possible to activate this functionality with the 'SPACE' key.");
-//     render_data.setRenderInfo(info_rend);
-//     ImGui::Separator();
+    bool info_rend = data_manager.getRenderInfo();
+    ImGui::Bullet();
+    ImGui::SameLine();
+    ImGui::Checkbox("Display Planete Information", &info_rend);
+    ImGui::SameLine();
+    // RenderData::HelpMarker("It is possible to activate this functionality with the 'SPACE' key.");
+    data_manager.setRenderInfo(info_rend);
+    ImGui::Separator();
 
 //     RenderData::HelpMarker("More in coming like the possibility to manage the style of the different windows.");
 
-// }
+}
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** managePerformance *****************************************************************************/
@@ -216,43 +216,43 @@ void Settings::managePerformance(DataManager &data_manager)
     data_manager.setRenderParallax(parallax_render);
     ImGui::Separator();
 
-//     ImGui::Text("Asteroid Quantity");
-//     ImGui::SameLine();
-//     RenderData::HelpMarker("Astroid count influence the performance so you can now chose the amount.");
-//     ImGui::Bullet();
-//     int asteroid_count = render_data.getAsteroidCount();
-//     ImGui::SliderInt("Count", &asteroid_count, 2000, 10000);
-//     render_data.setAsteroidCount(asteroid_count);
-//     ImGui::Separator();
+    ImGui::Text("Asteroid Quantity");
+    ImGui::SameLine();
+    // RenderData::HelpMarker("Astroid count influence the performance so you can now chose the amount.");
+    ImGui::Bullet();
+    int asteroid_count = data_manager.getAsteroidCount();
+    ImGui::SliderInt("Count", &asteroid_count, 2000, 10000);
+    data_manager.setAsteroidCount(asteroid_count);
+    ImGui::Separator();
 
-//     static int selected = -1;
-//     int fps[] = {25, 60, 120, 144, 240};
-//     const char* names[] = { "25", "60", "120", "144", "240" };
-//     if (ImGui::Button("Select.."))
-//         ImGui::OpenPopup("my_select_popup");
-//     ImGui::SameLine();
-//     ImGui::Text("FPS Count : ");
-//     ImGui::SameLine();
-//     ImGui::TextUnformatted(selected == -1 ? "default" : names[selected]);
-//     if (ImGui::BeginPopup("my_select_popup"))
-//     {
-//         if(ImGui::Selectable("default"))
-//             selected = -1;
-//         ImGui::Separator();
-//         for (int i = 0; i < IM_ARRAYSIZE(names); i++)
-//             if (ImGui::Selectable(names[i]))
-//                 selected = i;
-//         ImGui::EndPopup();
-//     }
+    static int selected = -1;
+    int fps[] = {25, 60, 120, 144, 240};
+    const char* names[] = { "25", "60", "120", "144", "240" };
+    if (ImGui::Button("Select.."))
+        ImGui::OpenPopup("my_select_popup");
+    ImGui::SameLine();
+    ImGui::Text("FPS Count : ");
+    ImGui::SameLine();
+    ImGui::TextUnformatted(selected == -1 ? "default" : names[selected]);
+    if (ImGui::BeginPopup("my_select_popup"))
+    {
+        if(ImGui::Selectable("default"))
+            selected = -1;
+        ImGui::Separator();
+        for (int i = 0; i < IM_ARRAYSIZE(names); i++)
+            if (ImGui::Selectable(names[i]))
+                selected = i;
+        ImGui::EndPopup();
+    }
 
-//     if((selected >= 0) && (selected < 5))
-//     {
-//         render_data.setFPS(fps[selected]);
-//     }
-//     else
-//     {
-//         render_data.setFPS(50);
-//     }
+    if((selected >= 0) && (selected < 5))
+    {
+        data_manager.setFps(fps[selected]);
+    }
+    else
+    {
+        data_manager.setFps(60);
+    }
     
 }
 

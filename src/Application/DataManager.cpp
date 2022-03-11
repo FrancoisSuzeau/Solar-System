@@ -17,7 +17,8 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
-bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true)
+bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(10000), m_fps(60),
+render_overlay(true), render_name(true), render_info(false)
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, 1.0, 900000.0);
     view_mat = glm::mat4(1.0f);
@@ -195,4 +196,44 @@ void DataManager::setRenderParallax(bool const new_val)
 bool DataManager::getRenderParallax() const
 {
     return render_parallax;
+}
+
+void DataManager::setAsteroidCount(int const new_val)
+{
+    asteroid_count = new_val;
+}
+
+int DataManager::getAsteroidCount() const
+{
+    return asteroid_count;
+}
+
+void DataManager::setRenderOverlay(bool const new_val)
+{
+    render_overlay = new_val;
+}
+
+bool DataManager::getRenderOverlay() const
+{
+    return render_overlay;
+}
+
+void DataManager::setRenderName(bool const new_val)
+{
+    render_name = new_val;
+}
+
+bool DataManager::getRenderName() const
+{
+    return render_name;
+}
+
+void DataManager::setRenderInfo(bool const new_val)
+{
+    render_info = new_val;
+}
+
+bool DataManager::getRenderInfo() const
+{
+    return render_info;
 }

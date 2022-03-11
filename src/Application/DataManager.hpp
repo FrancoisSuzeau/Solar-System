@@ -51,6 +51,10 @@ PURPOSE : header of the DataManager class
                 int             bloom_strenght;
                 bool            render_normal;
                 bool            render_parallax;
+                int             asteroid_count;
+                bool            render_overlay;
+                bool            render_name;
+                bool            render_info;
 
                 glm::mat4       proj_mat;
                 glm::mat4       view_mat;
@@ -92,6 +96,14 @@ PURPOSE : header of the DataManager class
                 bool            getRenderNormal() const;
                 void            setRenderParallax(bool const new_val);
                 bool            getRenderParallax() const;
+                void            setAsteroidCount(int const new_val);
+                int             getAsteroidCount() const;
+                void            setRenderOverlay(bool const new_val);
+                bool            getRenderOverlay() const;
+                void            setRenderName(bool const new_val);
+                bool            getRenderName() const;
+                void            setRenderInfo(bool const new_val);
+                bool            getRenderInfo() const;
 
 
         };
