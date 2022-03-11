@@ -16,7 +16,8 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height)
+DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
+bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true)
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, 1.0, 900000.0);
     view_mat = glm::mat4(1.0f);
@@ -100,7 +101,7 @@ void DataManager::setShader(bool main_loop)
 {
     std::vector<shader_datas> shader_init;
     shader_init.push_back({"../../src/Shader/Shaders/couleur3D.vert", "../../src/Shader/Shaders/couleur3D.frag", "square"});
-    shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
+    // shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
 
     for(std::vector<shader_datas>::iterator it = shader_init.begin(); it != shader_init.end(); ++it)
     {
@@ -133,4 +134,65 @@ void DataManager::lockView(glm::vec3 position, glm::vec3 target, glm::vec3 up)
 void DataManager::resetViewMat(glm::mat4 const new_val)
 {
     view_mat = new_val;
+}
+
+void DataManager::setHDR(bool const new_val)
+{
+    hdr = new_val;
+}
+
+bool DataManager::getHDR() const
+{
+    return hdr;
+}
+
+void DataManager::setExposure(float const new_val)
+{
+    exposure = new_val;
+}
+
+float DataManager::getExposure() const
+{
+    return exposure;
+}
+
+
+void DataManager::setBloom(bool const new_val)
+{
+    bloom = new_val;
+}
+
+bool DataManager::getBloom() const
+{
+    return bloom;
+}
+
+void DataManager::setBloomStrength(int const new_val)
+{
+    bloom_strenght = new_val;
+}
+
+int DataManager::getBloomStrength() const
+{
+    return bloom_strenght;
+}
+
+void DataManager::setRenderNormal(bool const new_val)
+{
+    render_normal = new_val;
+}
+
+bool DataManager::getRenderNormal() const
+{
+    return render_normal;
+}
+
+void DataManager::setRenderParallax(bool const new_val)
+{
+    render_parallax = new_val;
+}
+
+bool DataManager::getRenderParallax() const
+{
+    return render_parallax;
 }

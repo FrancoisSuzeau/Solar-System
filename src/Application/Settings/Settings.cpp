@@ -21,33 +21,33 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Settings::Settings()
 {
-    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceship.png", "  Star Hunter - Class Eviscerator"});
-    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiDonut.png", "  Donut X37 - Class Yummi Yummi !"});
-    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceshuttle.png", "Spaceshuttle Atlantis Fuel Tank Booster"});
+    // textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceship.png", "  Star Hunter - Class Eviscerator"});
+    // textures_data.push_back({0, 0, 0, "../../assets/textures/imguiDonut.png", "  Donut X37 - Class Yummi Yummi !"});
+    // textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceshuttle.png", "Spaceshuttle Atlantis Fuel Tank Booster"});
 
-    min_distance.push_back(2.0f);
-    min_distance.push_back(1.180f);
-    min_distance.push_back(1.6f);
+    // min_distance.push_back(2.0f);
+    // min_distance.push_back(1.180f);
+    // min_distance.push_back(1.6f);
 
-    for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
-    {
-        assert(this->loadTextureFromFile(it[0]));
-    }
+    // for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
+    // {
+    //     assert(this->loadTextureFromFile(it[0]));
+    // }
 
-    index = 0;
+    // index = 0;
 
 }
 
 Settings::~Settings()
 {
-    for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
-    {
-        glDeleteTextures(1, &it[0].text_id);
-        if(glIsTexture(it[0].text_id) == GL_FALSE)
-        {
-            std::cout << ">> TEXTURE :: delete " << it[0].filepath << " : SUCESS" << std::endl;
-        }
-    }
+    // for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
+    // {
+    //     glDeleteTextures(1, &it[0].text_id);
+    //     if(glIsTexture(it[0].text_id) == GL_FALSE)
+    //     {
+    //         std::cout << ">> TEXTURE :: delete " << it[0].filepath << " : SUCESS" << std::endl;
+    //     }
+    // }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -87,7 +87,7 @@ void Settings::manageSettings(DataManager &data_manager)
         if (ImGui::BeginTabItem("Performance"))
         {
             style.FramePadding = frame_padding_save;
-            // this->managePerformance(render_data);
+            this->managePerformance(data_manager);
             ImGui::EndTabItem();
         }
         
@@ -145,76 +145,76 @@ void Settings::manageSettings(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** managePerformance *****************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Settings::managePerformance(RenderData &render_data)
-// {
-//     ImGui::Text("Rendering");
+void Settings::managePerformance(DataManager &data_manager)
+{
+    ImGui::Text("Rendering");
 
-//     ImGui::BulletText("Set HDR");
-//     ImGui::SameLine();
-//     if(ImGui::Button("Enabled"))
-//     {
-//         render_data.updateHDR(true);
-//         if(render_data.getExposure() <= 0.5f)
-//         {
-//             render_data.updateExposure(0.8f);
-//         }
-//     }
-//     ImGui::SameLine();
-//     if(ImGui::Button("Disabled"))
-//     {
-//         render_data.updateHDR(false);
-//         render_data.updateExposure(0.5f);
-//     }
+    ImGui::BulletText("Set HDR");
+    ImGui::SameLine();
+    if(ImGui::Button("Enabled"))
+    {
+        data_manager.setHDR(true);
+        // if(data_manager.getExposure() <= 0.5f)
+        // {
+        //     data_manager.setExposure(0.8f);
+        // }
+    }
+    ImGui::SameLine();
+    if(ImGui::Button("Disabled"))
+    {
+        data_manager.setHDR(false);
+        // data_manager.setExposure(0.5f);
+    }
 
-//     ImGui::BulletText("Set Exposure");
-//     ImGui::SameLine();
-//     float exposure = render_data.getExposure();
-//     ImGui::SliderFloat(" ", &exposure, 0.5f, 0.8f);
-//     if(exposure == 0.5f)
-//     {
-//         render_data.updateHDR(false);
-//     }
-//     if(exposure == 0.8f)
-//     {
-//         render_data.updateHDR(true);
-//     }
-//     render_data.updateExposure(exposure);
+    ImGui::BulletText("Set Exposure");
+    ImGui::SameLine();
+    float exposure = data_manager.getExposure();
+    ImGui::SliderFloat(" ", &exposure, 0.5f, 0.8f);
+    // if(exposure == 0.5f)
+    // {
+    //     data_manager.setHDR(false);
+    // }
+    // if(exposure == 0.8f)
+    // {
+    //     data_manager.setHDR(true);
+    // }
+    data_manager.setExposure(exposure);
 
-//     bool bloom = render_data.getBloom();
-//     int bloom_str = render_data.getBloomStr();
-//     if (ImGui::Button("Set Bloom"))
-//         ImGui::OpenPopup("my_bloom_popup");
-//     if (ImGui::BeginPopup("my_bloom_popup"))
-//     {
+    bool bloom = data_manager.getBloom();
+    int bloom_str = data_manager.getBloomStrength();
+    if (ImGui::Button("Set Bloom"))
+        ImGui::OpenPopup("my_bloom_popup");
+    if (ImGui::BeginPopup("my_bloom_popup"))
+    {
         
-//         ImGui::Text("Set Bloom");
-//         ImGui::Checkbox("Enabled/Disabled", &bloom);
-//         render_data.updateBloom(bloom);
+        ImGui::Text("Set Bloom");
+        ImGui::Checkbox("Enabled/Disabled", &bloom);
+        data_manager.setBloom(bloom);
 
-//         ImGui::BulletText("Set Bloom Strength");
-//         ImGui::SameLine();
-//         ImGui::SliderInt(" ", &bloom_str, 2, 10);
-//         render_data.setBloomStr(bloom_str);
+        ImGui::BulletText("Set Bloom Strength");
+        ImGui::SameLine();
+        ImGui::SliderInt(" ", &bloom_str, 2, 10);
+        data_manager.setBloomStrength(bloom_str);
 
-//         if (ImGui::Button("Close"))
-//             ImGui::CloseCurrentPopup();
-//         ImGui::EndPopup();
-//     }
-//     ImGui::Separator();
+        if (ImGui::Button("Close"))
+            ImGui::CloseCurrentPopup();
+        ImGui::EndPopup();
+    }
+    ImGui::Separator();
 
-//     ImGui::Text("Textures");
-//     bool normal_render = render_data.getShadowGround();
-//     ImGui::BulletText("Show Ground Shadow");
-//     ImGui::SameLine();
-//     ImGui::Checkbox("Activated/Disabled", &normal_render);
-//     render_data.setRenderShadowGround(normal_render);
+    ImGui::Text("Textures");
+    bool normal_render = data_manager.getRenderNormal();
+    ImGui::BulletText("Show Ground Shadow");
+    ImGui::SameLine();
+    ImGui::Checkbox("Activated/Disabled", &normal_render);
+    data_manager.setRenderNormal(normal_render);
 
-//     bool parallax_render = render_data.getDispMapRender();
-//     ImGui::BulletText("Set Parallax");
-//     ImGui::SameLine();
-//     ImGui::Checkbox("Activate/Deactivate", &parallax_render);
-//     render_data.setDispMapRender(parallax_render);
-//     ImGui::Separator();
+    bool parallax_render = data_manager.getRenderParallax();
+    ImGui::BulletText("Set Parallax");
+    ImGui::SameLine();
+    ImGui::Checkbox("Activate/Deactivate", &parallax_render);
+    data_manager.setRenderParallax(parallax_render);
+    ImGui::Separator();
 
 //     ImGui::Text("Asteroid Quantity");
 //     ImGui::SameLine();
@@ -254,7 +254,7 @@ void Settings::manageSettings(DataManager &data_manager)
 //         render_data.setFPS(50);
 //     }
     
-// }
+}
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** manageNavigation ******************************************************************************/
@@ -301,46 +301,46 @@ void Settings::manageSettings(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 /******************************************************************** loadTextureFromFile ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-bool Settings::loadTextureFromFile(imguiTexture_datas &data)
-{
-    unsigned char* image_data = stbi_load(data.filepath.c_str(), &data.img_width, &data.img_height, NULL, 4);
-    if (image_data == NULL)
-        return false;
+// bool Settings::loadTextureFromFile(imguiTexture_datas &data)
+// {
+//     unsigned char* image_data = stbi_load(data.filepath.c_str(), &data.img_width, &data.img_height, NULL, 4);
+//     if (image_data == NULL)
+//         return false;
 
-    // Create a OpenGL texture identifier
-    glGenTextures(1, &data.text_id);
+//     // Create a OpenGL texture identifier
+//     glGenTextures(1, &data.text_id);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, data.text_id);
+//     glActiveTexture(GL_TEXTURE0);
+//     glBindTexture(GL_TEXTURE_2D, data.text_id);
 
-    // Setup filtering parameters for display
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+//     // Setup filtering parameters for display
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
 
-    // Upload pixels into texture
-#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-#endif
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.img_width, data.img_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-    stbi_image_free(image_data);
+//     // Upload pixels into texture
+// #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+//     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+// #endif
+//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.img_width, data.img_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+//     stbi_image_free(image_data);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, 0);
+//     glActiveTexture(GL_TEXTURE0);
+//     glBindTexture(GL_TEXTURE_2D, 0);
 
-    return true;
-}
+//     return true;
+// }
 
-void Settings::verifIndex()
-{
-    if(index < 0)
-    {
-        index = textures_data.size() - 1;
-    }
+// void Settings::verifIndex()
+// {
+//     if(index < 0)
+//     {
+//         index = textures_data.size() - 1;
+//     }
 
-    if(index >= (int) textures_data.size())
-    {
-        index = 0;
-    }
-}
+//     if(index >= (int) textures_data.size())
+//     {
+//         index = 0;
+//     }
+// }

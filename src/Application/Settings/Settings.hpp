@@ -40,7 +40,6 @@ PURPOSE : header of the Settings class
         #include <SDL2/SDL_opengl.h>
         #endif
 
-        // #include "../OpenGlSketch/RenderData.hpp"
         #include "../DataManager.hpp"
 
 
@@ -69,23 +68,24 @@ PURPOSE : header of the Settings class
             
             private:
 
-                // void managePerformance(RenderData &render_data);
+                void managePerformance(DataManager &data_manager);
+        
                 // void manageHUD(RenderData &render_data);
                 // void manageNavigation(RenderData &render_data);
-                void verifIndex();
+                // void verifIndex();
 
-                bool loadTextureFromFile(imguiTexture_datas &data);
+                // bool loadTextureFromFile(imguiTexture_datas &data);
 
-                std::vector<imguiTexture_datas> textures_data;
-                std::vector<float> min_distance;
-                int index;
+                // std::vector<imguiTexture_datas> textures_data;
+                // std::vector<float> min_distance;
+                // int index;
 
             public:
             
                 Settings();
                 ~Settings();
 
-                void manageSettings(DataManager &data_manager);
+                void    manageSettings(DataManager &data_manager);
         };
 
 
