@@ -46,6 +46,7 @@ PURPOSE : header of the Overlay class
 
         #include "../../Objects/BasicObjects/Square.hpp"
         #include "../../Renderers/BasicRenderers/SquareRenderer.hpp"
+        #include "../DataManager.hpp"
 
         typedef struct music_data {
                 std::string title;
@@ -75,13 +76,10 @@ PURPOSE : header of the Overlay class
                 // float           m_ancient_radius;
                 // float           m_ancient_speed;
 
-                // glm::vec3 m_colorBlack;
-                // glm::vec3 m_colorGrey;
-
                 // std::map<int, music_data> map_music_data;
                 // std::map<std::string, nav_datas> map_nav_data;
 
-                // void displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates);
+                void displaySquares(DataManager &data_manager, std::vector<glm::vec3> coordinates);
 
             public:
             
@@ -90,7 +88,7 @@ PURPOSE : header of the Overlay class
 
                 void            initOverlayAssets(Renderer *square_rend, Square *square);
 
-                // void displayGeneralOverlay(RenderData &render_data);
+                void            displayGeneralOverlay(DataManager &data_manager);
                 // void displayMusicInfo(RenderData &render_data);
                 // void displayNavigation(RenderData &render_data);
                 // void displayAppInfo(RenderData &render_data);

@@ -39,9 +39,10 @@ PURPOSE : Interface Object
                 glm::vec3   m_size;
                 glm::vec3   m_inclinaison_vector;
                 glm::vec3   m_rotation_vector;
-                float       m_inclinaison_angle;
-                float       m_speed_rotation;
-                float       m_rotation_angle;
+                float           m_color;
+                float           m_inclinaison_angle;
+                float           m_speed_rotation;
+                float           m_rotation_angle;
 
             public:
 
@@ -55,10 +56,12 @@ PURPOSE : Interface Object
                 void inclineObject(glm::mat4 &model, float angle);
                 void translateObject(glm::mat4 &model, glm::vec3 pos);
                 void scaleObject(glm::mat4 &model, glm::vec3 size);
+                void updateColor(float const color);
 
                 glm::vec3 getSize() const;
                 glm::vec3 getPosition() const;
                 glm::mat4 getModelMat();
+                float getColor() const;
             
         };
 

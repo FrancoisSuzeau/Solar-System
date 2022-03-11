@@ -67,3 +67,13 @@ glm::mat4 Object::getModelMat()
 {
     return m_model_mat;
 }
+
+void Object::updateColor(float const new_color)
+{
+    m_color = new_color;
+}
+
+float Object::getColor() const
+{
+    return m_color;
+}

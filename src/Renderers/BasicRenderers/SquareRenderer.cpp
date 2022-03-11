@@ -141,6 +141,7 @@ void SquareRenderer::render(DataManager &data_manager, Object *square)
             data_manager.getShader("square")->setMat4("projection", data_manager.getProjMat());
             data_manager.getShader("square")->setMat4("view", data_manager.getViewMat());
             data_manager.getShader("square")->setMat4("model", square->getModelMat());
+            data_manager.getShader("square")->setFloat("color", square->getColor());
 
             // data_manager.getShader("square")->setInt("hdr", data_manager.getHDR());
 

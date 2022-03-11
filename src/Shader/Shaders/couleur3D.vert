@@ -6,7 +6,6 @@
 // Entr�es
 
 in vec3 in_Vertex;
-in vec3 in_Normal;
 
 
 // Uniform
@@ -16,21 +15,11 @@ uniform mat4 view;
 uniform mat4 model;
 
 
-// Sortie
-
-out vec3 color;
-
-
 // Fonction main
 
 void main()
 {
-    // Position finale du vertex en 3D
 
     gl_Position = projection * view * (model * vec4(in_Vertex, 1.0));
 
-
-    // Envoi de la couleur au Fragment Shader
-
-    color = in_Normal;
 }

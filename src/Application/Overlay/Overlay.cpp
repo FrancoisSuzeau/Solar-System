@@ -67,11 +67,6 @@ Overlay::Overlay() //: m_rect(0.05, 0.1)
     // map_nav_data["Uranus"] = {ImVec4(0.454f, 0.815f, 0.945f, 1.0f), 0.047227f};
     // map_nav_data["Neptune"] = {ImVec4(0.192f, 0.549f, 0.906f, 1.0f), 0.0604449f};
 
-    // m_ancient_radius = 0.0;
-    // m_ancient_speed = 0.0;
-
-    // m_colorBlack = vec3(0.05);
-    // m_colorGrey = vec3(0.1);
 }
 
 Overlay::~Overlay()
@@ -92,97 +87,103 @@ Overlay::~Overlay()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** displaySquares ********************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Overlay::displaySquares(RenderData &render_data, std::vector<glm::vec3> coordinates)
-// {
-//     glm::mat4 save = render_data.getViewMat();
+void Overlay::displaySquares(DataManager &data_manager, std::vector<glm::vec3> coordinates)
+{
+    m_square_ptr->updateColor(0.05f); //grey black
+    m_square_ptr->updatePosition(coordinates[0]);
+    m_square_ptr->transform();
+    m_square_renderer->render(data_manager, m_square_ptr);
 
-//         m_rect.updatePosition(coordinates[0]);
-//         m_rect.display(render_data, m_colorGrey);
-
-//     render_data.updateView(save);
-
-//         m_rect.updatePosition(coordinates[1]);
-//         m_rect.display(render_data, m_colorBlack);
-
-//     render_data.updateView(save);
-// }
+    m_square_ptr->updateColor(0.1f); //grey less black
+    m_square_ptr->updatePosition(coordinates[1]);
+    m_square_ptr->transform();
+    m_square_renderer->render(data_manager, m_square_ptr);
+}
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************** displayGeneralOverlay ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Overlay::displayGeneralOverlay(RenderData &render_data)
-// {   
-//     glm::mat4 save = render_data.getViewMat();
-//     float constance = 0.05f;
+void Overlay::displayGeneralOverlay(DataManager &data_manager)
+{   
 
-//     /************************************************************************ horizontal bar *******************************************************************/
-//         float start_horizontal = 1.285f;
+    std::vector<glm::vec3> coordinates;
+    coordinates.push_back(glm::vec3(2.0f, 0.0f, 0.0f));
+    coordinates.push_back(glm::vec3(-2.0f, 0.0f, 0.0f));
 
-//         if(render_data.getShader("square") != nullptr)
-//         {
-//             glUseProgram(render_data.getShader("square")->getProgramID());
+    this->displaySquares(data_manager, coordinates);
 
-//                 render_data.getShader("square")->setInt("load", false);
 
-//             glUseProgram(0);
+    // glm::mat4 save = render_data.getViewMat();
+    // float constance = 0.05f;
 
-//             for (size_t i(0); i < 52; i++) // 25 * 2 + 2
-//             {
-//                 std::vector<glm::vec3> coordinates1;
-//                 std::vector<glm::vec3> coordinates2;
+    // /************************************************************************ horizontal bar *******************************************************************/
+    //     float start_horizontal = 1.285f;
 
-//                     coordinates1.push_back(glm::vec3(start_horizontal, 0.720f, -0.01f));
-//                     coordinates1.push_back(glm::vec3(start_horizontal, 0.725f, 0.0f));
-//                     coordinates2.push_back(glm::vec3(start_horizontal, -0.720f, -0.01f));
-//                     coordinates2.push_back(glm::vec3(start_horizontal, -0.725f, 0.0f));
+    //     if(render_data.getShader("square") != nullptr)
+    //     {
+    //         glUseProgram(render_data.getShader("square")->getProgramID());
 
-//                     displaySquares(render_data, coordinates1);
-//                     displaySquares(render_data, coordinates2);
+    //             render_data.getShader("square")->setInt("load", false);
 
-//                 start_horizontal = start_horizontal - constance;
+    //         glUseProgram(0);
 
-//                 render_data.updateView(save);
-//             }
+    //         for (size_t i(0); i < 52; i++) // 25 * 2 + 2
+    //         {
+    //             std::vector<glm::vec3> coordinates1;
+    //             std::vector<glm::vec3> coordinates2;
 
-//             render_data.updateView(save);
+    //                 coordinates1.push_back(glm::vec3(start_horizontal, 0.720f, -0.01f));
+    //                 coordinates1.push_back(glm::vec3(start_horizontal, 0.725f, 0.0f));
+    //                 coordinates2.push_back(glm::vec3(start_horizontal, -0.720f, -0.01f));
+    //                 coordinates2.push_back(glm::vec3(start_horizontal, -0.725f, 0.0f));
 
-//                 m_rect.updatePosition(glm::vec3(-1.285f, 0.725f, 0.0f));
-//                 m_rect.display(render_data, m_colorBlack);
+    //                 displaySquares(render_data, coordinates1);
+    //                 displaySquares(render_data, coordinates2);
 
-//             render_data.updateView(save);
+    //             start_horizontal = start_horizontal - constance;
 
-//                 m_rect.updatePosition(glm::vec3(-1.285f, -0.725f, 0.0f));
-//                 m_rect.display(render_data, m_colorBlack);
+    //             render_data.updateView(save);
+    //         }
 
-//             render_data.updateView(save);
-//     //=======================================================================================================================================================
+    //         render_data.updateView(save);
 
-//     // /*************************************************************************** vertical bar ******************************************************************/
+    //             m_rect.updatePosition(glm::vec3(-1.285f, 0.725f, 0.0f));
+    //             m_rect.display(render_data, m_colorBlack);
 
-//             float start_verticale = 0.675f; //minus one square because of the top bar
+    //         render_data.updateView(save);
 
-//             for (size_t i(0); i < 28; i++) //goes to bottom bar
-//             {
+    //             m_rect.updatePosition(glm::vec3(-1.285f, -0.725f, 0.0f));
+    //             m_rect.display(render_data, m_colorBlack);
 
-//                 std::vector<glm::vec3> coordinates1;
-//                 std::vector<glm::vec3> coordinates2;
+    //         render_data.updateView(save);
+    // //=======================================================================================================================================================
 
-//                     coordinates1.push_back(glm::vec3(-1.285f, start_verticale, -0.01f));
-//                     coordinates1.push_back(glm::vec3(-1.285f, start_verticale, 0.0f));
-//                     coordinates2.push_back(glm::vec3(1.285f, start_verticale, -0.01f));
-//                     coordinates2.push_back(glm::vec3(1.285f, start_verticale, 0.0f));
+    // // /*************************************************************************** vertical bar ******************************************************************/
 
-//                     displaySquares(render_data, coordinates1);
-//                     displaySquares(render_data, coordinates2);
+    //         float start_verticale = 0.675f; //minus one square because of the top bar
 
-//                 start_verticale = start_verticale - constance;
+    //         for (size_t i(0); i < 28; i++) //goes to bottom bar
+    //         {
 
-//                 render_data.updateView(save);
-//             }
-//         }
+    //             std::vector<glm::vec3> coordinates1;
+    //             std::vector<glm::vec3> coordinates2;
+
+    //                 coordinates1.push_back(glm::vec3(-1.285f, start_verticale, -0.01f));
+    //                 coordinates1.push_back(glm::vec3(-1.285f, start_verticale, 0.0f));
+    //                 coordinates2.push_back(glm::vec3(1.285f, start_verticale, -0.01f));
+    //                 coordinates2.push_back(glm::vec3(1.285f, start_verticale, 0.0f));
+
+    //                 displaySquares(render_data, coordinates1);
+    //                 displaySquares(render_data, coordinates2);
+
+    //             start_verticale = start_verticale - constance;
+
+    //             render_data.updateView(save);
+    //         }
+    //     }
         
-//     render_data.updateView(save);
-// }
+    // render_data.updateView(save);
+}
 
 /***********************************************************************************************************************************************************************/
 /********************************************************************** displayMusicOverlay ****************************************************************************/
