@@ -58,6 +58,11 @@ glm::vec3 Object::getPosition() const
     return m_position;
 }
 
+void Object::updateSize(glm::vec3 const new_size)
+{
+    m_size = new_size;
+}
+
 glm::vec3 Object::getSize() const
 {
     return m_size;

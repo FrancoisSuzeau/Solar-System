@@ -160,9 +160,9 @@ void Application::fpsCalculation(int moment)
 void Application::renderOverlay()
 {
     glm::mat4 save = m_data_manager.getViewMat();
-    m_data_manager.lockView(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    m_data_manager.lockView(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     
-    m_overlay.displayGeneralOverlay(m_data_manager);
+    m_overlay.renderEdges(m_data_manager);
 
     m_data_manager.resetViewMat(save);
     // if((render_data.getOverlayRender()) && (render_data.getShader("square") != nullptr))

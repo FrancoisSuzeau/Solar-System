@@ -33,6 +33,6 @@ void Square::transform()
 {
     m_model_mat = glm::mat4(1.0);
 
+    this->scaleObject(m_model_mat, m_size);
     this->translateObject(m_model_mat, m_position);
-    // this->scaleObject(m_model_mat, m_size);
 }

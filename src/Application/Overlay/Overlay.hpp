@@ -80,6 +80,8 @@ PURPOSE : header of the Overlay class
                 // std::map<std::string, nav_datas> map_nav_data;
 
                 void displaySquares(DataManager &data_manager, std::vector<glm::vec3> coordinates);
+                void renderHorizontal(DataManager &data_manager, float side);
+                void renderVertical(DataManager &data_manager, float side);
 
             public:
             
@@ -88,7 +90,7 @@ PURPOSE : header of the Overlay class
 
                 void            initOverlayAssets(Renderer *square_rend, Square *square);
 
-                void            displayGeneralOverlay(DataManager &data_manager);
+                void            renderEdges(DataManager &data_manager);
                 // void displayMusicInfo(RenderData &render_data);
                 // void displayNavigation(RenderData &render_data);
                 // void displayAppInfo(RenderData &render_data);

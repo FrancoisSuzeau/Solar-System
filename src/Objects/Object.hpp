@@ -57,6 +57,7 @@ PURPOSE : Interface Object
                 void translateObject(glm::mat4 &model, glm::vec3 pos);
                 void scaleObject(glm::mat4 &model, glm::vec3 size);
                 void updateColor(float const color);
+                void updateSize(glm::vec3 const new_size);
 
                 glm::vec3 getSize() const;
                 glm::vec3 getPosition() const;

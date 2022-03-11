@@ -7,16 +7,12 @@ MODULE : Overlay
 
 NAMEFILE : Overlay.cpp
 
-PURPOSE : class Overlay
+PURPOSE :   - say to rendersquare how to render a frame all around the screen
+            - 
+
 */
 
-#ifndef BUFFER_OFFSET
-#define BUFFER_OFFSET(offset) ((char*)NULL + (offset))
-#endif
-
 #include "Overlay.hpp"
-
-using namespace glm;
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
@@ -88,101 +84,64 @@ Overlay::~Overlay()
 /*********************************************************************** displaySquares ********************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Overlay::displaySquares(DataManager &data_manager, std::vector<glm::vec3> coordinates)
-{
-    m_square_ptr->updateColor(0.05f); //grey black
+{   
+    m_square_ptr->updateSize(glm::vec3(0.5));
+
+    m_square_ptr->updateColor(0.2f); //less grey black
     m_square_ptr->updatePosition(coordinates[0]);
     m_square_ptr->transform();
     m_square_renderer->render(data_manager, m_square_ptr);
 
-    m_square_ptr->updateColor(0.1f); //grey less black
+    m_square_ptr->updateColor(0.05f); //grey black
     m_square_ptr->updatePosition(coordinates[1]);
     m_square_ptr->transform();
     m_square_renderer->render(data_manager, m_square_ptr);
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************** displayGeneralOverlay ****************************************************************************/
+/******************************************************************** renderHorizontal ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Overlay::displayGeneralOverlay(DataManager &data_manager)
+void Overlay::renderHorizontal(DataManager &data_manager, float side)
+{
+    for (float i(-1.5f); i < 2.f; i = i + 0.5f)
+    {
+        std::vector<glm::vec3> coordinates;
+        coordinates.push_back(glm::vec3(i, side, 0.f));
+        float tmp = (side > 0.f) ? 1.471f : -1.471f;
+        coordinates.push_back(glm::vec3(i, tmp, 0.1f));
+        this->displaySquares(data_manager, coordinates);
+    }
+}
+
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************** renderVertical ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Overlay::renderVertical(DataManager &data_manager, float side)
+{
+    for (float i(-1.f); i < 2.f; i++)
+    {
+        std::vector<glm::vec3> coordinates;
+        coordinates.push_back(glm::vec3(side, i, 0.f));
+        float tmp = (side > 0.f) ? 2.25f : -2.25f;
+        coordinates.push_back(glm::vec3(tmp, i, 0.1f));
+        this->displaySquares(data_manager, coordinates);
+    }
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************** renderEdges ****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Overlay::renderEdges(DataManager &data_manager)
 {   
-
-    std::vector<glm::vec3> coordinates;
-    coordinates.push_back(glm::vec3(2.0f, 0.0f, 0.0f));
-    coordinates.push_back(glm::vec3(-2.0f, 0.0f, 0.0f));
-
-    this->displaySquares(data_manager, coordinates);
-
-
-    // glm::mat4 save = render_data.getViewMat();
-    // float constance = 0.05f;
-
-    // /************************************************************************ horizontal bar *******************************************************************/
-    //     float start_horizontal = 1.285f;
-
-    //     if(render_data.getShader("square") != nullptr)
-    //     {
-    //         glUseProgram(render_data.getShader("square")->getProgramID());
-
-    //             render_data.getShader("square")->setInt("load", false);
-
-    //         glUseProgram(0);
-
-    //         for (size_t i(0); i < 52; i++) // 25 * 2 + 2
-    //         {
-    //             std::vector<glm::vec3> coordinates1;
-    //             std::vector<glm::vec3> coordinates2;
-
-    //                 coordinates1.push_back(glm::vec3(start_horizontal, 0.720f, -0.01f));
-    //                 coordinates1.push_back(glm::vec3(start_horizontal, 0.725f, 0.0f));
-    //                 coordinates2.push_back(glm::vec3(start_horizontal, -0.720f, -0.01f));
-    //                 coordinates2.push_back(glm::vec3(start_horizontal, -0.725f, 0.0f));
-
-    //                 displaySquares(render_data, coordinates1);
-    //                 displaySquares(render_data, coordinates2);
-
-    //             start_horizontal = start_horizontal - constance;
-
-    //             render_data.updateView(save);
-    //         }
-
-    //         render_data.updateView(save);
-
-    //             m_rect.updatePosition(glm::vec3(-1.285f, 0.725f, 0.0f));
-    //             m_rect.display(render_data, m_colorBlack);
-
-    //         render_data.updateView(save);
-
-    //             m_rect.updatePosition(glm::vec3(-1.285f, -0.725f, 0.0f));
-    //             m_rect.display(render_data, m_colorBlack);
-
-    //         render_data.updateView(save);
-    // //=======================================================================================================================================================
-
-    // // /*************************************************************************** vertical bar ******************************************************************/
-
-    //         float start_verticale = 0.675f; //minus one square because of the top bar
-
-    //         for (size_t i(0); i < 28; i++) //goes to bottom bar
-    //         {
-
-    //             std::vector<glm::vec3> coordinates1;
-    //             std::vector<glm::vec3> coordinates2;
-
-    //                 coordinates1.push_back(glm::vec3(-1.285f, start_verticale, -0.01f));
-    //                 coordinates1.push_back(glm::vec3(-1.285f, start_verticale, 0.0f));
-    //                 coordinates2.push_back(glm::vec3(1.285f, start_verticale, -0.01f));
-    //                 coordinates2.push_back(glm::vec3(1.285f, start_verticale, 0.0f));
-
-    //                 displaySquares(render_data, coordinates1);
-    //                 displaySquares(render_data, coordinates2);
-
-    //             start_verticale = start_verticale - constance;
-
-    //             render_data.updateView(save);
-    //         }
-    //     }
-        
-    // render_data.updateView(save);
+    //up
+    this->renderHorizontal(data_manager, 1.5f);
+    //bottom
+    this->renderHorizontal(data_manager, -1.5f);
+    //left
+    this->renderVertical(data_manager, -2.31f);
+    //right
+    this->renderVertical(data_manager, 2.31f);
 }
 
 /***********************************************************************************************************************************************************************/
