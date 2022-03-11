@@ -41,7 +41,9 @@ bool ContextManager::Init(Sdl_manage &sdl_manager)
     /************************************************* initialize SDL ********************************************************/
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        std::cout << ">> Initialise SDL : ERROR : " << SDL_GetError() << std::endl;
+        std::string msg(">> Initialise SDL : ERROR : ");
+        msg.append(SDL_GetError());
+        showError(nullptr, ErrorHandler(msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return false;
     }
     std::cout << ">> Initialise SDL : SUCCESS" << std::endl;
@@ -50,8 +52,10 @@ bool ContextManager::Init(Sdl_manage &sdl_manager)
     /************************************************* initialize SDL mixer ********************************************************/
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0)
     {
-        std::cout << ">> Initialise SDL mixer : ERROR : " << Mix_GetError() << std::endl;
         SDL_Quit();
+        std::string msg(">> Initialise SDL mixer : ERROR : ");
+        msg.append(Mix_GetError());
+        showError(nullptr, ErrorHandler(msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return false;
     }
     std::cout << ">> Initialise SDL mixer : SUCCESS" << std::endl;
@@ -60,9 +64,11 @@ bool ContextManager::Init(Sdl_manage &sdl_manager)
     /************************************************* initialize SDL ttf ********************************************************/
     if(TTF_Init() < 0)
     {
-        std::cout << ">> Initialise TTF : ERROR : " << TTF_GetError() << std::endl;
         Mix_CloseAudio();
         SDL_Quit();
+        std::string msg(">> Initialise TTF : ERROR : ");
+        msg.append(TTF_GetError());
+        showError(nullptr, ErrorHandler(msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return false;
     }
     std::cout << ">> Initialise TTF : SUCCESS" << std::endl;
@@ -73,7 +79,9 @@ bool ContextManager::Init(Sdl_manage &sdl_manager)
         Mix_CloseAudio();
         TTF_Quit();
         SDL_Quit();
-        std::cout << ">> Set GL attribute ERROR : MAJOR VERSION " << SDL_GetError() << std::endl;
+        std::string msg(">> Set GL attribute ERROR : MAJOR VERSION ");
+        msg.append(SDL_GetError());
+        showError(nullptr, ErrorHandler(msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return false;
     }
     
@@ -82,7 +90,9 @@ bool ContextManager::Init(Sdl_manage &sdl_manager)
         Mix_CloseAudio();
         TTF_Quit();
         SDL_Quit();
-        std::cout << ">> Set GL attribute ERROR : MINOR VERSION " << SDL_GetError() << std::endl;
+        std::string msg(">> Set GL attribute ERROR : MINOR VERSION ");
+        msg.append(SDL_GetError());
+        showError(nullptr, ErrorHandler(msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return false;
     }
 
@@ -106,10 +116,12 @@ bool ContextManager::Init(Sdl_manage &sdl_manager)
 
     if(sdl_manager.window == NULL)
     {
-        std::cout << ">> Creating window : ERROR : " << SDL_GetError() << std::endl;
         Mix_CloseAudio();
         TTF_Quit();
         SDL_Quit();
+        std::string msg(">> Creating window : ERROR : ");
+        msg.append(SDL_GetError());
+        showError(nullptr, ErrorHandler(msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return false;
     }
     std::cout << ">> Creating window : SUCCESS" << std::endl;
@@ -124,11 +136,13 @@ bool ContextManager::Init(SDL_GLContext &gl_context, SDL_Window *window)
     gl_context = SDL_GL_CreateContext(window);
     if(gl_context == 0)
     {
-        std::cout << ">> Creating context OpenGL : ERROR : " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
         Mix_CloseAudio();
         TTF_Quit();
         SDL_Quit();
+        std::string msg(">> Creating context OpenGL : ERROR : ");
+        msg.append(SDL_GetError());
+        showError(nullptr, ErrorHandler(msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return false;
     }
     std::cout << ">> Creating context OpenGL : SUCCESS" << std::endl;
@@ -142,12 +156,14 @@ bool ContextManager::Init(GLenum init_glew, SDL_GLContext gl_context, SDL_Window
     init_glew = glewInit();
     if (init_glew != GLEW_OK)
     {
-        std::cout << ">> Initialize Glew : ERROR : " << glewGetErrorString(init_glew) << std::endl;
         SDL_GL_DeleteContext(gl_context);
         SDL_DestroyWindow(window);
         Mix_CloseAudio();
         TTF_Quit();
         SDL_Quit();
+        std::string msg(">> Initialize Glew : ERROR : ");
+        msg.append((const char*)glewGetErrorString(init_glew));
+        showError(nullptr, ErrorHandler(msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return false;
     }
     std::cout << ">> Initialize Glew : SUCCESS" << std::endl;

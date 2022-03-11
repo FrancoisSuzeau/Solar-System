@@ -35,6 +35,8 @@ PURPOSE : header of the ContextManager class
         #include "../lib/imgui/imgui.h"
         #include "../lib/imgui/imgui_impl_sdl.h"
         #include "../lib/imgui/imgui_impl_opengl3.h"
+
+        #include "ErrorHandler/ErrorHandler.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
