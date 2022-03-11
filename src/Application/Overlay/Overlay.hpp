@@ -88,12 +88,13 @@ PURPOSE : header of the Overlay class
                 Overlay();
                 ~Overlay();
 
-                void            initOverlayAssets(Renderer *square_rend, Square *square);
-
                 void            renderEdges(DataManager &data_manager);
+                void            initOverlayAssets(Renderer *square_rend, Square *square);
+                void            renderAppInfo();
+                
                 // void displayMusicInfo(RenderData &render_data);
                 // void displayNavigation(RenderData &render_data);
-                // void displayAppInfo(RenderData &render_data);
+                
 
         };
 

@@ -165,28 +165,12 @@ void Application::renderOverlay()
     m_overlay.renderEdges(m_data_manager);
 
     m_data_manager.resetViewMat(save);
-    // if((render_data.getOverlayRender()) && (render_data.getShader("square") != nullptr))
-    // {
-    //     if((aud != nullptr) && (camera != nullptr) && (m_overlay != nullptr))
-    //     {
-    //         render_data.initSaveMat();
 
-    //         render_data.lockViewMat(vec3(0.0f, 0.0f, 1.71f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    m_overlay.renderAppInfo();
 
-    //             m_overlay->displayGeneralOverlay(render_data);
+    // m_overlay->displayMusicInfo(render_data);
 
-    //         render_data.saveViewMat();
-
-    //             m_overlay->displayMusicInfo(render_data);
-
-    //             m_overlay->displayNavigation(render_data);
-
-    //             m_overlay->displayAppInfo(render_data);
-
-    //     }
-        
-    // }
-    
+    //m_overlay->displayNavigation(render_data);
 }
 
 /***********************************************************************************************************************************************************************/
