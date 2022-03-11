@@ -35,6 +35,7 @@ SRC+=InOut/Input/Input.cpp InOut/Audio/Audio.cpp
 SRC+=Objects/Object.cpp Objects/BasicObjects/Square.cpp Objects/BasicObjects/Sphere.cpp
 SRC+=Renderers/BasicRenderers/SquareRenderer.cpp Renderers/BasicRenderers/SphereRenderer.cpp
 SRC+=Shader/Shader.cpp
+SRC+=Skybox/Skybox.cpp
 # SRC+=Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp 
 # SRC+=CelestialBody/Planete/PlaneteRender.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/Planete.cpp Text/Text.cpp
 # SRC+=CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp 

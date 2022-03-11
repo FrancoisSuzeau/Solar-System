@@ -33,6 +33,8 @@ PURPOSE : header of the Application class
         #include "../Objects/BasicObjects/Sphere.hpp"
         #include "../Renderers/BasicRenderers/SphereRenderer.hpp"
 
+        #include "../Skybox/Skybox.hpp"
+
         #define BEGIN   0
         #define END     1
         
@@ -64,6 +66,7 @@ PURPOSE : header of the Application class
                 SDL_Window              *m_window;
                 Audio                   *m_audio;
                 Overlay                 m_overlay;
+                Skybox                  *m_skybox;
 
                 bool menu_app_key_pressed;
                 bool render_menu;
@@ -77,6 +80,7 @@ PURPOSE : header of the Application class
                 void    renderAudio();
                 void    renderSettings();
                 void    renderOverlay();
+                void    renderScene();
                 
 
             public:
@@ -89,7 +93,7 @@ PURPOSE : header of the Application class
                 
                 // void    initFrameBuffer();
                 
-                // void    renderScene(RenderData &render_data);
+                
                 // void    renderInfo(RenderData &render_data);
                 // void    renderParticles(RenderData &render_data);
 
