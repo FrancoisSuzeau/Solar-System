@@ -34,6 +34,9 @@ PURPOSE : header of the Application class
         #include "../Renderers/BasicRenderers/SphereRenderer.hpp"
 
         #include "../Skybox/Skybox.hpp"
+        #include "../Objects/Spaceship/Spaceship.hpp"
+
+        #include "Camera/Camera.hpp"
 
         #define BEGIN   0
         #define END     1
@@ -48,7 +51,7 @@ PURPOSE : header of the Application class
 
                 // Input           m_input;
                 // Audio           *aud;
-                // Camera	*camera;
+                
                 // std::vector<TTF_Font*>  m_police;
                 // SystemCreator   *solar_system;
                 // Framebuffer     *m_framebuffer;
@@ -67,6 +70,7 @@ PURPOSE : header of the Application class
                 Audio                   *m_audio;
                 Overlay                 m_overlay;
                 Skybox                  *m_skybox;
+                Camera	                *camera;
 
                 bool menu_app_key_pressed;
                 bool render_menu;

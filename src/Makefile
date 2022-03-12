@@ -11,8 +11,6 @@ else
 	CFLAGS = -Wextra -m64 -DNDEBUG
 endif
 
-PATH_FLAG_GPP=-L./../lib -I./../include
-
 LD_SDL_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2main -lSDL2
 LD_SDLIMAGE_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_image
 LD_SDLMIXER_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lSDL2_mixer
@@ -25,17 +23,21 @@ ifeq ($(DEBUG), 1)
 else
 	EXEC=../build/release/SolarSystem
 endif
+
 CC=g++
 
 # Generate source files list
 SRC=Main.cpp ContextManager.cpp
 SRC+=ErrorHandler/ErrorHandler.cpp
-SRC+=Application/Application.cpp Application/DataManager.cpp Application/Settings/Settings.cpp Application/Overlay/Overlay.cpp
 SRC+=InOut/Input/Input.cpp InOut/Audio/Audio.cpp
-SRC+=Objects/Object.cpp Objects/BasicObjects/Square.cpp Objects/BasicObjects/Sphere.cpp
+SRC+=Objects/Object.cpp Objects/BasicObjects/Square.cpp Objects/BasicObjects/Sphere.cpp Objects/Spaceship/Spaceship.cpp
 SRC+=Renderers/BasicRenderers/SquareRenderer.cpp Renderers/BasicRenderers/SphereRenderer.cpp
 SRC+=Shader/Shader.cpp
 SRC+=Skybox/Skybox.cpp
+SRC+=Model/Mesh.cpp Model/Model.cpp
+SRC+=Application/Camera/Camera.cpp
+
+SRC+=Application/Application.cpp Application/DataManager.cpp Application/Settings/Settings.cpp Application/Overlay/Overlay.cpp
 # SRC+=Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp 
 # SRC+=CelestialBody/Planete/PlaneteRender.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/Planete.cpp Text/Text.cpp
 # SRC+=CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp 

@@ -103,6 +103,7 @@ void DataManager::setShader(bool main_loop)
     std::vector<shader_datas> shader_init;
     shader_init.push_back({"../../src/Shader/Shaders/couleur3D.vert", "../../src/Shader/Shaders/couleur3D.frag", "square"});
     shader_init.push_back({"../../src/Shader/Shaders/skybox.vert", "../../src/Shader/Shaders/skybox.frag", "skybox"});
+    shader_init.push_back({"../../src/Shader/Shaders/model.vert", "../../src/Shader/Shaders/model.frag", "model"});
     // shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
 
     for(std::vector<shader_datas>::iterator it = shader_init.begin(); it != shader_init.end(); ++it)
@@ -118,7 +119,7 @@ Shader* DataManager::getShader(std::string key)
     return map_shader[key];
 }
 
-glm::mat4 DataManager::getViewMat() const
+glm::mat4& DataManager::getViewMat()
 {
     return view_mat;
 }

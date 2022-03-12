@@ -7,7 +7,10 @@ MODULE : Skybox
 
 NAMEFILE : Skybox.cpp
 
-PURPOSE : class Skybox
+PURPOSE :   - load texture for cube maps
+            - load vertex position
+            - transfer vertex to GPU buffer
+            - display texured cubemaps
 
 */
 
@@ -179,9 +182,9 @@ void Skybox::render(DataManager &data_manager)
     //lock vao
         glBindVertexArray(m_vaoID);
 
-        glm::mat4 save = data_manager.getViewMat();
+        glm::mat4 view = glm::mat4(glm::mat3(data_manager.getViewMat()));
 
-        data_manager.getShader("skybox")->setMat4("view", data_manager.getViewMat());
+        data_manager.getShader("skybox")->setMat4("view", view);
         data_manager.getShader("skybox")->setMat4("projection", data_manager.getProjMat());
 
         data_manager.getShader("skybox")->setTexture("skybox", 0);
@@ -205,6 +208,6 @@ void Skybox::render(DataManager &data_manager)
 
     glDepthFunc(GL_LESS);
     
-    data_manager.resetViewMat(save);
+    data_manager.resetViewMat(view);
 }
 

@@ -71,12 +71,22 @@ void Application::mainLoop()
     start_loop = 0;
     end_loop = 0;
     time_past = 0;
+
+    Spaceship *ship = new Spaceship();
+    assert(ship);
+    ship->loadModelShip(m_data_manager);
+    camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
+    assert(camera);
+
     //=====================================================================================================================================================
 
 
     ImGuiStyle& style = ImGui::GetStyle();
     style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
     style.WindowMenuButtonPosition = ImGuiDir_None;
+
+    // m_input->capturePointer(true);
+    // m_input->displayPointer(false);
 
     while(!m_data_manager.getTerminate())
     {
@@ -90,6 +100,13 @@ void Application::mainLoop()
             this->renderAudio();
         //======================================================================================================================================================
 
+        if(camera != nullptr)
+        {
+            camera->move(*m_input, false);
+
+            camera->lookAt(m_data_manager.getViewMat());
+        }
+
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplSDL2_NewFrame();
             ImGui::NewFrame();
@@ -97,6 +114,9 @@ void Application::mainLoop()
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glEnable(GL_DEPTH_TEST);
+
+            ship->drawSpaceship(m_data_manager, *m_input);
+            camera->setDistFromShip(3.f);
 
         /******************************************************************* RENDER SETTINGS *******************************************************************/
             this->renderScene();
@@ -121,6 +141,19 @@ void Application::mainLoop()
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
             this->fpsCalculation(END);
+            
+    }
+
+    if(camera != nullptr)
+    {
+        delete camera;
+        camera = nullptr;
+    }
+
+    if(ship != nullptr)
+    {
+        delete ship;
+        ship = nullptr;
     }
 
 }

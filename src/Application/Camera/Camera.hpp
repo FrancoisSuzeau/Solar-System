@@ -16,8 +16,8 @@ PURPOSE : header of the Camera class
 
 /********************************************************************* includes *********************************************************************/
 
-        #include "../Input/Input.hpp"
-        #include "../Spaceship/Spaceship.hpp"
+        #include "../../InOut/Input/Input.hpp"
+        #include "../../Objects/Spaceship/Spaceship.hpp"
 
         #include <string>
         #include <math.h>
@@ -65,7 +65,7 @@ PURPOSE : header of the Camera class
 
 
                 void move(Input const &input, bool move);
-                void lookAt(glm::mat4 &model_view);
+                void lookAt(glm::mat4 &view);
 
         
                 glm::vec3 getPosition() const;
