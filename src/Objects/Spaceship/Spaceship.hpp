@@ -44,7 +44,6 @@ PURPOSE : header of the Spaceship class
             private:
 
                 Model *m_spaceship_models;
-                // glm::mat4  m_model_matrice;
 
                 std::vector<std::string> file_paths;
 
@@ -59,7 +58,6 @@ PURPOSE : header of the Spaceship class
 
                 std::vector<float> m_scales;
 
-                // glm::vec3 m_current_pos;
                 glm::vec3 m_ship_orientation;
                 glm::vec3 m_lateral_move;
 
@@ -69,8 +67,8 @@ PURPOSE : header of the Spaceship class
                 void positioningShip();
 
                 void orientateShip(Input input);
-                void rotateFromPitch(Input input);
-                void rotateFromYaw(Input input);
+                void changePitch(Input input);
+                void changeYaw(Input input);
 
                 void scalingShip(int index);
 
@@ -91,7 +89,6 @@ PURPOSE : header of the Spaceship class
                 void drawSpaceship(DataManager &data_manager, Input input);
                 float getRotX() const;
                 float getRotY() const;
-                // glm::vec3       getPosition() const;
                 glm::vec3       getOrientation() const;
                 glm::vec3       getLateralMove() const;
                 float getSpeed() const;
