@@ -28,9 +28,7 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit
     // m_scales.push_back(3.0f);
     // m_scales.push_back(0.1f);
 
-    glm::mat4 model(1.0f);
-
-    m_model_matrice = model;
+    m_model_mat = glm::mat4(1.f);
 
     // m_current_pos = glm::vec3(0.0f, 9000.0f, 0.0f);
     m_current_pos = glm::vec3(0.f, 0.f, 0.f);
@@ -49,6 +47,14 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit
 }
 
 Spaceship::~Spaceship()
+{
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************* transform *************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Spaceship::transform()
 {
     
 }
@@ -77,14 +83,14 @@ void Spaceship::drawSpaceship(DataManager &data_manager, Input input)
         
         this->move(input);
 
-        m_model_matrice = glm::mat4(1.0f);
+        m_model_mat = glm::mat4(1.0f);
         
         this->orientateShip(input);
         this->positioningShip();
         // this->scalingShip(render_data.getIndexShip());
         this->scalingShip(0);
         
-        m_spaceship_models->draw(data_manager, m_model_matrice);
+        m_spaceship_models->draw(data_manager, m_model_mat);
     }
 }
 
@@ -234,11 +240,11 @@ void Spaceship::move(Input input)
 void Spaceship::positioningShip()
 {
     //it is important to reintitialise the model matrice, if not all the calculation are made by the ancient calculation and we loose the space ship
-    m_model_matrice = glm::mat4(1.0f);
+    m_model_mat = glm::mat4(1.0f);
 
-    m_model_matrice = glm::translate(m_model_matrice, m_current_pos);
+    m_model_mat = glm::translate(m_model_mat, m_current_pos);
 
-    m_model_matrice *= (yaw_mat * pitch_mat);
+    m_model_mat *= (yaw_mat * pitch_mat);
 
 }
 
@@ -346,8 +352,8 @@ void Spaceship::rotateFromYaw(Input input)
 void Spaceship::scalingShip(int index)
 {
     // std::cout << m_scales[index] << std::endl;
-    // m_model_matrice = glm::scale(m_model_matrice, glm::vec3(m_scales[index]));
-    m_model_matrice = glm::scale(m_model_matrice, glm::vec3(0.1f));
+    // m_model_mat = glm::scale(m_model_mat, glm::vec3(m_scales[index]));
+    m_model_mat = glm::scale(m_model_mat, glm::vec3(0.1f));
 }
 
 /***********************************************************************************************************************************************************************/

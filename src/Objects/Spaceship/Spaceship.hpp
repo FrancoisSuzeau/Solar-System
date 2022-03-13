@@ -32,18 +32,19 @@ PURPOSE : header of the Spaceship class
         #include "../../Model/Model.hpp"
         #include "../../InOut/Input/Input.hpp"
         #include "../../Application/DataManager.hpp"
+        #include "../Object.hpp"
 
        
 
 /********************************************************************* class definition *********************************************************************/
 
-        class Spaceship
+        class Spaceship : public Object
         {
             
             private:
 
                 Model *m_spaceship_models;
-                glm::mat4  m_model_matrice;
+                // glm::mat4  m_model_matrice;
 
                 std::vector<std::string> file_paths;
 
@@ -76,6 +77,8 @@ PURPOSE : header of the Spaceship class
                 void computeMatrice();
 
                 void move(Input input);
+
+                void transform() override;
 
                 
             public:
