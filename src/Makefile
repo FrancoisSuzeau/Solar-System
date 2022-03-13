@@ -28,6 +28,7 @@ CC=g++
 
 # Generate source files list
 SRC=Main.cpp ContextManager.cpp
+SRC+=Loader/Loader.cpp
 SRC+=ErrorHandler/ErrorHandler.cpp
 SRC+=InOut/Input/Input.cpp InOut/Audio/Audio.cpp
 SRC+=Objects/Object.cpp Objects/BasicObjects/Square.cpp Objects/BasicObjects/Sphere.cpp Objects/Spaceship/Spaceship.cpp

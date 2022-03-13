@@ -41,6 +41,7 @@ PURPOSE : header of the Settings class
         #endif
 
         #include "../DataManager.hpp"
+        #include "../../Loader/Loader.hpp"
 
 
         #include "../../../lib/imgui/imgui.h"
@@ -73,8 +74,6 @@ PURPOSE : header of the Settings class
                 void manageHUD(DataManager &data_manager);
                 void manageNavigation(DataManager &data_manager);
                 void verifIndex();
-
-                bool loadTextureFromFile(imguiTexture_datas &data);
 
                 std::vector<imguiTexture_datas> textures_data;
                 std::vector<float> min_distance;

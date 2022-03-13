@@ -16,7 +16,9 @@ PURPOSE : header of the Loader class
 
 /********************************************************************* includes *********************************************************************/
 
-        
+        #include <GL/glew.h>
+        #include <iostream>
+        #include "../ErrorHandler/ErrorHandler.hpp"
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -32,6 +34,9 @@ PURPOSE : header of the Loader class
                 ~Loader();
 
             public:
+
+                static bool loadWithStbi(std::string file_path, GLuint &id, int &w, int &h);
+                static unsigned int loadWithStbi(const char *path, const std::string &directory);
                 
         };
 

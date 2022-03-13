@@ -43,6 +43,7 @@ PURPOSE : header of the Model class
         #include "../Application/DataManager.hpp"
         #include "../ErrorHandler/ErrorHandler.hpp"
         #include "Mesh.hpp"
+        #include "../Loader/Loader.hpp"
 
        
 
@@ -61,7 +62,6 @@ PURPOSE : header of the Model class
 
                 void loadModel(std::string const &path);
                 void processNode(aiNode *node, const aiScene *scene);
-                unsigned int textureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
                 Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 
