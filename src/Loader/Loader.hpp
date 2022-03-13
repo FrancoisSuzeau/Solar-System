@@ -17,6 +17,8 @@ PURPOSE : header of the Loader class
 /********************************************************************* includes *********************************************************************/
 
         #include <GL/glew.h>
+        #include <SDL2/SDL.h>
+        #include <SDL2/SDL_mixer.h>
         #include <iostream>
         #include "../ErrorHandler/ErrorHandler.hpp"
         
@@ -37,6 +39,7 @@ PURPOSE : header of the Loader class
 
                 static bool loadWithStbi(std::string file_path, GLuint &id, int &w, int &h);
                 static unsigned int loadWithStbi(const char *path, const std::string &directory);
+                static  Mix_Music* loadWithSDLMixer(std::string file_path, Mix_Music *m_music);
                 
         };
 

@@ -3,9 +3,9 @@ AUTHOR : SUZEAU François
 
 DATE : 27/05/2021
 
-MODULE : Audio
+MODULE : InOut::Audio
 
-NAMEFILE : Audio.h
+NAMEFILE : Audio.cpp
 
 PURPOSE :   - load music file
             - display file
@@ -57,37 +57,6 @@ void Audio::clean()
 }
 
 /***********************************************************************************************************************************************************************/
-/********************************************************************************* loadMusic ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-bool Audio::loadMusic(DataManager &data_manager)
-{
-    if(data_manager.getTrack() < (int) m_file_music.size())
-    {
-        if(m_music != NULL)
-        {
-            Mix_FreeMusic(m_music);
-        }
-        /************************************************* load the file ********************************************************/
-        m_music = Mix_LoadMUS(m_file_music[data_manager.getTrack()].c_str());
-        if(m_music == NULL)
-        {
-            std::cout << ">> Loading file music : ERROR : " << Mix_GetError() << std::endl;
-            return false;
-        }
-        std::cout << ">> Loading file music : SUCCESS : " << m_file_music[data_manager.getTrack()] << std::endl;
-        ancient_track = data_manager.getTrack();
-        //===================================================================================================================   
-    }
-    else
-    {
-        return false;
-    }
-
-    return true;
-
-}
-
-/***********************************************************************************************************************************************************************/
 /********************************************************************************* manage music ************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Audio::playMusic() const
@@ -95,7 +64,9 @@ void Audio::playMusic() const
     /************************************************* launch playlist ********************************************************/
     if(Mix_PlayMusic(m_music, 1) == -1)
     {
-        std::cout << ">> Play music : ERROR : " << Mix_GetError() << std::endl;
+        std::string err_msg = "Playing music : ";
+        err_msg.append(Mix_GetError());
+        showError(nullptr, ErrorHandler(err_msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
     }
     //===================================================================================================================
 }
@@ -143,12 +114,15 @@ void Audio::updateTrack(DataManager &data_manager)
         if(new_track < 0)
         {
             data_manager.setTrack(m_file_music.size() - 1);
-            // std::cout << "HERE " << std::endl;
         }
 
         if(ancient_track != data_manager.getTrack())
         {
-            loadMusic(data_manager);
+            if(data_manager.getTrack() < (int) m_file_music.size())
+            {
+                ancient_track = data_manager.getTrack();
+                m_music = Loader::loadWithSDLMixer(m_file_music[data_manager.getTrack()], m_music);
+            }
             playMusic();
         }
     }
@@ -160,7 +134,11 @@ void Audio::updateTrack(DataManager &data_manager)
             data_manager.setTrack(0);
         }
 
-        loadMusic(data_manager);
+        if(data_manager.getTrack() < (int) m_file_music.size())
+        {
+            ancient_track = data_manager.getTrack();
+            m_music = Loader::loadWithSDLMixer(m_file_music[data_manager.getTrack()], m_music);
+        }
         playMusic();
     }
 }

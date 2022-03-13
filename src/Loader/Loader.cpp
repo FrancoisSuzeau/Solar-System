@@ -123,3 +123,25 @@ unsigned int Loader::loadWithStbi(const char *path, const std::string &directory
 
     return textureID;
 }
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************************** loadWithSDLMixer ***********************************************************************/
+/***********************************************************************************************************************************************************************/
+ Mix_Music* Loader::loadWithSDLMixer(std::string file_path, Mix_Music *m_music)
+{
+    if(m_music != NULL)
+    {
+        Mix_FreeMusic(m_music);
+    }
+    /************************************************* load the file ********************************************************/
+    m_music = Mix_LoadMUS(file_path.c_str());
+    if(m_music == NULL)
+    {
+        std::string err_msg = "Loading file music : ";
+        err_msg.append(Mix_GetError());
+        showError(nullptr, ErrorHandler(err_msg.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
+        return m_music;
+    }
+    std::cout << ">> Loading file music : SUCCESS : " << file_path << std::endl; 
+    return m_music;
+}

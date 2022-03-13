@@ -3,9 +3,9 @@ AUTHOR : SUZEAU François
 
 DATE : 27/05/2021
 
-MODULE : Audio
+MODULE : InOut::Audio
 
-NAMEFILE : Audio.h
+NAMEFILE : Audio.hpp
 
 PURPOSE : header of the Audio class
 */
@@ -21,6 +21,7 @@ PURPOSE : header of the Audio class
         #include <vector>
 
         #include "../../Application/DataManager.hpp"
+        #include "../../Loader/Loader.hpp"
 
         #include <SDL2/SDL_mixer.h>
 
@@ -38,8 +39,7 @@ PURPOSE : header of the Audio class
                 int                             m_volume;
                 bool                            m_in_pause;
                 int                             ancient_track;
-
-                bool loadMusic(DataManager &data_manager);
+                
                 void playMusic() const;
                 
                 
