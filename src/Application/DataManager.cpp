@@ -18,7 +18,7 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 /***********************************************************************************************************************************************************************/
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
 bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(10000), m_fps(60),
-render_overlay(true), render_name(true), render_info(false)
+render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f)
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, 1.0, 900000.0);
     view_mat = glm::mat4(1.0f);
@@ -238,4 +238,14 @@ void DataManager::setRenderInfo(bool const new_val)
 bool DataManager::getRenderInfo() const
 {
     return render_info;
+}
+
+void DataManager::setDistanceFromShip(float const new_val)
+{
+    distance_from_ship = new_val;
+}
+
+float DataManager::getDistancteFromShip() const
+{
+    return distance_from_ship;
 }

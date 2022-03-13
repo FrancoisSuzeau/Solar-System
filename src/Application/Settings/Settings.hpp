@@ -53,7 +53,7 @@ PURPOSE : header of the Settings class
 
                 int img_width;
                 int img_height;
-                GLuint text_id;
+                GLuint text_id = 0;
                 std::string filepath;
                 std::string name_disp;
 
@@ -71,19 +71,21 @@ PURPOSE : header of the Settings class
                 void managePerformance(DataManager &data_manager);
         
                 void manageHUD(DataManager &data_manager);
-                // void manageNavigation(RenderData &render_data);
-                // void verifIndex();
+                void manageNavigation(DataManager &data_manager);
+                void verifIndex();
 
-                // bool loadTextureFromFile(imguiTexture_datas &data);
+                bool loadTextureFromFile(imguiTexture_datas &data);
 
-                // std::vector<imguiTexture_datas> textures_data;
-                // std::vector<float> min_distance;
-                // int index;
+                std::vector<imguiTexture_datas> textures_data;
+                std::vector<float> min_distance;
+                int index;
 
             public:
             
                 Settings();
                 ~Settings();
+
+                void    clean();
 
                 void    manageSettings(DataManager &data_manager);
         };

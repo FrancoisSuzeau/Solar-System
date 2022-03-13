@@ -25,8 +25,9 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 SphereRenderer::SphereRenderer(const float radius, const unsigned int longSegs, const unsigned int latSegs) : 
-m_vbo(0), m_ibo(0), m_element_count(0), m_radius(radius)
+m_ibo(0), m_element_count(0), m_radius(radius)
 {
+    m_vboID = 0;
     /************************************************* calculate vertex position ********************************************************/
     longVerts = longSegs + 1;
     latVerts = latSegs + 1;
@@ -110,10 +111,10 @@ SphereRenderer::~SphereRenderer()
 /***********************************************************************************************************************************************************************/
 void SphereRenderer::clean()
 {
-    if(glIsBuffer(m_vbo) == GL_TRUE)
+    if(glIsBuffer(m_vboID) == GL_TRUE)
     {
-        glDeleteBuffers(1, &m_vbo);
-        m_vbo = 0;
+        glDeleteBuffers(1, &m_vboID);
+        m_vboID = 0;
     }
     if(glIsBuffer(m_ibo) == GL_TRUE)
     {
@@ -161,18 +162,18 @@ void SphereRenderer::load()
     }
     /************************************************* VBO management ********************************************************/
     //destroy a possible ancient VBO
-    if(glIsBuffer(m_vbo) == GL_TRUE)
+    if(glIsBuffer(m_vboID) == GL_TRUE)
     {
-        glDeleteBuffers(1, &m_vbo);
-        m_vbo = 0;
+        glDeleteBuffers(1, &m_vboID);
+        m_vboID = 0;
     }
 
     //generate Vertex Buffer Object ID
-    glGenBuffers(1, &m_vbo);
-    assert(m_vbo != 0);
+    glGenBuffers(1, &m_vboID);
+    assert(m_vboID != 0);
 
     //lock VBO
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
 
         //memory allocation
         glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * VERT_NUM_FLOATS * m_vertCount, 0, GL_STATIC_DRAW);
@@ -237,7 +238,7 @@ void SphereRenderer::render(DataManager &data_manager, Object *sphere)
     {
         glUseProgram(data_manager.getShader("atmosphere")->getProgramID());
         /************************************************* bind VBO and IBO ********************************************************/
-        glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
+        glBindBuffer(GL_ARRAY_BUFFER,         m_vboID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);

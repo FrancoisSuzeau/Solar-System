@@ -33,6 +33,7 @@ PURPOSE : header of the Renderer class
             protected:
 
                 GLuint  m_vaoID;
+                GLuint  m_vboID;
                 
             public:
 

@@ -29,7 +29,7 @@ PURPOSE : header of the SquareRenderer class
                 float   m_vertices[18];
                 float   m_colors[18];
 
-                GLuint  m_vboID;
+                // GLuint  m_vboID;
                 int     m_bytes_vertices_size;
                 int     m_bytes_colors_size;
                 

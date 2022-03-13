@@ -21,33 +21,43 @@ using namespace glm;
 /***********************************************************************************************************************************************************************/
 Settings::Settings()
 {
-    // textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceship.png", "  Star Hunter - Class Eviscerator"});
-    // textures_data.push_back({0, 0, 0, "../../assets/textures/imguiDonut.png", "  Donut X37 - Class Yummi Yummi !"});
-    // textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceshuttle.png", "Spaceshuttle Atlantis Fuel Tank Booster"});
+    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceship.png", "  Star Hunter - Class Eviscerator"});
+    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiDonut.png", "  Donut X37 - Class Yummi Yummi !"});
+    textures_data.push_back({0, 0, 0, "../../assets/textures/imguiSpaceshuttle.png", "Spaceshuttle Atlantis Fuel Tank Booster"});
 
-    // min_distance.push_back(2.0f);
-    // min_distance.push_back(1.180f);
-    // min_distance.push_back(1.6f);
+    min_distance.push_back(2.0f);
+    min_distance.push_back(1.180f);
+    min_distance.push_back(1.6f);
 
-    // for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
-    // {
-    //     assert(this->loadTextureFromFile(it[0]));
-    // }
+    for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
+    {
+        assert(this->loadTextureFromFile(it[0]));
+    }
 
-    // index = 0;
+    index = 0;
 
 }
 
 Settings::~Settings()
 {
-    // for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
-    // {
-    //     glDeleteTextures(1, &it[0].text_id);
-    //     if(glIsTexture(it[0].text_id) == GL_FALSE)
-    //     {
-    //         std::cout << ">> TEXTURE :: delete " << it[0].filepath << " : SUCESS" << std::endl;
-    //     }
-    // }
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/************************************************************************** clean *****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Settings::clean()
+{
+    for(std::vector<imguiTexture_datas>::iterator it = textures_data.begin(); it != textures_data.end(); it++)
+    {
+        if(glIsTexture(it[0].text_id) == GL_TRUE)
+        {
+            glDeleteTextures(1, &it[0].text_id);
+            it[0].text_id = 0;
+        }
+    }
+
+    std::cout << ">> SETTINGS TEXTURES : DESTROY COMPLETE " << std::endl;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -73,7 +83,7 @@ void Settings::manageSettings(DataManager &data_manager)
         if (ImGui::BeginTabItem("Navigation Options"))
         {
             style.FramePadding = frame_padding_save;
-            // this->manageNavigation(render_data);
+            this->manageNavigation(data_manager);
             ImGui::EndTabItem();
         }
         style.FramePadding = ImVec2(25, 3);
@@ -259,88 +269,95 @@ void Settings::managePerformance(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** manageNavigation ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Settings::manageNavigation(RenderData &render_data)
-// {
-//     float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
+void Settings::manageNavigation(DataManager &data_manager)
+{
+    float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
 
-//     float distance = render_data.getDist();
+    float distance = data_manager.getDistancteFromShip();
 
-//     ImGui::BulletText("Choose your vessel : ");
-//     ImGui::SameLine();
+    ImGui::BulletText("Choose your vessel : ");
+    // ImGui::SameLine();
 //     RenderData::HelpMarker("Choose between " + std::to_string(textures_data.size()) + " skins available.");
-//     ImGui::PushButtonRepeat(true);
-//     if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { index--; }
-//     this->verifIndex();
-//     ImGui::SameLine(0.0f, spacing);
-//     // ImGui::Text("%d", index);
-//     if(ImGui::ImageButton((void*)(intptr_t)textures_data[index].text_id, ImVec2(textures_data[index].img_width *0.5f, textures_data[index].img_height * 0.5f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f)))
-//     {
-//         if(index != render_data.getIndexShip())
-//         {
-//             render_data.setIndexShip(index);
-//             render_data.setChangeModel(true);
-//         }
-//     }
-//     ImGui::SameLine(0.0f, spacing);
-//     if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { index++; }
-//     this->verifIndex();
-//     ImGui::PopButtonRepeat();
-//     ImGui::Text(textures_data[index].name_disp.c_str());
+    ImGui::PushButtonRepeat(true);
+    if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { index--; }
+    this->verifIndex();
+    ImGui::SameLine(0.0f, spacing);
+    // ImGui::Text("%d", index);
+    if(ImGui::ImageButton((void*)(intptr_t)textures_data[index].text_id, ImVec2(textures_data[index].img_width *0.5f, textures_data[index].img_height * 0.5f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f)))
+    {
+        // if(index != render_data.getIndexShip())
+        // {
+        //     render_data.setIndexShip(index);
+        //     render_data.setChangeModel(true);
+        // }
+    }
+    ImGui::SameLine(0.0f, spacing);
+    if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { index++; }
+    this->verifIndex();
+    ImGui::PopButtonRepeat();
+    ImGui::Text(textures_data[index].name_disp.c_str());
 
-//     ImGui::Separator();
+    ImGui::Separator();
 
-//     ImGui::BulletText("Distance from ship");
-//     if(ImGui::SliderFloat(" ", &distance, min_distance[index], 10.0f))
-//     {
-//         render_data.setDist(distance);
-//     }
+    ImGui::BulletText("Distance from ship");
+    if(ImGui::SliderFloat(" ", &distance, min_distance[index], 10.0f))
+    {
+        data_manager.setDistanceFromShip(distance);
+    }
     
 //     RenderData::HelpMarker("More in coming like the possibility to jump directly near to a body.");
-// }
+}
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************** loadTextureFromFile ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-// bool Settings::loadTextureFromFile(imguiTexture_datas &data)
-// {
-//     unsigned char* image_data = stbi_load(data.filepath.c_str(), &data.img_width, &data.img_height, NULL, 4);
-//     if (image_data == NULL)
-//         return false;
+bool Settings::loadTextureFromFile(imguiTexture_datas &data)
+{
+    unsigned char* image_data = stbi_load(data.filepath.c_str(), &data.img_width, &data.img_height, NULL, 4);
+    if (image_data == NULL)
+        return false;
 
-//     // Create a OpenGL texture identifier
-//     glGenTextures(1, &data.text_id);
+    // Create a OpenGL texture identifier
+    if(glIsTexture(data.text_id) == GL_TRUE)
+    {
+        glDeleteTextures(1, &data.text_id);
+        data.text_id = 0;
+    }
 
-//     glActiveTexture(GL_TEXTURE0);
-//     glBindTexture(GL_TEXTURE_2D, data.text_id);
+    glGenTextures(1, &data.text_id);
+    assert(data.text_id != 0);
 
-//     // Setup filtering parameters for display
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, data.text_id);
 
-//     // Upload pixels into texture
-// #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
-//     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-// #endif
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.img_width, data.img_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-//     stbi_image_free(image_data);
+    // Setup filtering parameters for display
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
 
-//     glActiveTexture(GL_TEXTURE0);
-//     glBindTexture(GL_TEXTURE_2D, 0);
+    // Upload pixels into texture
+#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+#endif
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.img_width, data.img_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+    stbi_image_free(image_data);
 
-//     return true;
-// }
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
-// void Settings::verifIndex()
-// {
-//     if(index < 0)
-//     {
-//         index = textures_data.size() - 1;
-//     }
+    return true;
+}
 
-//     if(index >= (int) textures_data.size())
-//     {
-//         index = 0;
-//     }
-// }
+void Settings::verifIndex()
+{
+    if(index < 0)
+    {
+        index = textures_data.size() - 1;
+    }
+
+    if(index >= (int) textures_data.size())
+    {
+        index = 0;
+    }
+}

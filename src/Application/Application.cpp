@@ -53,6 +53,8 @@ void Application::cleanAll()
         ship = nullptr;
     }
 
+    m_setting.clean();
+
     m_overlay.clean();
 }
 
@@ -143,7 +145,7 @@ void Application::mainLoop()
                 ship->drawSpaceship(m_data_manager, *m_input);
             }
             
-            camera->setDistFromShip(3.f);
+            camera->setDistFromShip(m_data_manager.getDistancteFromShip());
 
         /******************************************************************* RENDER SETTINGS *******************************************************************/
             this->renderScene();
