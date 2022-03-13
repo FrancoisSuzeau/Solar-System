@@ -45,6 +45,8 @@ PURPOSE : header of the Audio class
                 Audio();
                 ~Audio();
 
+                void    clean();
+
 
                 bool loadMusic(DataManager &data_manager);
                 void playMusic() const;

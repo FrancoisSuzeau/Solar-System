@@ -83,6 +83,8 @@ PURPOSE : header of the Spaceship class
                 Spaceship();
                 ~Spaceship();
 
+                void    clean();
+
                 void drawSpaceship(DataManager &data_manager, Input input);
                 float getRotX() const;
                 float getRotY() const;

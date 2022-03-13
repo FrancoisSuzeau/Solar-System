@@ -48,6 +48,7 @@ void Application::cleanAll()
     }
     if(ship != nullptr)
     {
+        ship->clean();
         delete ship;
         ship = nullptr;
     }

@@ -78,6 +78,8 @@ PURPOSE : header of the Model class
                 size_t getSizeMeshesVector() const;
                 unsigned int getTextureLoadedID(int index) const;
                 size_t getMeshVectorIndiceSize(int index) const;
+
+                void    clean();
                 
         };
 

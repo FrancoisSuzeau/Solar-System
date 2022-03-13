@@ -58,7 +58,7 @@ PURPOSE : header of the Mesh class
 
         typedef struct Texturate {
 
-            unsigned int id;
+            unsigned int id = 0;
             std::string type;
 
             std::string path;
@@ -95,6 +95,8 @@ PURPOSE : header of the Mesh class
                 std::vector<Texturate> getTextures() const;
 
                 unsigned int getVAO() const;
+
+                void        clean();
 
         };
 

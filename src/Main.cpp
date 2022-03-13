@@ -45,6 +45,7 @@ int main(int argc, char **argv)
 
     delete input;
     input = nullptr;
+    audio->clean();
     delete audio;
     audio = nullptr;
 

@@ -35,7 +35,6 @@ PURPOSE : header of the Input class
                 int         m_y;
                 int         m_rel_x;
                 int         m_rel_y;
-                // bool        m_terminate;
                 int         m_scroll;
 
                 
@@ -47,7 +46,6 @@ PURPOSE : header of the Input class
                 ~Input();
 
                 void updateEvents();
-                // bool getTerminate();
 
                 bool getKey(const SDL_Scancode key) const;
                 bool getMouseButton(const Uint8 button) const; //application crash with Uint32

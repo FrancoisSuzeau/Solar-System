@@ -24,21 +24,28 @@ Model::Model(std::string const &path, bool gamma) : m_gammaCorrection(gamma)
 
 Model::~Model()
 {
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************************** clean ******************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Model::clean()
+{
+    for (std::vector<Mesh>::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
+    {
+        it[0].clean();
+    }
+    
     for (std::vector<Texturate>::iterator it = textures_loaded.begin(); it != textures_loaded.end(); ++it)
     {
-        glDeleteTextures(1, &it[0].id);
-        if(glIsTexture(it[0].id) == GL_FALSE)
+        if(glIsTexture(it[0].id) == GL_TRUE)
         {
-            std::cout << ">> TEXTURE :: delete >>> SUCESS" << std::endl;
+            glDeleteTextures(1, &it[0].id);
+            it[0].id = 0;
         }
     }
-
-    //! NO need to destrpy every textures of the mesh vector because they are same as texture_loaded
-    // for (std::vector<Mesh>::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
-    // {
-        
-    // } 
-    
+    std::cout << ">> MODEL TEXTURE : DESTROY COMPLETE" << std::endl;
 }
 
 /***********************************************************************************************************************************************************************/
