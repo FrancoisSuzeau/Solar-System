@@ -17,12 +17,24 @@ PURPOSE :   - creating OpenGL Context
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Application::Application(int width, int height, SDL_Window *window, Input *input, Audio *audio): m_data_manager(width, height, 45.0),
+Application::Application(int width, int height, SDL_Window *window): m_data_manager(width, height, 45.0),
 m_window(window), 
-m_input(input), m_setting(), m_audio(audio), m_overlay()
+m_setting(), m_overlay(), m_audio(nullptr), m_input(nullptr), camera(nullptr), m_skybox(nullptr), ship(nullptr)
 {
     render_menu = false;
     menu_app_key_pressed = false;
+
+    if(m_input == nullptr)
+    {
+        m_input = new Input();
+        assert(m_input);
+    }
+
+    if(m_audio == nullptr)
+    {
+        m_audio = new Audio();
+        assert(m_audio);
+    }
 }
 
 Application::~Application()
@@ -52,9 +64,19 @@ void Application::cleanAll()
         delete ship;
         ship = nullptr;
     }
+    if(m_input != nullptr)
+    {
+        delete m_input;
+        m_input = nullptr;
+    }
+    if(m_audio != nullptr)
+    {
+        m_audio->clean();
+        delete m_audio;
+        m_audio = nullptr;
+    }
 
     m_setting.clean();
-
     m_overlay.clean();
 }
 
@@ -65,6 +87,28 @@ void Application::cleanAll()
 // {
 //     assert(m_framebuffer->initFramebuffer(m_window_width, m_window_height));
 // }
+
+/***********************************************************************************************************************************************************************/
+/*************************************************************************************** loadConfig ********************************************************************/
+/***********************************************************************************************************************************************************************/
+void Application::loadConfig()
+{
+    m_data_manager.setFps(60);
+    m_data_manager.setPause(false);
+    m_data_manager.setTerminate(false);
+    m_data_manager.setVolume(64);
+    m_data_manager.setTrack(0);
+    m_data_manager.setShader(true);
+
+    frame_rate = 1000 / m_data_manager.getFps();
+    start_loop = 0;
+    end_loop = 0;
+    time_past = 0;
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+    style.WindowMenuButtonPosition = ImGuiDir_None;
+}
 
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** startLoop *********************************************************************/
@@ -91,27 +135,6 @@ void Application::loadAssets()
 /***********************************************************************************************************************************************************************/
 void Application::mainLoop()
 {
-    /************************************************* Variables ********************************************************/
-    m_data_manager.setFps(60);
-    m_data_manager.setPause(false);
-    m_data_manager.setTerminate(false);
-    m_data_manager.setVolume(64);
-    m_data_manager.setTrack(0);
-    m_data_manager.setShader(true);
-
-    frame_rate = 1000 / m_data_manager.getFps();
-    start_loop = 0;
-    end_loop = 0;
-    time_past = 0;
-
-    
-
-    //=====================================================================================================================================================
-
-
-    ImGuiStyle& style = ImGui::GetStyle();
-    style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
-    style.WindowMenuButtonPosition = ImGuiDir_None;
 
     while(!m_data_manager.getTerminate())
     {
@@ -121,16 +144,13 @@ void Application::mainLoop()
             this->inputProcess();
         //=====================================================================================================================================================
 
+        /******************************************************************* MANAGING CHANGES *****************************************************************/
+            this->makeAllChanges();
+        //=====================================================================================================================================================
+
         /******************************************************************* RENDER AUDIO **********************************************************************/
             this->renderAudio();
         //======================================================================================================================================================
-
-        if(camera != nullptr)
-        {
-            camera->move(*m_input, render_menu);
-
-            camera->lookAt(m_data_manager.getViewMat());
-        }
 
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplSDL2_NewFrame();
@@ -140,18 +160,7 @@ void Application::mainLoop()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glEnable(GL_DEPTH_TEST);
 
-            ship->loadModelShip(m_data_manager);
-            
-            if(!render_menu)
-            {
-                ship->transform(m_input);
-                ship->drawSpaceship(m_data_manager);
-
-            }
-            
-            camera->setDistFromShip(m_data_manager.getDistancteFromShip());
-
-        /******************************************************************* RENDER SETTINGS *******************************************************************/
+        /******************************************************************* RENDER SCENE *********************************************************************/
             this->renderScene();
         //======================================================================================================================================================
 
@@ -169,13 +178,31 @@ void Application::mainLoop()
             SDL_GL_SwapWindow(m_window);
         //=======================================================================================================================================================
 
-            glDisable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
             this->fpsCalculation(END);
             
     }
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** makeAllChanges ***********************************************************************/
+/***********************************************************************************************************************************************************************/
+void Application::makeAllChanges()
+{
+    if((camera != nullptr) && (m_input != nullptr))
+    {
+        camera->move(m_input, render_menu);
+        camera->lookAt(m_data_manager.getViewMat());
+        camera->setDistFromShip(m_data_manager.getDistancteFromShip());
+    }
+
+    if((ship != nullptr) && (m_input != nullptr))
+    {
+        if(!render_menu)
+        {
+            ship->transform(m_input);
+        }
+        ship->loadModelShip(m_data_manager);
+    }    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -183,9 +210,12 @@ void Application::mainLoop()
 /***********************************************************************************************************************************************************************/
 void Application::renderAudio()
 {
-    m_audio->changeVolume(m_data_manager.getVolume());
-    m_audio->pause(m_data_manager.getPause());
-    m_audio->updateTrack(m_data_manager);
+    if(m_audio != nullptr)
+    {
+        m_audio->changeVolume(m_data_manager.getVolume());
+        m_audio->pause(m_data_manager.getPause());
+        m_audio->updateTrack(m_data_manager);
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -228,7 +258,7 @@ void Application::renderOverlay()
 
     m_overlay.renderAppInfo();
 
-    // m_overlay->displayMusicInfo(render_data);
+    m_overlay.renderMusicInfo(m_data_manager);
 
     //m_overlay->displayNavigation(render_data);
 }
@@ -238,6 +268,10 @@ void Application::renderOverlay()
 /***********************************************************************************************************************************************************************/
 void Application::renderScene()
 {
+    if(!render_menu)
+    {
+        ship->drawSpaceship(m_data_manager);
+    }
     if(m_skybox != nullptr)
     {
         m_skybox->render(m_data_manager);
@@ -322,17 +356,21 @@ void Application::renderScene()
 /***********************************************************************************************************************************************************************/
 void Application::inputProcess()
 {
-    m_input->updateEvents();
+    if(m_input != nullptr)
+    {
+        m_input->updateEvents();
 
-    if((m_input->getKey(SDL_SCANCODE_ESCAPE)) && (!menu_app_key_pressed))
-    {
-        render_menu = !render_menu;
-        menu_app_key_pressed = true;
+        if((m_input->getKey(SDL_SCANCODE_ESCAPE)) && (!menu_app_key_pressed))
+        {
+            render_menu = !render_menu;
+            menu_app_key_pressed = true;
+        }
+        if ((m_input->getKey(SDL_SCANCODE_ESCAPE)) == false)
+        {
+            menu_app_key_pressed = false;
+        }
     }
-    if ((m_input->getKey(SDL_SCANCODE_ESCAPE)) == false)
-    {
-        menu_app_key_pressed = false;
-    }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -340,7 +378,7 @@ void Application::inputProcess()
 /***********************************************************************************************************************************************************************/
 void Application::renderSettings()
 {
-    if(render_menu)
+    if((render_menu) && (m_input != nullptr))
     {
         m_setting.manageSettings(m_data_manager);
 

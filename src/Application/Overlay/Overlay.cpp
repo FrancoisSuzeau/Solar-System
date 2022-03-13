@@ -3,12 +3,13 @@ AUTHOR : SUZEAU François
 
 DATE : 21/07/2021
 
-MODULE : Overlay
+MODULE : Application::Overlay
 
 NAMEFILE : Overlay.cpp
 
 PURPOSE :   - say to rendersquare how to render a frame all around the screen
-            - 
+            - render Application informations
+            - render music informations
 
 */
 
@@ -18,39 +19,39 @@ PURPOSE :   - say to rendersquare how to render a frame all around the screen
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 
-Overlay::Overlay() //: m_rect(0.05, 0.1)
+Overlay::Overlay()
 {
 
-    // map_music_data[0].title = "Mass Effect - Vigil";
-    // map_music_data[0].author = "Jack Wall";
-    // map_music_data[0].studio = "EA Games Soundtrack";
-    // map_music_data[1].title = "Critical Mass";
-    // map_music_data[1].author = " ";
-    // map_music_data[1].studio = "Epic Hybrid Orchestra";
-    // map_music_data[2].title = "Natural Splendor";
-    // map_music_data[2].author = "Gerald M. Dorai";
-    // map_music_data[2].studio = "Le Phonarium - Nantes";
-    // map_music_data[3].title = "Dying Star";
-    // map_music_data[3].author = "Utho Riley";
-    // map_music_data[3].studio = "Symphonic Orchestral Music";
-    // map_music_data[4].title = "Orizon Theme";
-    // map_music_data[4].author = "Pedro Camacho";
-    // map_music_data[4].studio = "Star Citizen Soundtrack";
-    // map_music_data[5].title = "Engine of Creation";
-    // map_music_data[5].author = "Utho Riley";
-    // map_music_data[5].studio = "Epic Hybrid Orchestra";
-    // map_music_data[6].title = "Mass Effect - Map Theme";
-    // map_music_data[6].author = "Jack Wall";
-    // map_music_data[6].studio = "EA Games Soundtrack";
-    // map_music_data[7].title = "Unbound";
-    // map_music_data[7].author = "Utho Riley";
-    // map_music_data[7].studio = "Epic Hybrid Orchestra";
-    // map_music_data[8].title = "Dreamscape";
-    // map_music_data[8].author = " ";
-    // map_music_data[8].studio = " ";
-    // map_music_data[9].title = "Two Moons";
-    // map_music_data[9].author = "Bobby Richards";
-    // map_music_data[9].studio = "YouTube Audio Library";
+    map_music_data[0].title = "Mass Effect - Vigil";
+    map_music_data[0].author = "Jack Wall";
+    map_music_data[0].studio = "EA Games Soundtrack";
+    map_music_data[1].title = "Critical Mass";
+    map_music_data[1].author = " ";
+    map_music_data[1].studio = "Epic Hybrid Orchestra";
+    map_music_data[2].title = "Natural Splendor";
+    map_music_data[2].author = "Gerald M. Dorai";
+    map_music_data[2].studio = "Le Phonarium - Nantes";
+    map_music_data[3].title = "Dying Star";
+    map_music_data[3].author = "Utho Riley";
+    map_music_data[3].studio = "Symphonic Orchestral Music";
+    map_music_data[4].title = "Orizon Theme";
+    map_music_data[4].author = "Pedro Camacho";
+    map_music_data[4].studio = "Star Citizen Soundtrack";
+    map_music_data[5].title = "Engine of Creation";
+    map_music_data[5].author = "Utho Riley";
+    map_music_data[5].studio = "Epic Hybrid Orchestra";
+    map_music_data[6].title = "Mass Effect - Map Theme";
+    map_music_data[6].author = "Jack Wall";
+    map_music_data[6].studio = "EA Games Soundtrack";
+    map_music_data[7].title = "Unbound";
+    map_music_data[7].author = "Utho Riley";
+    map_music_data[7].studio = "Epic Hybrid Orchestra";
+    map_music_data[8].title = "Dreamscape";
+    map_music_data[8].author = " ";
+    map_music_data[8].studio = " ";
+    map_music_data[9].title = "Two Moons";
+    map_music_data[9].author = "Bobby Richards";
+    map_music_data[9].studio = "YouTube Audio Library";
     
 
     // map_nav_data["Sun"] = {ImVec4(1.0f, 1.0f, 0.0f, 1.0f), 0.0f};
@@ -145,7 +146,7 @@ void Overlay::renderVertical(DataManager &data_manager, float side)
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************** renderEdges ****************************************************************************/
+/******************************************************************** renderEdges **************************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Overlay::renderEdges(DataManager &data_manager)
 {   
@@ -160,72 +161,72 @@ void Overlay::renderEdges(DataManager &data_manager)
 }
 
 /***********************************************************************************************************************************************************************/
-/********************************************************************** displayMusicOverlay ****************************************************************************/
+/********************************************************************** renderMusicInfo ********************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Overlay::displayMusicInfo(RenderData &render_data)
-// {
-//     ImGuiWindowFlags window_flags = 0;
-//     ImGuiStyle& style = ImGui::GetStyle();
+void Overlay::renderMusicInfo(DataManager &data_manager)
+{
+    ImGuiWindowFlags window_flags = 0;
+    ImGuiStyle& style = ImGui::GetStyle();
 
-//     int track = render_data.getTrack();
-//     int vol = render_data.getVolume();
-//     bool pause_music = render_data.getPauseMusic();
+    int track = data_manager.getTrack();
+    int vol = data_manager.getVolume();
+    bool pause_music = data_manager.getPause();
 
-//     window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoResize;
 
-//     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
-//     ImGui::SetNextWindowPos(ImVec2(render_data.getWidth() - 380, render_data.getHeight() - 170));
-//     ImGui::SetNextWindowSize(ImVec2(380, 170));
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
+    ImGui::SetNextWindowPos(ImVec2(data_manager.getWidth() - 380, data_manager.getHeight() - 170));
+    ImGui::SetNextWindowSize(ImVec2(380, 170));
 
-//     float save_frame = style.FrameRounding;
-//     float save_grab = style.GrabRounding;
-//     style.FrameRounding = 15;
-//     style.GrabRounding = 15;
+    float save_frame = style.FrameRounding;
+    float save_grab = style.GrabRounding;
+    style.FrameRounding = 15;
+    style.GrabRounding = 15;
     
-//     ImGui::Begin("Music Information", NULL, window_flags);
+    ImGui::Begin("Music Information", NULL, window_flags);
     
-//     ImGui::AlignTextToFramePadding();
-//     ImGui::Text("Title :");
-//     ImGui::SameLine();
+    ImGui::AlignTextToFramePadding();
+    ImGui::Text("Title :");
+    ImGui::SameLine();
         
-//     float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
-//     ImGui::PushButtonRepeat(true);
-//     if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { track--; }
-//     ImGui::SameLine(0.0f, spacing);
-//     ImGui::Text(map_music_data[track].title.c_str());
-//     ImGui::SameLine(0.0f, spacing);
-//     if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { track++; }
-//     ImGui::PopButtonRepeat();
+    float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
+    ImGui::PushButtonRepeat(true);
+    if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { track--; }
+    ImGui::SameLine(0.0f, spacing);
+    ImGui::Text(map_music_data[track].title.c_str());
+    ImGui::SameLine(0.0f, spacing);
+    if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { track++; }
+    ImGui::PopButtonRepeat();
 
-//     std::string tmp = "Author :    " + map_music_data[track].author;
-//     ImGui::Text(tmp.c_str());
+    std::string tmp = "Author :    " + map_music_data[track].author;
+    ImGui::Text(tmp.c_str());
 
-//     tmp = "Studio :    " + map_music_data[track].studio;
-//     ImGui::Text(tmp.c_str());
+    tmp = "Studio :    " + map_music_data[track].studio;
+    ImGui::Text(tmp.c_str());
     
-//     ImGui::SliderInt("Volume", &vol, 0, 128);
+    ImGui::SliderInt("Volume", &vol, 0, 128);
     
 
-//     ImGui::Checkbox("Mute music", &pause_music);
+    ImGui::Checkbox("Mute music", &pause_music);
 
-//     const char* items[] = { "Epic Orchestra", "-Error Canal Transmission-", "-Error Canal Transmission-", "-Error Canal Transmission-"};
-//     static int item_current = 0;
-//     ImGui::Combo("Radio", &item_current, items, IM_ARRAYSIZE(items));
+    const char* items[] = { "Epic Orchestra", "-Error Canal Transmission-", "-Error Canal Transmission-", "-Error Canal Transmission-"};
+    static int item_current = 0;
+    ImGui::Combo("Radio", &item_current, items, IM_ARRAYSIZE(items));
 
-//     ImGui::SameLine();
-//     std::string t_mp = "For now there only is one radio available until NASA engineers upgrade their Deep Space Network.";
-//     RenderData::HelpMarker(t_mp);
+    ImGui::SameLine();
+    std::string t_mp = "For now there only is one radio available until NASA engineers upgrade their Deep Space Network.";
+    // RenderData::HelpMarker(t_mp);
 
-//     style.FrameRounding = save_frame;
-//     style.GrabRounding = save_grab;
+    style.FrameRounding = save_frame;
+    style.GrabRounding = save_grab;
 
-//     ImGui::PopStyleColor();
-//     ImGui::End();
+    ImGui::PopStyleColor();
+    ImGui::End();
     
-//     render_data.setVolume(vol);
-//     render_data.setTrackMusic(track);
-//     render_data.setPauseMusic(pause_music);
-// }
+    data_manager.setVolume(vol);
+    data_manager.setTrack(track);
+    data_manager.setPause(pause_music);
+}
 
 /***********************************************************************************************************************************************************************/
 /******************************************************************* displayMoveInfoOverlay ****************************************************************************/

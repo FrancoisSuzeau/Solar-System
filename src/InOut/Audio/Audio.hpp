@@ -38,6 +38,9 @@ PURPOSE : header of the Audio class
                 int                             m_volume;
                 bool                            m_in_pause;
                 int                             ancient_track;
+
+                bool loadMusic(DataManager &data_manager);
+                void playMusic() const;
                 
                 
             public:
@@ -47,9 +50,6 @@ PURPOSE : header of the Audio class
 
                 void    clean();
 
-
-                bool loadMusic(DataManager &data_manager);
-                void playMusic() const;
                 void updateTrack(DataManager &data_manager);
                 void pause(bool pause); 
                 void changeVolume(int change);

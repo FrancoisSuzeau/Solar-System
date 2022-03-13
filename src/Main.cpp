@@ -30,24 +30,15 @@ int main(int argc, char **argv)
     status = ContextManager::Init(init_glew, opengl_context, sdl_manager.window);
     assert(status);
     ContextManager::Init(opengl_context, sdl_manager.window, io);
-
-    Input *input = new Input();
-    assert(input);
-    Audio *audio = new Audio();
-    assert(audio);
     
-    Application scene(sdl_manager.win_width, sdl_manager.win_height, sdl_manager.window, input, audio);
+    Application scene(sdl_manager.win_width, sdl_manager.win_height, sdl_manager.window);
 
+    scene.loadConfig();
     scene.loadAssets();
+
     scene.mainLoop();
 
     scene.cleanAll();
-
-    delete input;
-    input = nullptr;
-    audio->clean();
-    delete audio;
-    audio = nullptr;
 
     ContextManager::DeInit();
     ContextManager::DeInit(opengl_context);

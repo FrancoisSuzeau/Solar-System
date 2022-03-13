@@ -3,7 +3,7 @@ AUTHOR : SUZEAU François
 
 DATE : 21/07/2021
 
-MODULE : Overlay
+MODULE : Application::Overlay
 
 NAMEFILE : Overlay.hpp
 
@@ -76,7 +76,7 @@ PURPOSE : header of the Overlay class
                 // float           m_ancient_radius;
                 // float           m_ancient_speed;
 
-                // std::map<int, music_data> map_music_data;
+                std::map<int, music_data> map_music_data;
                 // std::map<std::string, nav_datas> map_nav_data;
 
                 void displaySquares(DataManager &data_manager, std::vector<glm::vec3> coordinates);
@@ -91,9 +91,9 @@ PURPOSE : header of the Overlay class
                 void            renderEdges(DataManager &data_manager);
                 void            initOverlayAssets(Renderer *square_rend, Square *square);
                 void            renderAppInfo();
+                void            renderMusicInfo(DataManager &data_manager);
                 void            clean();
-                
-                // void displayMusicInfo(RenderData &render_data);
+
                 // void displayNavigation(RenderData &render_data);
                 
 

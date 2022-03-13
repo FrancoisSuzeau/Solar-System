@@ -3,11 +3,12 @@ AUTHOR : SUZEAU François
 
 DATE : 29/05/2021
 
-MODULE : Camera
+MODULE : Application::Camera
 
-NAMEFILE : Camera.h
+NAMEFILE : Camera.hpp
 
 PURPOSE : header of the Camera class
+
 */
 
 #ifndef CAMERA_H
@@ -35,46 +36,32 @@ PURPOSE : header of the Camera class
             private:
 
                 glm::vec3   m_vertical_axe;
-                glm::vec3   m_lateral_move;
-
                 glm::vec3   m_position;
                 glm::vec3   m_target_point;
-                glm::vec3 AB;
 
                 float           distance_from_ship;
                 float           angle_around_player;
                 float           pitch;
 
-                Spaceship *m_ship;
+                Spaceship       *m_ship;
 
-                void calculatePitch(Input const &input);
-                void calculateYaw(Input const &input);
-                void calculateAngleAroundShip(Input const &input);
-                float calculateHorizontalDistance(Input const &input);
-                float calculateVerticalDistance(Input const &input);
-                void calculateCameraPostion(float horizontal_distance, float vertical_distance, Input const &input);
-
-                void correctTarget(Input const &input);
+                void    calculatePitch(Input *input);
+                void    calculateAngleAroundShip(Input *input);
+                float   calculateHorizontalDistance();
+                float   calculateVerticalDistance();
+                void    calculateCameraPostion(float horizontal_distance, float vertical_distance);
+                void    correctTarget(Input *input);
                 
 
             public:
             
-                Camera();
                 Camera(glm::vec3 position, glm::vec3 target_point, glm::vec3 vertical_axe, Spaceship *ship = nullptr);
                 ~Camera();
 
 
-                void move(Input const &input, bool move);
-                void lookAt(glm::mat4 &view);
-
-        
-                glm::vec3 getPosition() const;
-
-                glm::vec3 getVerticalaxe() const;
-                glm::vec3 getTargetPoint() const;
-
-                void setDistFromShip(float const new_val);
-                float getDistFromShip() const;
+                void    move(Input *input, bool move);
+                void    lookAt(glm::mat4 &view);
+                void    setDistFromShip(float const new_val);
 
                 
         };

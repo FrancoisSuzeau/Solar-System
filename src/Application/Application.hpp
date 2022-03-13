@@ -86,13 +86,15 @@ PURPOSE : header of the Application class
                 void    renderSettings();
                 void    renderOverlay();
                 void    renderScene();
+                void    makeAllChanges();
                 
 
             public:
 
-                Application(int width, int height, SDL_Window *window, Input *input, Audio *audio);
+                Application(int width, int height, SDL_Window *window);
                 ~Application();
 
+                void            loadConfig();
                 void            loadAssets();
                 void            mainLoop();
                 void            cleanAll();
