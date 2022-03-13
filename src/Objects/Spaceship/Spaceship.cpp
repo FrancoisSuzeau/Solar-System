@@ -30,8 +30,8 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit
 
     m_model_mat = glm::mat4(1.f);
 
-    // m_current_pos = glm::vec3(0.0f, 9000.0f, 0.0f);
-    m_current_pos = glm::vec3(0.f, 0.f, 0.f);
+    // m_position = glm::vec3(0.0f, 9000.0f, 0.0f);
+    m_position = glm::vec3(0.f, 0.f, 0.f);
     directions[0] = false;
     directions[1] = false;
     directions[2] = false;
@@ -56,7 +56,7 @@ Spaceship::~Spaceship()
 /***********************************************************************************************************************************************************************/
 void Spaceship::transform()
 {
-    
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -101,7 +101,7 @@ void Spaceship::move(Input input)
 {
     if(input.getKey(SDL_SCANCODE_W))
     {
-        m_current_pos += m_ship_orientation * m_speed;
+        m_position += m_ship_orientation * m_speed;
         if(m_speed < speed_limit)
         {
             m_speed += 5.0f;
@@ -113,7 +113,7 @@ void Spaceship::move(Input input)
         if(m_speed >= 5.0f)
         {
             m_speed -= 5.0f;
-            m_current_pos += m_ship_orientation * m_speed;
+            m_position += m_ship_orientation * m_speed;
         }
         else
         {
@@ -124,7 +124,7 @@ void Spaceship::move(Input input)
 
     if(input.getKey(SDL_SCANCODE_S))
     {
-        m_current_pos -= m_ship_orientation * m_speed;
+        m_position -= m_ship_orientation * m_speed;
         if(m_speed < speed_limit)
         {
             m_speed += 5.0f;
@@ -136,7 +136,7 @@ void Spaceship::move(Input input)
         if(m_speed >= 5.0f)
         {
             m_speed -= 5.0f;
-            m_current_pos -= m_ship_orientation * m_speed;
+            m_position -= m_ship_orientation * m_speed;
         }
         else
         {
@@ -146,7 +146,7 @@ void Spaceship::move(Input input)
 
     if(input.getKey(SDL_SCANCODE_A))
     {
-       m_current_pos += m_lateral_move * m_speed;
+       m_position += m_lateral_move * m_speed;
        if(m_speed < speed_limit)
         {
             m_speed += 5.0f;
@@ -159,7 +159,7 @@ void Spaceship::move(Input input)
         if(m_speed >= 5.0f)
         {
             m_speed -= 5.0f;
-            m_current_pos += m_lateral_move * m_speed;
+            m_position += m_lateral_move * m_speed;
         }
         else
         {
@@ -169,7 +169,7 @@ void Spaceship::move(Input input)
 
     if(input.getKey(SDL_SCANCODE_D))
     {
-       m_current_pos -= m_lateral_move * m_speed;
+       m_position -= m_lateral_move * m_speed;
        if(m_speed < speed_limit)
         {
             m_speed += 5.0f;
@@ -181,7 +181,7 @@ void Spaceship::move(Input input)
         if(m_speed >= 5.0f)
         {
             m_speed -= 5.0f;
-            m_current_pos -= m_lateral_move * m_speed;
+            m_position -= m_lateral_move * m_speed;
         }
         else
         {
@@ -191,7 +191,7 @@ void Spaceship::move(Input input)
 
     if(input.getKey(SDL_SCANCODE_LSHIFT))
     {
-       m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+       m_position += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
        if(m_speed < speed_limit)
        {
            m_speed += 5.0f;
@@ -203,7 +203,7 @@ void Spaceship::move(Input input)
         if(m_speed >= 5.0f)
         {
             m_speed -= 5.0f;
-            m_current_pos += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+            m_position += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
         }
         else
         {
@@ -213,7 +213,7 @@ void Spaceship::move(Input input)
 
     if(input.getKey(SDL_SCANCODE_LCTRL))
     {
-        m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+        m_position -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
         if(m_speed < speed_limit)
         {
             m_speed += 5.0f;
@@ -225,7 +225,7 @@ void Spaceship::move(Input input)
         if(m_speed >= 5.0f)
         {
             m_speed -= 5.0f;
-            m_current_pos -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
+            m_position -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
         }
         else
         {
@@ -242,7 +242,7 @@ void Spaceship::positioningShip()
     //it is important to reintitialise the model matrice, if not all the calculation are made by the ancient calculation and we loose the space ship
     m_model_mat = glm::mat4(1.0f);
 
-    m_model_mat = glm::translate(m_model_mat, m_current_pos);
+    m_model_mat = glm::translate(m_model_mat, m_position);
 
     m_model_mat *= (yaw_mat * pitch_mat);
 
@@ -384,10 +384,10 @@ void Spaceship::loadModelShip(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* getters ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-glm::vec3 Spaceship::getPosition() const
-{
-    return m_current_pos;
-}
+// glm::vec3 Spaceship::getPosition() const
+// {
+//     return m_position;
+// }
 
 glm::vec3 Spaceship::getOrientation() const
 {
