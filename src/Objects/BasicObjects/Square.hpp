@@ -31,7 +31,7 @@ PURPOSE : header of the Square class
                 Square(float size);
                 ~Square();
 
-                void transform() override;
+                void transform(Input *input = nullptr) override;
                 
         };
 

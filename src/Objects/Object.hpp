@@ -25,6 +25,8 @@ PURPOSE : Interface Object
         #include <glm/gtc/type_ptr.hpp>
 
         #include "../Application/DataManager.hpp"
+        #include "../ErrorHandler/ErrorHandler.hpp"
+        #include "../InOut/Input/Input.hpp"
 
         
 
@@ -49,7 +51,7 @@ PURPOSE : Interface Object
                 Object();
                 virtual ~Object();
 
-                virtual void transform() = 0;
+                virtual void transform(Input *input = nullptr) = 0;
 
                 void updatePosition(glm::vec3 const new_pos);
                 void rotateObject(glm::mat4 &model, float angle);

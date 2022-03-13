@@ -285,11 +285,11 @@ void Settings::manageNavigation(DataManager &data_manager)
     // ImGui::Text("%d", index);
     if(ImGui::ImageButton((void*)(intptr_t)textures_data[index].text_id, ImVec2(textures_data[index].img_width *0.5f, textures_data[index].img_height * 0.5f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f)))
     {
-        // if(index != render_data.getIndexShip())
-        // {
-        //     render_data.setIndexShip(index);
-        //     render_data.setChangeModel(true);
-        // }
+        if(index != data_manager.getIndexShip())
+        {
+            data_manager.setIndexShip(index);
+            data_manager.setChangeSkin(true);
+        }
     }
     ImGui::SameLine(0.0f, spacing);
     if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { index++; }

@@ -140,9 +140,13 @@ void Application::mainLoop()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glEnable(GL_DEPTH_TEST);
 
+            ship->loadModelShip(m_data_manager);
+            
             if(!render_menu)
             {
-                ship->drawSpaceship(m_data_manager, *m_input);
+                ship->transform(m_input);
+                ship->drawSpaceship(m_data_manager);
+
             }
             
             camera->setDistFromShip(m_data_manager.getDistancteFromShip());

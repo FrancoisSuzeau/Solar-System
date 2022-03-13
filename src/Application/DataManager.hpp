@@ -56,6 +56,8 @@ PURPOSE : header of the DataManager class
                 bool            render_name;
                 bool            render_info;
                 float           distance_from_ship;
+                int             index_ship;
+                bool            change_skin;
 
                 glm::mat4       proj_mat;
                 glm::mat4       view_mat;
@@ -107,6 +109,10 @@ PURPOSE : header of the DataManager class
                 bool            getRenderInfo() const;
                 void            setDistanceFromShip(float const new_val);
                 float           getDistancteFromShip() const;
+                void            setIndexShip(int const new_val);
+                int             getIndexShip() const;
+                void            setChangeSkin(bool const new_val);
+                bool            getChangeSkin() const;
 
 
         };

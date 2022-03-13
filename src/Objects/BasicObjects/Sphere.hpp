@@ -31,7 +31,7 @@ PURPOSE : header of the Sphere class
                 Sphere(float size);
                 ~Sphere();
 
-                void transform() override;
+                void transform(Input *input = nullptr) override;
         };
 
 

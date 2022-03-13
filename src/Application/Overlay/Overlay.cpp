@@ -98,7 +98,7 @@ void Overlay::displaySquares(DataManager &data_manager, std::vector<glm::vec3> c
 
     m_square_ptr->updateColor(0.2f); //less grey black
     m_square_ptr->updatePosition(coordinates[0]);
-    m_square_ptr->transform();
+    m_square_ptr->transform(nullptr);
     if((m_square_ptr != nullptr) && (m_square_renderer != nullptr))
     {
         m_square_renderer->render(data_manager, m_square_ptr);
@@ -106,7 +106,7 @@ void Overlay::displaySquares(DataManager &data_manager, std::vector<glm::vec3> c
 
     m_square_ptr->updateColor(0.05f); //grey black
     m_square_ptr->updatePosition(coordinates[1]);
-    m_square_ptr->transform();
+    m_square_ptr->transform(nullptr);
     if((m_square_ptr != nullptr) && (m_square_renderer != nullptr))
     {
         m_square_renderer->render(data_manager, m_square_ptr);

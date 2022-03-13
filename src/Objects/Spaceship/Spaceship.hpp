@@ -30,8 +30,6 @@ PURPOSE : header of the Spaceship class
         #include <vector>
         
         #include "../../Model/Model.hpp"
-        #include "../../InOut/Input/Input.hpp"
-        #include "../../Application/DataManager.hpp"
         #include "../Object.hpp"
 
        
@@ -55,6 +53,7 @@ PURPOSE : header of the Spaceship class
                 bool            directions[6];
                 float           y_dir;
                 float           x_dir;
+                int             m_index_skin;
 
                 std::vector<float> m_scales;
 
@@ -64,19 +63,10 @@ PURPOSE : header of the Spaceship class
                 glm::mat4 yaw_mat;
                 glm::mat4 pitch_mat;
 
-                void positioningShip();
-
                 void orientateShip(Input input);
                 void changePitch(Input input);
                 void changeYaw(Input input);
-
-                void scalingShip(int index);
-
-                void computeMatrice();
-
                 void move(Input input);
-
-                void transform() override;
 
                 
             public:
@@ -85,8 +75,9 @@ PURPOSE : header of the Spaceship class
                 ~Spaceship();
 
                 void    clean();
+                void transform(Input *input = nullptr) override;
 
-                void drawSpaceship(DataManager &data_manager, Input input);
+                void drawSpaceship(DataManager &data_manager);
                 float getRotX() const;
                 float getRotY() const;
                 glm::vec3       getOrientation() const;

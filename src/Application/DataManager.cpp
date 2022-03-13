@@ -18,7 +18,7 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 /***********************************************************************************************************************************************************************/
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
 bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(10000), m_fps(60),
-render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f)
+render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true) //for loading the skin at program launch
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, 1.0, 900000.0);
     view_mat = glm::mat4(1.0f);
@@ -248,4 +248,24 @@ void DataManager::setDistanceFromShip(float const new_val)
 float DataManager::getDistancteFromShip() const
 {
     return distance_from_ship;
+}
+
+void DataManager::setIndexShip(int const new_val)
+{
+    index_ship = new_val;
+}
+
+int DataManager::getIndexShip() const
+{
+    return index_ship;
+}
+
+void DataManager::setChangeSkin(bool const new_val)
+{
+    change_skin = new_val;
+}
+
+bool DataManager::getChangeSkin() const
+{
+    return change_skin;
 }

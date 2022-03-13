@@ -8,6 +8,7 @@ MODULE : Spaceship
 NAMEFILE : Spaceship.cpp
 
 PURPOSE : class Spaceship
+
 */
 
 #include "Spaceship.hpp"
@@ -15,18 +16,18 @@ PURPOSE : class Spaceship
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit(0.05f)
+Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit(0.05f), m_index_skin(0)
 {   
 
     file_paths.push_back("../../assets/model/spaceship/untitled.obj");
-    // file_paths.push_back("../../assets/model/donut/donut.obj");
-    // file_paths.push_back("../../assets/model/spaceshuttle/spaceshuttle.obj");
+    file_paths.push_back("../../assets/model/donut/donut.obj");
+    file_paths.push_back("../../assets/model/spaceshuttle/spaceshuttle.obj");
 
     m_spaceship_models = nullptr;
 
     m_scales.push_back(0.1f);
-    // m_scales.push_back(3.0f);
-    // m_scales.push_back(0.1f);
+    m_scales.push_back(3.0f);
+    m_scales.push_back(0.1f);
 
     m_model_mat = glm::mat4(1.f);
 
@@ -54,9 +55,20 @@ Spaceship::~Spaceship()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* transform *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::transform()
+void Spaceship::transform(Input *input)
 {
-
+    if(input != nullptr)
+    {
+        this->move(*input);
+        
+        m_model_mat = glm::mat4(1.0f);
+        
+        this->orientateShip(*input);
+        this->translateObject(m_model_mat, m_position);
+        m_model_mat *= (yaw_mat * pitch_mat);
+        this->scaleObject(m_model_mat, glm::vec3(m_scales[m_index_skin]));
+        
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -76,20 +88,10 @@ void Spaceship::clean()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* drawSpaceship *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::drawSpaceship(DataManager &data_manager, Input input)
+void Spaceship::drawSpaceship(DataManager &data_manager)
 {
     if((m_spaceship_models != nullptr) && ((data_manager.getShader("model") != nullptr)))
-    {
-        
-        this->move(input);
-
-        m_model_mat = glm::mat4(1.0f);
-        
-        this->orientateShip(input);
-        this->positioningShip();
-        // this->scalingShip(render_data.getIndexShip());
-        this->scalingShip(0);
-        
+    {   
         m_spaceship_models->draw(data_manager, m_model_mat);
     }
 }
@@ -235,20 +237,6 @@ void Spaceship::move(Input input)
 }
 
 /***********************************************************************************************************************************************************************/
-/***************************************************************************** positioningShip *************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Spaceship::positioningShip()
-{
-    //it is important to reintitialise the model matrice, if not all the calculation are made by the ancient calculation and we loose the space ship
-    m_model_mat = glm::mat4(1.0f);
-
-    m_model_mat = glm::translate(m_model_mat, m_position);
-
-    m_model_mat *= (yaw_mat * pitch_mat);
-
-}
-
-/***********************************************************************************************************************************************************************/
 /******************************************************************************* orientateShip *************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Spaceship::orientateShip(Input input)
@@ -268,7 +256,6 @@ void Spaceship::orientateShip(Input input)
 
     m_ship_orientation = glm::normalize(dir);
 
-    //TODO : modify to an other method
     m_lateral_move = cross(glm::vec3(0.0f, 0.0f, 1.0f), m_ship_orientation);
     m_lateral_move = normalize(m_lateral_move);
 
@@ -348,37 +335,22 @@ void Spaceship::changeYaw(Input input)
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************************* scalingShip ***************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Spaceship::scalingShip(int index)
-{
-    // std::cout << m_scales[index] << std::endl;
-    // m_model_mat = glm::scale(m_model_mat, glm::vec3(m_scales[index]));
-    m_model_mat = glm::scale(m_model_mat, glm::vec3(0.1f));
-}
-
-/***********************************************************************************************************************************************************************/
 /******************************************************************************* loadModelShip *************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Spaceship::loadModelShip(DataManager &data_manager)
 {
-    // if(render_data.getChangeModel())
-    if(true)
+    if(data_manager.getChangeSkin())
     {
-        // std::cout << file_paths[render_data.getIndexShip()] 
-        std::cout << file_paths[0] << std::endl;
+        m_index_skin = data_manager.getIndexShip();
+        std::cout << file_paths[m_index_skin];
 
-        if(m_spaceship_models != nullptr)
+        this->clean();
+
+        if(m_spaceship_models == nullptr)
         {
-            delete m_spaceship_models;
-            m_spaceship_models = nullptr;
+            m_spaceship_models = new Model(file_paths[m_index_skin]);
+            data_manager.setChangeSkin(false);
         }
-
-        // m_spaceship_models = new Model(file_paths[render_data.getIndexShip()]);
-        m_spaceship_models = new Model(file_paths[0]);
-        // render_data.setChangeModel(false);
-
-        
     }
 }
 
