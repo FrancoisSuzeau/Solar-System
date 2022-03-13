@@ -27,7 +27,32 @@ m_input(input), m_setting(), m_audio(audio), m_overlay()
 
 Application::~Application()
 {
-    
+
+}
+
+/***********************************************************************************************************************************************************************/
+/*************************************************************************************** cleanAll **********************************************************************/
+/***********************************************************************************************************************************************************************/
+void Application::cleanAll()
+{
+    if(m_skybox != nullptr)
+    {
+        m_skybox->clean();
+        delete m_skybox;
+        m_skybox = nullptr;
+    }
+    if(camera != nullptr)
+    {
+        delete camera;
+        camera = nullptr;
+    }
+    if(ship != nullptr)
+    {
+        delete ship;
+        ship = nullptr;
+    }
+
+    m_overlay.clean();
 }
 
 /***********************************************************************************************************************************************************************/
@@ -49,9 +74,13 @@ void Application::loadAssets()
     assert(square);
 
     m_overlay.initOverlayAssets(square_renderer, square);
-
     m_skybox = new Skybox();
     assert(m_skybox);
+    ship = new Spaceship();
+    assert(ship);
+    ship->loadModelShip(m_data_manager);
+    camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
+    assert(camera);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -72,11 +101,7 @@ void Application::mainLoop()
     end_loop = 0;
     time_past = 0;
 
-    Spaceship *ship = new Spaceship();
-    assert(ship);
-    ship->loadModelShip(m_data_manager);
-    camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
-    assert(camera);
+    
 
     //=====================================================================================================================================================
 
@@ -84,9 +109,6 @@ void Application::mainLoop()
     ImGuiStyle& style = ImGui::GetStyle();
     style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
     style.WindowMenuButtonPosition = ImGuiDir_None;
-
-    // m_input->capturePointer(true);
-    // m_input->displayPointer(false);
 
     while(!m_data_manager.getTerminate())
     {
@@ -102,7 +124,7 @@ void Application::mainLoop()
 
         if(camera != nullptr)
         {
-            camera->move(*m_input, false);
+            camera->move(*m_input, render_menu);
 
             camera->lookAt(m_data_manager.getViewMat());
         }
@@ -115,7 +137,11 @@ void Application::mainLoop()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glEnable(GL_DEPTH_TEST);
 
-            ship->drawSpaceship(m_data_manager, *m_input);
+            if(!render_menu)
+            {
+                ship->drawSpaceship(m_data_manager, *m_input);
+            }
+            
             camera->setDistFromShip(3.f);
 
         /******************************************************************* RENDER SETTINGS *******************************************************************/
@@ -143,19 +169,6 @@ void Application::mainLoop()
             this->fpsCalculation(END);
             
     }
-
-    if(camera != nullptr)
-    {
-        delete camera;
-        camera = nullptr;
-    }
-
-    if(ship != nullptr)
-    {
-        delete ship;
-        ship = nullptr;
-    }
-
 }
 
 /***********************************************************************************************************************************************************************/
@@ -295,9 +308,6 @@ void Application::renderScene()
 //             render_data.saveViewMat();
 //         }
 //     }
-    
-    
-
 // }
 
 /***********************************************************************************************************************************************************************/
@@ -326,25 +336,16 @@ void Application::renderSettings()
     if(render_menu)
     {
         m_setting.manageSettings(m_data_manager);
+
+        m_input->capturePointer(false);
+        m_input->displayPointer(true);
+
     }
-
-    // if((camera != nullptr) && (m_settings != nullptr) && (render_data.getShader("square") != nullptr))
-    // {
-    //     if(render_data.getMenu())
-    //     {
-    //         m_input.capturePointer(false);
-    //         m_input.displayPointer(true);
-
-    //         m_settings->manageSettings(render_data);
-    //     }
-    //     else
-    //     {
-    //         m_input.capturePointer(true);
-    //         m_input.displayPointer(false);
-    //     }
-    // }
-    
-    
+    else
+    {
+        m_input->capturePointer(true);
+        m_input->displayPointer(false);
+    }    
 }
 
 /***********************************************************************************************************************************************************************/

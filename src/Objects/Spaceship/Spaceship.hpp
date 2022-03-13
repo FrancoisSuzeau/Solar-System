@@ -96,8 +96,6 @@ PURPOSE : header of the Spaceship class
                 void loadModelShip(DataManager &data_manager);
 
                 void updateSpeed(float const new_val);
-
-                
         };
 
 

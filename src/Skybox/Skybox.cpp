@@ -19,7 +19,7 @@ PURPOSE :   - load texture for cube maps
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Skybox::Skybox()
+Skybox::Skybox() : m_vboID(0), m_vaoID(0), m_texture_id(0)
 {   
     GLfloat skyboxVertices[108] = 
     {
@@ -67,8 +67,18 @@ Skybox::Skybox()
         2.0f, -2.0f,  2.0f
     };
 
-    glGenVertexArrays(1, &m_vaoID);
-    glGenBuffers(1, &m_vboID);
+    if(glIsVertexArray(m_vaoID) != GL_TRUE)
+    {
+        glGenVertexArrays(1, &m_vaoID);
+        assert(m_vaoID != 0);
+    }
+    
+    if(glIsBuffer(m_vboID) != GL_TRUE)
+    {
+        glGenBuffers(1, &m_vboID);
+        assert(m_vboID != 0);
+    }
+    
     glBindVertexArray(m_vaoID);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
@@ -86,26 +96,13 @@ Skybox::Skybox()
             "../../assets/textures/SkyboxMap/back.png"
 
                 };
-    m_texture_id = 0;
+
     m_texture_id = this->load();
     assert(m_texture_id != 0);
 }
 
 Skybox::~Skybox()
 {
-    glDeleteTextures(1, &m_texture_id);
-    //destroy VBO
-    glDeleteBuffers(1, &m_vboID);
-    
-    //destroy VAO
-    glDeleteVertexArrays(1, &m_vaoID);
-
-    if((glIsTexture(m_texture_id) == GL_FALSE) && 
-    (glIsBuffer(m_vboID) == GL_FALSE) && 
-    (glIsVertexArray(m_vaoID) == GL_FALSE))
-    {
-        std::cout << ">> SKYBOX :: delete >>> SUCESS" << std::endl;
-    }
 
 }
 
@@ -118,11 +115,12 @@ unsigned int Skybox::load()
     if(glIsTexture(m_texture_id) == GL_TRUE)
     {
         glDeleteTextures(1, &m_texture_id);
+        m_texture_id = 0;
     }
     //===================================================================================================================
 
     /************************************************* generate ID ********************************************************/
-    unsigned int textID;
+    unsigned int textID = 0;
     glGenTextures(1, &textID);
     //===================================================================================================================
 
@@ -211,3 +209,28 @@ void Skybox::render(DataManager &data_manager)
     data_manager.resetViewMat(view);
 }
 
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* clean *****************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Skybox::clean()
+{
+    if(glIsTexture(m_texture_id) == GL_TRUE)
+    {
+        glDeleteTextures(1, &m_texture_id);
+        m_texture_id = 0;
+    }
+
+    if(glIsVertexArray(m_vaoID) == GL_TRUE)
+    {
+        glDeleteVertexArrays(1, &m_vaoID);
+        m_vaoID = 0;
+    }
+
+    if(glIsBuffer(m_vboID) == GL_TRUE)
+    {
+        glDeleteBuffers(1, &m_vboID);
+        m_vboID = 0;
+    }
+
+    std::cout << ">> SKYBOX : DESTROY COMPLETE" << std::endl;
+}

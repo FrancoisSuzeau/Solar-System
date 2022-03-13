@@ -71,6 +71,7 @@ PURPOSE : header of the Application class
                 Overlay                 m_overlay;
                 Skybox                  *m_skybox;
                 Camera	                *camera;
+                Spaceship               *ship;
 
                 bool menu_app_key_pressed;
                 bool render_menu;
@@ -94,6 +95,7 @@ PURPOSE : header of the Application class
 
                 void            loadAssets();
                 void            mainLoop();
+                void            cleanAll();
                 
                 // void    initFrameBuffer();
                 

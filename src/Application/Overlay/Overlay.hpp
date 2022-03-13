@@ -91,6 +91,7 @@ PURPOSE : header of the Overlay class
                 void            renderEdges(DataManager &data_manager);
                 void            initOverlayAssets(Renderer *square_rend, Square *square);
                 void            renderAppInfo();
+                void            clean();
                 
                 // void displayMusicInfo(RenderData &render_data);
                 // void displayNavigation(RenderData &render_data);

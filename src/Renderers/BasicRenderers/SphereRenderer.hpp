@@ -46,6 +46,7 @@ PURPOSE : header of the SphereRenderer class
 
                 void load() override;
                 void render(DataManager &data_manager, Object *sphere) override;
+                void clean() override;
         };
 
 

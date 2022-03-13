@@ -102,12 +102,23 @@ m_vbo(0), m_ibo(0), m_element_count(0), m_radius(radius)
 
 SphereRenderer::~SphereRenderer()
 {
-    glDeleteBuffers(1, &m_ibo);
-    glDeleteBuffers(1, &m_vbo);
+    
+}
 
-    if( (glIsBuffer(m_vbo) == GL_FALSE) && (glIsBuffer(m_ibo) == GL_FALSE))
+/***********************************************************************************************************************************************************************/
+/******************************************************************************** clean ******************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SphereRenderer::clean()
+{
+    if(glIsBuffer(m_vbo) == GL_TRUE)
     {
-        std::cout << ">> SPHERE :: delete >>> SUCESS" << std::endl;
+        glDeleteBuffers(1, &m_vbo);
+        m_vbo = 0;
+    }
+    if(glIsBuffer(m_ibo) == GL_TRUE)
+    {
+        glDeleteBuffers(1, &m_ibo);
+        m_ibo = 0;
     }
 
     for(unsigned int i(0); i < longVerts; i++)
@@ -124,6 +135,8 @@ SphereRenderer::~SphereRenderer()
     }
 
     delete [] tmp;
+
+    std::cout << ">> SPHERE RENDERER : DESTROY COMPLETE" << std::endl;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -151,10 +164,12 @@ void SphereRenderer::load()
     if(glIsBuffer(m_vbo) == GL_TRUE)
     {
         glDeleteBuffers(1, &m_vbo);
+        m_vbo = 0;
     }
 
     //generate Vertex Buffer Object ID
     glGenBuffers(1, &m_vbo);
+    assert(m_vbo != 0);
 
     //lock VBO
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -182,10 +197,12 @@ void SphereRenderer::load()
     if(glIsBuffer(m_ibo) == GL_TRUE)
     {
         glDeleteBuffers(1, &m_ibo);
+        m_ibo = 0;
     }
 
     //generate Index Buffer Object ID
     glGenBuffers(1, &m_ibo);
+    assert(m_ibo != 0);
 
     //lock IBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);

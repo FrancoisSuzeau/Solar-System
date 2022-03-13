@@ -15,7 +15,8 @@ PURPOSE : class Mesh
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texturate> textures)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texturate> textures) :
+m_ebo(0), m_vao(0), m_vbo(0)
 //  apply move-semantics using rvalue refs + std::move()
 {
     this->m_vertices = vertices;
@@ -42,8 +43,11 @@ void Mesh::setupMesh()
 {
 
     glGenVertexArrays(1, &m_vao);
+    assert(m_vao != 0);
     glGenBuffers(1, &m_vbo);
+    assert(m_vbo != 0);
     glGenBuffers(1, &m_ebo);
+    assert(m_ebo != 0);
 
 
     glBindVertexArray(m_vao);

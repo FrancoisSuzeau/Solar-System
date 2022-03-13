@@ -41,6 +41,7 @@ PURPOSE : header of the Renderer class
 
                 virtual void load() = 0;
                 virtual void render(DataManager &data_manager, Object *object) = 0;
+                virtual void clean() = 0;
     
         };
 

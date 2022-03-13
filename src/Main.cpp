@@ -41,6 +41,8 @@ int main(int argc, char **argv)
     scene.loadAssets();
     scene.mainLoop();
 
+    scene.cleanAll();
+
     delete input;
     input = nullptr;
     delete audio;

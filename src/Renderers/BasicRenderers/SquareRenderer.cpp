@@ -15,8 +15,9 @@ PURPOSE : class SquareRenderer
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SquareRenderer::SquareRenderer(float const color)
+SquareRenderer::SquareRenderer(float const color) : m_vboID(0)
 {
+    m_vaoID = 0;
     m_bytes_vertices_size = 18 * sizeof(float);
     m_bytes_colors_size = 18 * sizeof(float);
 
@@ -44,16 +45,29 @@ SquareRenderer::SquareRenderer(float const color)
 
 SquareRenderer::~SquareRenderer()
 {
-    //destroy VBO
-    glDeleteBuffers(1, &m_vboID);
     
-    //destroy VAO
-    glDeleteVertexArrays(1, &m_vaoID);
+}
 
-    if( (glIsBuffer(m_vboID) == GL_FALSE) && (glIsVertexArray(m_vaoID) == GL_FALSE))
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* clean ******************************************************************************/
+/***********************************************************************************************************************************************************************/
+void SquareRenderer::clean()
+{
+    //destroy VBO
+    if(glIsBuffer(m_vboID) == GL_TRUE)
     {
-        std::cout << ">> SQUARE RENDERER :: delete >>> SUCESS" << std::endl;
+        glDeleteBuffers(1, &m_vboID);
+        m_vboID = 0;
     }
+
+    if(glIsVertexArray(m_vaoID) == GL_TRUE)
+    {
+        //destroy VAO
+        glDeleteVertexArrays(1, &m_vaoID);
+        m_vaoID = 0;
+    }
+
+    std::cout << ">> SQUARE RENDERER : DESTROY COMPLETE" << std::endl;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -66,10 +80,12 @@ void SquareRenderer::load()
     if(glIsBuffer(m_vboID) == GL_TRUE)
     {
         glDeleteBuffers(1, &m_vboID);
+        m_vboID = 0;
     }
 
     //generate Vertex Buffer Object ID
     glGenBuffers(1, &m_vboID);
+    assert(m_vboID != 0);
 
     //lock VBO
     glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
@@ -97,9 +113,11 @@ void SquareRenderer::load()
     if(glIsVertexArray(m_vaoID) == GL_TRUE)
     {
         glDeleteVertexArrays(1, &m_vaoID);
+        m_vaoID = 0;
     }
     //generate Vertex Array Object ID
     glGenVertexArrays(1, &m_vaoID);
+    assert(m_vaoID != 0);
 
     //lock VAO
     glBindVertexArray(m_vaoID);
