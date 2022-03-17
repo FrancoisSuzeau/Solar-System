@@ -145,3 +145,56 @@ unsigned int Loader::loadWithStbi(const char *path, const std::string &directory
     std::cout << ">> Loading file music : SUCCESS : " << file_path << std::endl; 
     return m_music;
 }
+
+/***********************************************************************************************************************************************************************/
+/**************************************************************************** loadSkyboxTextures ***********************************************************************/
+/***********************************************************************************************************************************************************************/
+unsigned int Loader::loadSkyboxTextures(std::vector<std::string> faces)
+{
+    /************************************************* generate ID ********************************************************/
+    unsigned int textID = 0;
+    glGenTextures(1, &textID);
+    assert(textID != 1);
+    //===================================================================================================================
+
+    /************************************************* lock object ********************************************************/
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textID);
+    //=====================================================================================================================
+    
+    /************************************************* load the file ********************************************************/
+    for (unsigned int i(0); i < faces.size(); i++)
+    {
+        SDL_Surface *picture_SDL = nullptr;
+        picture_SDL = IMG_Load(faces[i].c_str());
+        if(picture_SDL == nullptr)
+        {
+            std::string msg_err = ">> Loading file img : ERROR : ";
+            msg_err.append(SDL_GetError());
+            showError(nullptr, ErrorHandler(msg_err.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
+            return 0;
+        }
+        std::cout << ">> Loading file " << faces[i] << " : SUCCESS" << std::endl;
+        //===================================================================================================================
+
+        /************************************************* copying pixels **************************************************************/
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, picture_SDL->w, picture_SDL->h, 0, GL_RGB, GL_UNSIGNED_BYTE, picture_SDL->pixels);
+        SDL_FreeSurface(picture_SDL);
+        //==============================================================================================================================
+    }
+    
+    /************************************************* applying layer ********************************************************/
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    //=====================================================================================================================
+
+    /************************************************* unlock object ********************************************************/
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    //=====================================================================================================================
+
+    return textID;
+}

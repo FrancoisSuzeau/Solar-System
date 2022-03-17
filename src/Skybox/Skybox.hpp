@@ -31,6 +31,7 @@ PURPOSE : header of the Skybox class
 
         #include "../Application/DataManager.hpp"
         #include "../ErrorHandler/ErrorHandler.hpp"
+        #include "../Loader/Loader.hpp"
 
 
 /********************************************************************* class definition *********************************************************************/
@@ -45,8 +46,6 @@ PURPOSE : header of the Skybox class
                unsigned int                 m_texture_id;
                GLuint                       m_vboID;
                GLuint                       m_vaoID;
-
-               unsigned int                 load();
                 
             public:
 
