@@ -32,6 +32,7 @@ PURPOSE : header of the Square class
                 ~Square();
 
                 void transform(Input *input = nullptr) override;
+                void sendToShader(DataManager &data_manager) override;
                 
         };
 

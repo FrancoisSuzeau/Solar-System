@@ -19,33 +19,26 @@ LD_GLEW_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lglew32 -lopengl32 -lg
 LD_ASSIMP_MINGW32=-L./../lib -I./../include -m64 -lmingw32 -lassimp
 
 ifeq ($(DEBUG), 1)
-	EXEC=../build/debug/SolarSystem
+	EXEC=..\build\debug\SolarSystem
 else
-	EXEC=../build/release/SolarSystem
+	EXEC=..\build\release\SolarSystem
 endif
 
 CC=g++
 
 # Generate source files list
 SRC=Main.cpp ContextManager.cpp
-SRC+=Loader/Loader.cpp
-SRC+=ErrorHandler/ErrorHandler.cpp
-SRC+=InOut/Input/Input.cpp InOut/Audio/Audio.cpp
-SRC+=Objects/Object.cpp Objects/BasicObjects/Square.cpp Objects/BasicObjects/Sphere.cpp Objects/Spaceship/Spaceship.cpp
-SRC+=Renderers/BasicRenderers/SquareRenderer.cpp Renderers/BasicRenderers/SphereRenderer.cpp
-SRC+=Shader/Shader.cpp
-SRC+=Skybox/Skybox.cpp
-SRC+=Model/Mesh.cpp Model/Model.cpp
-SRC+=Application/Camera/Camera.cpp
-
-SRC+=Application/Application.cpp Application/DataManager.cpp Application/Settings/Settings.cpp Application/Overlay/Overlay.cpp
-# SRC+=Shader/Shader.cpp Input/Input.cpp Texture/Texture.cpp Audio/Audio.cpp Camera/Camera.cpp CelestialBody/Geometry/Sphere.cpp 
-# SRC+=CelestialBody/Planete/PlaneteRender.cpp CelestialBody/Geometry/Disk.cpp CelestialBody/Ring/Ring.cpp CelestialBody/Planete/Planete.cpp Text/Text.cpp
-# SRC+=CelestialBody/Skybox/Skybox.cpp CelestialBody/Star/Star.cpp CelestialBody/System/SolarSystem.cpp StartScreen/StartScreen.cpp CelestialBody/Geometry/Square.cpp 
-# SRC+=Atmosphere/Atmosphere.cpp Overlay/Overlay.cpp Settings/Settings.cpp PlaneteInformation/PlaneteInformation.cpp Model/Mesh.cpp Model/Model.cpp Spaceship/Spaceship.cpp 
-# SRC+=CelestialBody/AsteroidField/AsteroidField.cpp Framebuffer/Framebuffer.cpp CelestialBody/System/PlanetarySystem.cpp CelestialBody/Physique/Physique.cpp Saving/Saving.cpp
-# SRC+=LensFlare/FlareTexture.cpp LensFlare/FlareManager.cpp Particule/Particule.cpp Particule/ParticuleManager.cpp 
-SRC+=../lib/imgui/imgui_demo.cpp ../lib/imgui/imgui_draw.cpp ../lib/imgui/imgui_impl_opengl3.cpp ../lib/imgui/imgui_impl_sdl.cpp ../lib/imgui/imgui_tables.cpp ../lib/imgui/imgui_widgets.cpp ../lib/imgui/imgui.cpp
+SRC+=Loader\Loader.cpp
+SRC+=ErrorHandler\ErrorHandler.cpp
+SRC+=InOut\Input\Input.cpp InOut\Audio\Audio.cpp
+SRC+=Objects\Object.cpp Objects\BasicObjects\Square.cpp Objects\BasicObjects\Sphere.cpp Objects\Spaceship\Spaceship.cpp
+SRC+=Renderers\BasicRenderers\SquareRenderer.cpp Renderers\BasicRenderers\SphereRenderer.cpp
+SRC+=Shader\Shader.cpp
+SRC+=Skybox\Skybox.cpp
+SRC+=Model\Mesh.cpp Model\Model.cpp
+SRC+=Application\Camera\Camera.cpp
+SRC+=Application\Application.cpp Application\DataManager.cpp Application\Settings\Settings.cpp Application\Overlay\Overlay.cpp
+SRC+=..\lib\imgui\imgui_demo.cpp ..\lib\imgui\imgui_draw.cpp ..\lib\imgui\imgui_impl_opengl3.cpp ..\lib\imgui\imgui_impl_sdl.cpp ..\lib\imgui\imgui_tables.cpp ..\lib\imgui\imgui_widgets.cpp ..\lib\imgui\imgui.cpp
 
 OBJET=$(SRC:.cpp=.o)
 DEP=$(SRC:.cpp=.d)
@@ -82,4 +75,4 @@ clean:
 	del $(OBJET) $(DEP)
 
 mrpoper: clean
-	del $(EXEC)
+	del $(EXEC).exe

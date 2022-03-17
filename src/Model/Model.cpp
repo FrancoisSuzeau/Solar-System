@@ -255,14 +255,14 @@ std::vector<Texturate> Model::loadMaterialTexture(aiMaterial *mat, aiTextureType
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Model::draw(DataManager &data_manager, glm::mat4 model_mat)
+void Model::draw(DataManager &data_manager)
 {
     
     if(data_manager.getShader("model") != nullptr)
     {
         for (unsigned int i(0); i < m_meshes.size(); i++)
         {
-            m_meshes[i].draw(data_manager, model_mat);
+            m_meshes[i].draw(data_manager);
         }
         
     }

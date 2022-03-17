@@ -15,8 +15,9 @@ PURPOSE : class SquareRenderer
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SquareRenderer::SquareRenderer(float const color) : m_vboID(0)
+SquareRenderer::SquareRenderer(float const color)
 {
+    m_vboID = 0;
     m_vaoID = 0;
     m_bytes_vertices_size = 18 * sizeof(float);
     m_bytes_colors_size = 18 * sizeof(float);
@@ -154,14 +155,6 @@ void SquareRenderer::render(DataManager &data_manager, Object *square)
 
             //lock vao
             glBindVertexArray(m_vaoID);
-
-            //send matrices to shader
-            data_manager.getShader("square")->setMat4("projection", data_manager.getProjMat());
-            data_manager.getShader("square")->setMat4("view", data_manager.getViewMat());
-            data_manager.getShader("square")->setMat4("model", square->getModelMat());
-            data_manager.getShader("square")->setFloat("color", square->getColor());
-
-            // data_manager.getShader("square")->setInt("hdr", data_manager.getHDR());
 
             //display the form
             glDrawArrays(GL_TRIANGLES, 0, 6);

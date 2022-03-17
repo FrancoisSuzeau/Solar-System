@@ -47,3 +47,26 @@ void Sphere::transform(Input *input)
     this->translateObject(m_model_mat, m_position);
     // this->scaleObject(m_model_mat, m_size);
 }
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************************** sendToShader ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Sphere::sendToShader(DataManager &data_manager)
+{
+    if(data_manager.getShader("atmosphere") != nullptr)
+    {
+        glUseProgram(data_manager.getShader("atmosphere")->getProgramID());
+
+        data_manager.getShader("atmosphere")->setMat4("view", data_manager.getViewMat());
+        data_manager.getShader("atmosphere")->setMat4("projection", data_manager.getProjMat());
+        data_manager.getShader("atmosphere")->setMat4("model", this->getModelMat());
+
+        // data_manager.getShader("atmosphere")->setVec3("viewPos", data_manager.getCamPos());
+        // data_manager.getShader("atmosphere")->setVec3("sunPos", data_manager.getSunPos());
+        // data_manager.getShader("atmosphere")->setFloat("transparency", 1.0f);
+
+        // data_manager.getShader("atmosphere")->setInt("hdr", data_manager.getHDR());
+
+        glUseProgram(0);
+    }
+}

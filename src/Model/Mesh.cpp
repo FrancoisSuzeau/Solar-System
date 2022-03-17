@@ -122,19 +122,11 @@ void Mesh::setupMesh()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************** draw *********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Mesh::draw(DataManager &data_manager, glm::mat4 model_mat)
+void Mesh::draw(DataManager &data_manager)
 {
     if(data_manager.getShader("model") != nullptr)
     {
         glUseProgram(data_manager.getShader("model")->getProgramID());
-
-        data_manager.getShader("model")->setMat4("projection", data_manager.getProjMat());
-        data_manager.getShader("model")->setMat4("view", data_manager.getViewMat());
-        data_manager.getShader("model")->setMat4("model", model_mat);
-        // data_manager.getShader("model")->setVec3("viewPos", data_manager.getCamPos());
-        // data_manager.getShader("model")->setVec3("sunPos", data_manager.getSunPos());
-
-        // data_manager.getShader("model")->setInt("hdr", data_manager.getHDR());
         
         glBindVertexArray(m_vao);
 
@@ -182,7 +174,7 @@ void Mesh::draw(DataManager &data_manager, glm::mat4 model_mat)
             }
             
 
-            glUseProgram(0);
+        glUseProgram(0);
         
     }
 }

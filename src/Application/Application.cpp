@@ -200,6 +200,7 @@ void Application::makeAllChanges()
         if(!render_menu)
         {
             ship->transform(m_input);
+            ship->sendToShader(m_data_manager);
         }
         ship->loadModelShip(m_data_manager);
     }    

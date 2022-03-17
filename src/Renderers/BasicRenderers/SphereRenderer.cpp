@@ -247,17 +247,6 @@ void SphereRenderer::render(DataManager &data_manager, Object *sphere)
         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
         //===================================================================================================================================
-
-
-        data_manager.getShader("atmosphere")->setMat4("view", data_manager.getViewMat());
-        data_manager.getShader("atmosphere")->setMat4("projection", data_manager.getProjMat());
-        data_manager.getShader("atmosphere")->setMat4("model", sphere->getModelMat());
-
-        // data_manager.getShader("atmosphere")->setVec3("viewPos", data_manager.getCamPos());
-        // data_manager.getShader("atmosphere")->setVec3("sunPos", data_manager.getSunPos());
-        // data_manager.getShader("atmosphere")->setFloat("transparency", 1.0f);
-
-        // data_manager.getShader("atmosphere")->setInt("hdr", data_manager.getHDR());
         
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
 

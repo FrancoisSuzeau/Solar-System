@@ -88,7 +88,7 @@ PURPOSE : header of the Mesh class
                 Mesh();
                 ~Mesh();
 
-                void draw(DataManager &data_manager, glm::mat4 model_mat);
+                void draw(DataManager &data_manager);
                 
                 std::vector<Vertex> getVertices() const;
                 std::vector<unsigned int> getIndices() const;

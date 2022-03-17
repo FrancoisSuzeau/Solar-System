@@ -76,6 +76,7 @@ PURPOSE : header of the Spaceship class
 
                 void    clean();
                 void transform(Input *input = nullptr) override;
+                void sendToShader(DataManager &data_manager) override;
 
                 void drawSpaceship(DataManager &data_manager);
                 float getRotX() const;

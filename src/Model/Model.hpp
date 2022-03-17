@@ -73,7 +73,7 @@ PURPOSE : header of the Model class
                 Model(std::string const &path, bool gamma = false);
                 ~Model();
 
-                void draw(DataManager &data_manager, glm::mat4 model_mat);
+                void draw(DataManager &data_manager);
                 unsigned int getMeshVAO(int index) const;
                 size_t getSizeMeshesVector() const;
                 unsigned int getTextureLoadedID(int index) const;

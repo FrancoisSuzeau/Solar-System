@@ -102,6 +102,7 @@ void Overlay::displaySquares(DataManager &data_manager, std::vector<glm::vec3> c
     m_square_ptr->transform(nullptr);
     if((m_square_ptr != nullptr) && (m_square_renderer != nullptr))
     {
+        m_square_ptr->sendToShader(data_manager);
         m_square_renderer->render(data_manager, m_square_ptr);
     }
 
@@ -110,6 +111,7 @@ void Overlay::displaySquares(DataManager &data_manager, std::vector<glm::vec3> c
     m_square_ptr->transform(nullptr);
     if((m_square_ptr != nullptr) && (m_square_renderer != nullptr))
     {
+        m_square_ptr->sendToShader(data_manager);
         m_square_renderer->render(data_manager, m_square_ptr);
     }
 }

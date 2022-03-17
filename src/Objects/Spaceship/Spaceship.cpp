@@ -86,13 +86,36 @@ void Spaceship::clean()
 }
 
 /***********************************************************************************************************************************************************************/
+/****************************************************************************** sendToShader ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Spaceship::sendToShader(DataManager &data_manager)
+{
+    if(data_manager.getShader("model") != nullptr)
+    {
+        glUseProgram(data_manager.getShader("model")->getProgramID());
+
+            data_manager.getShader("model")->setMat4("projection", data_manager.getProjMat());
+            data_manager.getShader("model")->setMat4("view", data_manager.getViewMat());
+            data_manager.getShader("model")->setMat4("model", this->getModelMat());
+            // data_manager.getShader("model")->setVec3("viewPos", data_manager.getCamPos());
+            // data_manager.getShader("model")->setVec3("sunPos", data_manager.getSunPos());
+
+            // data_manager.getShader("model")->setInt("hdr", data_manager.getHDR());
+        
+
+        glUseProgram(0);
+        
+    }
+}
+
+/***********************************************************************************************************************************************************************/
 /******************************************************************************* drawSpaceship *************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Spaceship::drawSpaceship(DataManager &data_manager)
 {
     if((m_spaceship_models != nullptr) && ((data_manager.getShader("model") != nullptr)))
     {   
-        m_spaceship_models->draw(data_manager, m_model_mat);
+        m_spaceship_models->draw(data_manager);
     }
 }
 
