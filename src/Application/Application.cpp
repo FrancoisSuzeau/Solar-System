@@ -203,6 +203,11 @@ void Application::makeAllChanges()
             ship->sendToShader(m_data_manager);
         }
         ship->loadModelShip(m_data_manager);
+    }
+
+    if(m_skybox != nullptr)
+    {
+        m_skybox->sendToShader(m_data_manager);
     }    
 }
 
@@ -277,58 +282,6 @@ void Application::renderScene()
     {
         m_skybox->render(m_data_manager);
     }
-//     if( (camera != nullptr) && (solar_system != nullptr))
-//     {
-//             render_data.initSaveMat();
-
-//             /****************************************** skybox render **************************************************/
-
-//                 solar_system->drawSkybox(render_data);
-
-//             render_data.saveViewMat();
-
-//             /****************************************** bodys render ****************************************************/
-            
-//                 solar_system->drawSystem(render_data);
-
-//             render_data.saveViewMat();
-
-//             // /****************************************** atmosphere render *************************************************/
-
-//                 solar_system->drawAtmo(render_data);
-
-//             render_data.saveViewMat();
-
-//             // /******************************************* name render *****************************************************/
-
-//                 if((render_data.getShader("text") != nullptr) && (render_data.getRenderName()))
-//                 {
-//                     solar_system->drawName(render_data);
-//                 }
-                
-//             render_data.saveViewMat();
-
-
-//             // /******************************************* ring render *****************************************************/
-
-//                 solar_system->drawRing(render_data);
-                
-//             render_data.saveViewMat();
-
-
-//             // /******************************************* asteroid field render *****************************************************/
-
-//                 solar_system->drawAsteroidField(render_data);
-                
-//             render_data.saveViewMat();
-
-
-//                 solar_system->setMostGravInfluence(render_data);
-
-//                 solar_system->approchBody(ship);
-
-//     }
-    
 }
 
 /***********************************************************************************************************************************************************************/

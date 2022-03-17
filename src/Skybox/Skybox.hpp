@@ -56,6 +56,7 @@ PURPOSE : header of the Skybox class
 
                 
                 void                    render(DataManager &data_manager);
+                void                    sendToShader(DataManager &data_manager);
                 void                    clean();
                 
         };
