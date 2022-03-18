@@ -35,6 +35,7 @@ PURPOSE : header of the Application class
 
         #include "../Skybox/Skybox.hpp"
         #include "../Objects/Spaceship/Spaceship.hpp"
+        #include "../Objects/TexturedObjects/Star/Star.hpp"
 
         #include "Camera/Camera.hpp"
 
@@ -72,6 +73,7 @@ PURPOSE : header of the Application class
                 Skybox                  *m_skybox;
                 Camera	                *camera;
                 Spaceship               *ship;
+                Star*                   sun;
 
                 bool menu_app_key_pressed;
                 bool render_menu;

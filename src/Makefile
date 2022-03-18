@@ -37,6 +37,7 @@ SRC+=Shader\Shader.cpp
 SRC+=Skybox\Skybox.cpp
 SRC+=Model\Mesh.cpp Model\Model.cpp
 SRC+=Application\Camera\Camera.cpp
+SRC+=Objects\TexturedObjects\Star\Star.cpp
 SRC+=Application\Application.cpp Application\DataManager.cpp Application\Settings\Settings.cpp Application\Overlay\Overlay.cpp
 SRC+=..\lib\imgui\imgui_demo.cpp ..\lib\imgui\imgui_draw.cpp ..\lib\imgui\imgui_impl_opengl3.cpp ..\lib\imgui\imgui_impl_sdl.cpp ..\lib\imgui\imgui_tables.cpp ..\lib\imgui\imgui_widgets.cpp ..\lib\imgui\imgui.cpp
 
