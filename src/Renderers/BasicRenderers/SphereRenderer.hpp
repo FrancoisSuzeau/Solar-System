@@ -17,7 +17,7 @@ PURPOSE : header of the SphereRenderer class
 /********************************************************************* includes *********************************************************************/
 
         #include "../Renderer.hpp"
-        #include "../../Objects/BasicObjects/Square.hpp"
+        #include "../../Objects/BasicObjects/Sphere.hpp"
 
         
 

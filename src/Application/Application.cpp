@@ -78,6 +78,11 @@ void Application::cleanAll()
 
     m_setting.clean();
     m_overlay.clean();
+
+    if(sun != nullptr)
+    {
+        delete sun;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -128,6 +133,9 @@ void Application::loadAssets()
     ship->loadModelShip(m_data_manager);
     camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
     assert(camera);
+
+    sun = new Star(10.f);
+    assert(sun);
 }
 
 /***********************************************************************************************************************************************************************/

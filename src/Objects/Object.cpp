@@ -82,3 +82,8 @@ float Object::getColor() const
 {
     return m_color;
 }
+
+std::string Object::getType() const
+{
+    return m_type;
+}

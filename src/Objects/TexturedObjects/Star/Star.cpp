@@ -38,9 +38,9 @@ PURPOSE : class Star
 //     }
 // }
 
-Star::Star()
+Star::Star(float size) : Sphere(size), m_texure_surface("../../assets/textures/CelestialBody/SunMap.jpg")
 {
-    
+    assert(m_texure_surface.loadTexture());
 }
 
 Star::~Star()

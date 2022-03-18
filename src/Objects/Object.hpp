@@ -45,6 +45,7 @@ PURPOSE : Interface Object
                 float           m_inclinaison_angle;
                 float           m_speed_rotation;
                 float           m_rotation_angle;
+                std::string     m_type;
 
             public:
 
@@ -66,6 +67,7 @@ PURPOSE : Interface Object
                 glm::vec3 getPosition() const;
                 glm::mat4 getModelMat();
                 float getColor() const;
+                std::string getType() const;
             
         };
 

@@ -29,6 +29,7 @@ Sphere::Sphere(float size) : Object()
 {
     m_size = glm::vec3(size);
     m_model_mat = glm::mat4(1.0);
+    m_type = "atmosphere";
 }
 
 
@@ -53,19 +54,19 @@ void Sphere::transform(Input *input)
 /***********************************************************************************************************************************************************************/
 void Sphere::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader("atmosphere") != nullptr)
+    if(data_manager.getShader(m_type) != nullptr)
     {
-        glUseProgram(data_manager.getShader("atmosphere")->getProgramID());
+        glUseProgram(data_manager.getShader(m_type)->getProgramID());
 
-        data_manager.getShader("atmosphere")->setMat4("view", data_manager.getViewMat());
-        data_manager.getShader("atmosphere")->setMat4("projection", data_manager.getProjMat());
-        data_manager.getShader("atmosphere")->setMat4("model", this->getModelMat());
+        data_manager.getShader(m_type)->setMat4("view", data_manager.getViewMat());
+        data_manager.getShader(m_type)->setMat4("projection", data_manager.getProjMat());
+        data_manager.getShader(m_type)->setMat4("model", this->getModelMat());
 
-        // data_manager.getShader("atmosphere")->setVec3("viewPos", data_manager.getCamPos());
-        // data_manager.getShader("atmosphere")->setVec3("sunPos", data_manager.getSunPos());
-        // data_manager.getShader("atmosphere")->setFloat("transparency", 1.0f);
+        // data_manager.getShader(m_type)->setVec3("viewPos", data_manager.getCamPos());
+        // data_manager.getShader(m_type)->setVec3("sunPos", data_manager.getSunPos());
+        // data_manager.getShader(m_type)->setFloat("transparency", 1.0f);
 
-        // data_manager.getShader("atmosphere")->setInt("hdr", data_manager.getHDR());
+        // data_manager.getShader(m_type)->setInt("hdr", data_manager.getHDR());
 
         glUseProgram(0);
     }

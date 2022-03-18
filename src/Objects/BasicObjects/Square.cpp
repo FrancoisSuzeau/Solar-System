@@ -19,6 +19,7 @@ Square::Square(float size) : Object()
 {
     m_size = glm::vec3(size);
     m_model_mat = glm::mat4(1.0);
+    m_type = "square";
 }
 
 Square::~Square()
@@ -42,18 +43,18 @@ void Square::transform(Input *input)
 /***********************************************************************************************************************************************************************/
 void Square::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader("square") != nullptr)
+    if(data_manager.getShader(m_type) != nullptr)
     {
         //Activate the shader
-        glUseProgram(data_manager.getShader("square")->getProgramID());
+        glUseProgram(data_manager.getShader(m_type)->getProgramID());
 
             //send matrices to shader
-            data_manager.getShader("square")->setMat4("projection", data_manager.getProjMat());
-            data_manager.getShader("square")->setMat4("view", data_manager.getViewMat());
-            data_manager.getShader("square")->setMat4("model", this->getModelMat());
-            data_manager.getShader("square")->setFloat("color", this->getColor());
+            data_manager.getShader(m_type)->setMat4("projection", data_manager.getProjMat());
+            data_manager.getShader(m_type)->setMat4("view", data_manager.getViewMat());
+            data_manager.getShader(m_type)->setMat4("model", this->getModelMat());
+            data_manager.getShader(m_type)->setFloat("color", this->getColor());
 
-            // data_manager.getShader("square")->setInt("hdr", data_manager.getHDR());
+            // data_manager.getShader(m_type)->setInt("hdr", data_manager.getHDR());
 
         glUseProgram(0);
     }

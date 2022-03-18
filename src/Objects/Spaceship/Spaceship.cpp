@@ -30,6 +30,7 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit
     m_scales.push_back(0.1f);
 
     m_model_mat = glm::mat4(1.f);
+    m_type = "model";
 
     // m_position = glm::vec3(0.0f, 9000.0f, 0.0f);
     m_position = glm::vec3(0.f, 0.f, 0.f);
@@ -90,17 +91,17 @@ void Spaceship::clean()
 /***********************************************************************************************************************************************************************/
 void Spaceship::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader("model") != nullptr)
+    if(data_manager.getShader(m_type) != nullptr)
     {
-        glUseProgram(data_manager.getShader("model")->getProgramID());
+        glUseProgram(data_manager.getShader(m_type)->getProgramID());
 
-            data_manager.getShader("model")->setMat4("projection", data_manager.getProjMat());
-            data_manager.getShader("model")->setMat4("view", data_manager.getViewMat());
-            data_manager.getShader("model")->setMat4("model", this->getModelMat());
-            // data_manager.getShader("model")->setVec3("viewPos", data_manager.getCamPos());
-            // data_manager.getShader("model")->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(m_type)->setMat4("projection", data_manager.getProjMat());
+            data_manager.getShader(m_type)->setMat4("view", data_manager.getViewMat());
+            data_manager.getShader(m_type)->setMat4("model", this->getModelMat());
+            // data_manager.getShader(m_type)->setVec3("viewPos", data_manager.getCamPos());
+            // data_manager.getShader(m_type)->setVec3("sunPos", data_manager.getSunPos());
 
-            // data_manager.getShader("model")->setInt("hdr", data_manager.getHDR());
+            // data_manager.getShader(m_type)->setInt("hdr", data_manager.getHDR());
         
 
         glUseProgram(0);
@@ -113,7 +114,7 @@ void Spaceship::sendToShader(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 void Spaceship::drawSpaceship(DataManager &data_manager)
 {
-    if((m_spaceship_models != nullptr) && ((data_manager.getShader("model") != nullptr)))
+    if((m_spaceship_models != nullptr) && ((data_manager.getShader(m_type) != nullptr)))
     {   
         m_spaceship_models->draw(data_manager);
     }

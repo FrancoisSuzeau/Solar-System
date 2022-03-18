@@ -234,9 +234,9 @@ void SphereRenderer::load()
 /***********************************************************************************************************************************************************************/
 void SphereRenderer::render(DataManager &data_manager, Object *sphere)
 {
-    if(data_manager.getShader("atmosphere") != nullptr)
+    if(data_manager.getShader(sphere->getType()) != nullptr)
     {
-        glUseProgram(data_manager.getShader("atmosphere")->getProgramID());
+        glUseProgram(data_manager.getShader(sphere->getType())->getProgramID());
         /************************************************* bind VBO and IBO ********************************************************/
         glBindBuffer(GL_ARRAY_BUFFER,         m_vboID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);

@@ -148,10 +148,10 @@ void SquareRenderer::load()
 /***********************************************************************************************************************************************************************/
 void SquareRenderer::render(DataManager &data_manager, Object *square)
 {
-    if(data_manager.getShader("square") != nullptr)
+    if(data_manager.getShader(square->getType()) != nullptr)
     {
         //Activate the shader
-        glUseProgram(data_manager.getShader("square")->getProgramID());
+        glUseProgram(data_manager.getShader(square->getType())->getProgramID());
 
             //lock vao
             glBindVertexArray(m_vaoID);

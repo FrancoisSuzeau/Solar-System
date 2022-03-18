@@ -17,7 +17,6 @@ PURPOSE : header of the Star class
 /********************************************************************* includes *********************************************************************/
 
         // #include "../Geometry/Sphere.hpp"
-        // #include "../../Texture/Texture.hpp"
 
         // #include "../../OpenGlSketch/RenderData.hpp"
 
@@ -34,6 +33,9 @@ PURPOSE : header of the Star class
         #include <vector>
         #include <cassert>
 
+        #include "../../BasicObjects/Sphere.hpp"
+        #include "../../../Application/Texture/Texture.hpp"
+
         // typedef struct flare_data {
 
         //         FlareTexture    *flare;
@@ -46,12 +48,12 @@ PURPOSE : header of the Star class
 
 /********************************************************************* class definition *********************************************************************/
 
-        class Star //: public Sphere
+        class Star : public Sphere
         {
             
             private:
 
-                // Texture         m_cloud_texture;
+                Texture         m_texure_surface;
                 // std::vector<flare_data>      m_flares;
                 // std::string     m_name;
 
@@ -64,7 +66,7 @@ PURPOSE : header of the Star class
             public:
 
                 // Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture_surf, std::string const name, float const real_size);
-                Star();
+                Star(float size);
                 ~Star();
                 // void display(RenderData &render_data);
                 
