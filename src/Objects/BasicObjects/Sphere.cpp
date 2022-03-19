@@ -25,11 +25,11 @@ using namespace glm;
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 
-Sphere::Sphere(float size) : Object()
+Sphere::Sphere(float size) : super()
 {
-    m_size = glm::vec3(size);
-    m_model_mat = glm::mat4(1.0);
-    m_type = "atmosphere";
+    super::m_size = glm::vec3(size);
+    super::m_model_mat = glm::mat4(1.0);
+    super::m_type = "atmosphere";
 }
 
 
@@ -43,10 +43,10 @@ Sphere::~Sphere()
 /***********************************************************************************************************************************************************************/
 void Sphere::transform(Input *input)
 {
-    m_model_mat = glm::mat4(1.0);
+    super::m_model_mat = glm::mat4(1.0);
 
-    this->translateObject(m_model_mat, m_position);
-    // this->scaleObject(m_model_mat, m_size);
+    super::translateObject(super::m_model_mat, super::m_position);
+    // super::scaleObject(super::m_model_mat, super::m_size);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -54,19 +54,19 @@ void Sphere::transform(Input *input)
 /***********************************************************************************************************************************************************************/
 void Sphere::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader(m_type) != nullptr)
+    if(data_manager.getShader(super::m_type) != nullptr)
     {
-        glUseProgram(data_manager.getShader(m_type)->getProgramID());
+        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
 
-        data_manager.getShader(m_type)->setMat4("view", data_manager.getViewMat());
-        data_manager.getShader(m_type)->setMat4("projection", data_manager.getProjMat());
-        data_manager.getShader(m_type)->setMat4("model", this->getModelMat());
+        data_manager.getShader(super::m_type)->setMat4("view", data_manager.getViewMat());
+        data_manager.getShader(super::m_type)->setMat4("projection", data_manager.getProjMat());
+        data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
 
-        // data_manager.getShader(m_type)->setVec3("viewPos", data_manager.getCamPos());
-        // data_manager.getShader(m_type)->setVec3("sunPos", data_manager.getSunPos());
-        // data_manager.getShader(m_type)->setFloat("transparency", 1.0f);
+        // data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+        // data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+        // data_manager.getShader(super::m_type)->setFloat("transparency", 1.0f);
 
-        // data_manager.getShader(m_type)->setInt("hdr", data_manager.getHDR());
+        // data_manager.getShader(super::m_type)->setInt("hdr", data_manager.getHDR());
 
         glUseProgram(0);
     }

@@ -17,8 +17,8 @@ PURPOSE : class SquareRenderer
 /***********************************************************************************************************************************************************************/
 SquareRenderer::SquareRenderer(float const color)
 {
-    m_vboID = 0;
-    m_vaoID = 0;
+    super::m_vboID = 0;
+    super::m_vaoID = 0;
     m_bytes_vertices_size = 18 * sizeof(float);
     m_bytes_colors_size = 18 * sizeof(float);
 
@@ -55,17 +55,17 @@ SquareRenderer::~SquareRenderer()
 void SquareRenderer::clean()
 {
     //destroy VBO
-    if(glIsBuffer(m_vboID) == GL_TRUE)
+    if(glIsBuffer(super::m_vboID) == GL_TRUE)
     {
         glDeleteBuffers(1, &m_vboID);
-        m_vboID = 0;
+        super::m_vboID = 0;
     }
 
-    if(glIsVertexArray(m_vaoID) == GL_TRUE)
+    if(glIsVertexArray(super::m_vaoID) == GL_TRUE)
     {
         //destroy VAO
         glDeleteVertexArrays(1, &m_vaoID);
-        m_vaoID = 0;
+        super::m_vaoID = 0;
     }
 
     std::cout << ">> SQUARE RENDERER : DESTROY COMPLETE" << std::endl;
@@ -78,18 +78,18 @@ void SquareRenderer::load()
 {
     /************************************************* VBO management ********************************************************/
     //destroy a possible ancient VBO
-    if(glIsBuffer(m_vboID) == GL_TRUE)
+    if(glIsBuffer(super::m_vboID) == GL_TRUE)
     {
         glDeleteBuffers(1, &m_vboID);
-        m_vboID = 0;
+        super::m_vboID = 0;
     }
 
     //generate Vertex Buffer Object ID
     glGenBuffers(1, &m_vboID);
-    assert(m_vboID != 0);
+    assert(super::m_vboID != 0);
 
     //lock VBO
-    glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
+    glBindBuffer(GL_ARRAY_BUFFER, super::m_vboID);
 
         //memory allocation
         glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_colors_size, 0, GL_STATIC_DRAW);
@@ -111,20 +111,20 @@ void SquareRenderer::load()
 
     /************************************************* VAO management ********************************************************/
     //destroy a possible ancient VAO
-    if(glIsVertexArray(m_vaoID) == GL_TRUE)
+    if(glIsVertexArray(super::m_vaoID) == GL_TRUE)
     {
         glDeleteVertexArrays(1, &m_vaoID);
-        m_vaoID = 0;
+        super::m_vaoID = 0;
     }
     //generate Vertex Array Object ID
     glGenVertexArrays(1, &m_vaoID);
-    assert(m_vaoID != 0);
+    assert(super::m_vaoID != 0);
 
     //lock VAO
-    glBindVertexArray(m_vaoID);
+    glBindVertexArray(super::m_vaoID);
 
         //lock VBO
-        glBindBuffer(GL_ARRAY_BUFFER, m_vboID);
+        glBindBuffer(GL_ARRAY_BUFFER, super::m_vboID);
 
         //acces to the vertices in video memory
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
@@ -154,7 +154,7 @@ void SquareRenderer::render(DataManager &data_manager, Object *square)
         glUseProgram(data_manager.getShader(square->getType())->getProgramID());
 
             //lock vao
-            glBindVertexArray(m_vaoID);
+            glBindVertexArray(super::m_vaoID);
 
             //display the form
             glDrawArrays(GL_TRIANGLES, 0, 6);

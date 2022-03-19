@@ -1,7 +1,7 @@
 /*
 AUTHOR : SUZEAU François
 
-DATE : 06/06/2021
+DATE : 18/03/2022
 
 MODULE : Renderers::TexturedRenderers::StarRenderer
 
@@ -25,7 +25,7 @@ PURPOSE : header of the StarRenderer class
 
         class StarRenderer : public SphereRenderer
         {
-            public:
+            private:
 
                 typedef SphereRenderer super;
             

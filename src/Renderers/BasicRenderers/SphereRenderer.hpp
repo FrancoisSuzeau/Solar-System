@@ -25,30 +25,34 @@ PURPOSE : header of the SphereRenderer class
 
         class SphereRenderer : public Renderer
         {
+                private:
+
+                        typedef Renderer super;
             
-            protected:
-
-                // GLuint                          m_vbo;
-                GLuint                          m_ibo;
-                GLsizei                         m_element_count;
-                unsigned int                    m_vertCount;
-                GLushort                        *m_tris;
-                float                           m_radius;
-                GLfloat                         ***tmp;
-                unsigned int                    longVerts;
-                unsigned int                    latVerts;
-
-                void                            load() override;
- 
-                
-            public:
-
-                SphereRenderer(const float radius, const unsigned int longSegs, const unsigned int latSegs);
-                ~SphereRenderer();
+                protected:
 
                 
-                void render(DataManager &data_manager, Object *sphere) override;
-                void clean() override;
+
+                        GLuint                          m_ibo;
+                        GLsizei                         m_element_count;
+                        unsigned int                    m_vertCount;
+                        GLushort                        *m_tris;
+                        float                           m_radius;
+                        GLfloat                         ***tmp;
+                        unsigned int                    longVerts;
+                        unsigned int                    latVerts;
+
+                        void                            load() override;
+        
+                        
+                public:
+
+                        SphereRenderer(const float radius, const unsigned int longSegs, const unsigned int latSegs);
+                        ~SphereRenderer();
+
+                
+                        void render(DataManager &data_manager, Object *sphere) override;
+                        void clean() override;
         };
 
 

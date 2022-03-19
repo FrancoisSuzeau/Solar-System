@@ -1,7 +1,7 @@
 /*
 AUTHOR : SUZEAU François
 
-DATE : 06/06/2021
+DATE : 18/03/2023
 
 MODULE : Renderer::TexturedRenderers::StarRenderer
 

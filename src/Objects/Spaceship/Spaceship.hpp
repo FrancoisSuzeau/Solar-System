@@ -22,8 +22,6 @@ PURPOSE : header of the Spaceship class
         #include <glm/gtc/matrix_inverse.hpp>
         #include <glm/gtx/string_cast.hpp>
 
-        // #include <GL/glew.h>
-
         #include <iostream>
         #include <string>
         #include <math.h>
@@ -40,6 +38,8 @@ PURPOSE : header of the Spaceship class
         {
             
             private:
+
+                typedef Object super;
 
                 Model *m_spaceship_models;
 

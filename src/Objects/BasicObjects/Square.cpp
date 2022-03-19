@@ -15,11 +15,11 @@ PURPOSE : class Square
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Square::Square(float size) : Object()
+Square::Square(float size) : super()
 {
-    m_size = glm::vec3(size);
-    m_model_mat = glm::mat4(1.0);
-    m_type = "square";
+    super::m_size = glm::vec3(size);
+    super::m_model_mat = glm::mat4(1.0);
+    super::m_type = "square";
 }
 
 Square::~Square()
@@ -32,10 +32,10 @@ Square::~Square()
 /***********************************************************************************************************************************************************************/
 void Square::transform(Input *input)
 {
-    m_model_mat = glm::mat4(1.0);
+    super::m_model_mat = glm::mat4(1.0);
 
-    this->scaleObject(m_model_mat, m_size);
-    this->translateObject(m_model_mat, m_position);
+    super::scaleObject(super::m_model_mat, super::m_size);
+    super::translateObject(super::m_model_mat, super::m_position);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -43,18 +43,18 @@ void Square::transform(Input *input)
 /***********************************************************************************************************************************************************************/
 void Square::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader(m_type) != nullptr)
+    if(data_manager.getShader(super::m_type) != nullptr)
     {
         //Activate the shader
-        glUseProgram(data_manager.getShader(m_type)->getProgramID());
+        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
 
             //send matrices to shader
-            data_manager.getShader(m_type)->setMat4("projection", data_manager.getProjMat());
-            data_manager.getShader(m_type)->setMat4("view", data_manager.getViewMat());
-            data_manager.getShader(m_type)->setMat4("model", this->getModelMat());
-            data_manager.getShader(m_type)->setFloat("color", this->getColor());
+            data_manager.getShader(super::m_type)->setMat4("projection", data_manager.getProjMat());
+            data_manager.getShader(super::m_type)->setMat4("view", data_manager.getViewMat());
+            data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
+            data_manager.getShader(super::m_type)->setFloat("color", super::getColor());
 
-            // data_manager.getShader(m_type)->setInt("hdr", data_manager.getHDR());
+            // data_manager.getShader(super::m_type)->setInt("hdr", data_manager.getHDR());
 
         glUseProgram(0);
     }

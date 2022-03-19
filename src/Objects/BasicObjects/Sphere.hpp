@@ -22,8 +22,9 @@ PURPOSE : header of the Sphere class
 
         class Sphere: public Object
         {
-            
-            protected:
+            private:
+
+                typedef Object super;
  
                 
             public:

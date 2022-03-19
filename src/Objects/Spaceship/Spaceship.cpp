@@ -16,7 +16,7 @@ PURPOSE : class Spaceship
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit(0.05f), m_index_skin(0)
+Spaceship::Spaceship() : super(), m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit(0.05f), m_index_skin(0)
 {   
 
     file_paths.push_back("../../assets/model/spaceship/untitled.obj");
@@ -29,11 +29,11 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit
     m_scales.push_back(3.0f);
     m_scales.push_back(0.1f);
 
-    m_model_mat = glm::mat4(1.f);
-    m_type = "model";
+    super::m_model_mat = glm::mat4(1.f);
+    super::m_type = "model";
 
-    // m_position = glm::vec3(0.0f, 9000.0f, 0.0f);
-    m_position = glm::vec3(0.f, 10.f, 0.f);
+    // super::m_position = glm::vec3(0.0f, 9000.0f, 0.0f);
+    super::m_position = glm::vec3(0.f, 10.f, 0.f);
     directions[0] = false;
     directions[1] = false;
     directions[2] = false;
@@ -62,12 +62,12 @@ void Spaceship::transform(Input *input)
     {
         this->move(*input);
         
-        m_model_mat = glm::mat4(1.0f);
+        super::m_model_mat = glm::mat4(1.0f);
         
         this->orientateShip(*input);
-        // this->translateObject(m_model_mat, m_position);
-        m_model_mat *= (yaw_mat * pitch_mat);
-        this->scaleObject(m_model_mat, glm::vec3(m_scales[m_index_skin]));
+        // this->translateObject(super::m_model_mat, super::m_position);
+        super::m_model_mat *= (yaw_mat * pitch_mat);
+        super::scaleObject(super::m_model_mat, glm::vec3(m_scales[m_index_skin]));
         
     }
 }
@@ -91,17 +91,17 @@ void Spaceship::clean()
 /***********************************************************************************************************************************************************************/
 void Spaceship::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader(m_type) != nullptr)
+    if(data_manager.getShader(super::m_type) != nullptr)
     {
-        glUseProgram(data_manager.getShader(m_type)->getProgramID());
+        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
 
-            data_manager.getShader(m_type)->setMat4("projection", data_manager.getProjMat());
-            data_manager.getShader(m_type)->setMat4("view", data_manager.getViewMat());
-            data_manager.getShader(m_type)->setMat4("model", this->getModelMat());
-            // data_manager.getShader(m_type)->setVec3("viewPos", data_manager.getCamPos());
-            // data_manager.getShader(m_type)->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(super::m_type)->setMat4("projection", data_manager.getProjMat());
+            data_manager.getShader(super::m_type)->setMat4("view", data_manager.getViewMat());
+            data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
+            // data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+            // data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
 
-            // data_manager.getShader(m_type)->setInt("hdr", data_manager.getHDR());
+            // data_manager.getShader(super::m_type)->setInt("hdr", data_manager.getHDR());
         
 
         glUseProgram(0);
@@ -114,7 +114,7 @@ void Spaceship::sendToShader(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 void Spaceship::drawSpaceship(DataManager &data_manager)
 {
-    if((m_spaceship_models != nullptr) && ((data_manager.getShader(m_type) != nullptr)))
+    if((m_spaceship_models != nullptr) && ((data_manager.getShader(super::m_type) != nullptr)))
     {   
         m_spaceship_models->draw(data_manager);
     }
@@ -267,11 +267,11 @@ void Spaceship::orientateShip(Input input)
 {
     this->changePitch(input);
     m_rotation_vector = glm::vec3(1.0f, 0.0f, 0.0f);
-    this->rotateObject(pitch_mat, m_pitch);
+    super::rotateObject(pitch_mat, m_pitch);
     
     this->changeYaw(input);
     m_rotation_vector = glm::vec3(0.0f, 0.0f, 1.0f);
-    this->rotateObject(yaw_mat, m_yaw);
+    super::rotateObject(yaw_mat, m_yaw);
 
     glm::vec3 dir;
     dir.x = sin(glm::radians(m_yaw));

@@ -24,6 +24,8 @@ PURPOSE : header of the Square class
         {
             
             private:
+
+                typedef Object super;
                 
                 
             public:

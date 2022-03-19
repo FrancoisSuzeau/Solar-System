@@ -3,7 +3,7 @@ AUTHOR : SUZEAU François
 
 DATE : 16/06/2021
 
-MODULE : CelestialBody.Star
+MODULE : Objects::TexturedObjects::Star
 
 NAMEFILE : Star.cpp
 
@@ -41,8 +41,8 @@ PURPOSE : class Star
 Star::Star(float size) : super(size), m_texure_surface("../../assets/textures/CelestialBody/SunMap.jpg")
 {
     assert(m_texure_surface.loadTexture());
-    m_type = "sun";
-    m_position = glm::vec3(0.f);
+    super::m_type = "sun";
+    super::m_position = glm::vec3(0.f);
     texture_id = m_texure_surface.getID();
 
 }
@@ -71,9 +71,9 @@ void Star::transform(Input *input)
 /***********************************************************************************************************************************************************************/
 void Star::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader(m_type) != nullptr)
+    if(data_manager.getShader(super::m_type) != nullptr)
     {
-        data_manager.getShader(m_type)->setTexture("texture0", 0);
+        data_manager.getShader(super::m_type)->setTexture("texture0", 0);
     }
     super::sendToShader(data_manager);
 }

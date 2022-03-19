@@ -23,26 +23,29 @@ PURPOSE : header of the SquareRenderer class
 
         class SquareRenderer : public Renderer
         {
+
+                private:
+
+                        typedef Renderer super;
             
-            private:
-                
-                float   m_vertices[18];
-                float   m_colors[18];
+                protected:
+                        
+                        float   m_vertices[18];
+                        float   m_colors[18];
 
-                // GLuint  m_vboID;
-                int     m_bytes_vertices_size;
-                int     m_bytes_colors_size;
+                        int     m_bytes_vertices_size;
+                        int     m_bytes_colors_size;
 
-                void    load() override;
-                
-            public:
+                        void    load() override;
+                        
+                public:
 
-                SquareRenderer(float const color);
-                ~SquareRenderer();
+                        SquareRenderer(float const color);
+                        ~SquareRenderer();
 
-                
-                void render(DataManager &data_manager, Object *square) override;
-                void clean() override;
+                        
+                        void render(DataManager &data_manager, Object *square) override;
+                        void clean() override;
         };
 
 

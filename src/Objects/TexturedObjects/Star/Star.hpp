@@ -3,9 +3,9 @@ AUTHOR : SUZEAU François
 
 DATE : 16/06/2021
 
-MODULE : CelestialBody.Star
+MODULE : Objects::TexturedObjects::Star
 
-NAMEFILE : Star.h
+NAMEFILE : Star.hpp
 
 PURPOSE : header of the Star class
 */
