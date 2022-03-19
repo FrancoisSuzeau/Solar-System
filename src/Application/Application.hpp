@@ -33,6 +33,9 @@ PURPOSE : header of the Application class
         #include "../Renderers/TexturedRenderers/StarRenderer/StarRenderer.hpp"
         #include "../Objects/TexturedObjects/Star/Star.hpp"
 
+        #include "../Renderers/TexturedRenderers/PlaneteRenderer/PlaneteRenderer.hpp"
+        #include "../Objects/TexturedObjects/Planete/Planete.hpp"
+
         #include "../Skybox/Skybox.hpp"
         #include "../Objects/Spaceship/Spaceship.hpp"
         
@@ -73,8 +76,10 @@ PURPOSE : header of the Application class
                 Skybox                  *m_skybox;
                 Camera	                *camera;
                 Spaceship               *ship;
-                Star*                   sun;
-                Renderer                *star_renderer;
+                Star*                   sun = nullptr;
+                Renderer                *star_renderer = nullptr;
+                Planete*                 earth = nullptr;
+                Renderer                *planete_renderer = nullptr;
 
                 bool menu_app_key_pressed;
                 bool render_menu;

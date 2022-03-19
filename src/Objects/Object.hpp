@@ -54,10 +54,10 @@ PURPOSE : Interface Object
                 Object();
                 virtual ~Object();
 
-                virtual void transform(Input *input = nullptr) = 0;
+                virtual void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) = 0;
                 virtual void sendToShader(DataManager &data_manager) = 0;
 
-                void updatePosition(glm::vec3 const new_pos);
+                void updatePosition(glm::vec3 const new_val);
                 void rotateObject(glm::mat4 &model, float angle);
                 void inclineObject(glm::mat4 &model, float angle);
                 void translateObject(glm::mat4 &model, glm::vec3 pos);

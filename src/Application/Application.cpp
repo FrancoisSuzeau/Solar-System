@@ -89,6 +89,17 @@ void Application::cleanAll()
         star_renderer->clean();
         delete star_renderer;
     }
+
+    if(earth != nullptr)
+    {
+        earth->clean();
+        delete earth;
+    }
+    if(planete_renderer != nullptr)
+    {
+        planete_renderer->clean();
+        delete planete_renderer;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -147,6 +158,13 @@ void Application::loadAssets()
 
     star_renderer = new StarRenderer(1.f, 70.f, 70.f);
     assert(star_renderer);
+
+    earth = new Planete(1.f);
+    assert(earth);
+    earth->updateSize(glm::vec3(3.f));
+
+    planete_renderer = new PlaneteRenderer(1.f, 70.f, 70.f);
+    assert(planete_renderer);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -218,7 +236,7 @@ void Application::makeAllChanges()
     {
         if(!render_menu)
         {
-            ship->transform(m_input);
+            ship->transform(glm::vec3(0.f), m_input);
             ship->sendToShader(m_data_manager);
             m_data_manager.setShipPos(ship->getPosition());
         }
@@ -232,10 +250,17 @@ void Application::makeAllChanges()
 
     if(sun != nullptr)
     {
-        sun->updatePosition(-m_data_manager.getShipPos());
-        sun->transform();
+        sun->updatePosition(glm::vec3(0.f));
+        sun->transform(-m_data_manager.getShipPos());
         sun->sendToShader(m_data_manager);
-    }    
+    } 
+
+    if(earth != nullptr)
+    {
+        earth->updatePosition(glm::vec3(20.f, 0.f, 0.f));
+        earth->transform(-m_data_manager.getShipPos());
+        earth->sendToShader(m_data_manager);
+    }      
 }
 
 /***********************************************************************************************************************************************************************/
@@ -313,6 +338,11 @@ void Application::renderScene()
     if((sun != nullptr) && (star_renderer != nullptr))
     {
         star_renderer->render(m_data_manager, sun);
+    }
+
+    if((earth != nullptr) && (planete_renderer != nullptr))
+    {
+        planete_renderer->render(m_data_manager, earth);
     }
 }
 

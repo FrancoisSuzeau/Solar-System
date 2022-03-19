@@ -33,7 +33,7 @@ PURPOSE : header of the Square class
                 Square(float size);
                 ~Square();
 
-                void transform(Input *input = nullptr) override;
+                void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;
                 void sendToShader(DataManager &data_manager) override;
                 
         };

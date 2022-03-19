@@ -41,12 +41,12 @@ Sphere::~Sphere()
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** transform ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Sphere::transform(Input *input)
+void Sphere::transform(glm::vec3 ship_pos, Input *input)
 {
     super::m_model_mat = glm::mat4(1.0);
 
-    super::translateObject(super::m_model_mat, super::m_position);
-    // super::scaleObject(super::m_model_mat, super::m_size);
+    super::translateObject(super::m_model_mat, (m_position + ship_pos));
+    super::scaleObject(super::m_model_mat, super::m_size);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -62,11 +62,11 @@ void Sphere::sendToShader(DataManager &data_manager)
         data_manager.getShader(super::m_type)->setMat4("projection", data_manager.getProjMat());
         data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
 
-        // data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
-        // data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
-        // data_manager.getShader(super::m_type)->setFloat("transparency", 1.0f);
+        // data_manager.getShader(super::super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+        // data_manager.getShader(super::super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+        // data_manager.getShader(super::super::m_type)->setFloat("transparency", 1.0f);
 
-        // data_manager.getShader(super::m_type)->setInt("hdr", data_manager.getHDR());
+        // data_manager.getShader(super::super::m_type)->setInt("hdr", data_manager.getHDR());
 
         glUseProgram(0);
     }

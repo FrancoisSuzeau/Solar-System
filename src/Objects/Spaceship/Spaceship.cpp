@@ -32,8 +32,7 @@ Spaceship::Spaceship() : super(), m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), sp
     super::m_model_mat = glm::mat4(1.f);
     super::m_type = "model";
 
-    // super::m_position = glm::vec3(0.0f, 9000.0f, 0.0f);
-    super::m_position = glm::vec3(0.f, 10.f, 0.f);
+    super::m_position = glm::vec3(0.f, 35.f, 0.f);
     directions[0] = false;
     directions[1] = false;
     directions[2] = false;
@@ -56,7 +55,7 @@ Spaceship::~Spaceship()
 /***********************************************************************************************************************************************************************/
 /******************************************************************************* transform *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Spaceship::transform(Input *input)
+void Spaceship::transform(glm::vec3 ship_pos, Input *input)
 {
     if(input != nullptr)
     {

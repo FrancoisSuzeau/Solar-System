@@ -42,8 +42,8 @@ Star::Star(float size) : super(size)
 {
     super::m_type = "sun";
     super::m_position = glm::vec3(0.f);
-    texture_id = Loader::loadTextureWithSDL("../../assets/textures/CelestialBody/SunMap.jpg");
-    assert(texture_id != 0);
+    super::texture_id = Loader::loadTextureWithSDL("../../assets/textures/CelestialBody/SunMap.jpg");
+    assert(super::texture_id != 0);
 
 }
 
@@ -61,9 +61,9 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 /****************************************************************************** transform ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Star::transform(Input *input)
+void Star::transform(glm::vec3 ship_pos, Input *input)
 {
-    super::transform(input);
+    super::transform(ship_pos, input);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -73,8 +73,14 @@ void Star::sendToShader(DataManager &data_manager)
 {
     if(data_manager.getShader(super::m_type) != nullptr)
     {
-        data_manager.getShader(super::m_type)->setTexture("texture0", 0);
+        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
+
+            data_manager.getShader(super::m_type)->setTexture("texture0", 0);
+
+        glUseProgram(0);
+        
     }
+
     super::sendToShader(data_manager);
 }
 
