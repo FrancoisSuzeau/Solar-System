@@ -208,7 +208,9 @@ GLuint Loader::loadTextureWithSDL(std::string path)
     SDL_Surface *picture_SDL = IMG_Load(path.c_str());
     if(picture_SDL == 0)
     {
-        std::cout << ">> Loading file img : ERROR : " << SDL_GetError() << std::endl;
+        std::string msg_err = ">> Loading file img : ERROR : ";
+        msg_err.append(SDL_GetError());
+        showError(nullptr, ErrorHandler(msg_err.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         return 0;
     }
     std::cout << ">> Loading file " << path << " : SUCCESS" << std::endl;
@@ -262,7 +264,8 @@ GLuint Loader::loadTextureWithSDL(std::string path)
     }
     else
     {
-        std::cout << ">> Alpha component : ERROR : picture format unknown" << std::endl;
+        std::string msg_err = ">> Alpha component : ERROR : picture format unknown";
+        showError(nullptr, ErrorHandler(msg_err.c_str()), __FILENAME__, __FUNCTION__, __LINE__);
         SDL_FreeSurface(img_invert);
         return 0;
     }
