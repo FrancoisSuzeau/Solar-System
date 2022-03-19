@@ -38,12 +38,12 @@ PURPOSE : class Star
 //     }
 // }
 
-Star::Star(float size) : super(size), m_texure_surface("../../assets/textures/CelestialBody/SunMap.jpg")
+Star::Star(float size) : super(size)
 {
-    assert(m_texure_surface.loadTexture());
     super::m_type = "sun";
     super::m_position = glm::vec3(0.f);
-    texture_id = m_texure_surface.getID();
+    texture_id = Loader::loadTextureWithSDL("../../assets/textures/CelestialBody/SunMap.jpg");
+    assert(texture_id != 0);
 
 }
 

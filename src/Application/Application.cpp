@@ -81,6 +81,7 @@ void Application::cleanAll()
 
     if(sun != nullptr)
     {
+        sun->clean();
         delete sun;
     }
     if(star_renderer != nullptr)

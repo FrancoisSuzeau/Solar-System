@@ -34,7 +34,8 @@ PURPOSE : header of the Star class
         #include <cassert>
 
         #include "../../BasicObjects/Sphere.hpp"
-        #include "../../../Application/Texture/Texture.hpp"
+        #include "../../../Loader/Loader.hpp"
+        // #include "../../../Application/Texture/Texture.hpp"
 
         // typedef struct flare_data {
 
@@ -53,7 +54,7 @@ PURPOSE : header of the Star class
             
             private:
 
-                Texture         m_texure_surface;
+                // Texture         m_texure_surface;
                 typedef         Sphere super;
                 // std::vector<flare_data>      m_flares;
                 // std::string     m_name;

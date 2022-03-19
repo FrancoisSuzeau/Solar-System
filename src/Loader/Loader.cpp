@@ -198,3 +198,125 @@ unsigned int Loader::loadSkyboxTextures(std::vector<std::string> faces)
 
     return textID;
 }
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* loadTexture *************************************************************************/
+/***********************************************************************************************************************************************************************/
+GLuint Loader::loadTextureWithSDL(std::string path)
+{
+    /************************************************* load the file ********************************************************/
+    SDL_Surface *picture_SDL = IMG_Load(path.c_str());
+    if(picture_SDL == 0)
+    {
+        std::cout << ">> Loading file img : ERROR : " << SDL_GetError() << std::endl;
+        return 0;
+    }
+    std::cout << ">> Loading file " << path << " : SUCCESS" << std::endl;
+    //===================================================================================================================
+
+    /************************************************* invert img ********************************************************/
+    SDL_Surface *img_invert = Loader::pixelsInverter(picture_SDL);
+    SDL_FreeSurface(picture_SDL);
+    //===================================================================================================================
+
+    /************************************************* generate ID ********************************************************/
+    GLuint id_texture = 0;
+    glGenTextures(1, &id_texture);
+    assert(id_texture != 0);
+    //===================================================================================================================
+
+    /************************************************* lock object ********************************************************/
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, id_texture);
+    //=====================================================================================================================
+
+    /************************************************* determinate the alpha component *************************************/
+    GLenum intern_format(0);
+    GLenum format(0);
+
+    if(img_invert->format->BytesPerPixel == 3) //there is no alpha component
+    {
+        intern_format = GL_RGB;
+
+        if(img_invert->format->Rmask == 0xff)
+        {
+            format = GL_RGB;
+        }
+        else
+        {
+            format = GL_BGR;
+        }
+    }
+    else if(img_invert->format->BytesPerPixel == 4) //there is one
+    {
+        intern_format = GL_RGBA;
+
+        if(img_invert->format->Rmask == 0xff)
+        {
+            format = GL_RGBA;
+        }
+        else
+        {
+            format = GL_BGRA;
+        }
+    }
+    else
+    {
+        std::cout << ">> Alpha component : ERROR : picture format unknown" << std::endl;
+        SDL_FreeSurface(img_invert);
+        return 0;
+    }
+    //=====================================================================================================================
+
+    /************************************************* copying pixels **************************************************************/
+    glTexImage2D(GL_TEXTURE_2D, 0, intern_format, img_invert->w, img_invert->h, 0, format, GL_UNSIGNED_BYTE, img_invert->pixels);
+    //==============================================================================================================================
+
+    /************************************************* applying layer ********************************************************/
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //=====================================================================================================================
+
+    /************************************************* unlock object ********************************************************/
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    //=====================================================================================================================
+
+    SDL_FreeSurface(img_invert);
+    return id_texture;
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* pixelInverter ***********************************************************************/
+/***********************************************************************************************************************************************************************/
+SDL_Surface* Loader::pixelsInverter(SDL_Surface *src_img)
+{
+    /************************************************* copying img without pixels **************************************************************/
+    SDL_Surface *img_inverted = SDL_CreateRGBSurface(0, src_img->w, src_img->h, src_img->format->BitsPerPixel, src_img->format->Rmask,
+                                                        src_img->format->Gmask, src_img->format->Bmask, src_img->format->Amask);
+    if(img_inverted == NULL)
+    {
+        std::cout << ">> RGB surface : ERROR : " << SDL_GetError() << std::endl;
+        return src_img;
+    }
+    std::cout << ">> RGB surface : SUCCESS" << std::endl;
+    //==============================================================================================================================
+
+    /************************************************* intermediate array  **************************************************************/
+    unsigned char* src_pixels = (unsigned char *)src_img->pixels;
+    unsigned char* inverted_pixels = (unsigned char *)img_inverted->pixels;
+    //==============================================================================================================================
+
+    /************************************************* invert pixels  **************************************************************/
+    for (int i(0); i < src_img->h; i++)
+    {
+        for (int j(0); j < src_img->w * src_img->format->BytesPerPixel; j++)
+        {
+            inverted_pixels[(src_img->w * src_img->format->BytesPerPixel * (src_img->h - 1 - i)) + j] = src_pixels[(src_img->w * src_img->format->BytesPerPixel * i) + j];
+        }
+        
+    }
+    //==============================================================================================================================
+
+    return img_inverted;
+}

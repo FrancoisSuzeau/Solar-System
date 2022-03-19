@@ -40,12 +40,16 @@ PURPOSE : header of the Loader class
                 Loader();
                 ~Loader();
 
+                static SDL_Surface* pixelsInverter(SDL_Surface *src_img);
+
             public:
 
                 static bool loadWithStbi(std::string file_path, GLuint &id, int &w, int &h);
                 static unsigned int loadWithStbi(const char *path, const std::string &directory);
                 static  Mix_Music* loadWithSDLMixer(std::string file_path, Mix_Music *m_music);
                 static unsigned int loadSkyboxTextures(std::vector<std::string> faces);
+                static GLuint       loadTextureWithSDL(std::string path);
+
                 
         };
 

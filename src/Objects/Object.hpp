@@ -72,6 +72,8 @@ PURPOSE : Interface Object
                 std::string getType() const;
 
                 GLuint getTextureID() const;
+
+                void clean();
             
         };
 
