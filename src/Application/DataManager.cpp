@@ -270,3 +270,13 @@ bool DataManager::getChangeSkin() const
 {
     return change_skin;
 }
+
+void DataManager::setShipPos(glm::vec3 const new_val)
+{
+    ship_position = new_val;
+}
+
+glm::vec3 DataManager::getShipPos() const
+{
+    return ship_position;
+}

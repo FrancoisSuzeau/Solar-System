@@ -42,7 +42,7 @@ Star::Star(float size) : super(size), m_texure_surface("../../assets/textures/Ce
 {
     assert(m_texure_surface.loadTexture());
     m_type = "sun";
-
+    m_position = glm::vec3(0.f);
     texture_id = m_texure_surface.getID();
 
 }

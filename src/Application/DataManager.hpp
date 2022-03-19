@@ -62,6 +62,7 @@ PURPOSE : header of the DataManager class
                 glm::mat4       proj_mat;
                 glm::mat4       view_mat;
                 std::map<std::string, Shader*> map_shader;
+                glm::vec3       ship_position;
                 
 
             public:
@@ -113,6 +114,8 @@ PURPOSE : header of the DataManager class
                 int             getIndexShip() const;
                 void            setChangeSkin(bool const new_val);
                 bool            getChangeSkin() const;
+                void            setShipPos(glm::vec3 const new_val);
+                glm::vec3       getShipPos() const;
 
 
         };

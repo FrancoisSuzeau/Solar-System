@@ -136,11 +136,13 @@ void Application::loadAssets()
     ship = new Spaceship();
     assert(ship);
     ship->loadModelShip(m_data_manager);
+    
     camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
     assert(camera);
 
     sun = new Star(1.f);
     assert(sun);
+    sun->updateSize(glm::vec3(10.f));
 
     star_renderer = new StarRenderer(1.f, 70.f, 70.f);
     assert(star_renderer);
@@ -217,6 +219,7 @@ void Application::makeAllChanges()
         {
             ship->transform(m_input);
             ship->sendToShader(m_data_manager);
+            m_data_manager.setShipPos(ship->getPosition());
         }
         ship->loadModelShip(m_data_manager);
     }
@@ -228,8 +231,7 @@ void Application::makeAllChanges()
 
     if(sun != nullptr)
     {
-        sun->updateSize(glm::vec3(10.f));
-        sun->updatePosition(glm::vec3(0.f, 10.f, 0.f));
+        sun->updatePosition(-m_data_manager.getShipPos());
         sun->transform();
         sun->sendToShader(m_data_manager);
     }    

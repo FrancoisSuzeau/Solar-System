@@ -33,7 +33,7 @@ Spaceship::Spaceship() : m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit
     m_type = "model";
 
     // m_position = glm::vec3(0.0f, 9000.0f, 0.0f);
-    m_position = glm::vec3(0.f, 0.f, 0.f);
+    m_position = glm::vec3(0.f, 10.f, 0.f);
     directions[0] = false;
     directions[1] = false;
     directions[2] = false;
@@ -65,7 +65,7 @@ void Spaceship::transform(Input *input)
         m_model_mat = glm::mat4(1.0f);
         
         this->orientateShip(*input);
-        this->translateObject(m_model_mat, m_position);
+        // this->translateObject(m_model_mat, m_position);
         m_model_mat *= (yaw_mat * pitch_mat);
         this->scaleObject(m_model_mat, glm::vec3(m_scales[m_index_skin]));
         
@@ -130,15 +130,15 @@ void Spaceship::move(Input input)
         m_position += m_ship_orientation * m_speed;
         if(m_speed < speed_limit)
         {
-            m_speed += 5.0f;
+            m_speed += 1.0f;
         }
         directions[0] = true;
     }
     else if(!input.getKey(SDL_SCANCODE_W) && directions[0])
     {
-        if(m_speed >= 5.0f)
+        if(m_speed >= 1.0f)
         {
-            m_speed -= 5.0f;
+            m_speed -= 1.0f;
             m_position += m_ship_orientation * m_speed;
         }
         else
@@ -153,15 +153,15 @@ void Spaceship::move(Input input)
         m_position -= m_ship_orientation * m_speed;
         if(m_speed < speed_limit)
         {
-            m_speed += 5.0f;
+            m_speed += 1.0f;
         }
         directions[1] = true;
     }
     else if(!input.getKey(SDL_SCANCODE_S) && directions[1])
     {
-        if(m_speed >= 5.0f)
+        if(m_speed >= 1.0f)
         {
-            m_speed -= 5.0f;
+            m_speed -= 1.0f;
             m_position -= m_ship_orientation * m_speed;
         }
         else
@@ -175,16 +175,16 @@ void Spaceship::move(Input input)
        m_position += m_lateral_move * m_speed;
        if(m_speed < speed_limit)
         {
-            m_speed += 5.0f;
+            m_speed += 1.0f;
         }
 
         directions[2] = true;
     }
     else if(!input.getKey(SDL_SCANCODE_A) && directions[2])
     {
-        if(m_speed >= 5.0f)
+        if(m_speed >= 1.0f)
         {
-            m_speed -= 5.0f;
+            m_speed -= 1.0f;
             m_position += m_lateral_move * m_speed;
         }
         else
@@ -198,15 +198,15 @@ void Spaceship::move(Input input)
        m_position -= m_lateral_move * m_speed;
        if(m_speed < speed_limit)
         {
-            m_speed += 5.0f;
+            m_speed += 1.0f;
         }
         directions[3] = true;
     }
     else if(!input.getKey(SDL_SCANCODE_D) && directions[3])
     {
-        if(m_speed >= 5.0f)
+        if(m_speed >= 1.0f)
         {
-            m_speed -= 5.0f;
+            m_speed -= 1.0f;
             m_position -= m_lateral_move * m_speed;
         }
         else
@@ -220,15 +220,15 @@ void Spaceship::move(Input input)
        m_position += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
        if(m_speed < speed_limit)
        {
-           m_speed += 5.0f;
+           m_speed += 1.0f;
        }
        directions[4] = true;
     }
     else if(!input.getKey(SDL_SCANCODE_LSHIFT) && directions[4])
     {
-        if(m_speed >= 5.0f)
+        if(m_speed >= 1.0f)
         {
-            m_speed -= 5.0f;
+            m_speed -= 1.0f;
             m_position += glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
         }
         else
@@ -242,15 +242,15 @@ void Spaceship::move(Input input)
         m_position -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
         if(m_speed < speed_limit)
         {
-            m_speed += 5.0f;
+            m_speed += 1.0f;
         }
         directions[5] = true;
     }
     else if(!input.getKey(SDL_SCANCODE_LCTRL) && directions[5])
     {
-        if(m_speed >= 5.0f)
+        if(m_speed >= 1.0f)
         {
-            m_speed -= 5.0f;
+            m_speed -= 1.0f;
             m_position -= glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)) * m_speed;
         }
         else
