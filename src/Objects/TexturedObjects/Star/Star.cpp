@@ -38,9 +38,13 @@ PURPOSE : class Star
 //     }
 // }
 
-Star::Star(float size) : Sphere(size), m_texure_surface("../../assets/textures/CelestialBody/SunMap.jpg")
+Star::Star(float size) : super(size), m_texure_surface("../../assets/textures/CelestialBody/SunMap.jpg")
 {
     assert(m_texure_surface.loadTexture());
+    m_type = "sun";
+
+    texture_id = m_texure_surface.getID();
+
 }
 
 Star::~Star()
@@ -55,78 +59,24 @@ Star::~Star()
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************************* display *******************************************************************************/
+/****************************************************************************** transform ******************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Star::display(RenderData &render_data)
-// {
-//     if(render_data.getShader("sun") != nullptr)
-//     {
-//         //Activate the shader
-//         glUseProgram(render_data.getShader("sun")->getProgramID());
-
-//         //lock VBO and Index Buffer Object
-//         glBindBuffer(GL_ARRAY_BUFFER,         m_vbo);
-//         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-
-//         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-//         glEnableClientState(GL_NORMAL_ARRAY);
-//         glEnableClientState(GL_VERTEX_ARRAY);
-//         glTexCoordPointer(2,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3 * 2));
-//         glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
-//         glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
-
-//             // render_data.getShader("sun")->setInt("displayText", this->displayTexture(render_data));
-//             render_data.getShader("sun")->setInt("displayText", true);
-
-//             render_data.getShader("sun")->setMat4("view", render_data.getViewMat());
-//             render_data.getShader("sun")->setMat4("projection", render_data.getProjectionMat());
-//             render_data.getShader("sun")->setMat4("model", m_model_mat);
-//             render_data.getShader("sun")->setInt("inverse_normals", true);
-
-//             render_data.setSunPos(m_current_position - render_data.getShipPos());
-
-//             render_data.getShader("sun")->setTexture("texture0", 0);
-
-//             render_data.getShader("sun")->setVec3("viewPos", render_data.getCamPos());
-//             render_data.getShader("sun")->setVec3("sunPos", render_data.getSunPos());
-            
-//             //active and lock cloudy texture
-//             glActiveTexture(GL_TEXTURE0);
-//             glBindTexture(GL_TEXTURE_2D, m_cloud_texture.getID());
-            
-//             //draw all textured vertices
-//             glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
-
-//             glActiveTexture(GL_TEXTURE0);
-//             glBindTexture(GL_TEXTURE_2D, 0);
-
-//         /************************************************* unbind VBO and IBO ********************************************************/
-//         glBindBuffer(GL_ARRAY_BUFFER,         0);
-//         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-//         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-//         glDisableClientState(GL_NORMAL_ARRAY);
-//         glDisableClientState(GL_VERTEX_ARRAY);
-//         //===================================================================================================================================
-
-//         glUseProgram(0);
-//     }
-// }
+void Star::transform(Input *input)
+{
+    super::transform(input);
+}
 
 /***********************************************************************************************************************************************************************/
-/************************************************************************ displayTexture *******************************************************************************/
+/****************************************************************************** sendToShader ***************************************************************************/
 /***********************************************************************************************************************************************************************/
-// bool Star::displayTexture(RenderData &render_data)
-// {
-//     bool ret = true;
-//     float distance = Physique::getDistanceFromCam("Sun", render_data.getShipPos());
-
-//     if(distance >= 1900)
-//     {
-//         ret = false;
-//     }
-
-//     return ret;
-// }
+void Star::sendToShader(DataManager &data_manager)
+{
+    if(data_manager.getShader(m_type) != nullptr)
+    {
+        data_manager.getShader(m_type)->setTexture("texture0", 0);
+    }
+    super::sendToShader(data_manager);
+}
 
 /***********************************************************************************************************************************************************************/
 /************************************************************************ renderFlare *******************************************************************************/

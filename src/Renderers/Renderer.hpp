@@ -34,13 +34,15 @@ PURPOSE : header of the Renderer class
 
                 GLuint  m_vaoID;
                 GLuint  m_vboID;
+
+                virtual void load() = 0;
                 
             public:
 
                 // Renderer();
                 virtual ~Renderer() {};
 
-                virtual void load() = 0;
+                
                 virtual void render(DataManager &data_manager, Object *object) = 0;
                 virtual void clean() = 0;
     

@@ -32,13 +32,15 @@ PURPOSE : header of the SquareRenderer class
                 // GLuint  m_vboID;
                 int     m_bytes_vertices_size;
                 int     m_bytes_colors_size;
+
+                void    load() override;
                 
             public:
 
                 SquareRenderer(float const color);
                 ~SquareRenderer();
 
-                void load() override;
+                
                 void render(DataManager &data_manager, Object *square) override;
                 void clean() override;
         };

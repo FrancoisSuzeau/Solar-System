@@ -87,3 +87,8 @@ std::string Object::getType() const
 {
     return m_type;
 }
+
+GLuint Object::getTextureID() const
+{
+    return texture_id;
+}

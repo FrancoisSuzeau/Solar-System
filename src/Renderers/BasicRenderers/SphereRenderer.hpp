@@ -37,6 +37,8 @@ PURPOSE : header of the SphereRenderer class
                 GLfloat                         ***tmp;
                 unsigned int                    longVerts;
                 unsigned int                    latVerts;
+
+                void                            load() override;
  
                 
             public:
@@ -44,7 +46,7 @@ PURPOSE : header of the SphereRenderer class
                 SphereRenderer(const float radius, const unsigned int longSegs, const unsigned int latSegs);
                 ~SphereRenderer();
 
-                void load() override;
+                
                 void render(DataManager &data_manager, Object *sphere) override;
                 void clean() override;
         };

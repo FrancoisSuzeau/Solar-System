@@ -30,12 +30,12 @@ PURPOSE : header of the Application class
         #include "../Objects/BasicObjects/Square.hpp"
         #include "../Renderers/BasicRenderers/SquareRenderer.hpp"
 
-        #include "../Objects/BasicObjects/Sphere.hpp"
-        #include "../Renderers/BasicRenderers/SphereRenderer.hpp"
+        #include "../Renderers/TexturedRenderers/StarRenderer/StarRenderer.hpp"
+        #include "../Objects/TexturedObjects/Star/Star.hpp"
 
         #include "../Skybox/Skybox.hpp"
         #include "../Objects/Spaceship/Spaceship.hpp"
-        #include "../Objects/TexturedObjects/Star/Star.hpp"
+        
 
         #include "Camera/Camera.hpp"
 
@@ -74,6 +74,7 @@ PURPOSE : header of the Application class
                 Camera	                *camera;
                 Spaceship               *ship;
                 Star*                   sun;
+                Renderer                *star_renderer;
 
                 bool menu_app_key_pressed;
                 bool render_menu;

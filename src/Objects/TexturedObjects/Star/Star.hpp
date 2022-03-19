@@ -54,20 +54,26 @@ PURPOSE : header of the Star class
             private:
 
                 Texture         m_texure_surface;
+                typedef         Sphere super;
                 // std::vector<flare_data>      m_flares;
                 // std::string     m_name;
 
                 // void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, flare_data f_d);
 
                 // glm::vec2 convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::mat4 projMat);
-                // bool displayTexture(RenderData &render_data);
                
         
             public:
 
-                // Star(const float radius, const unsigned int longSegs, const unsigned int latSegs, std::string const texture_surf, std::string const name, float const real_size);
                 Star(float size);
                 ~Star();
+
+                void transform(Input *input = nullptr) override;
+                void sendToShader(DataManager &data_manager) override;
+
+                
+
+
                 // void display(RenderData &render_data);
                 
                 // void renderFlare(RenderData &render_data);

@@ -47,6 +47,8 @@ PURPOSE : Interface Object
                 float           m_rotation_angle;
                 std::string     m_type;
 
+                GLuint          texture_id = 0;
+
             public:
 
                 Object();
@@ -68,6 +70,8 @@ PURPOSE : Interface Object
                 glm::mat4 getModelMat();
                 float getColor() const;
                 std::string getType() const;
+
+                GLuint getTextureID() const;
             
         };
 

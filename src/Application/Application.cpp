@@ -83,6 +83,11 @@ void Application::cleanAll()
     {
         delete sun;
     }
+    if(star_renderer != nullptr)
+    {
+        star_renderer->clean();
+        delete star_renderer;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -134,8 +139,11 @@ void Application::loadAssets()
     camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
     assert(camera);
 
-    sun = new Star(10.f);
+    sun = new Star(1.f);
     assert(sun);
+
+    star_renderer = new StarRenderer(1.f, 70.f, 70.f);
+    assert(star_renderer);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -216,6 +224,14 @@ void Application::makeAllChanges()
     if(m_skybox != nullptr)
     {
         m_skybox->sendToShader(m_data_manager);
+    }
+
+    if(sun != nullptr)
+    {
+        sun->updateSize(glm::vec3(10.f));
+        sun->updatePosition(glm::vec3(0.f, 10.f, 0.f));
+        sun->transform();
+        sun->sendToShader(m_data_manager);
     }    
 }
 
@@ -289,6 +305,11 @@ void Application::renderScene()
     if(m_skybox != nullptr)
     {
         m_skybox->render(m_data_manager);
+    }
+
+    if((sun != nullptr) && (star_renderer != nullptr))
+    {
+        star_renderer->render(m_data_manager, sun);
     }
 }
 
