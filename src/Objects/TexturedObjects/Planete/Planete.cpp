@@ -207,6 +207,10 @@ void Planete::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
             data_manager.getShader(super::m_type)->setTexture("material.texture0", 0);
             data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
+            data_manager.getShader(super::m_type)->setFloat("far", data_manager.getFar());
+            data_manager.getShader(super::m_type)->setFloat("near", data_manager.getNear());
+            data_manager.getShader(super::m_type)->setInt("render_depth", data_manager.getDepthRender());
+
             if(super::m_type == "double_textured_planete")
             {
                 data_manager.getShader(super::m_type)->setTexture("material.texture1", 1);

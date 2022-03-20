@@ -99,6 +99,9 @@ void Spaceship::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
             data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
             data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(super::m_type)->setFloat("far", data_manager.getFar());
+            data_manager.getShader(super::m_type)->setFloat("near", data_manager.getNear());
+            data_manager.getShader(super::m_type)->setInt("render_depth", data_manager.getDepthRender());
 
             // data_manager.getShader(super::m_type)->setInt("hdr", data_manager.getHDR());
         

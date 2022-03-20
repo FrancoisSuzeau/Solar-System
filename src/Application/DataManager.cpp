@@ -18,9 +18,10 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 /***********************************************************************************************************************************************************************/
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
 bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(10000), m_fps(60),
-render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true) //for loading the skin at program launch
+render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true), //for loading the skin at program launch
+far_plane(100.f), near_plane(0.1f), depth_render(false)
 {
-    proj_mat = glm::perspective(glm::radians(angle), (double)width / height, 0.1, 100.0);
+    proj_mat = glm::perspective(glm::radians(angle), (double)width / height, (double)near_plane, (double)far_plane);
     view_mat = glm::mat4(1.0f);
 }
 
@@ -298,4 +299,24 @@ glm::vec3 DataManager::getCamPos() const
 glm::vec3 DataManager::getSunPos() const
 {
     return glm::vec3(0.f) - ship_position;
+}
+
+float DataManager::getFar() const
+{
+    return far_plane;
+}
+
+float DataManager::getNear() const
+{
+    return near_plane;
+}
+
+void DataManager::setDepthRender(bool const new_val)
+{
+    depth_render = new_val;
+}
+
+bool DataManager::getDepthRender() const
+{
+    return depth_render;
 }

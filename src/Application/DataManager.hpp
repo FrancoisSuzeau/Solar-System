@@ -58,6 +58,9 @@ PURPOSE : header of the DataManager class
                 float           distance_from_ship;
                 int             index_ship;
                 bool            change_skin;
+                float           near_plane;
+                float           far_plane;
+                bool            depth_render;
 
                 glm::mat4       proj_mat;
                 glm::mat4       view_mat;
@@ -120,6 +123,10 @@ PURPOSE : header of the DataManager class
                 void            setCamPos(glm::vec3 const new_val);
                 glm::vec3       getCamPos() const;
                 glm::vec3       getSunPos() const;
+                float           getFar() const;
+                float           getNear() const;
+                void            setDepthRender(bool const new_val);
+                bool            getDepthRender() const;
 
 
         };

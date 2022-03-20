@@ -110,6 +110,11 @@ void Settings::manageSettings(DataManager &data_manager)
     //     Saving::writeConfig(render_data);
     // }
 
+    bool render_depth = data_manager.getDepthRender();
+    ImGui::SameLine();
+    ImGui::Checkbox("Depth rendering", &render_depth);
+    data_manager.setDepthRender(render_depth);
+
     if(ImGui::Button("Stop Simulation", ImVec2(385.0f, 30.0f)))
     {
         data_manager.setTerminate(true);

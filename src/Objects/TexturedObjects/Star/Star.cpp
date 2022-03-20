@@ -76,6 +76,10 @@ void Star::sendToShader(DataManager &data_manager)
         glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
 
             data_manager.getShader(super::m_type)->setTexture("texture0", 0);
+            data_manager.getShader(super::m_type)->setFloat("far", data_manager.getFar());
+            data_manager.getShader(super::m_type)->setFloat("near", data_manager.getNear());
+            data_manager.getShader(super::m_type)->setInt("render_depth", data_manager.getDepthRender());
+
 
         glUseProgram(0);
         
