@@ -126,8 +126,8 @@ PURPOSE : class Planete
 //     }
 // }
 
-Planete::Planete(float size, std::vector<std::string> surface_tex_paths, std::string const type, float const oppacity) : super(size, type),
-m_oppacity(oppacity)
+Planete::Planete(float size, std::vector<std::string> surface_tex_paths, std::string const type, int shininess, float const oppacity) : super(size, type),
+m_oppacity(oppacity), m_shininess(shininess)
 {
     int i = 0;
     for(std::vector<std::string>::iterator it = surface_tex_paths.begin(); it != surface_tex_paths.end(); ++it)
@@ -136,6 +136,9 @@ m_oppacity(oppacity)
         assert(super::surface_tex_ids[i] != 0);
         i++;
     }
+
+    m_rotation_angle = 0.f;
+    m_speed_rotation = 0.1f;
 }
 
 Planete::~Planete()
@@ -181,6 +184,14 @@ Planete::~Planete()
 void Planete::transform(glm::vec3 ship_pos, Input *input)
 {
     super::transform(ship_pos, input);
+    super::m_rotation_vector = glm::vec3(0.f, 0.f, 1.f);
+
+    super::m_rotation_angle += super::m_speed_rotation;
+    if(super::m_rotation_angle >= 360)
+    {
+        super::m_rotation_angle -= 360;
+    }
+    super::rotateObject(super::m_model_mat, super::m_rotation_angle);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -192,7 +203,10 @@ void Planete::sendToShader(DataManager &data_manager)
     {
         glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
 
+            data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+            data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
             data_manager.getShader(super::m_type)->setTexture("material.texture0", 0);
+            data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
             if(super::m_type == "double_textured_planete")
             {
                 data_manager.getShader(super::m_type)->setTexture("material.texture1", 1);

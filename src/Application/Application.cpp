@@ -168,14 +168,14 @@ void Application::loadAssets()
 
     surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/MercuryMap.jpg");
-    mercury = new Planete(1.f, surface_paths, "simple_textured_planete", 0.f);
+    mercury = new Planete(1.f, surface_paths, "simple_textured_planete", 32);
     assert(mercury);
     mercury->updateSize(glm::vec3(1.f));
 
     surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/EarthDayMap.jpg");
     surface_paths.push_back("../../assets/textures/CelestialBody/CloudMap.jpg");
-    earth = new Planete(1.f, surface_paths, "double_textured_planete", 0.3f);
+    earth = new Planete(1.f, surface_paths, "double_textured_planete", 128, 0.3f);
     assert(earth);
     earth->updateSize(glm::vec3(3.f));
 
@@ -241,13 +241,6 @@ void Application::mainLoop()
 /***********************************************************************************************************************************************************************/
 void Application::makeAllChanges()
 {
-    if((camera != nullptr) && (m_input != nullptr))
-    {
-        camera->move(m_input, render_menu);
-        camera->lookAt(m_data_manager.getViewMat());
-        camera->setDistFromShip(m_data_manager.getDistancteFromShip());
-    }
-
     if((ship != nullptr) && (m_input != nullptr))
     {
         if(!render_menu)
@@ -258,7 +251,13 @@ void Application::makeAllChanges()
         }
         ship->loadModelShip(m_data_manager);
     }
-
+    if((camera != nullptr) && (m_input != nullptr))
+    {
+        camera->setDistFromShip(m_data_manager.getDistancteFromShip());
+        camera->move(m_input, render_menu);
+        camera->lookAt(m_data_manager.getViewMat());
+        m_data_manager.setCamPos(camera->getPosition());
+    }
     if(m_skybox != nullptr)
     {
         m_skybox->sendToShader(m_data_manager);
@@ -278,7 +277,7 @@ void Application::makeAllChanges()
 
     if(earth != nullptr)
     {
-        earth->updatePosition(glm::vec3(-20.f, 0.f, 0.f));
+        earth->updatePosition(glm::vec3(-40.f, 0.f, 0.f));
         earth->transform(-m_data_manager.getShipPos());
     }
 }

@@ -63,6 +63,7 @@ PURPOSE : header of the DataManager class
                 glm::mat4       view_mat;
                 std::map<std::string, Shader*> map_shader;
                 glm::vec3       ship_position;
+                glm::vec3       cam_pos;
                 
 
             public:
@@ -116,6 +117,9 @@ PURPOSE : header of the DataManager class
                 bool            getChangeSkin() const;
                 void            setShipPos(glm::vec3 const new_val);
                 glm::vec3       getShipPos() const;
+                void            setCamPos(glm::vec3 const new_val);
+                glm::vec3       getCamPos() const;
+                glm::vec3       getSunPos() const;
 
 
         };

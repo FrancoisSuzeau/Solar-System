@@ -283,3 +283,18 @@ glm::vec3 DataManager::getShipPos() const
 {
     return ship_position;
 }
+
+void DataManager::setCamPos(glm::vec3 const new_val)
+{
+    cam_pos = new_val;
+}
+
+glm::vec3 DataManager::getCamPos() const
+{
+    return cam_pos;
+}
+
+glm::vec3 DataManager::getSunPos() const
+{
+    return glm::vec3(0.f) - ship_position;
+}

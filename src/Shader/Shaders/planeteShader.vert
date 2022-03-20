@@ -11,8 +11,8 @@ uniform mat4 projection;
 
 // ============ Out data ============
 out vec4 texCoords;
-// out vec3 FragPos;
-// out vec3 Normal;
+out vec3 FragPos;
+out vec3 Normal;
 // out VS_OUT {
 //     vec3 TangentLightPos;
 //     vec3 TangentViewPos;
@@ -25,10 +25,10 @@ void main(void) {
     gl_Position = projection * view * (model * vec4(in_Vertex, 1.0));
     texCoords = vec4(in_Vertex, 1.0);
 
-    // FragPos = vec3(model * vec4(in_Vertex, 1.0));
+    FragPos = vec3(model * vec4(in_Vertex, 1.0));
 
-    // mat3 normalMatrice = mat3(transpose(inverse(model)));
-    // Normal = normalize(normalMatrice * in_Vertex);
+    mat3 normalMatrice = mat3(transpose(inverse(model)));
+    Normal = normalMatrice * in_Vertex;
 
     // vec3 lightPos = sunPos;
 

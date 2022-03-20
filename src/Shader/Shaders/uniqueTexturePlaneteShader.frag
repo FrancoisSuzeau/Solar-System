@@ -3,10 +3,10 @@
 
 // ============ In data ============
 in vec4 texCoords;
-// in vec3 FragPos;
-// uniform vec3 viewPos;
-// uniform vec3 sunPos;
-// in vec3 Normal;
+in vec3 FragPos;
+uniform vec3 viewPos;
+uniform vec3 sunPos;
+in vec3 Normal;
 // uniform bool hdr;
 // uniform bool has_normal;
 // uniform bool has_disp;
@@ -15,7 +15,7 @@ struct Material {
     sampler2D texture0;
     // sampler2D normalMap;
     // sampler2D dispMap;
-    // int shininess;
+    int shininess;
 };
 uniform Material material;
 // in VS_OUT {
@@ -93,7 +93,8 @@ void main(void) {
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
 
-    // vec3 lightColor;
+    vec3 lightColor = vec3(1.0);
+    vec3 lightPos = sunPos;
     // if(hdr)
     // {
     //     lightColor = vec3(0.4);
@@ -103,8 +104,7 @@ void main(void) {
     //     lightColor = vec3(0.2);
     // }
 
-    // vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
-    // vec3 lightPos = sunPos;
+    
 
     // vec3 objectColor;
     // vec3 norm;
@@ -136,6 +136,9 @@ void main(void) {
     // }
 
     vec3 objectColor = texture(material.texture0, texCoord).rgb;
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    vec3 viewDir = normalize(viewPos - FragPos);
     
     // *********************************************** mitigation ***************************************************
     // float lightConst = 1.0f;
@@ -147,18 +150,18 @@ void main(void) {
     // // *********************************************** diffuse light ***************************************************
     
     
-    // float diff = max(dot(norm, lightDir), 0.0);
-    // vec3 diffuse = diff * lightColor;
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
 
     // // *********************************************** specular light ***************************************************
-    // float specularStrength = 0.5;
+    float specularStrength = 0.5;
     
-    // vec3 reflectDir = reflect(-lightDir, norm);
-    // float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    // vec3 specular = specularStrength * spec * lightColor;
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = specularStrength * spec * lightColor;
 
     // // *********************************************** ambiant light ***************************************************
-    // float ambiantStrength;
+    float ambiantStrength = 0.01;
     
 
     // if(hdr)
@@ -170,7 +173,7 @@ void main(void) {
     //     ambiantStrength = 0.001;
     // }
 
-    // vec3 ambiant = ambiantStrength * lightColor;
+    vec3 ambiant = ambiantStrength * lightColor;
 
     // // *********************************************** adding mitigation effect ***************************************************
     // ambiant *= mitigation;
@@ -188,6 +191,7 @@ void main(void) {
     
     // FragColor = vec4(result, 1.0);
 
-    FragColor = vec4(objectColor, 1.0);
+    vec3 result = (ambiant + diffuse + specular) * objectColor;
+    FragColor = vec4(result, 1.0);
         
 }

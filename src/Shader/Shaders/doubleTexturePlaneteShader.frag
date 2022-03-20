@@ -4,10 +4,10 @@
 // ============ In data ============
 in vec4 texCoords;
 uniform float oppacity;
-// uniform vec3 viewPos;
-// uniform vec3 sunPos;
-// in vec3 Normal;
-// in vec3 FragPos;
+uniform vec3 viewPos;
+uniform vec3 sunPos;
+in vec3 Normal;
+in vec3 FragPos;
 // uniform bool hdr;
 // uniform bool has_normal;
 // uniform bool has_disp;
@@ -17,7 +17,7 @@ struct Material {
     sampler2D texture1;
     // sampler2D normalMap;
     // sampler2D dispMap;
-    // int shininess;
+    int shininess;
 };
 uniform Material material;
 
@@ -95,10 +95,8 @@ void main(void) {
 
     
 
-    // vec3 lightColor = vec3(1.0, 1.0, 1.0);
-
-    // // vec3 lightPos = vec3(0.1f, 0.0f, 0.0f);
-    // vec3 lightPos = sunPos;
+    vec3 lightColor = vec3(1.0, 1.0, 1.0);
+    vec3 lightPos = sunPos;
 
     // vec3 objectColor;
     // vec3 norm;
@@ -132,6 +130,9 @@ void main(void) {
     vec4 surface_text = texture(material.texture0, texCoord);
 
     vec3 objectColor = mix(cloud_text, surface_text, oppacity).rgb;
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    vec3 viewDir = normalize(viewPos - FragPos);
 
     // // *********************************************** mitigation ***************************************************
     // //mitigation
@@ -142,17 +143,18 @@ void main(void) {
     // float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
 
     // // *********************************************** diffuse light ***************************************************
-    // float diff = max(dot(norm, lightDir), 0.0);
-    // vec3 diffuse = diff * lightColor;
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
 
     // // *********************************************** specular light ***************************************************
-    // float specularStrength = 0.9;
-    // vec3 reflectDir = reflect(-lightDir, norm);
-    // float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    // vec3 specular = specularStrength * spec * lightColor;
+    float specularStrength = 0.5;
+
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = specularStrength * spec * lightColor;
 
     // // *********************************************** ambiant light ***************************************************
-    // float ambiantStrength;
+    float ambiantStrength = 0.01;
     
 
     // if(hdr)
@@ -164,7 +166,7 @@ void main(void) {
     //     ambiantStrength = 0.01;
     // }
 
-    // vec3 ambiant = ambiantStrength * lightColor;
+    vec3 ambiant = ambiantStrength * lightColor;
 
     // // *********************************************** adding mitigation effect ***************************************************
     // ambiant *= mitigation;
@@ -181,6 +183,7 @@ void main(void) {
     // else
     //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     
-    FragColor = vec4(objectColor, 1.0);
+    vec3 result = (ambiant + diffuse + specular) * objectColor;
+    FragColor = vec4(result, 1.0);
     
 }

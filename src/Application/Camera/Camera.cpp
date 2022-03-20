@@ -195,3 +195,8 @@ void Camera::setDistFromShip(float const new_val)
 {
     distance_from_ship = new_val;
 }
+
+glm::vec3 Camera::getPosition() const
+{
+    return m_position;
+}
