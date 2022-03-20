@@ -71,7 +71,7 @@ PURPOSE : header of the Spaceship class
                 
             public:
             
-                Spaceship();
+                Spaceship(std::string const type);
                 ~Spaceship();
 
                 void    clean();

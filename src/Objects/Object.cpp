@@ -15,9 +15,9 @@ PURPOSE : class Object
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Object::Object() : m_rotation_vector(glm::vec3(0.f, 0.f, 1.f)), m_inclinaison_vector(glm::vec3(0.f, 1.f, 0.f))
+Object::Object(std::string const type) : m_rotation_vector(glm::vec3(0.f, 0.f, 1.f)), m_inclinaison_vector(glm::vec3(0.f, 1.f, 0.f))
 {
-    
+    m_type = type;
 }
 
 Object::~Object()
@@ -30,11 +30,15 @@ Object::~Object()
 /***********************************************************************************************************************************************************************/
 void Object::clean()
 {
-    if(glIsTexture(texture_id) == GL_TRUE)
+    for(std::vector<GLuint>::iterator it = surface_tex_ids.begin(); it != surface_tex_ids.end(); ++it)
     {
-        glDeleteTextures(1, &texture_id);
-        std::cout << ">> " << m_type << " : DESTROY TEXTURE COMPLETE" << std::endl;
+        if(glIsTexture(it[0]) == GL_TRUE)
+        {
+            glDeleteTextures(1, &it[0]);
+            std::cout << ">> " << m_type << " : DESTROY TEXTURE COMPLETE" << std::endl;
+        }
     }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -100,7 +104,7 @@ std::string Object::getType() const
     return m_type;
 }
 
-GLuint Object::getTextureID() const
+GLuint Object::getTextureID(int index) const
 {
-    return texture_id;
+    return surface_tex_ids[index];
 }

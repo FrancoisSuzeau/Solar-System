@@ -29,7 +29,7 @@ PURPOSE : header of the Sphere class
                 
             public:
 
-                Sphere(float size);
+                Sphere(float size, std::string const type);
                 ~Sphere();
 
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;

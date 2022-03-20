@@ -41,9 +41,11 @@ void StarRenderer::clean()
 /***********************************************************************************************************************************************************************/
 void StarRenderer::render(DataManager &data_manager, Object *star)
 {
-    GLuint t_id = star->getTextureID();
+    GLuint t_id = star->getTextureID(0);
     if(glIsTexture(t_id) == GL_TRUE)
     {
+        star->sendToShader(data_manager);
+        
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, t_id);
 

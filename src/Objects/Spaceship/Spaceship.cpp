@@ -16,7 +16,7 @@ PURPOSE : class Spaceship
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Spaceship::Spaceship() : super(), m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit(0.05f), m_index_skin(0)
+Spaceship::Spaceship(std::string const type) : super(type), m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), speed_limit(0.05f), m_index_skin(0)
 {   
 
     file_paths.push_back("../../assets/model/spaceship/untitled.obj");
@@ -30,7 +30,7 @@ Spaceship::Spaceship() : super(), m_yaw(0.0f), m_pitch(90.0f), m_speed(0.0f), sp
     m_scales.push_back(0.1f);
 
     super::m_model_mat = glm::mat4(1.f);
-    super::m_type = "model";
+    // super::m_type = "model";
 
     super::m_position = glm::vec3(0.f, 35.f, 0.f);
     directions[0] = false;

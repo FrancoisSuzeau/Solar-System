@@ -44,6 +44,7 @@ PURPOSE : header of the Planete class
                 private:
 
                         typedef Sphere super;
+                        float   m_oppacity;
             
             protected:
 
@@ -73,7 +74,7 @@ PURPOSE : header of the Planete class
             public:
 
                 // Planete(init_data data, TTF_Font *police);
-                Planete(float size);
+                Planete(float size, std::vector<std::string> surface_tex_paths, std::string const type, float const oppacity);
                 ~Planete();
 
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;

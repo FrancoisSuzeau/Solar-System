@@ -38,12 +38,12 @@ PURPOSE : class Star
 //     }
 // }
 
-Star::Star(float size) : super(size)
+Star::Star(float size, std::string surface_path, std::string const type) : super(size, type)
 {
-    super::m_type = "sun";
-    super::m_position = glm::vec3(0.f);
-    super::texture_id = Loader::loadTextureWithSDL("../../assets/textures/CelestialBody/SunMap.jpg");
-    assert(super::texture_id != 0);
+    // super::m_type = "sun";
+    // super::m_position = glm::vec3(0.f);
+    super::surface_tex_ids.push_back(Loader::loadTextureWithSDL(surface_path));
+    assert(super::surface_tex_ids[0] != 0);
 
 }
 

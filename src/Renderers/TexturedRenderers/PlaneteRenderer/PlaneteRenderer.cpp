@@ -39,13 +39,27 @@ void PlaneteRenderer::clean()
 /***********************************************************************************************************************************************************************/
 void PlaneteRenderer::render(DataManager &data_manager, Object *planete)
 {
-    GLuint t_id = planete->getTextureID();
+    GLuint t_id = planete->getTextureID(0);
     if(glIsTexture(t_id) == GL_TRUE)
     {
+        planete->sendToShader(data_manager);
+        
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, t_id);
 
+        if(planete->getType() == "double_textured_planete")
+        {
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, planete->getTextureID(1));
+        }
+
         super::render(data_manager, planete);
+
+        if(planete->getType() == "double_textured_planete")
+        {
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0);

@@ -66,7 +66,7 @@ PURPOSE : header of the Star class
         
             public:
 
-                Star(float size);
+                Star(float size, std::string surface_path, std::string const type);
                 ~Star();
 
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;

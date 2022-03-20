@@ -78,6 +78,7 @@ PURPOSE : header of the Application class
                 Spaceship               *ship;
                 Star*                   sun = nullptr;
                 Renderer                *star_renderer = nullptr;
+                Planete*                 mercury = nullptr;
                 Planete*                 earth = nullptr;
                 Renderer                *planete_renderer = nullptr;
 

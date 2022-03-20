@@ -24,6 +24,8 @@ PURPOSE : Interface Object
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
+        #include <vector>
+
         #include "../Application/DataManager.hpp"
         #include "../ErrorHandler/ErrorHandler.hpp"
         #include "../InOut/Input/Input.hpp"
@@ -47,12 +49,12 @@ PURPOSE : Interface Object
                 float           m_rotation_angle;
                 std::string     m_type;
 
-                GLuint          texture_id = 0;
+                std::vector<GLuint>          surface_tex_ids;
 
             public:
 
-                Object();
-                virtual ~Object();
+                Object(std::string const type);
+                ~Object();
 
                 virtual void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) = 0;
                 virtual void sendToShader(DataManager &data_manager) = 0;
@@ -71,7 +73,7 @@ PURPOSE : Interface Object
                 float getColor() const;
                 std::string getType() const;
 
-                GLuint getTextureID() const;
+                GLuint getTextureID(int index) const;
 
                 void clean();
             

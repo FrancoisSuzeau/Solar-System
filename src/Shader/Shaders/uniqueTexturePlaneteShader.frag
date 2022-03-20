@@ -110,7 +110,7 @@ void main(void) {
     // vec3 norm;
     // vec3 lightDir;
     // vec3 viewDir;
-    // vec2 texCoord = longitudeLatitude;
+    vec2 texCoord = longitudeLatitude;
 
     // if(has_normal)
     // {
@@ -135,7 +135,7 @@ void main(void) {
     //     viewDir = normalize(viewPos - FragPos);
     // }
 
-    vec3 objectColor = texture(material.texture0, longitudeLatitude).rgb;
+    vec3 objectColor = texture(material.texture0, texCoord).rgb;
     
     // *********************************************** mitigation ***************************************************
     // float lightConst = 1.0f;

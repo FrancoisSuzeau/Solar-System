@@ -30,7 +30,7 @@ PURPOSE : header of the Square class
                 
             public:
 
-                Square(float size);
+                Square(float size, std::string const type);
                 ~Square();
 
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;

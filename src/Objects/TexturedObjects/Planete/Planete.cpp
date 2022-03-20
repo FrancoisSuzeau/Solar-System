@@ -126,12 +126,16 @@ PURPOSE : class Planete
 //     }
 // }
 
-Planete::Planete(float size) : super(size)
+Planete::Planete(float size, std::vector<std::string> surface_tex_paths, std::string const type, float const oppacity) : super(size, type),
+m_oppacity(oppacity)
 {
-    super::m_type = "simple_planete";
-    super::m_position = glm::vec3(10.f, 0.f, 0.f);
-    super::texture_id = Loader::loadTextureWithSDL("../../assets/textures/CelestialBody/EarthDayMap.jpg");
-    assert(super::texture_id != 0);
+    int i = 0;
+    for(std::vector<std::string>::iterator it = surface_tex_paths.begin(); it != surface_tex_paths.end(); ++it)
+    {
+        super::surface_tex_ids.push_back(Loader::loadTextureWithSDL(it[0]));
+        assert(super::surface_tex_ids[i] != 0);
+        i++;
+    }
 }
 
 Planete::~Planete()
@@ -189,6 +193,11 @@ void Planete::sendToShader(DataManager &data_manager)
         glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
 
             data_manager.getShader(super::m_type)->setTexture("material.texture0", 0);
+            if(super::m_type == "double_textured_planete")
+            {
+                data_manager.getShader(super::m_type)->setTexture("material.texture1", 1);
+                data_manager.getShader(super::m_type)->setFloat("oppacity", m_oppacity);
+            }
 
         glUseProgram(0);
     }

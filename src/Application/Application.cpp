@@ -90,6 +90,11 @@ void Application::cleanAll()
         delete star_renderer;
     }
 
+    if(mercury != nullptr)
+    {
+        mercury->clean();
+        delete mercury;
+    }
     if(earth != nullptr)
     {
         earth->clean();
@@ -139,27 +144,38 @@ void Application::loadAssets()
 {
     Renderer *square_renderer = new SquareRenderer(1.0);
     assert(square_renderer);
-    Square  *square = new Square(1.0);
+    Square  *square = new Square(1.0, "square");
     assert(square);
 
     m_overlay.initOverlayAssets(square_renderer, square);
     m_skybox = new Skybox();
     assert(m_skybox);
-    ship = new Spaceship();
+    ship = new Spaceship("model");
     assert(ship);
     ship->loadModelShip(m_data_manager);
     
     camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
     assert(camera);
 
-    sun = new Star(1.f);
+    std::vector<std::string> surface_paths;
+    surface_paths.push_back("../../assets/textures/CelestialBody/SunMap.jpg");
+    sun = new Star(1.f, surface_paths[0], "sun");
     assert(sun);
     sun->updateSize(glm::vec3(10.f));
 
     star_renderer = new StarRenderer(1.f, 70.f, 70.f);
     assert(star_renderer);
 
-    earth = new Planete(1.f);
+    surface_paths.clear();
+    surface_paths.push_back("../../assets/textures/CelestialBody/MercuryMap.jpg");
+    mercury = new Planete(1.f, surface_paths, "simple_textured_planete", 0.f);
+    assert(mercury);
+    mercury->updateSize(glm::vec3(1.f));
+
+    surface_paths.clear();
+    surface_paths.push_back("../../assets/textures/CelestialBody/EarthDayMap.jpg");
+    surface_paths.push_back("../../assets/textures/CelestialBody/CloudMap.jpg");
+    earth = new Planete(1.f, surface_paths, "double_textured_planete", 0.3f);
     assert(earth);
     earth->updateSize(glm::vec3(3.f));
 
@@ -252,15 +268,19 @@ void Application::makeAllChanges()
     {
         sun->updatePosition(glm::vec3(0.f));
         sun->transform(-m_data_manager.getShipPos());
-        sun->sendToShader(m_data_manager);
+    } 
+
+    if(mercury != nullptr)
+    {
+        mercury->updatePosition(glm::vec3(20.f, 0.f, 0.f));
+        mercury->transform(-m_data_manager.getShipPos());
     } 
 
     if(earth != nullptr)
     {
-        earth->updatePosition(glm::vec3(20.f, 0.f, 0.f));
+        earth->updatePosition(glm::vec3(-20.f, 0.f, 0.f));
         earth->transform(-m_data_manager.getShipPos());
-        earth->sendToShader(m_data_manager);
-    }      
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -338,6 +358,11 @@ void Application::renderScene()
     if((sun != nullptr) && (star_renderer != nullptr))
     {
         star_renderer->render(m_data_manager, sun);
+    }
+
+    if((mercury != nullptr) && (planete_renderer != nullptr))
+    {
+        planete_renderer->render(m_data_manager, mercury);
     }
 
     if((earth != nullptr) && (planete_renderer != nullptr))
