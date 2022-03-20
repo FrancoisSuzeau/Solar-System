@@ -1,17 +1,19 @@
+// ============ GLSL version ============
 #version 400 core
 
+// ============ In data ============
+uniform sampler2D texture_diffuse1;
+in vec2 TexCoords;
+// in vec3 Normal;
+// in vec3 FragPos;
+// uniform bool hdr;
+// uniform vec3 viewPos;
+// uniform vec3 sunPos;
+
+
+// ============ Out data ============
 layout (location = 0) out vec4 FragColor;
 // layout (location = 1) out vec4 BrightColor;
-
-
-in vec2 TexCoords;
-in vec3 Normal;
-in vec3 FragPos;
-uniform bool hdr;
-uniform vec3 viewPos;
-uniform vec3 sunPos;
-
-uniform sampler2D texture_diffuse1;
 
 void main()
 {
@@ -72,7 +74,7 @@ void main()
     // vec3 result = (ambiant + diffuse + specular) * objectColor;
     vec3 result = objectColor;
 
-    float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
+    // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     // if(brightness > 1.0)
     //     BrightColor = vec4(result, 1.0);
     // else

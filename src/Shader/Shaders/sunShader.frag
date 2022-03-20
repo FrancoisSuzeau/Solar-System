@@ -1,16 +1,16 @@
+// ============ GLSL version ============
 #version 400 core
 
+// ============ In data ============
 in vec4 texCoords;
-
 uniform sampler2D texture0;
+// uniform bool displayText;
+// in vec3 Normal;
+// in vec3 FragPos;
+// uniform vec3 viewPos;
+// uniform vec3 sunPos;
 
-uniform bool displayText;
-
-in vec3 Normal;
-in vec3 FragPos;
-uniform vec3 viewPos;
-uniform vec3 sunPos;
-
+// ============ Out data ============
 layout (location = 0) out vec4 FragColor;
 // layout (location = 1) out vec4 BrightColor;
 
@@ -26,8 +26,8 @@ void main(void) {
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
-    vec3 lightColor = vec3(5.0, 5.0, 5.0);
-    vec3 lightPos = sunPos;
+    // vec3 lightColor = vec3(5.0, 5.0, 5.0);
+    // vec3 lightPos = sunPos;
 
     vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
     // vec3 objectColor = vec3(1.0);

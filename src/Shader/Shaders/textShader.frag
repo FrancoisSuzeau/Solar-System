@@ -1,15 +1,10 @@
-// Version du GLSL
-
+// ============ GLSL version ============
 #version 400 core
 
-
-// Entr�e
-
+// ============ In data ============
 in vec2 coordTexture;
-
-// Uniform
-
 uniform sampler2D texture0;
+// ============ Out data ============
 layout (location = 0) out vec4 FragColor;
 layout (location = 1) out vec4 BrightColor;
 
