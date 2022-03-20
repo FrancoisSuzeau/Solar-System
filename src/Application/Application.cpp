@@ -19,7 +19,7 @@ PURPOSE :   - creating OpenGL Context
 /***********************************************************************************************************************************************************************/
 Application::Application(int width, int height, SDL_Window *window): m_data_manager(width, height, 45.0),
 m_window(window), 
-m_setting(), m_overlay(), m_audio(nullptr), m_input(nullptr), camera(nullptr), m_skybox(nullptr), ship(nullptr)
+m_setting(), m_overlay(), m_audio(nullptr), m_input(nullptr), camera(nullptr), m_skybox(nullptr), ship(nullptr), m_framebuffer(nullptr)
 {
     render_menu = false;
     menu_app_key_pressed = false;
@@ -34,6 +34,12 @@ m_setting(), m_overlay(), m_audio(nullptr), m_input(nullptr), camera(nullptr), m
     {
         m_audio = new Audio();
         assert(m_audio);
+    }
+
+    if(m_framebuffer == nullptr)
+    {
+        m_framebuffer = new Framebuffer();
+        assert(m_framebuffer);
     }
 }
 
@@ -76,6 +82,13 @@ void Application::cleanAll()
         m_audio = nullptr;
     }
 
+    if(m_framebuffer != nullptr)
+    {
+        m_framebuffer->clean();
+        delete m_framebuffer;
+        m_framebuffer = nullptr;
+    }
+
     m_setting.clean();
     m_overlay.clean();
 
@@ -108,12 +121,12 @@ void Application::cleanAll()
 }
 
 /***********************************************************************************************************************************************************************/
-/********************************************************************************* initFrameBuffer *********************************************************************/
+/********************************************************************************* loadFrameBuffer *********************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Application::initFrameBuffer()
-// {
-//     assert(m_framebuffer->initFramebuffer(m_window_width, m_window_height));
-// }
+void Application::loadFrameBuffer()
+{
+    assert(m_framebuffer->initFramebuffer(m_data_manager.getWidth(), m_data_manager.getHeight()));
+}
 
 /***********************************************************************************************************************************************************************/
 /*************************************************************************************** loadConfig ********************************************************************/
@@ -209,9 +222,7 @@ void Application::mainLoop()
             ImGui_ImplSDL2_NewFrame();
             ImGui::NewFrame();
 
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glEnable(GL_DEPTH_TEST);
+            m_framebuffer->bindFramebuffer();
 
         /******************************************************************* RENDER SCENE *********************************************************************/
             this->renderScene();
@@ -224,6 +235,9 @@ void Application::mainLoop()
         /******************************************************************* RENDER AUDIO **********************************************************************/
             this->renderOverlay();
         //======================================================================================================================================================
+
+            m_framebuffer->unbindFramebuffer();
+            m_framebuffer->renderFrame(m_data_manager);
 
         /******************************************************************* SWAPPING WINDOWS *******************************************************************/
             ImGui::Render();

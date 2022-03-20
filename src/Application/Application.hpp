@@ -38,6 +38,8 @@ PURPOSE : header of the Application class
 
         #include "../Skybox/Skybox.hpp"
         #include "../Objects/Spaceship/Spaceship.hpp"
+
+        #include "../InOut/Framebuffer/Framebuffer.hpp"
         
 
         #include "Camera/Camera.hpp"
@@ -81,6 +83,7 @@ PURPOSE : header of the Application class
                 Planete*                 mercury = nullptr;
                 Planete*                 earth = nullptr;
                 Renderer                *planete_renderer = nullptr;
+                Framebuffer             *m_framebuffer;
 
                 bool menu_app_key_pressed;
                 bool render_menu;
@@ -103,12 +106,13 @@ PURPOSE : header of the Application class
                 Application(int width, int height, SDL_Window *window);
                 ~Application();
 
+                void            loadFrameBuffer();
                 void            loadConfig();
                 void            loadAssets();
                 void            mainLoop();
                 void            cleanAll();
                 
-                // void    initFrameBuffer();
+                
                 
                 
                 // void    renderInfo(RenderData &render_data);

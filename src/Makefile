@@ -28,6 +28,7 @@ CC=g++
 
 # Generate source files list
 SRC=Main.cpp ContextManager.cpp
+SRC+=InOut\Framebuffer\Framebuffer.cpp
 SRC+=Loader\Loader.cpp
 SRC+=ErrorHandler\ErrorHandler.cpp
 SRC+=InOut\Input\Input.cpp InOut\Audio\Audio.cpp

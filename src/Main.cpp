@@ -33,6 +33,8 @@ int main(int argc, char **argv)
     
     Application scene(sdl_manager.win_width, sdl_manager.win_height, sdl_manager.window);
 
+
+    scene.loadFrameBuffer();
     scene.loadConfig();
     scene.loadAssets();
 
