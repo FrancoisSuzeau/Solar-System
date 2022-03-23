@@ -69,5 +69,11 @@ void Sphere::sendToShader(DataManager &data_manager)
         // data_manager.getShader(super::super::m_type)->setInt("hdr", data_manager.getHDR());
 
         glUseProgram(0);
+
+        glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+
+                data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
+
+        glUseProgram(0);
     }
 }

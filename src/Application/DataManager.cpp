@@ -103,6 +103,7 @@ void DataManager::setShader(bool main_loop)
 {
     std::vector<shader_datas> shader_init;
     shader_init.push_back({"../../src/Shader/Shaders/screenShader.vert", "../../src/Shader/Shaders/screenShader.frag", "screen"});
+    shader_init.push_back({"../../src/Shader/Shaders/depthShader.vert", "../../src/Shader/Shaders/depthShader.frag", "depth_map"});
     shader_init.push_back({"../../src/Shader/Shaders/squareShader.vert", "../../src/Shader/Shaders/squareShader.frag", "square"});
     shader_init.push_back({"../../src/Shader/Shaders/skybox.vert", "../../src/Shader/Shaders/skybox.frag", "skybox"});
     shader_init.push_back({"../../src/Shader/Shaders/model.vert", "../../src/Shader/Shaders/model.frag", "model"});

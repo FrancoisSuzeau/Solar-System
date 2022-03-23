@@ -109,6 +109,12 @@ void Spaceship::sendToShader(DataManager &data_manager)
         glUseProgram(0);
         
     }
+
+    glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+
+                data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
+
+    glUseProgram(0);
 }
 
 /***********************************************************************************************************************************************************************/

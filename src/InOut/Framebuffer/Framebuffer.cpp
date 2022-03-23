@@ -37,20 +37,20 @@ void Framebuffer::clean()
 {
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
-    glDeleteFramebuffers(1, &fb);
-    glDeleteFramebuffers(2, ping_pongFBO);
-    glDeleteRenderbuffers(1, &depth_rb);
-    glDeleteTextures(2, colorBuffers);
-    glDeleteTextures(2, ping_pong_text);
+    glDeleteFramebuffers(1, &fb_id);
+    // glDeleteFramebuffers(2, ping_pongFBO);
+    glDeleteRenderbuffers(1, &render_buffer_id);
+    // glDeleteTextures(2, colorBuffers);
+    // glDeleteTextures(2, ping_pong_text);
 
-    if((glIsRenderbuffer(depth_rb) == GL_FALSE) && 
-    (glIsFramebuffer(fb) == GL_FALSE) &&
-    (glIsFramebuffer(ping_pongFBO[0]) == GL_FALSE) &&
+    if((glIsRenderbuffer(render_buffer_id) == GL_FALSE) && 
+    (glIsFramebuffer(fb_id) == GL_FALSE) &&
+    /*(glIsFramebuffer(ping_pongFBO[0]) == GL_FALSE) &&
     (glIsFramebuffer(ping_pongFBO[1]) == GL_FALSE) &&
     (glIsTexture(colorBuffers[0]) == GL_FALSE) &&
     (glIsTexture(colorBuffers[1]) == GL_FALSE) &&
     (glIsTexture(ping_pong_text[0]) == GL_FALSE) &&
-    (glIsTexture(ping_pong_text[1]) == GL_FALSE) &&
+    (glIsTexture(ping_pong_text[1]) == GL_FALSE) &&*/
     (glIsBuffer(quadVBO) == GL_FALSE) && 
     (glIsVertexArray(quadVAO) == GL_FALSE))
     {
@@ -156,100 +156,137 @@ bool Framebuffer::initFramebuffer(int width, int height)
     return this->manageFramebuffer(width, height);
 }
 
-/***********************************************************************************************************************************************************************/
-/****************************************************************** manageColorBuffer **********************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Framebuffer::manageColorBuffer(int width, int height)
-{   
-    glGenTextures(2, colorBuffers);
-    for(unsigned int i = 0; i < 2; i++)
-    {
-        glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, colorBuffers[i]);
+// /***********************************************************************************************************************************************************************/
+// /****************************************************************** manageColorBuffer **********************************************************************************/
+// /***********************************************************************************************************************************************************************/
+// void Framebuffer::manageColorBuffer(int width, int height)
+// {   
+//     // glGenTextures(1, &texture_id);
 
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//     // glActiveTexture(GL_TEXTURE0);
+//     //     glBindTexture(GL_TEXTURE_2D, texture_id);
 
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorBuffers[i], 0);
-    }
+//     //         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, 0);
+//     //         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
 
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, 0);
+
+//     // glGenTextures(2, colorBuffers);
+//     // for(unsigned int i = 0; i < 2; i++)
+//     // {
+//     //     glActiveTexture(GL_TEXTURE0 + i);
+//     //     glBindTexture(GL_TEXTURE_2D, colorBuffers[i]);
+
+//     //         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+//     //         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorBuffers[i], 0);
+//     // }
+
+//     // glActiveTexture(GL_TEXTURE0);
+//     glBindTexture(GL_TEXTURE_2D, 0);
+
+//     // glActiveTexture(GL_TEXTURE1);
+//     // glBindTexture(GL_TEXTURE_2D, 0);
 
     
+// }
+
+/***********************************************************************************************************************************************************************/
+// /****************************************************************** manageDepthMap **********************************************************************************/
+// /***********************************************************************************************************************************************************************/
+void Framebuffer::manageDepthMap(int width, int height)
+{   
+    glGenTextures(1, &depth_map);
+    glBindTexture(GL_TEXTURE_2D, depth_map);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_map, 0);
+
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 /***********************************************************************************************************************************************************************/
 /****************************************************************** manageDepthBuffer **********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::manageDepthBuffer(int width, int height)
-{
-    glGenRenderbuffers(1, &depth_rb);
-    glBindRenderbuffer(GL_RENDERBUFFER, depth_rb);
+// void Framebuffer::manageRenderBuffer(int width, int height)
+// {
+//     glGenRenderbuffers(1, &render_buffer_id);
+//     glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_id);
 
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_rb);
+//         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+//         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, render_buffer_id);
 
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+//     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-    // Tell OpenGL we need to draw to both attachments
-	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	glDrawBuffers(2, attachments);
-}
+//     // Tell OpenGL we need to draw to both attachments
+// 	// unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+// 	// glDrawBuffers(2, attachments);
+// }
 
 /***********************************************************************************************************************************************************************/
 /****************************************************************** managePingPongFBO **********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::managePinPongFBO(int width, int height)
-{
-    glGenFramebuffers(2, ping_pongFBO);
-	glGenTextures(2, ping_pong_text);
-    for (unsigned int i = 0; i < 2; i++)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, ping_pongFBO[i]);
+// void Framebuffer::managePinPongFBO(int width, int height)
+// {
+//     glGenFramebuffers(2, ping_pongFBO);
+// 	glGenTextures(2, ping_pong_text);
+//     for (unsigned int i = 0; i < 2; i++)
+// 	{
+// 		glBindFramebuffer(GL_FRAMEBUFFER, ping_pongFBO[i]);
 
-        glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, ping_pong_text[i]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ping_pong_text[i], 0);
+//         glActiveTexture(GL_TEXTURE0 + i);
+// 		glBindTexture(GL_TEXTURE_2D, ping_pong_text[i]);
+// 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+// 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+// 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+// 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+// 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+// 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ping_pong_text[i], 0);
 
-		auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-		if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
-        {
-            std::cout << "ERROR::FRAMEBUFFER:: Ping Pong framebuffer is not complete >> " << fboStatus << std::endl;
-        }
-        std::cout << "FRAMEBUFFER:: Ping Pong Framebuffer is complete!" << std::endl;
+// 		auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+// 		if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
+//         {
+//             std::cout << "ERROR::FRAMEBUFFER:: Ping Pong framebuffer is not complete >> " << fboStatus << std::endl;
+//         }
+//         std::cout << "FRAMEBUFFER:: Ping Pong Framebuffer is complete!" << std::endl;
     
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	}
+// 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+// 	}
 
-    glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+//     glActiveTexture(GL_TEXTURE0);
+// 	glBindTexture(GL_TEXTURE_2D, 0);
 
-    glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
+//     glActiveTexture(GL_TEXTURE1);
+// 	glBindTexture(GL_TEXTURE_2D, 0);
+// }
 
 /***********************************************************************************************************************************************************************/
 /****************************************************************** manageFramebuffer **********************************************************************************/
 /***********************************************************************************************************************************************************************/
 bool Framebuffer::manageFramebuffer(int width, int height)
 {
-    glGenFramebuffers(1, &fb);
-    glBindFramebuffer(GL_FRAMEBUFFER, fb);
+    glGenFramebuffers(1, &fb_id);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb_id);
 
-        this->manageColorBuffer(width, height);
-        this->manageDepthBuffer(width, height);
+        // this->manageColorBuffer(width, height);
+        this->manageDepthMap(width, height);
+        // this->manageRenderBuffer(width, height);
 
         auto status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         
@@ -263,7 +300,7 @@ bool Framebuffer::manageFramebuffer(int width, int height)
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    this->managePinPongFBO(width, height);
+    // this->managePinPongFBO(width, height);
 
     //===================================================================================================================
 
@@ -340,6 +377,13 @@ void Framebuffer::renderFrame(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
 {
+    glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+
+        data_manager.getShader("depth_map")->setMat4("light_proj", data_manager.getProjMat());
+        data_manager.getShader("depth_map")->setMat4("light_view", data_manager.getViewMat());
+
+    glUseProgram(0);
+    
     if(data_manager.getShader("screen") != nullptr)
     {
         glUseProgram(data_manager.getShader("screen")->getProgramID());
@@ -349,13 +393,21 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
             // data_manager.getShader("screen")->setInt("bloom", data_manager.getBloom());
 
             data_manager.getShader("screen")->setTexture("screenTexture", 0);
+            data_manager.getShader("screen")->setFloat("near", data_manager.getNear());
+            data_manager.getShader("screen")->setFloat("far", data_manager.getFar());
             // data_manager.getShader("screen")->setTexture("bloomTexture", 1);
             // data_manager.getShader("screen")->setFloat("gamma", 2.2);
 
             glBindVertexArray(quadVAO);
                 
+                // glActiveTexture(GL_TEXTURE0);
+                // glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
+
+                // glActiveTexture(GL_TEXTURE0);
+                // glBindTexture(GL_TEXTURE_2D, texture_id);
+
                 glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
+                glBindTexture(GL_TEXTURE_2D, depth_map);
 
                 // if(data_manager.getBloom())
                 // {
@@ -365,8 +417,8 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
                 
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, 0);
+                // glActiveTexture(GL_TEXTURE0);
+                // glBindTexture(GL_TEXTURE_2D, 0);
 
                 // if(data_manager.getBloom())
                 // {
@@ -395,6 +447,8 @@ void Framebuffer::bindFramebuffer()
     //cleaning the screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glClear(GL_DEPTH_BUFFER_BIT);
+
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -418,5 +472,5 @@ void Framebuffer::unbindFramebuffer()
 /***********************************************************************************************************************************************************************/
 unsigned int Framebuffer::getFB() const
 {
-    return fb;
+    return fb_id;
 }
