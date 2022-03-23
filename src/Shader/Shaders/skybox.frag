@@ -1,21 +1,12 @@
 #version 400 core
 
 in vec3 TexCoords;
-uniform float near; 
-uniform float far;
-uniform bool render_depth;
 
 layout (location = 0) out vec4 FragColor;
 // layout (location = 1) out vec4 BrightColor;
 
 uniform samplerCube skybox;
 // uniform bool hdr; 
-  
-float LinearizeDepth(float depth) 
-{
-    float z = depth * 2.0 - 1.0; // back to NDC 
-    return (2.0 * near * far) / (far + near - z * (far - near));	
-}
 
 void main()
 {
@@ -53,14 +44,6 @@ void main()
     
     // FragColor = vec4(result, 1.0);
 
-    if(render_depth)
-    {
-        float depth = LinearizeDepth(gl_FragCoord.z) / far; // divide by far for demonstration
-        FragColor = vec4(vec3(depth), 1.0);
-    }
-    else
-    {
-        vec3 result = objectColor;
-        FragColor = vec4(result, 1.0);
-    }
+    vec3 result = objectColor;
+    FragColor = vec4(result, 1.0);
 }

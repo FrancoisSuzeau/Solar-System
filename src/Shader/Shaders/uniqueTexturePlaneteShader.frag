@@ -7,9 +7,6 @@ in vec3 FragPos;
 uniform vec3 viewPos;
 uniform vec3 sunPos;
 in vec3 Normal;
-uniform float near; 
-uniform float far;
-uniform bool render_depth;
 // uniform bool hdr;
 // uniform bool has_normal;
 // uniform bool has_disp;
@@ -30,12 +27,7 @@ uniform Material material;
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
 // layout (location = 1) out vec4 BrightColor; 
-  
-float LinearizeDepth(float depth) 
-{
-    float z = depth * 2.0 - 1.0; // back to NDC 
-    return (2.0 * near * far) / (far + near - z * (far - near));	
-}
+
 
 // vec2 parallaxMapping(vec2 texCoord, vec3 viewDir)
 // {
@@ -200,14 +192,6 @@ void main(void) {
     
     // FragColor = vec4(result, 1.0);
 
-    if(render_depth)
-    {
-        float depth = LinearizeDepth(gl_FragCoord.z) / far; // divide by far for demonstration
-        FragColor = vec4(vec3(depth), 1.0);
-    }
-    else
-    {
-        vec3 result = (ambiant + diffuse + specular) * objectColor;
-        FragColor = vec4(result, 1.0);
-    }    
+    vec3 result = (ambiant + diffuse + specular) * objectColor;
+    FragColor = vec4(result, 1.0);   
 }

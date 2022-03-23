@@ -119,10 +119,6 @@ void Skybox::sendToShader(DataManager &data_manager)
 
             data_manager.getShader("skybox")->setMat4("view", view);
             data_manager.getShader("skybox")->setMat4("projection", data_manager.getProjMat());
-            data_manager.getShader("skybox")->setFloat("far", data_manager.getFar());
-            data_manager.getShader("skybox")->setFloat("near", data_manager.getNear());
-            data_manager.getShader("skybox")->setInt("render_depth", data_manager.getDepthRender());
-
 
             data_manager.getShader("skybox")->setTexture("skybox", 0);
             // data_manager.getShader("skybox")->setInt("hdr", data_manager.getHDR());

@@ -9,20 +9,10 @@ in vec3 FragPos;
 // uniform bool hdr;
 uniform vec3 viewPos;
 uniform vec3 sunPos;
-uniform float near; 
-uniform float far;
-uniform bool render_depth;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
 // layout (location = 1) out vec4 BrightColor;
-
-  
-float LinearizeDepth(float depth) 
-{
-    float z = depth * 2.0 - 1.0; // back to NDC 
-    return (2.0 * near * far) / (far + near - z * (far - near));	
-}
 
 void main()
 {
@@ -85,15 +75,7 @@ void main()
     //     BrightColor = vec4(result, 1.0);
     // else
     //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-    
-    if(render_depth)
-    {
-        float depth = LinearizeDepth(gl_FragCoord.z) / far; // divide by far for demonstration
-        FragColor = vec4(vec3(depth), 1.0);
-    }
-    else
-    {
-        vec3 result = (ambiant + diffuse + specular) * objectColor;
-        FragColor = vec4(result, 1.0);
-    }
+
+    vec3 result = (ambiant + diffuse + specular) * objectColor;
+    FragColor = vec4(result, 1.0);
 }
