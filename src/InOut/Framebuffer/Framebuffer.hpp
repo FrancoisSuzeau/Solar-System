@@ -59,7 +59,7 @@ PURPOSE : header of the Framebuffer class
                 int m_bytes_coord_size;
 
                 void initVertices();
-                bool manageFramebuffers(int width, int height);
+                void manageFramebuffers(int width, int height);
                 void manageColorBuffer(int width, int height);
                 void manageDepthMap(int width, int height);
                 void manageRenderBuffer(int width, int height);
@@ -68,12 +68,14 @@ PURPOSE : header of the Framebuffer class
                 // void drawBlur(DataManager &data_manager, bool &horizontal);
                 void drawScreenTexture(DataManager &data_manager, bool &horizontal);
 
+                bool checkFramebufferStatus(std::string const framebuffer_type);
+
             public:
 
                 Framebuffer();
                 ~Framebuffer();
 
-                bool initFramebuffer(int width, int height);
+                void initFramebuffers(int width, int height);
                 void renderFrame(DataManager &data_manager);
                 void bindFramebuffer(int type);
                 void unbindFramebuffer();

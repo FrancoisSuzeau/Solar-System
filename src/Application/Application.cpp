@@ -125,7 +125,7 @@ void Application::cleanAll()
 /***********************************************************************************************************************************************************************/
 void Application::loadFrameBuffer()
 {
-    assert(m_framebuffer->initFramebuffer(m_data_manager.getWidth(), m_data_manager.getHeight()));
+    m_framebuffer->initFramebuffers(m_data_manager.getWidth(), m_data_manager.getHeight());
 }
 
 /***********************************************************************************************************************************************************************/
