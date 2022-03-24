@@ -37,14 +37,14 @@ void Framebuffer::clean()
 {
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
-    glDeleteFramebuffers(1, &fb_id);
+    glDeleteFramebuffers(1, &color_fb_id);
     // glDeleteFramebuffers(2, ping_pongFBO);
     glDeleteRenderbuffers(1, &render_buffer_id);
     // glDeleteTextures(2, colorBuffers);
     // glDeleteTextures(2, ping_pong_text);
 
     if((glIsRenderbuffer(render_buffer_id) == GL_FALSE) && 
-    (glIsFramebuffer(fb_id) == GL_FALSE) &&
+    (glIsFramebuffer(color_fb_id) == GL_FALSE) &&
     /*(glIsFramebuffer(ping_pongFBO[0]) == GL_FALSE) &&
     (glIsFramebuffer(ping_pongFBO[1]) == GL_FALSE) &&
     (glIsTexture(colorBuffers[0]) == GL_FALSE) &&
@@ -153,51 +153,51 @@ bool Framebuffer::initFramebuffer(int width, int height)
     glBindVertexArray(0);
     //===================================================================================================================
 
-    return this->manageFramebuffer(width, height);
+    return this->manageFramebuffers(width, height);
 }
 
 // /***********************************************************************************************************************************************************************/
 // /****************************************************************** manageColorBuffer **********************************************************************************/
 // /***********************************************************************************************************************************************************************/
-// void Framebuffer::manageColorBuffer(int width, int height)
-// {   
-//     // glGenTextures(1, &texture_id);
+void Framebuffer::manageColorBuffer(int width, int height)
+{   
+    glGenTextures(1, &texture_id);
 
-//     // glActiveTexture(GL_TEXTURE0);
-//     //     glBindTexture(GL_TEXTURE_2D, texture_id);
+    glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture_id);
 
-//     //         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-//     //         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
 
 
-//     // glGenTextures(2, colorBuffers);
-//     // for(unsigned int i = 0; i < 2; i++)
-//     // {
-//     //     glActiveTexture(GL_TEXTURE0 + i);
-//     //     glBindTexture(GL_TEXTURE_2D, colorBuffers[i]);
+    // glGenTextures(2, colorBuffers);
+    // for(unsigned int i = 0; i < 2; i++)
+    // {
+    //     glActiveTexture(GL_TEXTURE0 + i);
+    //     glBindTexture(GL_TEXTURE_2D, colorBuffers[i]);
 
-//     //         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//     //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    //         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-//     //         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorBuffers[i], 0);
-//     // }
+    //         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorBuffers[i], 0);
+    // }
 
-//     // glActiveTexture(GL_TEXTURE0);
-//     glBindTexture(GL_TEXTURE_2D, 0);
+    // glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
-//     // glActiveTexture(GL_TEXTURE1);
-//     // glBindTexture(GL_TEXTURE_2D, 0);
+    // glActiveTexture(GL_TEXTURE1);
+    // glBindTexture(GL_TEXTURE_2D, 0);
 
     
-// }
+}
 
 /***********************************************************************************************************************************************************************/
 // /****************************************************************** manageDepthMap **********************************************************************************/
@@ -224,20 +224,20 @@ void Framebuffer::manageDepthMap(int width, int height)
 /***********************************************************************************************************************************************************************/
 /****************************************************************** manageDepthBuffer **********************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Framebuffer::manageRenderBuffer(int width, int height)
-// {
-//     glGenRenderbuffers(1, &render_buffer_id);
-//     glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_id);
+void Framebuffer::manageRenderBuffer(int width, int height)
+{
+    glGenRenderbuffers(1, &render_buffer_id);
+    glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_id);
 
-//         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-//         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, render_buffer_id);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, render_buffer_id);
 
-//     glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-//     // Tell OpenGL we need to draw to both attachments
-// 	// unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-// 	// glDrawBuffers(2, attachments);
-// }
+    // Tell OpenGL we need to draw to both attachments
+	// unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	// glDrawBuffers(2, attachments);
+}
 
 /***********************************************************************************************************************************************************************/
 /****************************************************************** managePingPongFBO **********************************************************************************/
@@ -277,26 +277,39 @@ void Framebuffer::manageDepthMap(int width, int height)
 // }
 
 /***********************************************************************************************************************************************************************/
-/****************************************************************** manageFramebuffer **********************************************************************************/
+/****************************************************************** manageFramebuffers **********************************************************************************/
 /***********************************************************************************************************************************************************************/
-bool Framebuffer::manageFramebuffer(int width, int height)
+bool Framebuffer::manageFramebuffers(int width, int height)
 {
-    glGenFramebuffers(1, &fb_id);
-    glBindFramebuffer(GL_FRAMEBUFFER, fb_id);
+    glGenFramebuffers(1, &depth_fb_id);
+    glBindFramebuffer(GL_FRAMEBUFFER, depth_fb_id);
 
-        // this->manageColorBuffer(width, height);
         this->manageDepthMap(width, height);
-        // this->manageRenderBuffer(width, height);
 
-        auto status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    auto status = glCheckFramebufferStatus(GL_FRAMEBUFFER); 
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        std::cout << "ERROR::FRAMEBUFFER:: Depth Framebuffer is not complete >> " << status << std::endl;
+        return false;
+    }
+    std::cout << "FRAMEBUFFER:: Depth Framebuffer is complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    glGenFramebuffers(1, &color_fb_id);
+    glBindFramebuffer(GL_FRAMEBUFFER, color_fb_id);
+
+        this->manageColorBuffer(width, height);
         
-        if (status != GL_FRAMEBUFFER_COMPLETE)
-        {
-            std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete >> " << status << std::endl;
-            return false;
-        }
+        this->manageRenderBuffer(width, height);
 
-        std::cout << "FRAMEBUFFER:: Framebuffer is complete!" << std::endl;
+    status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        std::cout << "ERROR::FRAMEBUFFER:: Depth Framebuffer is not complete >> " << status << std::endl;
+        return false;
+    }
+    std::cout << "FRAMEBUFFER:: Depth Framebuffer is complete!" << std::endl;
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -379,8 +392,8 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
 {
     glUseProgram(data_manager.getShader("depth_map")->getProgramID());
 
-        data_manager.getShader("depth_map")->setMat4("light_proj", data_manager.getProjMat());
-        data_manager.getShader("depth_map")->setMat4("light_view", data_manager.getViewMat());
+        data_manager.getShader("depth_map")->setMat4("projection", data_manager.getProjMat());
+        data_manager.getShader("depth_map")->setMat4("view", data_manager.getViewMat());
 
     glUseProgram(0);
     
@@ -392,37 +405,44 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
             // data_manager.getShader("screen")->setInt("hdr", data_manager.getHDR());
             // data_manager.getShader("screen")->setInt("bloom", data_manager.getBloom());
 
-            data_manager.getShader("screen")->setTexture("screenTexture", 0);
+            data_manager.getShader("screen")->setTexture("depth_texture", 0);
+            data_manager.getShader("screen")->setTexture("screen_texture", 1);
             data_manager.getShader("screen")->setFloat("near", data_manager.getNear());
             data_manager.getShader("screen")->setFloat("far", data_manager.getFar());
-            // data_manager.getShader("screen")->setTexture("bloomTexture", 1);
+            data_manager.getShader("screen")->setInt("render_depth", data_manager.getDepthRender());
+            // data_manager.getShader("screen")->setTexture("bloom_texture", 2);
             // data_manager.getShader("screen")->setFloat("gamma", 2.2);
 
             glBindVertexArray(quadVAO);
                 
-                // glActiveTexture(GL_TEXTURE0);
-                // glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
-
-                // glActiveTexture(GL_TEXTURE0);
-                // glBindTexture(GL_TEXTURE_2D, texture_id);
+                
 
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, depth_map);
 
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, texture_id);
+
+                // glActiveTexture(GL_TEXTURE1);
+                // glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
+
                 // if(data_manager.getBloom())
                 // {
-                //     glActiveTexture(GL_TEXTURE1);
+                //     glActiveTexture(GL_TEXTURE2);
                 //     glBindTexture(GL_TEXTURE_2D, ping_pong_text[!horizontal]);
                 // }  
                 
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
-                // glActiveTexture(GL_TEXTURE0);
-                // glBindTexture(GL_TEXTURE_2D, 0);
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, 0);
+
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, 0);
 
                 // if(data_manager.getBloom())
                 // {
-                //     glActiveTexture(GL_TEXTURE1);
+                //     glActiveTexture(GL_TEXTURE2);
                 //     glBindTexture(GL_TEXTURE_2D, 0);
                 // }
 
@@ -436,10 +456,10 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
 /***********************************************************************************************************************************************************************/
 /****************************************************************** bindFramebuffer ************************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::bindFramebuffer()
+void Framebuffer::bindFramebuffer(int type)
 {
 
-    glBindFramebuffer(GL_FRAMEBUFFER, this->getFB());
+    glBindFramebuffer(GL_FRAMEBUFFER, this->getFB(type));
 
     //make sure we clear the framebuffer's content
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -470,7 +490,21 @@ void Framebuffer::unbindFramebuffer()
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** getter ****************************************************************************************/
 /***********************************************************************************************************************************************************************/
-unsigned int Framebuffer::getFB() const
+unsigned int Framebuffer::getFB(int type) const
 {
-    return fb_id;
+    unsigned int fb = 0;
+    switch (type)
+    {
+        case COLOR_FBO:
+            fb = color_fb_id;
+            break;
+
+        case DEPTH_FBO:
+            fb = depth_fb_id;
+            break;
+        
+        default:
+            break;
+    }
+    return fb;
 }

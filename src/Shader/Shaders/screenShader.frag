@@ -3,10 +3,12 @@
 
 // ============ In data ============
 in vec2 TexCoords;
-uniform sampler2D screenTexture;
+uniform sampler2D depth_texture;
+uniform sampler2D screen_texture;
 uniform float near;
-uniform float far;    
-// uniform sampler2D bloomTexture;
+uniform float far;
+uniform bool render_depth;    
+// uniform sampler2D bloom_texture;
 // uniform bool bloom;
 // uniform bool hdr;
 // uniform float exposure;
@@ -24,8 +26,8 @@ float LinearizeDepth(float depth)
 
 void main()
 {
-    // vec3 fragment = texture(screenTexture, TexCoords).rgb;
-    // vec3 bloom_text = texture(bloomTexture, TexCoords).rgb;
+    vec3 fragment = texture(screen_texture, TexCoords).rgb;
+    // vec3 bloom_text = texture(bloom_texture, TexCoords).rgb;
 
     // if(bloom)
     // {
@@ -40,7 +42,15 @@ void main()
 
     // FragColor = vec4(fragment, 1.0);
 
-    float depthValue = texture(screenTexture, TexCoords).r;
-    FragColor = vec4(vec3(LinearizeDepth(depthValue) / far), 1.0); // perspective
-    // FragColor = vec4(vec3(depthValue), 1.0); // orthographic
+    if(render_depth)
+    {
+        float depthValue = texture(depth_texture, TexCoords).r;
+        FragColor = vec4(vec3(LinearizeDepth(depthValue) / far), 1.0);
+    }
+    else
+    {
+        FragColor = vec4(fragment, 1.0);
+    }
+
+     
 }

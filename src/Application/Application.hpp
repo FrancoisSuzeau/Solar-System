@@ -99,6 +99,7 @@ PURPOSE : header of the Application class
                 void    renderOverlay();
                 void    renderScene();
                 void    makeAllChanges();
+                void    renderIntoFramebuffer(int type);
                 
 
             public:
