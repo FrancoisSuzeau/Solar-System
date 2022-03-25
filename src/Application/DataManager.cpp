@@ -19,7 +19,7 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
 bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(10000), m_fps(60),
 render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true), //for loading the skin at program launch
-far_plane(100.f), near_plane(0.1f), depth_render(false)
+far_plane(1000.f), near_plane(0.1f), depth_render(false)
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, (double)near_plane, (double)far_plane);
     view_mat = glm::mat4(1.0f);
@@ -110,6 +110,7 @@ void DataManager::setShader(bool main_loop)
     shader_init.push_back({"../../src/Shader/Shaders/sunShader.vert", "../../src/Shader/Shaders/sunShader.frag", "sun"});
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/uniqueTexturePlaneteShader.frag", "simple_textured_planete"});
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/doubleTexturePlaneteShader.frag", "double_textured_planete"});
+    shader_init.push_back({"../../src/Shader/Shaders/texture.vert", "../../src/Shader/Shaders/texture.frag", "ring"});
     
     // shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
 

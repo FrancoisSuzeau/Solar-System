@@ -96,11 +96,13 @@ void Application::cleanAll()
     {
         sun->clean();
         delete sun;
+        sun = nullptr;
     }
     if(star_renderer != nullptr)
     {
         star_renderer->clean();
         delete star_renderer;
+        star_renderer = nullptr;
     }
 
     if(mercury != nullptr)
@@ -112,11 +114,31 @@ void Application::cleanAll()
     {
         earth->clean();
         delete earth;
+        earth = nullptr;
+    }
+    if(saturn != nullptr)
+    {
+        saturn->clean();
+        delete saturn;
+        saturn = nullptr;
+    }
+    if(saturn_ring != nullptr)
+    {
+        saturn_ring->clean();
+        delete saturn_ring;
+        saturn_ring = nullptr;
     }
     if(planete_renderer != nullptr)
     {
         planete_renderer->clean();
         delete planete_renderer;
+        planete_renderer = nullptr;
+    }
+    if(ring_renderer != nullptr)
+    {
+        ring_renderer->clean();
+        delete ring_renderer;
+        ring_renderer = nullptr;
     }
 }
 
@@ -186,6 +208,18 @@ void Application::loadAssets()
     mercury->updateSize(glm::vec3(1.f));
 
     surface_paths.clear();
+    surface_paths.push_back("../../assets/textures/CelestialBody/SaturnCloud.jpg");
+    saturn = new Planete(1.f, surface_paths, "simple_textured_planete", 16);
+    assert(saturn);
+    saturn->updateSize(glm::vec3(5.f));
+
+    surface_paths.clear();
+    surface_paths.push_back("../../assets/textures/CelestialBody/SaturnRing.png");
+    saturn_ring = new Ring(1.f, surface_paths, "ring", 32);
+    assert(saturn_ring);
+    saturn_ring->updateSize(glm::vec3(25.f));
+
+    surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/EarthDayMap.jpg");
     surface_paths.push_back("../../assets/textures/CelestialBody/CloudMap.jpg");
     earth = new Planete(1.f, surface_paths, "double_textured_planete", 128, 0.3f);
@@ -194,6 +228,11 @@ void Application::loadAssets()
 
     planete_renderer = new PlaneteRenderer(1.f, 70.f, 70.f);
     assert(planete_renderer);
+
+    ring_renderer = new RingRenderer();
+    assert(ring_renderer);
+
+
 }
 
 /***********************************************************************************************************************************************************************/
@@ -215,7 +254,7 @@ void Application::mainLoop()
         //=====================================================================================================================================================
 
         /******************************************************************* RENDER AUDIO **********************************************************************/
-            this->renderAudio();
+            // this->renderAudio();
         //======================================================================================================================================================
 
             ImGui_ImplOpenGL3_NewFrame();
@@ -259,7 +298,7 @@ void Application::renderIntoFramebuffer(int type)
 
         /******************************************************************* RENDER FRAME OVERLAY **************************************************************/
             glm::mat4 save = m_data_manager.getViewMat();
-            m_data_manager.lockView(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            m_data_manager.lockView(glm::vec3(0.0f, 0.0f, -1.15f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             
             m_overlay.renderEdges(m_data_manager);
 
@@ -312,6 +351,18 @@ void Application::makeAllChanges()
     {
         earth->updatePosition(glm::vec3(-40.f, 0.f, 0.f));
         earth->transform(-m_data_manager.getShipPos());
+    }
+
+    if(saturn != nullptr)
+    {
+        saturn->updatePosition(glm::vec3(40.f, 0.f, 0.f));
+        saturn->transform(-m_data_manager.getShipPos());
+    }
+
+    if(saturn_ring != nullptr)
+    {
+        saturn_ring->updatePosition(glm::vec3(40.f, 0.f, 0.0f));
+        saturn_ring->transform(-m_data_manager.getShipPos());
     }
 }
 
@@ -394,6 +445,16 @@ void Application::renderScene()
     if((earth != nullptr) && (planete_renderer != nullptr))
     {
         planete_renderer->render(m_data_manager, earth);
+    }
+
+    if((saturn != nullptr) && (planete_renderer != nullptr))
+    {
+        planete_renderer->render(m_data_manager, saturn);
+    }
+
+    if((saturn_ring != nullptr) && (ring_renderer != nullptr))
+    {
+        ring_renderer->render(m_data_manager, saturn_ring);
     }
 }
 

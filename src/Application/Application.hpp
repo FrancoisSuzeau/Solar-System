@@ -36,6 +36,9 @@ PURPOSE : header of the Application class
         #include "../Renderers/TexturedRenderers/PlaneteRenderer/PlaneteRenderer.hpp"
         #include "../Objects/TexturedObjects/Planete/Planete.hpp"
 
+        #include "../Renderers/TexturedRenderers/RingRenderer/RingRenderer.hpp"
+        #include "../Objects/TexturedObjects/SquareTextured/Ring/Ring.hpp"
+
         #include "../Skybox/Skybox.hpp"
         #include "../Objects/Spaceship/Spaceship.hpp"
 
@@ -82,7 +85,10 @@ PURPOSE : header of the Application class
                 Renderer                *star_renderer = nullptr;
                 Planete*                 mercury = nullptr;
                 Planete*                 earth = nullptr;
+                Planete*                 saturn = nullptr;
+                Ring                    *saturn_ring = nullptr;
                 Renderer                *planete_renderer = nullptr;
+                Renderer                *ring_renderer = nullptr;
                 Framebuffer             *m_framebuffer;
 
                 bool menu_app_key_pressed;

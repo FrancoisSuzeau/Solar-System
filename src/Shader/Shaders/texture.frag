@@ -164,14 +164,15 @@ void main()
     specular *= mitigation;
 
     vec3 objectColor = texture(texture0, texCoord).rgb;
-    vec3 result = (ambiant + diffuse + specular) * objectColor;
+    FragColor = vec4(objectColor, 1.0);
+    // vec3 result = (ambiant + diffuse + specular) * objectColor;
 
-    float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
-    if(brightness > 1.0)
-        BrightColor = vec4(result, 1.0);
-    else
-        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
+    // if(brightness > 1.0)
+    //     BrightColor = vec4(result, 1.0);
+    // else
+    //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     
-    FragColor = vec4(result, 1.0);
+    // FragColor = vec4(result, 1.0);
     
 }

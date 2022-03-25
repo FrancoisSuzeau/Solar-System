@@ -127,7 +127,7 @@ PURPOSE : class Planete
 // }
 
 Planete::Planete(float size, std::vector<std::string> surface_tex_paths, std::string const type, int shininess, float const oppacity) : super(size, type),
-m_oppacity(oppacity), m_shininess(shininess)
+m_oppacity(oppacity)
 {
     int i = 0;
     for(std::vector<std::string>::iterator it = surface_tex_paths.begin(); it != surface_tex_paths.end(); ++it)
@@ -139,6 +139,7 @@ m_oppacity(oppacity), m_shininess(shininess)
 
     m_rotation_angle = 0.f;
     m_speed_rotation = 0.1f;
+    m_shininess = shininess;
 }
 
 Planete::~Planete()

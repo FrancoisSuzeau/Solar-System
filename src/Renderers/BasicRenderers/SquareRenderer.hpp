@@ -32,9 +32,11 @@ PURPOSE : header of the SquareRenderer class
                         
                         float   m_vertices[18];
                         float   m_colors[18];
+                        float   m_coord_texture[12];
 
                         int     m_bytes_vertices_size;
                         int     m_bytes_colors_size;
+                        int     m_bytes_texture_size;
 
                         void    load() override;
                         

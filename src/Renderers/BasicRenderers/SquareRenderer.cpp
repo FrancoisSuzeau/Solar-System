@@ -21,10 +21,11 @@ SquareRenderer::SquareRenderer(float const color)
     super::m_vaoID = 0;
     m_bytes_vertices_size = 18 * sizeof(float);
     m_bytes_colors_size = 18 * sizeof(float);
+    m_bytes_texture_size = 12 * sizeof(float);
 
     float verticesTmp[] = {
-                            -0.5f, -0.5f, -0.5f,   0.5f, -0.5f, -0.5f,   0.5f, 0.5f, -0.5f,   
-                            -0.5f, -0.5f, -0.5f,   -0.5f, 0.5f, -0.5f,   0.5f, 0.5f, -0.5f  
+                            -0.5f, -0.5f, 0.0f,   0.5f, -0.5f, 0.0f,   0.5f, 0.5f, 0.0f,   
+                            -0.5f, -0.5f, 0.0f,   -0.5f, 0.5f, 0.0f,   0.5f, 0.5f, 0.0f  
                         };
 
 
@@ -33,11 +34,22 @@ SquareRenderer::SquareRenderer(float const color)
                             color, color, color,   color, color, color,   color, color, color,
                         };
 
+    float temp_coord[] = {
+                            0, 0,   1, 0,   1, 1,
+                            0, 0,   0, 1,   1, 1,
+                          
+                        };
+
     //copying all value in our tab
     for (int i(0); i < 18; i++)
     {
         m_vertices[i] = verticesTmp[i];
         m_colors[i] = colorsTmp[i];
+    }
+
+    for (int i(0); i < 12; i++)
+    {
+        m_coord_texture[i] = temp_coord[i];
     }
 
     this->load();
@@ -92,7 +104,7 @@ void SquareRenderer::load()
     glBindBuffer(GL_ARRAY_BUFFER, super::m_vboID);
 
         //memory allocation
-        glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_colors_size, 0, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_colors_size + m_bytes_texture_size, 0, GL_STATIC_DRAW);
         /*
             - GL_STATIC_DRAW : data with few updating
             - GL_DYNAMIC_DRAW : data with frequently updating (many times per second but not each frame
@@ -103,6 +115,7 @@ void SquareRenderer::load()
        //vertices transfert$
        glBufferSubData(GL_ARRAY_BUFFER, 0, m_bytes_vertices_size, m_vertices);
        glBufferSubData(GL_ARRAY_BUFFER, m_bytes_vertices_size, m_bytes_colors_size, m_colors);
+       glBufferSubData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_colors_size, m_bytes_texture_size, m_coord_texture);
 
 
     //unlock VBO
@@ -133,6 +146,10 @@ void SquareRenderer::load()
         //acces to the colors in video memory
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(m_bytes_vertices_size));
         glEnableVertexAttribArray(1);
+
+        //acces to coordonates texture in video memory
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(m_bytes_vertices_size + m_bytes_colors_size));
+        glEnableVertexAttribArray(2);
 
         //unlock VBO
         glBindBuffer(GL_ARRAY_BUFFER, 0);

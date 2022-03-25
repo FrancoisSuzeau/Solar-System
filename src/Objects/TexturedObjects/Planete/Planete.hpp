@@ -45,7 +45,6 @@ PURPOSE : header of the Planete class
 
                         typedef Sphere super;
                         float   m_oppacity;
-                        int     m_shininess;
             
             protected:
 

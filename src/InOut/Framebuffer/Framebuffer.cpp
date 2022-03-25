@@ -458,6 +458,27 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
             
         glUseProgram(0);
     }
+
+    this->renderDebugWindow(data_manager);
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/**************************************************************** renderDebugWindow ************************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Framebuffer::renderDebugWindow(DataManager &data_manager)
+{
+    if(data_manager.getDepthRender())
+    {
+        ImGuiWindowFlags window_flags = 0;
+        
+        window_flags |= ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar;
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowSize(ImVec2(data_manager.getWidth()/2 - 90, data_manager.getHeight()/2 - 90));
+        ImGui::Begin("Depth Map Render", nullptr, window_flags);
+        ImGui::Image((void*) texture_id, ImVec2(data_manager.getWidth()/2 - 90, data_manager.getHeight()/2 - 95), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::End();
+    }
 }
 
 /***********************************************************************************************************************************************************************/

@@ -49,6 +49,8 @@ PURPOSE : Interface Object
                 float           m_rotation_angle;
                 std::string     m_type;
 
+                int             m_shininess = 0;
+
                 std::vector<GLuint>          surface_tex_ids;
 
             public:

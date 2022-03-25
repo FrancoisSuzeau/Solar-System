@@ -28,6 +28,16 @@ PURPOSE : header of the Framebuffer class
 
         #include "../../Application/DataManager.hpp"
 
+        #if defined(IMGUI_IMPL_OPENGL_ES2)
+        #include <SDL_opengles2.h>
+        #else
+        #include <SDL2/SDL_opengl.h>
+        #endif
+
+        #include "../../../lib/imgui/imgui.h"
+        #include "../../../lib/imgui/imgui_impl_sdl.h"
+        #include "../../../lib/imgui/imgui_impl_opengl3.h"
+
         #define COLOR_FBO 0
         #define DEPTH_FBO 1
         
@@ -67,6 +77,7 @@ PURPOSE : header of the Framebuffer class
 
                 // void drawBlur(DataManager &data_manager, bool &horizontal);
                 void drawScreenTexture(DataManager &data_manager, bool &horizontal);
+                void renderDebugWindow(DataManager &data_manager);
 
                 bool checkFramebufferStatus(std::string const framebuffer_type);
 
