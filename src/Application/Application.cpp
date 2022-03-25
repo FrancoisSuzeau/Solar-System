@@ -298,7 +298,7 @@ void Application::renderIntoFramebuffer(int type)
 
         /******************************************************************* RENDER FRAME OVERLAY **************************************************************/
             glm::mat4 save = m_data_manager.getViewMat();
-            m_data_manager.lockView(glm::vec3(0.0f, 0.0f, -1.15f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            m_data_manager.lockView(glm::vec3(0.0f, 0.0f, -1.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             
             m_overlay.renderEdges(m_data_manager);
 

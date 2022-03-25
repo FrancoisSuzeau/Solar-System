@@ -125,7 +125,7 @@ void Overlay::renderHorizontal(DataManager &data_manager, float side)
     {
         std::vector<glm::vec3> coordinates;
         coordinates.push_back(glm::vec3(i, side, 0.f));
-        float tmp = (side > 0.f) ? 1.471f : -1.471f;
+        float tmp = (side > 0.f) ? 1.42f : -1.42f;
         coordinates.push_back(glm::vec3(i, tmp, 0.1f));
         this->displaySquares(data_manager, coordinates);
     }
@@ -141,7 +141,7 @@ void Overlay::renderVertical(DataManager &data_manager, float side)
     {
         std::vector<glm::vec3> coordinates;
         coordinates.push_back(glm::vec3(side, i, 0.f));
-        float tmp = (side > 0.f) ? 2.25f : -2.25f;
+        float tmp = (side > 0.f) ? 2.16f : -2.16f;
         coordinates.push_back(glm::vec3(tmp, i, 0.1f));
         this->displaySquares(data_manager, coordinates);
     }
@@ -153,13 +153,13 @@ void Overlay::renderVertical(DataManager &data_manager, float side)
 void Overlay::renderEdges(DataManager &data_manager)
 {   
     //up
-    this->renderHorizontal(data_manager, 1.5f);
+    this->renderHorizontal(data_manager, 1.4f);
     //bottom
-    this->renderHorizontal(data_manager, -1.5f);
+    this->renderHorizontal(data_manager, -1.4f);
     //left
-    this->renderVertical(data_manager, -2.31f);
+    this->renderVertical(data_manager, -2.11f);
     //right
-    this->renderVertical(data_manager, 2.31f);
+    this->renderVertical(data_manager, 2.11f);
 }
 
 /***********************************************************************************************************************************************************************/
