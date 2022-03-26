@@ -86,7 +86,7 @@ PURPOSE : header of the DataManager class
                 bool            getPause() const;
                 void            setTrack(int const track);
                 int             getTrack() const;
-                void            setShader(bool main_loop);
+                void            setShader();
                 Shader          *getShader(std::string key);
                 glm::mat4&       getViewMat();
                 void            resetViewMat(glm::mat4 const new_mat);

@@ -1,17 +1,17 @@
+// ============ GLSL version ============
 #version 400 core
 
+// ============ In data ============
 uniform vec3 viewPos;
 uniform vec3 sunPos;
-in vec3 Normal;
-in vec3 FragPos;
 uniform vec3 atmoColor;
-
 uniform bool hdr;
 uniform float trans_strenght;
 uniform float lightcolor;
+in vec3 Normal;
+in vec3 FragPos;
 
-
-
+// ============ Out data ============
 layout (location = 0) out vec4 FragColor;
 layout (location = 1) out vec4 BrightColor;
 

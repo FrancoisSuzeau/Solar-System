@@ -99,7 +99,7 @@ int DataManager::getTrack() const
     return m_track;
 }
 
-void DataManager::setShader(bool main_loop)
+void DataManager::setShader()
 {
     std::vector<shader_datas> shader_init;
     shader_init.push_back({"../../src/Shader/Shaders/screenShader.vert", "../../src/Shader/Shaders/screenShader.frag", "screen"});
@@ -110,7 +110,7 @@ void DataManager::setShader(bool main_loop)
     shader_init.push_back({"../../src/Shader/Shaders/sunShader.vert", "../../src/Shader/Shaders/sunShader.frag", "sun"});
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/uniqueTexturePlaneteShader.frag", "simple_textured_planete"});
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/doubleTexturePlaneteShader.frag", "double_textured_planete"});
-    shader_init.push_back({"../../src/Shader/Shaders/texture.vert", "../../src/Shader/Shaders/texture.frag", "ring"});
+    shader_init.push_back({"../../src/Shader/Shaders/ringShader.vert", "../../src/Shader/Shaders/ringShader.frag", "ring"});
     
     // shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
 

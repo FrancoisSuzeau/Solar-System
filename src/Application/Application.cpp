@@ -160,7 +160,7 @@ void Application::loadConfig()
     m_data_manager.setTerminate(false);
     m_data_manager.setVolume(64);
     m_data_manager.setTrack(0);
-    m_data_manager.setShader(true);
+    m_data_manager.setShader();
 
     frame_rate = 1000 / m_data_manager.getFps();
     start_loop = 0;
