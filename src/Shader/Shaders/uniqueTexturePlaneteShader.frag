@@ -2,27 +2,29 @@
 #version 400 core
 
 // ============ In data ============
-in vec4 texCoords;
-in vec3 FragPos;
 uniform vec3 viewPos;
 uniform vec3 sunPos;
-in vec3 Normal;
 // uniform bool hdr;
 // uniform bool has_normal;
 // uniform bool has_disp;
 // uniform float heightScale;
 struct Material {
     sampler2D texture0;
+    sampler2D shadowMap;
     // sampler2D normalMap;
     // sampler2D dispMap;
     int shininess;
 };
 uniform Material material;
-// in VS_OUT {
+in VS_OUT {
+    vec3 Normal;
+    vec3 FragPos;
+    vec4 texCoords;
+    vec4 FragPosLightSpace;
 //     vec3 TangentLightPos;
 //     vec3 TangentViewPos;
 //     vec3 TangentFragPos;
-// } fs_in;
+} fs_in;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
@@ -81,11 +83,28 @@ layout (location = 0) out vec4 FragColor;
      
 // }
 
+
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(material.shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    return shadow;
+}
+
 void main(void) {
 
     // *********************************************** calculate spherical fragment coordonate ***************************************************
-    vec2 longitudeLatitude = vec2((atan(texCoords.y, texCoords.x) / 3.1415926 + 1.0) * 0.5,
-                                  (asin(texCoords.z) / 3.1415926 + 0.5));
+    vec2 longitudeLatitude = vec2((atan(fs_in.texCoords.y, fs_in.texCoords.x) / 3.1415926 + 1.0) * 0.5,
+                                  (asin(fs_in.texCoords.z) / 3.1415926 + 0.5));
         // processing of the texture coordinates;
         // this is unnecessary if correct texture coordinates are specified by the application
 
@@ -137,9 +156,9 @@ void main(void) {
     // }
 
     vec3 objectColor = texture(material.texture0, texCoord).rgb;
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lightPos - FragPos);
-    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 norm = normalize(fs_in.Normal);
+    vec3 lightDir = normalize(lightPos - fs_in.FragPos);
+    vec3 viewDir = normalize(viewPos - fs_in.FragPos);
     
     // *********************************************** mitigation ***************************************************
     // float lightConst = 1.0f;
@@ -191,7 +210,8 @@ void main(void) {
     //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     
     // FragColor = vec4(result, 1.0);
-
-    vec3 result = (ambiant + diffuse + specular) * objectColor;
+    float shadow = ShadowCalculation(fs_in.FragPosLightSpace);
+    // vec3 result = (ambiant + diffuse + specular) * objectColor;
+    vec3 result = (ambiant + (1.0 - shadow) * (diffuse + specular)) * objectColor;
     FragColor = vec4(result, 1.0);   
 }

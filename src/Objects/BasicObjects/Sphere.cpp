@@ -61,6 +61,7 @@ void Sphere::sendToShader(DataManager &data_manager)
         data_manager.getShader(super::m_type)->setMat4("view", data_manager.getViewMat());
         data_manager.getShader(super::m_type)->setMat4("projection", data_manager.getProjMat());
         data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
+        
 
         // data_manager.getShader(super::super::m_type)->setVec3("viewPos", data_manager.getCamPos());
         // data_manager.getShader(super::super::m_type)->setVec3("sunPos", data_manager.getSunPos());
@@ -70,10 +71,12 @@ void Sphere::sendToShader(DataManager &data_manager)
 
         glUseProgram(0);
 
-        glUseProgram(data_manager.getShader("depth_map")->getProgramID());
-
-                data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
-
-        glUseProgram(0);
+        
     }
+
+    glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+
+        data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
+
+    glUseProgram(0);
 }

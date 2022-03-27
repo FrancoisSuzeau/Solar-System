@@ -2,27 +2,48 @@
 #version 400 core
 
 // ============ In data ============
-in vec2 coordTexture;
-uniform sampler2D texture0;
+in VS_OUT {
+    vec3 Normal;
+    vec3 FragPos;
+    vec2 coordTexture;
+    vec4 FragPosLightSpace;
+//     vec3 TangentLightPos;
+//     vec3 TangentViewPos;
+//     vec3 TangentFragPos;
+} fs_in;
+
+uniform sampler2D diffuseTexture;
+uniform sampler2D shadowMap;
 // in vec3 Normal;
 // in vec3 FragPos;
-// uniform vec3 viewPos;
-// uniform vec3 sunPos;
+uniform vec3 viewPos;
+uniform vec3 sunPos;
 // uniform bool hdr;
 // uniform bool has_normal;
 // uniform bool has_disp;
 // uniform sampler2D normalMap;
 // uniform sampler2D depthMap;
 // uniform float heightScale;
-// in VS_OUT {
-//     vec3 TangentLightPos;
-//     vec3 TangentViewPos;
-//     vec3 TangentFragPos;
-// } fs_in;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
 // layout (location = 1) out vec4 BrightColor;
+
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    return shadow;
+}
 
 // vec2 parallaxMapping(vec2 texCoord, vec3 viewDir)
 // {
@@ -74,13 +95,13 @@ layout (location = 0) out vec4 FragColor;
 void main()
 {
     // *********************************************** calculate png transparency ***************************************************
-    vec4 alpha_color = texture2D(texture0, coordTexture);
+    vec4 alpha_color = texture2D(diffuseTexture, fs_in.coordTexture);
     if(alpha_color.a < 0.1)
     {
         discard;
     }
 
-    // vec3 lightColor;
+    vec3 lightColor = vec3(1.0);
     // if(hdr)
     // {
     //     lightColor = vec3(0.4);
@@ -90,12 +111,12 @@ void main()
     //     lightColor = vec3(0.2);
     // }
     // vec3 lightPos = vec3(1.0f, 0.0f, 0.0f);
-    // vec3 lightPos = sunPos;
+    vec3 lightPos = sunPos;
 
-    // vec3 norm;
-    // vec3 lightDir;
-    // vec3 viewDir;
-    vec2 texCoord = coordTexture;
+    vec3 norm = normalize(fs_in.Normal);
+    vec3 lightDir;
+    vec3 viewDir;
+    
     // if(has_normal)
     // {
     //     norm = texture(normalMap, coordTexture).rgb;
@@ -123,17 +144,25 @@ void main()
     // float mitigation = 1.0 / (lightConst + lightLin + lightQuad);
 
     // // *********************************************** diffuse light ***************************************************
-    // float diff = max(dot(norm, lightDir), 0.0);
-    // vec3 diffuse = diff * lightColor;
+    
+    lightDir = normalize(lightPos - fs_in.FragPos);
+    
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
 
     // // *********************************************** specular light ***************************************************
     // float specularStrength = 0.5;
-    // vec3 reflectDir = reflect(-lightDir, norm);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    viewDir = normalize(viewPos - fs_in.FragPos);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = 0.0;
+    spec = pow(max(dot(norm, halfwayDir), 0.0), 64.0);
+    vec3 specular = spec * lightColor;
     // float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     // vec3 specular = specularStrength * spec * lightColor;
 
     // // *********************************************** ambiant light ***************************************************
-    // float ambiantStrength;
+    float ambiantStrength = 0.01;
     
 
     // if(hdr)
@@ -145,7 +174,7 @@ void main()
     //     ambiantStrength = 0.01;
     // }
 
-    // vec3 ambiant = ambiantStrength * lightColor;
+    vec3 ambiant = ambiantStrength * lightColor;
 
     // // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     
@@ -153,8 +182,12 @@ void main()
     // diffuse *= mitigation;
     // specular *= mitigation;
 
-    vec3 objectColor = texture(texture0, texCoord).rgb;
-    FragColor = vec4(objectColor, 1.0);
+    vec2 texCoord = fs_in.coordTexture;
+
+    vec3 objectColor = texture(diffuseTexture, texCoord).rgb;
+    float shadow = ShadowCalculation(fs_in.FragPosLightSpace);
+    vec3 result = (ambiant + (1.0 - shadow) * (diffuse + specular)) * objectColor;
+    FragColor = vec4(result, 1.0);
     // vec3 result = (ambiant + diffuse + specular) * objectColor;
 
     // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));

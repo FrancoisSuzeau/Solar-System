@@ -126,9 +126,11 @@ void Ring::sendToShader(DataManager &data_manager)
     {
         glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
 
-            // data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
-            // data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
-            data_manager.getShader(super::m_type)->setTexture("texture0", 0);
+            data_manager.getShader(super::m_type)->setTexture("diffuseTexture", 0);
+            data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+            data_manager.getShader(super::m_type)->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
+            data_manager.getShader(super::m_type)->setTexture("shadowMap", 1);
             // data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
 
         glUseProgram(0);

@@ -43,11 +43,17 @@ void RingRenderer::render(DataManager &data_manager, Object *ring)
     if(glIsTexture(t_id) == GL_TRUE)
     {
         ring->sendToShader(data_manager);
-        std::cout << "ring" << std::endl;
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, t_id);
 
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, data_manager.getDepthMapTexture());
+
         super::render(data_manager, ring);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0);

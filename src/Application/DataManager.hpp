@@ -61,6 +61,7 @@ PURPOSE : header of the DataManager class
                 float           near_plane;
                 float           far_plane;
                 bool            depth_render;
+                unsigned int    depth_map;
 
                 glm::mat4       proj_mat;
                 glm::mat4       view_mat;
@@ -127,6 +128,9 @@ PURPOSE : header of the DataManager class
                 float           getNear() const;
                 void            setDepthRender(bool const new_val);
                 bool            getDepthRender() const;
+                glm::mat4       getLightSpaceMatrix();
+                void            setDepthMapTexture(unsigned int const new_val);
+                unsigned int    getDepthMapTexture() const;
 
 
         };

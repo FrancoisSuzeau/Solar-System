@@ -399,8 +399,10 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
 {
     glUseProgram(data_manager.getShader("depth_map")->getProgramID());
 
-        data_manager.getShader("depth_map")->setMat4("projection", data_manager.getProjMat());
-        data_manager.getShader("depth_map")->setMat4("view", data_manager.getViewMat());
+        data_manager.getShader("depth_map")->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
+
+        // data_manager.getShader("depth_map")->setMat4("projection", data_manager.getProjMat());
+        // data_manager.getShader("depth_map")->setMat4("view", data_manager.getViewMat());
 
     glUseProgram(0);
     
@@ -460,6 +462,7 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
     }
 
     this->renderDebugWindow(data_manager);
+    data_manager.setDepthMapTexture(depth_map);
     
 }
 
@@ -490,14 +493,15 @@ void Framebuffer::bindFramebuffer(int type)
     glBindFramebuffer(GL_FRAMEBUFFER, this->getFB(type));
 
     //make sure we clear the framebuffer's content
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
     //cleaning the screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glClear(GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_DEPTH_TEST);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -507,12 +511,12 @@ void Framebuffer::unbindFramebuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    glDisable(GL_DEPTH_TEST);
+    // glDisable(GL_DEPTH_TEST);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //make sure we clear the framebuffer's content
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 /***********************************************************************************************************************************************************************/

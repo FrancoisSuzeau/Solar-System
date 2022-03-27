@@ -322,3 +322,22 @@ bool DataManager::getDepthRender() const
 {
     return depth_render;
 }
+
+glm::mat4 DataManager::getLightSpaceMatrix()
+{
+    glm::mat4 lightProjection, lightView;
+    lightProjection = glm::ortho(0.0f, (float)this->m_width, 0.0f, (float)this->m_height, this->near_plane, this->far_plane);
+    lightView = glm::lookAt(this->getSunPos(), glm::vec3(0.0f), glm::vec3(0.0, 0.0, 1.0));
+    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+    return lightSpaceMatrix;
+}
+
+void DataManager::setDepthMapTexture(unsigned int const new_val)
+{
+    depth_map = new_val;
+}
+
+unsigned int DataManager::getDepthMapTexture() const
+{
+    return depth_map;
+}

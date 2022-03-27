@@ -2,24 +2,31 @@
 #version 400 core
 
 // ============ In data ============
-in vec4 texCoords;
 uniform float oppacity;
 uniform vec3 viewPos;
 uniform vec3 sunPos;
-in vec3 Normal;
-in vec3 FragPos;
 // uniform bool hdr;
 // uniform bool has_normal;
 // uniform bool has_disp;
 // uniform float heightScale;
 struct Material {
     sampler2D texture0;
+    sampler2D shadowMap;
     sampler2D texture1;
     // sampler2D normalMap;
     // sampler2D dispMap;
     int shininess;
 };
 uniform Material material;
+in VS_OUT {
+    vec3 Normal;
+    vec3 FragPos;
+    vec4 texCoords;
+    vec4 FragPosLightSpace;
+//     vec3 TangentLightPos;
+//     vec3 TangentViewPos;
+//     vec3 TangentFragPos;
+} fs_in;
 
 // ============ Out data ============
 // layout (location = 1) out vec4 BrightColor;
@@ -82,11 +89,27 @@ layout (location = 0) out vec4 FragColor;
 //     // return texCoord - viewDir.xy * (height * heightScale);  
 // }
 
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(material.shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    return shadow;
+}
+
 void main(void) {
 
     // *********************************************** calculate spherical fragment coordonate ***************************************************
-    vec2 longitudeLatitude = vec2((atan(texCoords.y, texCoords.x) / 3.1415926 + 1.0) * 0.5,
-                                  (asin(texCoords.z) / 3.1415926 + 0.5));
+    vec2 longitudeLatitude = vec2((atan(fs_in.texCoords.y, fs_in.texCoords.x) / 3.1415926 + 1.0) * 0.5,
+                                  (asin(fs_in.texCoords.z) / 3.1415926 + 0.5));
         // processing of the texture coordinates;
         // this is unnecessary if correct texture coordinates are specified by the application
     
@@ -96,7 +119,7 @@ void main(void) {
 
     
 
-    vec3 lightColor = vec3(1.0, 1.0, 1.0);
+    vec3 lightColor = vec3(1.0);
     vec3 lightPos = sunPos;
 
     // vec3 objectColor;
@@ -131,9 +154,9 @@ void main(void) {
     vec4 surface_text = texture(material.texture0, texCoord);
 
     vec3 objectColor = mix(cloud_text, surface_text, oppacity).rgb;
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lightPos - FragPos);
-    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 norm = normalize(fs_in.Normal);
+    vec3 lightDir = normalize(lightPos - fs_in.FragPos);
+    vec3 viewDir = normalize(viewPos - fs_in.FragPos);
 
     // // *********************************************** mitigation ***************************************************
     // //mitigation
@@ -151,8 +174,12 @@ void main(void) {
     float specularStrength = 0.5;
 
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = specularStrength * spec * lightColor;
+     vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = 0.0;
+    spec = pow(max(dot(norm, halfwayDir), 0.0),  material.shininess);
+    // float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    // vec3 specular = specularStrength * spec * lightColor;
+    vec3 specular = spec * lightColor;
 
     // // *********************************************** ambiant light ***************************************************
     float ambiantStrength = 0.01;
@@ -183,7 +210,8 @@ void main(void) {
     //     BrightColor = vec4(result, 1.0);
     // else
     //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-    
-    vec3 result = (ambiant + diffuse + specular) * objectColor;
+    float shadow = ShadowCalculation(fs_in.FragPosLightSpace);
+    // vec3 result = (ambiant + diffuse + specular) * objectColor;
+    vec3 result = (ambiant + (1.0 - shadow) * (diffuse + specular)) * objectColor;
     FragColor = vec4(result, 1.0);
 }

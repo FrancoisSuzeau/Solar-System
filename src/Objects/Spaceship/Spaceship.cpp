@@ -30,7 +30,6 @@ Spaceship::Spaceship(std::string const type) : super(type), m_yaw(0.0f), m_pitch
     m_scales.push_back(0.1f);
 
     super::m_model_mat = glm::mat4(1.f);
-    // super::m_type = "model";
 
     super::m_position = glm::vec3(0.f, 35.f, 0.f);
     directions[0] = false;
@@ -99,6 +98,8 @@ void Spaceship::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
             data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
             data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(super::m_type)->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
+            // data_manager.getShader(super::m_type)->setTexture("shadowMap", 1);
 
             // data_manager.getShader(super::m_type)->setInt("hdr", data_manager.getHDR());
         
@@ -109,7 +110,7 @@ void Spaceship::sendToShader(DataManager &data_manager)
 
     glUseProgram(data_manager.getShader("depth_map")->getProgramID());
 
-                data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
+        data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
 
     glUseProgram(0);
 }

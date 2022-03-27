@@ -207,11 +207,13 @@ void Planete::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
             data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
             data_manager.getShader(super::m_type)->setTexture("material.texture0", 0);
+            data_manager.getShader(super::m_type)->setTexture("material.shadowMap", 1);
             data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
+            data_manager.getShader(super::m_type)->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
 
             if(super::m_type == "double_textured_planete")
             {
-                data_manager.getShader(super::m_type)->setTexture("material.texture1", 1);
+                data_manager.getShader(super::m_type)->setTexture("material.texture1", 2);
                 data_manager.getShader(super::m_type)->setFloat("oppacity", m_oppacity);
             }
 
