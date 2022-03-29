@@ -200,25 +200,26 @@ void Planete::transform(glm::vec3 ship_pos, Input *input)
 /***********************************************************************************************************************************************************************/
 void Planete::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader(super::m_type) != nullptr)
+    if(data_manager.getPass() == COLOR_FBO)
     {
-        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
-
-            data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
-            data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
-            data_manager.getShader(super::m_type)->setTexture("material.texture0", 0);
-            data_manager.getShader(super::m_type)->setTexture("material.shadowMap", 1);
-            data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
-            data_manager.getShader(super::m_type)->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
-
-            if(super::m_type == "double_textured_planete")
-            {
-                data_manager.getShader(super::m_type)->setTexture("material.texture1", 2);
-                data_manager.getShader(super::m_type)->setFloat("oppacity", m_oppacity);
-            }
-
-        glUseProgram(0);
+        if(data_manager.getShader(super::m_type) != nullptr)
+        {
+            glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
+                data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+                data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+                data_manager.getShader(super::m_type)->setTexture("material.texture0", 0);
+                data_manager.getShader(super::m_type)->setTexture("material.shadowMap", 1);
+                data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
+                data_manager.getShader(super::m_type)->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
+                if(super::m_type == "double_textured_planete")
+                {
+                    data_manager.getShader(super::m_type)->setTexture("material.texture1", 2);
+                    data_manager.getShader(super::m_type)->setFloat("oppacity", m_oppacity);
+                }
+            glUseProgram(0);
+        }
     }
+    
     
     super::sendToShader(data_manager);
 }

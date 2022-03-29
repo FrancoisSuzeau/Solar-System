@@ -89,30 +89,34 @@ void Spaceship::clean()
 /***********************************************************************************************************************************************************************/
 void Spaceship::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader(super::m_type) != nullptr)
+    switch (data_manager.getPass())
     {
-        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
-
-            data_manager.getShader(super::m_type)->setMat4("projection", data_manager.getProjMat());
-            data_manager.getShader(super::m_type)->setMat4("view", data_manager.getViewMat());
-            data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
-            data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
-            data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
-            data_manager.getShader(super::m_type)->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
-            // data_manager.getShader(super::m_type)->setTexture("shadowMap", 1);
-
-            // data_manager.getShader(super::m_type)->setInt("hdr", data_manager.getHDR());
-        
-
-        glUseProgram(0);
-        
+        case DEPTH_FBO:
+            if(data_manager.getShader("depth_map") != nullptr)
+            {
+                glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+                    data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
+                glUseProgram(0);
+            }
+            break;
+        case COLOR_FBO:
+            if(data_manager.getShader(super::m_type) != nullptr)
+            {
+                glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
+                    data_manager.getShader(super::m_type)->setMat4("projection", data_manager.getProjMat());
+                    data_manager.getShader(super::m_type)->setMat4("view", data_manager.getViewMat());
+                    data_manager.getShader(super::m_type)->setMat4("model", super::getModelMat());
+                    data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+                    data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+                    data_manager.getShader(super::m_type)->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
+                    // data_manager.getShader(super::m_type)->setTexture("shadowMap", 1);
+                    // data_manager.getShader(super::m_type)->setInt("hdr", data_manager.getHDR());
+                glUseProgram(0);
+            }
+            break;
+        default:
+            break;
     }
-
-    glUseProgram(data_manager.getShader("depth_map")->getProgramID());
-
-        data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
-
-    glUseProgram(0);
 }
 
 /***********************************************************************************************************************************************************************/

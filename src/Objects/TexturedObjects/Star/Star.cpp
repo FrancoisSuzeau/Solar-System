@@ -71,16 +71,16 @@ void Star::transform(glm::vec3 ship_pos, Input *input)
 /***********************************************************************************************************************************************************************/
 void Star::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getShader(super::m_type) != nullptr)
+    if(data_manager.getPass() == COLOR_FBO)
     {
-        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
-
-            data_manager.getShader(super::m_type)->setTexture("texture0", 0);
-
-        glUseProgram(0);
-        
+        if(data_manager.getShader(super::m_type) != nullptr)
+        {
+            glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
+                data_manager.getShader(super::m_type)->setTexture("texture0", 0);
+            glUseProgram(0);
+        }
     }
-
+    
     super::sendToShader(data_manager);
 }
 

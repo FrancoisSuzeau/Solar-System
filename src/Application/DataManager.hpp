@@ -21,6 +21,9 @@ PURPOSE : header of the DataManager class
         #include <vector>
 
         #include "../Shader/Shader.hpp"
+
+        #define COLOR_FBO 0
+        #define DEPTH_FBO 1
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -62,6 +65,7 @@ PURPOSE : header of the DataManager class
                 float           far_plane;
                 bool            depth_render;
                 unsigned int    depth_map;
+                int             pass;
 
                 glm::mat4       proj_mat;
                 glm::mat4       view_mat;
@@ -131,6 +135,8 @@ PURPOSE : header of the DataManager class
                 glm::mat4       getLightSpaceMatrix();
                 void            setDepthMapTexture(unsigned int const new_val);
                 unsigned int    getDepthMapTexture() const;
+                void            setPass(int const new_val);
+                int             getPass() const;
 
 
         };

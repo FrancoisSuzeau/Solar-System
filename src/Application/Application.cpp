@@ -261,8 +261,46 @@ void Application::mainLoop()
             ImGui_ImplSDL2_NewFrame();
             ImGui::NewFrame();
 
+            m_data_manager.setPass(DEPTH_FBO);
             this->renderIntoFramebuffer(DEPTH_FBO);
+            m_data_manager.setPass(COLOR_FBO);
             this->renderIntoFramebuffer(COLOR_FBO);
+
+            // glClearColor(0.1f, 0.1f, 0.1f, 1.f);
+            // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // glm::mat4 lightProjection, lightView;
+            // lightProjection = glm::ortho(-10.f, 10.f, -10.f, 10.f, 1.f, 7.5f);
+            // lightView = glm::lookAt(glm::vec3(0.f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+            // glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+            // glUseProgram(m_data_manager.getShader("depth_map")->getProgramID());
+
+            //     m_data_manager.getShader("depth_map")->setMat4("light_space_matrix", lightSpaceMatrix);
+        
+            // glUseProgram(0);
+
+            //  glViewport(0, 0, m_data_manager.getWidth(), m_data_manager.getHeight());
+            // glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer->getFB(DEPTH_FBO));
+            //     glClear(GL_DEPTH_BUFFER_BIT);
+            //     m_data_manager.setPass(DEPTH_FBO);
+            //     this->renderScene();
+            // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+            // glViewport(0, 0, m_data_manager.getWidth(), m_data_manager.getHeight());
+            // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            // glUseProgram(m_data_manager.getShader("screen")->getProgramID());
+
+
+            //     // m_data_manager.getShader("screen")->setTexture("depth_texture", 0);
+            //     // m_data_manager.getShader("screen")->setTexture("screen_texture", 1);
+            //     m_data_manager.getShader("screen")->setFloat("near", 1.0f);
+            //     m_data_manager.getShader("screen")->setFloat("far", 7.5f);
+            
+            // glUseProgram(0);
+
+            // m_framebuffer->renderFrame(m_data_manager);
+            
 
         // /******************************************************************* RENDER SCENE *********************************************************************/
             // this->renderScene();

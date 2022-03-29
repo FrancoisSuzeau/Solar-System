@@ -462,7 +462,7 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
     }
 
     this->renderDebugWindow(data_manager);
-    data_manager.setDepthMapTexture(depth_map);
+    // data_manager.setDepthMapTexture(depth_map);
     
 }
 

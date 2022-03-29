@@ -341,3 +341,13 @@ unsigned int DataManager::getDepthMapTexture() const
 {
     return depth_map;
 }
+
+void DataManager::setPass(int const new_val)
+{
+    pass = new_val;
+}
+
+int DataManager::getPass() const
+{
+    return pass;
+}

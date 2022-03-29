@@ -38,8 +38,8 @@ PURPOSE : header of the Framebuffer class
         #include "../../../lib/imgui/imgui_impl_sdl.h"
         #include "../../../lib/imgui/imgui_impl_opengl3.h"
 
-        #define COLOR_FBO 0
-        #define DEPTH_FBO 1
+        // #define COLOR_FBO 0
+        // #define DEPTH_FBO 1
         
 
 /********************************************************************* class definition *********************************************************************/
