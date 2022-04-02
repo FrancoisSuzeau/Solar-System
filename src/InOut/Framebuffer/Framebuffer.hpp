@@ -38,8 +38,6 @@ PURPOSE : header of the Framebuffer class
         #include "../../../lib/imgui/imgui_impl_sdl.h"
         #include "../../../lib/imgui/imgui_impl_opengl3.h"
 
-        // #define COLOR_FBO 0
-        // #define DEPTH_FBO 1
         
 
 /********************************************************************* class definition *********************************************************************/
@@ -55,6 +53,7 @@ PURPOSE : header of the Framebuffer class
                 unsigned int color_fb_id = 0;
                 unsigned int depth_fb_id = 0;
                 unsigned int render_buffer_id = 0;
+                unsigned int render_buffer_depth_id = 0;
                 unsigned int texture_id = 0;
                 unsigned int depth_map = 0;
                 
@@ -72,7 +71,7 @@ PURPOSE : header of the Framebuffer class
                 void manageFramebuffers(int width, int height);
                 void manageColorBuffer(int width, int height);
                 void manageDepthMap(int width, int height);
-                void manageRenderBuffer(int width, int height);
+                void manageRenderBuffer(int width, int height, unsigned int &redner_buffer_id);
                 // void managePinPongFBO(int width, int height);
 
                 // void drawBlur(DataManager &data_manager, bool &horizontal);
