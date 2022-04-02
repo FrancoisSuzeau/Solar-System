@@ -31,10 +31,12 @@ PURPOSE : header of the Shader class
 
                 GLuint          m_vertex_ID;
                 GLuint          m_fragment_ID;
+                GLuint          m_geometry_ID;
                 GLuint          m_program_ID;
 
-                std::string     m_vertex_src;
-                std::string     m_fragment_src;
+                std::string     m_vertex_path;
+                std::string     m_fragment_path;
+                std::string     m_geometry_path = "NONE";
 
                 void            deleteShader(GLuint &shader, GLint detach_shader);
                 void            deleteProgram();
@@ -43,7 +45,7 @@ PURPOSE : header of the Shader class
             public:
 
                 Shader();
-                Shader(std::string vertex_src, std::string fragment_src);
+                Shader(std::string vertex_path, std::string fragment_path, std::string geometry_path = "NONE");
                 ~Shader();
 
                 Shader(Shader const &shader_to_copy);

@@ -15,12 +15,13 @@ PURPOSE : compiling shaders object
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-Shader::Shader() : m_vertex_ID(0), m_fragment_ID(0), m_program_ID(0), m_vertex_src(), m_fragment_src()
+Shader::Shader() : m_vertex_ID(0), m_fragment_ID(0), m_geometry_ID(0), m_program_ID(0), m_vertex_path(), m_fragment_path()
 {
 
 }
 
-Shader::Shader(std::string vertex_src, std::string fragment_src) :  m_vertex_ID(0), m_fragment_ID(0), m_program_ID(0), m_vertex_src(vertex_src), m_fragment_src(fragment_src)
+Shader::Shader(std::string vertex_path, std::string fragment_path, std::string geometry_path) : 
+m_vertex_ID(0), m_fragment_ID(0), m_geometry_ID(0), m_program_ID(0), m_vertex_path(vertex_path), m_fragment_path(fragment_path)
 {
 
 }
@@ -28,8 +29,9 @@ Shader::Shader(std::string vertex_src, std::string fragment_src) :  m_vertex_ID(
 Shader::Shader(Shader const &shader_to_copy) //copy constructor
 {
     //copying source files
-    m_vertex_src = shader_to_copy.m_vertex_src;
-    m_fragment_src = shader_to_copy.m_fragment_src;
+    m_vertex_path = shader_to_copy.m_vertex_path;
+    m_fragment_path = shader_to_copy.m_fragment_path;
+    m_geometry_path = shader_to_copy.m_geometry_path;
 
     //loading new shader
     loadShader();
@@ -38,8 +40,9 @@ Shader::Shader(Shader const &shader_to_copy) //copy constructor
 Shader& Shader::operator=(Shader const &shader_to_copy)
 {
     //copying source files
-    m_vertex_src = shader_to_copy.m_vertex_src;
-    m_fragment_src = shader_to_copy.m_fragment_src;
+    m_vertex_path = shader_to_copy.m_vertex_path;
+    m_fragment_path = shader_to_copy.m_fragment_path;
+    m_geometry_path = shader_to_copy.m_geometry_path;
 
     //loading new shader
     loadShader();
@@ -68,9 +71,13 @@ bool Shader::loadShader()
 {
     deleteShader(m_vertex_ID, GL_FALSE);
     deleteShader(m_fragment_ID, GL_FALSE);
+    if(m_geometry_path != "NONE")
+    {
+        deleteShader(m_geometry_ID, GL_FALSE);
+    }
     deleteProgram();
     /************************************************* compiling shader source code ********************************************************/
-    if( !compileShader(m_vertex_ID, GL_VERTEX_SHADER, m_vertex_src))
+    if( !compileShader(m_vertex_ID, GL_VERTEX_SHADER, m_vertex_path))
     {
         //std::cout << ">> Compiling shader during load : ERROR" << std::endl;
         return false;
@@ -79,12 +86,24 @@ bool Shader::loadShader()
     //======================================================================================================================================
 
     /************************************************* compiling fragment source code ********************************************************/
-    if( !compileShader(m_fragment_ID, GL_FRAGMENT_SHADER, m_fragment_src))
+    if( !compileShader(m_fragment_ID, GL_FRAGMENT_SHADER, m_fragment_path))
     {
         //std::cout << ">> Compiling fragment during load : ERROR" << std::endl;
         return false;
     }
     //std::cout << ">> Compiling fragment during load : SUCCESS" << std::endl;
+    //======================================================================================================================================
+
+    /************************************************* compiling geometry source code ********************************************************/
+    if(m_geometry_path != "NONE")
+    {
+        if( !compileShader(m_geometry_ID, GL_GEOMETRY_SHADER, m_geometry_path))
+        {
+            //std::cout << ">> Compiling geometry during load : ERROR" << std::endl;
+            return false;
+        }
+        std::cout << ">> Compiling geometry during load : SUCCESS" << std::endl;
+    }
     //======================================================================================================================================
 
     /************************************************* creating program for GPU ********************************************************/
@@ -93,6 +112,10 @@ bool Shader::loadShader()
     //shader association
     glAttachShader(m_program_ID, m_vertex_ID);
     glAttachShader(m_program_ID, m_fragment_ID);
+    if(m_geometry_path != "NONE")
+    {
+        glAttachShader(m_program_ID, m_geometry_ID);
+    }
     //======================================================================================================================================
 
     /**************************************** lock entrees shader (vertices, colors, texture's coordonates *****************************/
@@ -128,7 +151,11 @@ bool Shader::loadShader()
         deleteProgram();
         deleteShader(m_vertex_ID, link_error);
         deleteShader(m_fragment_ID, link_error);
-
+        if(m_geometry_path != "NONE")
+        {
+            deleteShader(m_geometry_ID, link_error);
+        }
+        
         return false;
     }
     else
@@ -136,9 +163,17 @@ bool Shader::loadShader()
         std::cout << ">> Linking program : SUCCESS" << std::endl;
         deleteShader(m_vertex_ID, link_error);
         deleteShader(m_fragment_ID, link_error);
+        if(m_geometry_path != "NONE")
+        {
+            deleteShader(m_geometry_ID, link_error);
+        }
     
-        std::cout << ">> SHADER :: delete >>> SUCCESS" << m_vertex_src << std::endl;
-        std::cout << ">> SHADER :: delete >>> SUCCESS" << m_fragment_src << std::endl;
+        std::cout << ">> SHADER :: delete >>> SUCCESS" << m_vertex_path << std::endl;
+        std::cout << ">> SHADER :: delete >>> SUCCESS" << m_fragment_path << std::endl;
+        if(m_geometry_path != "NONE")
+        {
+            std::cout << ">> SHADER :: delete >>> SUCCESS" << m_geometry_path << std::endl;
+        }
         return true;
     }
     //======================================================================================================================================
@@ -241,6 +276,7 @@ void Shader::deleteShader(GLuint &shader, GLint detach_shader)
             glDetachShader(m_program_ID, shader);
         }
         glDeleteShader(shader);
+        shader = 0;
     }
 }
 
@@ -252,6 +288,7 @@ void Shader::deleteProgram()
     if(glIsProgram(m_program_ID) == GL_TRUE)
     {
         glDeleteProgram(m_program_ID);
+        m_program_ID = 0;
     }
 }
 
