@@ -109,12 +109,19 @@ void Application::cleanAll()
     {
         mercury->clean();
         delete mercury;
+        mercury = nullptr;
     }
     if(earth != nullptr)
     {
         earth->clean();
         delete earth;
         earth = nullptr;
+    }
+    if(moon != nullptr)
+    {
+        moon->clean();
+        delete moon;
+        moon = nullptr;
     }
     if(saturn != nullptr)
     {
@@ -225,6 +232,12 @@ void Application::loadAssets()
     earth = new Planete(1.f, surface_paths, "double_textured_planete", 128, 0.3f);
     assert(earth);
     earth->updateSize(glm::vec3(3.f));
+
+    surface_paths.clear();
+    surface_paths.push_back("../../assets/textures/CelestialBody/MoonMap.jpg");
+    moon = new Planete(1.f, surface_paths, "simple_textured_planete", 32);
+    assert(moon);
+    moon->updateSize(glm::vec3(1.f));
 
     planete_renderer = new PlaneteRenderer(1.f, 70.f, 70.f);
     assert(planete_renderer);
@@ -374,6 +387,12 @@ void Application::makeAllChanges()
         earth->transform(-m_data_manager.getShipPos());
     }
 
+    if(moon != nullptr)
+    {
+        moon->updatePosition(glm::vec3(-30.f, 0.f, 0.f));
+        moon->transform(-m_data_manager.getShipPos());
+    }
+
     if(saturn != nullptr)
     {
         saturn->updatePosition(glm::vec3(50.f, 0.f, 0.f));
@@ -466,6 +485,11 @@ void Application::renderScene()
     if((earth != nullptr) && (planete_renderer != nullptr))
     {
         planete_renderer->render(m_data_manager, earth);
+    }
+
+    if((moon != nullptr) && (planete_renderer != nullptr))
+    {
+        planete_renderer->render(m_data_manager, moon);
     }
 
     if((saturn != nullptr) && (planete_renderer != nullptr))

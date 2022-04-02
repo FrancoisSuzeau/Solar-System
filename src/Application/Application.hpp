@@ -85,6 +85,7 @@ PURPOSE : header of the Application class
                 Renderer                *star_renderer = nullptr;
                 Planete*                 mercury = nullptr;
                 Planete*                 earth = nullptr;
+                Planete*                 moon = nullptr;
                 Planete*                 saturn = nullptr;
                 Ring                    *saturn_ring = nullptr;
                 Renderer                *planete_renderer = nullptr;
