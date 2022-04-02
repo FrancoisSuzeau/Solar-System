@@ -40,9 +40,31 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
     // check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    vec3 norm = normalize(fs_in.Normal);
+    vec3 lightDir = normalize(sunPos - fs_in.FragPos);
+    float bias = max(0.05 * (1.0 - dot(norm, lightDir)), 0.005);
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow+= currentDepth - bias > pcfDepth  ? 1.0 : 0.0;
+        }
+    }
+    shadow /= 9.0;
+
+    if(projCoords.z > 1.0)
+    {
+        shadow = 0.0;
+    }
+    // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
 
     return shadow;
+    // float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    // return shadow;
 }
 
 // vec2 parallaxMapping(vec2 texCoord, vec3 viewDir)
@@ -162,7 +184,7 @@ void main()
     // vec3 specular = specularStrength * spec * lightColor;
 
     // // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.01;
+    float ambiantStrength = 0.8;
     
 
     // if(hdr)
@@ -186,7 +208,8 @@ void main()
 
     vec3 objectColor = texture(diffuseTexture, texCoord).rgb;
     float shadow = ShadowCalculation(fs_in.FragPosLightSpace);
-    vec3 result = (ambiant + (1.0 - shadow) * (diffuse + specular)) * objectColor;
+    vec3 result = ambiant  - shadow;
+    result *= objectColor;
     FragColor = vec4(result, 1.0);
     // vec3 result = (ambiant + diffuse + specular) * objectColor;
 

@@ -207,6 +207,7 @@ void Planete::sendToShader(DataManager &data_manager)
             glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
                 data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
                 data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+                // data_manager.getShader(super::m_type)->setVec3("sunPos", glm::vec3(0.0, 1.5f, 0.0));
                 data_manager.getShader(super::m_type)->setTexture("material.texture0", 0);
                 data_manager.getShader(super::m_type)->setTexture("material.shadowMap", 1);
                 data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);

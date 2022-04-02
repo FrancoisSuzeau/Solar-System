@@ -91,6 +91,8 @@ PURPOSE : header of the Application class
                 Renderer                *ring_renderer = nullptr;
                 Framebuffer             *m_framebuffer;
 
+
+
                 bool menu_app_key_pressed;
                 bool render_menu;
 

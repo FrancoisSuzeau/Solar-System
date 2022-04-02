@@ -240,7 +240,6 @@ void Application::loadAssets()
 /***********************************************************************************************************************************************************************/
 void Application::mainLoop()
 {
-
     while(!m_data_manager.getTerminate())
     {
             this->fpsCalculation(BEGIN);
@@ -257,62 +256,35 @@ void Application::mainLoop()
             // this->renderAudio();
         //======================================================================================================================================================
 
+        if((camera != nullptr) && (m_input != nullptr))
+        {
+            camera->setDistFromShip(m_data_manager.getDistancteFromShip());
+            camera->move(m_input, render_menu);
+            m_data_manager.setViewMat(camera->getViewMatrix());
+            m_data_manager.setCamPos(camera->getPosition());
+        }
+
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplSDL2_NewFrame();
             ImGui::NewFrame();
 
-            m_data_manager.setPass(DEPTH_FBO);
+            glUseProgram(m_data_manager.getShader("depth_map")->getProgramID());
+                m_data_manager.getShader("depth_map")->setMat4("light_space_matrix", m_data_manager.getLightSpaceMatrix());
+            glUseProgram(0);
+
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        m_data_manager.setPass(DEPTH_FBO);
             this->renderIntoFramebuffer(DEPTH_FBO);
-            m_data_manager.setPass(COLOR_FBO);
+
+        m_data_manager.setPass(COLOR_FBO);
             this->renderIntoFramebuffer(COLOR_FBO);
 
-            // glClearColor(0.1f, 0.1f, 0.1f, 1.f);
-            // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // glm::mat4 lightProjection, lightView;
-            // lightProjection = glm::ortho(-10.f, 10.f, -10.f, 10.f, 1.f, 7.5f);
-            // lightView = glm::lookAt(glm::vec3(0.f), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-            // glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-
-            // glUseProgram(m_data_manager.getShader("depth_map")->getProgramID());
-
-            //     m_data_manager.getShader("depth_map")->setMat4("light_space_matrix", lightSpaceMatrix);
-        
-            // glUseProgram(0);
-
-            //  glViewport(0, 0, m_data_manager.getWidth(), m_data_manager.getHeight());
-            // glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer->getFB(DEPTH_FBO));
-            //     glClear(GL_DEPTH_BUFFER_BIT);
-            //     m_data_manager.setPass(DEPTH_FBO);
-            //     this->renderScene();
-            // glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-            // glViewport(0, 0, m_data_manager.getWidth(), m_data_manager.getHeight());
-            // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            // glUseProgram(m_data_manager.getShader("screen")->getProgramID());
-
-
-            //     // m_data_manager.getShader("screen")->setTexture("depth_texture", 0);
-            //     // m_data_manager.getShader("screen")->setTexture("screen_texture", 1);
-            //     m_data_manager.getShader("screen")->setFloat("near", 1.0f);
-            //     m_data_manager.getShader("screen")->setFloat("far", 7.5f);
-            
-            // glUseProgram(0);
-
-            // m_framebuffer->renderFrame(m_data_manager);
-            
-
-        // /******************************************************************* RENDER SCENE *********************************************************************/
-            // this->renderScene();
-        // //======================================================================================================================================================
-
         // /******************************************************************* RENDER FRAME OVERLAY **************************************************************/
-            // glm::mat4 save = m_data_manager.getViewMat();
-            // m_data_manager.lockView(glm::vec3(0.0f, 0.0f, -1.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-            
-            // m_overlay.renderEdges(m_data_manager);
-
-            // m_data_manager.resetViewMat(save);
+            glm::mat4 save = m_data_manager.getViewMat();
+            m_data_manager.lockView(glm::vec3(0.0f, 0.0f, -1.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            m_overlay.renderEdges(m_data_manager);
+            m_data_manager.resetViewMat(save);
         // //======================================================================================================================================================
 
         /******************************************************************* RENDER SETTINGS *******************************************************************/
@@ -323,6 +295,7 @@ void Application::mainLoop()
             this->renderOverlay();
         //======================================================================================================================================================
 
+            m_framebuffer->unbindFramebuffer();
             m_framebuffer->renderFrame(m_data_manager);
 
         /******************************************************************* SWAPPING WINDOWS *******************************************************************/
@@ -332,7 +305,6 @@ void Application::mainLoop()
         //=======================================================================================================================================================
 
             this->fpsCalculation(END);
-            
     }
 }
 
@@ -341,23 +313,28 @@ void Application::mainLoop()
 /***********************************************************************************************************************************************************************/
 void Application::renderIntoFramebuffer(int type)
 {
-
     m_framebuffer->bindFramebuffer(type);
+    glViewport(0, 0, m_data_manager.getWidth(), m_data_manager.getHeight());
+
+        if(m_data_manager.getPass() == DEPTH_FBO)
+        {
+            glClear(GL_DEPTH_BUFFER_BIT);
+            glCullFace(GL_FRONT);
+        }
+        else
+        {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
 
         /******************************************************************* RENDER SCENE *********************************************************************/
             this->renderScene();
         //======================================================================================================================================================
 
-        /******************************************************************* RENDER FRAME OVERLAY **************************************************************/
-            glm::mat4 save = m_data_manager.getViewMat();
-            m_data_manager.lockView(glm::vec3(0.0f, 0.0f, -1.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-            
-            m_overlay.renderEdges(m_data_manager);
-
-            m_data_manager.resetViewMat(save);
-        //======================================================================================================================================================
-
-    m_framebuffer->unbindFramebuffer();
+        if(m_data_manager.getPass() == DEPTH_FBO)
+        {
+            glCullFace(GL_BACK);
+            m_framebuffer->unbindFramebuffer();
+        }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -367,20 +344,12 @@ void Application::makeAllChanges()
 {
     if((ship != nullptr) && (m_input != nullptr))
     {
-        if(!render_menu)
+        if((!render_menu) )
         {
             ship->transform(glm::vec3(0.f), m_input);
-            ship->sendToShader(m_data_manager);
             m_data_manager.setShipPos(ship->getPosition());
         }
         ship->loadModelShip(m_data_manager);
-    }
-    if((camera != nullptr) && (m_input != nullptr))
-    {
-        camera->setDistFromShip(m_data_manager.getDistancteFromShip());
-        camera->move(m_input, render_menu);
-        camera->lookAt(m_data_manager.getViewMat());
-        m_data_manager.setCamPos(camera->getPosition());
     }
     if(m_skybox != nullptr)
     {
@@ -389,13 +358,13 @@ void Application::makeAllChanges()
 
     if(sun != nullptr)
     {
-        sun->updatePosition(glm::vec3(0.f));
+        sun->updatePosition(glm::vec3(0.f, 0.f, 0.f));
         sun->transform(-m_data_manager.getShipPos());
     } 
 
     if(mercury != nullptr)
     {
-        mercury->updatePosition(glm::vec3(20.f, 0.f, 0.f));
+        mercury->updatePosition(glm::vec3(20.f, 5.f, 0.f));
         mercury->transform(-m_data_manager.getShipPos());
     } 
 
@@ -407,13 +376,13 @@ void Application::makeAllChanges()
 
     if(saturn != nullptr)
     {
-        saturn->updatePosition(glm::vec3(40.f, 0.f, 0.f));
+        saturn->updatePosition(glm::vec3(50.f, 0.f, 0.f));
         saturn->transform(-m_data_manager.getShipPos());
     }
 
     if(saturn_ring != nullptr)
     {
-        saturn_ring->updatePosition(glm::vec3(40.f, 0.f, 0.0f));
+        saturn_ring->updatePosition(glm::vec3(50.f, 0.f, 0.0f));
         saturn_ring->transform(-m_data_manager.getShipPos());
     }
 }
@@ -473,9 +442,9 @@ void Application::renderOverlay()
 /*********************************************************************************** renderScene ***********************************************************************/
 /***********************************************************************************************************************************************************************/
 void Application::renderScene()
-{
+{   
 
-    if(!render_menu)
+    if(!render_menu && (m_data_manager.getPass() == COLOR_FBO))
     {
         ship->drawSpaceship(m_data_manager);
     }
@@ -484,7 +453,7 @@ void Application::renderScene()
         m_skybox->render(m_data_manager);
     }
 
-    if((sun != nullptr) && (star_renderer != nullptr))
+    if((sun != nullptr) && (star_renderer != nullptr) && (m_data_manager.getPass() == COLOR_FBO))
     {
         star_renderer->render(m_data_manager, sun);
     }

@@ -206,8 +206,10 @@ void Framebuffer::manageDepthMap(int width, int height)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        float borderColor[] = {1.0, 1.0, 1.0, 1.0};
+        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_map, 0);
 
@@ -396,16 +398,7 @@ void Framebuffer::renderFrame(DataManager &data_manager)
 /**************************************************************** drawScreenTexture ************************************************************************************/
 /***********************************************************************************************************************************************************************/
 void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
-{
-    glUseProgram(data_manager.getShader("depth_map")->getProgramID());
-
-        data_manager.getShader("depth_map")->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
-
-        // data_manager.getShader("depth_map")->setMat4("projection", data_manager.getProjMat());
-        // data_manager.getShader("depth_map")->setMat4("view", data_manager.getViewMat());
-
-    glUseProgram(0);
-    
+{   
     if(data_manager.getShader("screen") != nullptr)
     {
         glUseProgram(data_manager.getShader("screen")->getProgramID());
@@ -418,7 +411,7 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
             data_manager.getShader("screen")->setTexture("screen_texture", 1);
             data_manager.getShader("screen")->setFloat("near", data_manager.getNear());
             data_manager.getShader("screen")->setFloat("far", data_manager.getFar());
-            data_manager.getShader("screen")->setInt("render_depth", data_manager.getDepthRender());
+            // data_manager.getShader("screen")->setInt("render_depth", data_manager.getDepthRender());
             // data_manager.getShader("screen")->setTexture("bloom_texture", 2);
             // data_manager.getShader("screen")->setFloat("gamma", 2.2);
 
@@ -461,8 +454,8 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
         glUseProgram(0);
     }
 
-    this->renderDebugWindow(data_manager);
-    // data_manager.setDepthMapTexture(depth_map);
+    // this->renderDebugWindow(data_manager);
+    data_manager.setDepthMapTexture(depth_map);
     
 }
 
@@ -489,17 +482,7 @@ void Framebuffer::renderDebugWindow(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 void Framebuffer::bindFramebuffer(int type)
 {
-
     glBindFramebuffer(GL_FRAMEBUFFER, this->getFB(type));
-
-    //make sure we clear the framebuffer's content
-    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-    //cleaning the screen
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glClear(GL_DEPTH_BUFFER_BIT);
 
     // glEnable(GL_DEPTH_TEST);
 }
@@ -512,11 +495,6 @@ void Framebuffer::unbindFramebuffer()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // glDisable(GL_DEPTH_TEST);
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //make sure we clear the framebuffer's content
-    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 /***********************************************************************************************************************************************************************/

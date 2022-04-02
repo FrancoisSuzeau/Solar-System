@@ -231,7 +231,14 @@ void SphereRenderer::render(DataManager &data_manager, Object *sphere)
 {
     if(data_manager.getShader(sphere->getType()) != nullptr)
     {
-        glUseProgram(data_manager.getShader(sphere->getType())->getProgramID());
+        if(data_manager.getPass() == DEPTH_FBO)
+        {
+            glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+        }
+        else
+        {
+            glUseProgram(data_manager.getShader(sphere->getType())->getProgramID());
+        }
         /************************************************* bind VBO and IBO ********************************************************/
         glBindBuffer(GL_ARRAY_BUFFER,         super::m_vboID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);

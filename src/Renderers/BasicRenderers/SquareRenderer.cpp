@@ -167,8 +167,14 @@ void SquareRenderer::render(DataManager &data_manager, Object *square)
 {
     if(data_manager.getShader(square->getType()) != nullptr)
     {
-        //Activate the shader
-        glUseProgram(data_manager.getShader(square->getType())->getProgramID());
+       if(data_manager.getPass() == DEPTH_FBO)
+       {
+           glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+        }
+        else
+        {
+            glUseProgram(data_manager.getShader(square->getType())->getProgramID());
+        }
 
             //lock vao
             glBindVertexArray(super::m_vaoID);

@@ -93,7 +93,8 @@ PURPOSE : header of the DataManager class
                 int             getTrack() const;
                 void            setShader();
                 Shader          *getShader(std::string key);
-                glm::mat4&       getViewMat();
+                glm::mat4       getViewMat();
+                void            setViewMat(glm::mat4 const new_val);
                 void            resetViewMat(glm::mat4 const new_mat);
                 glm::mat4       getProjMat() const;
                 void            lockView(glm::vec3 position, glm::vec3 target, glm::vec3 up);

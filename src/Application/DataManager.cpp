@@ -19,7 +19,7 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
 bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(10000), m_fps(60),
 render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true), //for loading the skin at program launch
-far_plane(1000.f), near_plane(0.1f), depth_render(false)
+far_plane(100.f), near_plane(0.1f), depth_render(false)
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, (double)near_plane, (double)far_plane);
     view_mat = glm::mat4(1.0f);
@@ -127,7 +127,11 @@ Shader* DataManager::getShader(std::string key)
     return map_shader[key];
 }
 
-glm::mat4& DataManager::getViewMat()
+void DataManager::setViewMat(glm::mat4 const new_val)
+{
+    view_mat = new_val;
+}
+glm::mat4 DataManager::getViewMat()
 {
     return view_mat;
 }
@@ -325,9 +329,12 @@ bool DataManager::getDepthRender() const
 
 glm::mat4 DataManager::getLightSpaceMatrix()
 {
+    glm::vec3 lightPos = this->getSunPos();
+    glm::vec3 target = glm::vec3(50.f, 0.f, 0.f) - this->ship_position;
     glm::mat4 lightProjection, lightView;
-    lightProjection = glm::ortho(0.0f, (float)this->m_width, 0.0f, (float)this->m_height, this->near_plane, this->far_plane);
-    lightView = glm::lookAt(this->getSunPos(), glm::vec3(0.0f), glm::vec3(0.0, 0.0, 1.0));
+    lightProjection = glm::ortho(-10.f, 10.f, -10.f, 10.f, (float)this->near_plane, (float)this->far_plane);
+    // lightProjection = glm::perspective(glm::radians(45.f), (float) this->getWidth()/(float)this->getHeight(), (float)this->near_plane, (float)this->far_plane);
+    lightView = glm::lookAt(lightPos, target, glm::vec3(0.0, 0.0, 1.0));
     glm::mat4 lightSpaceMatrix = lightProjection * lightView;
     return lightSpaceMatrix;
 }

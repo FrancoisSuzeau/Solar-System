@@ -94,9 +94,9 @@ void Spaceship::sendToShader(DataManager &data_manager)
         case DEPTH_FBO:
             if(data_manager.getShader("depth_map") != nullptr)
             {
-                glUseProgram(data_manager.getShader("depth_map")->getProgramID());
-                    data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
-                glUseProgram(0);
+                // glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+                //     data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
+                // glUseProgram(0);
             }
             break;
         case COLOR_FBO:
@@ -124,6 +124,7 @@ void Spaceship::sendToShader(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 void Spaceship::drawSpaceship(DataManager &data_manager)
 {
+    this->sendToShader(data_manager);
     if((m_spaceship_models != nullptr) && ((data_manager.getShader(super::m_type) != nullptr)))
     {   
         m_spaceship_models->draw(data_manager);

@@ -60,7 +60,7 @@ PURPOSE : header of the Camera class
 
 
                 void    move(Input *input, bool move);
-                void    lookAt(glm::mat4 &view);
+                glm::mat4       getViewMatrix();
                 void    setDistFromShip(float const new_val);
                 glm::vec3 getPosition() const;
 
