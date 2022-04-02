@@ -122,19 +122,17 @@ void Ring::transform(glm::vec3 ship_pos, Input *input)
 /***********************************************************************************************************************************************************************/
 void Ring::sendToShader(DataManager &data_manager)
 {
-    if(data_manager.getPass() == COLOR_FBO)
+    if((data_manager.getShader(super::m_type) != nullptr) && (data_manager.getPass() == COLOR_FBO))
     {
-        if(data_manager.getShader(super::m_type) != nullptr)
-        {
-            glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
-                data_manager.getShader(super::m_type)->setTexture("diffuseTexture", 0);
-                data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
-                data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
-                data_manager.getShader(super::m_type)->setMat4("light_space_matrix", data_manager.getLightSpaceMatrix());
-                data_manager.getShader(super::m_type)->setTexture("shadowMap", 1);
-                // data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
-            glUseProgram(0);
-        }
+        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
+            data_manager.getShader(super::m_type)->setTexture("diffuseTexture", 0);
+            data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+            data_manager.getShader(super::m_type)->setInt("shadows", true);
+            data_manager.getShader(super::m_type)->setFloat("far_plane", data_manager.getFar());
+            data_manager.getShader(super::m_type)->setTexture("depthMap", 1);
+            data_manager.getShader(super::m_type)->setInt("shininess", m_shininess);
+        glUseProgram(0);
     }
     
     super::sendToShader(data_manager);

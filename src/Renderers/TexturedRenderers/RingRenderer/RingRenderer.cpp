@@ -48,12 +48,12 @@ void RingRenderer::render(DataManager &data_manager, Object *ring)
         glBindTexture(GL_TEXTURE_2D, t_id);
 
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, data_manager.getDepthMapTexture());
+        glBindTexture(GL_TEXTURE_CUBE_MAP, data_manager.getDepthMapTexture());
 
         super::render(data_manager, ring);
 
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0);

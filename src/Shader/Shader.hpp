@@ -50,6 +50,7 @@ PURPOSE : header of the Shader class
 
                 Shader(Shader const &shader_to_copy);
                 Shader& operator=(Shader const &shader_to_copy);
+                void clean();
 
                 GLuint          getProgramID() const;
                 bool            loadShader();

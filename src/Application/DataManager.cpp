@@ -19,7 +19,7 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
 bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(10000), m_fps(60),
 render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true), //for loading the skin at program launch
-far_plane(100.f), near_plane(0.1f), depth_render(false)
+far_plane(500.f), near_plane(0.1f)
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, (double)near_plane, (double)far_plane);
     view_mat = glm::mat4(1.0f);
@@ -27,11 +27,21 @@ far_plane(100.f), near_plane(0.1f), depth_render(false)
 
 DataManager::~DataManager()
 {
+    
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* clean *******************************************************************************/
+/***********************************************************************************************************************************************************************/
+void DataManager::clean()
+{
     for(std::map<std::string, Shader*>::iterator it = map_shader.begin(); it != map_shader.end(); ++it)
     {
         if(it->second != nullptr)
         {
+            it->second->clean();
             delete it->second;
+            it->second = nullptr;
         }
     }
 }
@@ -102,21 +112,21 @@ int DataManager::getTrack() const
 void DataManager::setShader()
 {
     std::vector<shader_datas> shader_init;
-    shader_init.push_back({"../../src/Shader/Shaders/screenShader.vert", "../../src/Shader/Shaders/screenShader.frag", "screen"});
-    shader_init.push_back({"../../src/Shader/Shaders/depthShader.vert", "../../src/Shader/Shaders/depthShader.frag", "depth_map"});
-    shader_init.push_back({"../../src/Shader/Shaders/squareShader.vert", "../../src/Shader/Shaders/squareShader.frag", "square"});
-    shader_init.push_back({"../../src/Shader/Shaders/skybox.vert", "../../src/Shader/Shaders/skybox.frag", "skybox"});
-    shader_init.push_back({"../../src/Shader/Shaders/model.vert", "../../src/Shader/Shaders/model.frag", "model"});
-    shader_init.push_back({"../../src/Shader/Shaders/sunShader.vert", "../../src/Shader/Shaders/sunShader.frag", "sun"});
-    shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/uniqueTexturePlaneteShader.frag", "simple_textured_planete"});
-    shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/doubleTexturePlaneteShader.frag", "double_textured_planete"});
-    shader_init.push_back({"../../src/Shader/Shaders/ringShader.vert", "../../src/Shader/Shaders/ringShader.frag", "ring"});
+    shader_init.push_back({"../../src/Shader/Shaders/screenShader.vert", "../../src/Shader/Shaders/screenShader.frag", "NONE", "screen"});
+    shader_init.push_back({"../../src/Shader/Shaders/depthShader.vert", "../../src/Shader/Shaders/depthShader.frag", "../../src/Shader/Shaders/depthShader.geom", "depth_map"});
+    shader_init.push_back({"../../src/Shader/Shaders/squareShader.vert", "../../src/Shader/Shaders/squareShader.frag", "NONE", "square"});
+    shader_init.push_back({"../../src/Shader/Shaders/skybox.vert", "../../src/Shader/Shaders/skybox.frag", "NONE", "skybox"});
+    shader_init.push_back({"../../src/Shader/Shaders/model.vert", "../../src/Shader/Shaders/model.frag", "NONE", "model"});
+    shader_init.push_back({"../../src/Shader/Shaders/sunShader.vert", "../../src/Shader/Shaders/sunShader.frag", "NONE", "sun"});
+    shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/uniqueTexturePlaneteShader.frag", "NONE", "simple_textured_planete"});
+    shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/doubleTexturePlaneteShader.frag", "NONE", "double_textured_planete"});
+    shader_init.push_back({"../../src/Shader/Shaders/ringShader.vert", "../../src/Shader/Shaders/ringShader.frag", "NONE", "ring"});
     
     // shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
 
     for(std::vector<shader_datas>::iterator it = shader_init.begin(); it != shader_init.end(); ++it)
     {
-        map_shader[it[0].key] = new Shader(it[0].v_shader_path, it[0].f_shader_path);
+        map_shader[it[0].key] = new Shader(it[0].v_shader_path, it[0].f_shader_path, it[0].g_shader_path);
         assert(map_shader[it[0].key]);
         assert(map_shader[it[0].key]->loadShader());
     }              
@@ -317,26 +327,22 @@ float DataManager::getNear() const
     return near_plane;
 }
 
-void DataManager::setDepthRender(bool const new_val)
-{
-    depth_render = new_val;
-}
-
-bool DataManager::getDepthRender() const
-{
-    return depth_render;
-}
-
-glm::mat4 DataManager::getLightSpaceMatrix()
+std::vector<glm::mat4> DataManager::getLightSpaceMatrix()
 {
     glm::vec3 lightPos = this->getSunPos();
-    glm::vec3 target = glm::vec3(50.f, 0.f, 0.f) - this->ship_position;
-    glm::mat4 lightProjection, lightView;
-    lightProjection = glm::ortho(-10.f, 10.f, -10.f, 10.f, (float)this->near_plane, (float)this->far_plane);
-    // lightProjection = glm::perspective(glm::radians(45.f), (float) this->getWidth()/(float)this->getHeight(), (float)this->near_plane, (float)this->far_plane);
-    lightView = glm::lookAt(lightPos, target, glm::vec3(0.0, 0.0, 1.0));
-    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-    return lightSpaceMatrix;
+    
+    // glm::mat4 shadowProj = glm::perspective(glm::radians(90.f), (float) this->getWidth()/(float)this->getWidth(), (float)this->near_plane, (float)this->far_plane);
+    glm::mat4 shadowProj = glm::ortho(-50.f, 50.f, -50.f, 50.f, (float)this->near_plane, (float)this->far_plane);
+    std::vector<glm::mat4> shadowTransforms;
+    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+
+    return shadowTransforms;
+
 }
 
 void DataManager::setDepthMapTexture(unsigned int const new_val)

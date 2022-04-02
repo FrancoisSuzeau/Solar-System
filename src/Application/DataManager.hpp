@@ -32,6 +32,7 @@ PURPOSE : header of the DataManager class
 
             std::string v_shader_path;
             std::string f_shader_path;
+            std::string g_shader_path;
             std::string key;
 
         }shader_datas;
@@ -63,7 +64,6 @@ PURPOSE : header of the DataManager class
                 bool            change_skin;
                 float           near_plane;
                 float           far_plane;
-                bool            depth_render;
                 unsigned int    depth_map;
                 int             pass;
 
@@ -78,6 +78,8 @@ PURPOSE : header of the DataManager class
 
                 DataManager(int width, int height, double angle);
                 ~DataManager();
+
+                void clean();
                 
                 void            setTerminate(bool const terminate);
                 int             getWidth() const;
@@ -131,9 +133,7 @@ PURPOSE : header of the DataManager class
                 glm::vec3       getSunPos() const;
                 float           getFar() const;
                 float           getNear() const;
-                void            setDepthRender(bool const new_val);
-                bool            getDepthRender() const;
-                glm::mat4       getLightSpaceMatrix();
+                std::vector<glm::mat4>       getLightSpaceMatrix();
                 void            setDepthMapTexture(unsigned int const new_val);
                 unsigned int    getDepthMapTexture() const;
                 void            setPass(int const new_val);

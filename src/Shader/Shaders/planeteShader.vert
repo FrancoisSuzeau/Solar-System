@@ -6,7 +6,7 @@ in vec3 in_Vertex;
 uniform mat4 view;
 uniform mat4 model;
 uniform mat4 projection;
-uniform mat4 light_space_matrix;
+// uniform mat4 light_space_matrix;
 // uniform vec3 viewPos;
 // uniform vec3 sunPos;
 
@@ -15,7 +15,6 @@ out VS_OUT {
     vec3 Normal;
     vec3 FragPos;
     vec4 texCoords;
-    vec4 FragPosLightSpace;
 //     vec3 TangentLightPos;
 //     vec3 TangentViewPos;
 //     vec3 TangentFragPos;
@@ -35,9 +34,8 @@ void main(void) {
 
     vs_out.FragPos = vec3(model * vec4(in_Vertex, 1.0));
     mat3 normalMatrice = mat3(transpose(inverse(model)));
-    vs_out.Normal = normalMatrice * in_Vertex;
+    vs_out.Normal = normalMatrice * in_Vertex;  
     vs_out.texCoords = vec4(in_Vertex, 1.0);
-    vs_out.FragPosLightSpace = light_space_matrix * vec4(vs_out.FragPos, 1.0);
     gl_Position = projection * view * (model * vec4(in_Vertex, 1.0));
 
     // vec3 lightPos = sunPos;

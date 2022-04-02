@@ -47,9 +47,10 @@ void main()
     // *********************************************** specular light ***************************************************
     float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specularStrength * spec * lightColor;
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = 0.0;
+    spec = pow(max(dot(norm, halfwayDir), 0.0), 32);
+    vec3 specular = spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
     float ambiantStrength = 0.1;

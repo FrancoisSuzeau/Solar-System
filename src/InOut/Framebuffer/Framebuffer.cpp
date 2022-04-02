@@ -36,26 +36,24 @@ Framebuffer::~Framebuffer()
 void Framebuffer::clean()
 {
     glDeleteVertexArrays(1, &quadVAO);
+    quadVAO = 0;
     glDeleteBuffers(1, &quadVBO);
+    quadVBO = 0;
     glDeleteFramebuffers(1, &color_fb_id);
+    color_fb_id = 0;
+    glDeleteFramebuffers(1, &depth_fb_id);
+    depth_fb_id = 0;
     // glDeleteFramebuffers(2, ping_pongFBO);
     glDeleteRenderbuffers(1, &render_buffer_id);
+    render_buffer_id = 0;
+    glDeleteTextures(1, &texture_id);
+    texture_id = 0;
+    glDeleteTextures(1, &depth_map);
+    depth_map = 0;
     // glDeleteTextures(2, colorBuffers);
     // glDeleteTextures(2, ping_pong_text);
 
-    if((glIsRenderbuffer(render_buffer_id) == GL_FALSE) && 
-    (glIsFramebuffer(color_fb_id) == GL_FALSE) &&
-    /*(glIsFramebuffer(ping_pongFBO[0]) == GL_FALSE) &&
-    (glIsFramebuffer(ping_pongFBO[1]) == GL_FALSE) &&
-    (glIsTexture(colorBuffers[0]) == GL_FALSE) &&
-    (glIsTexture(colorBuffers[1]) == GL_FALSE) &&
-    (glIsTexture(ping_pong_text[0]) == GL_FALSE) &&
-    (glIsTexture(ping_pong_text[1]) == GL_FALSE) &&*/
-    (glIsBuffer(quadVBO) == GL_FALSE) && 
-    (glIsVertexArray(quadVAO) == GL_FALSE))
-    {
-        std::cout << ">> FRAMEBUFFER : DESTROY COMPLETE" << std::endl;
-    }
+    std::cout << ">> FRAMEBUFFER : DESTROY COMPLETE" << std::endl;
 }
 
 /***********************************************************************************************************************************************************************/
@@ -201,30 +199,12 @@ void Framebuffer::manageDepthMap(int width, int height)
     glGenTextures(1, &depth_map);
     assert(depth_map != 0);
 
-    // glBindTexture(GL_TEXTURE_2D, depth_map);
-
-    //     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    //     float borderColor[] = {1.0, 1.0, 1.0, 1.0};
-    //     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-    //     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_map, 0);
-
-    //     glDrawBuffer(GL_NONE);
-    //     glReadBuffer(GL_NONE);
-
-    // glBindTexture(GL_TEXTURE_2D, 0);
-
     glBindTexture(GL_TEXTURE_CUBE_MAP, depth_map);
 
-        for (unsigned int i = 0; i < 6; i++)
+        for (unsigned int i = 0; i < 6; ++i)
         {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, width, width, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
         }
-
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -242,15 +222,15 @@ void Framebuffer::manageDepthMap(int width, int height)
 /***********************************************************************************************************************************************************************/
 /****************************************************************** manageDepthBuffer **********************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Framebuffer::manageRenderBuffer(int width, int height, unsigned int &buffer_id)
+void Framebuffer::manageRenderBuffer(int width, int height)
 {
-    glGenRenderbuffers(1, &buffer_id);
-    assert(buffer_id != 0);
+    glGenRenderbuffers(1, &render_buffer_id);
+    assert(render_buffer_id != 0);
 
-    glBindRenderbuffer(GL_RENDERBUFFER, buffer_id);
+    glBindRenderbuffer(GL_RENDERBUFFER, render_buffer_id);
 
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, buffer_id);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, render_buffer_id);
 
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
@@ -326,8 +306,6 @@ void Framebuffer::manageFramebuffers(int width, int height)
 
         this->manageDepthMap(width, height);
 
-        this->manageRenderBuffer(width, height, render_buffer_depth_id);
-
         assert(this->checkFramebufferStatus("Depth"));
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -339,7 +317,7 @@ void Framebuffer::manageFramebuffers(int width, int height)
 
         this->manageColorBuffer(width, height);
         
-        this->manageRenderBuffer(width, height, render_buffer_id);
+        this->manageRenderBuffer(width, height);
 
         assert(this->checkFramebufferStatus("Color"));
 
@@ -428,22 +406,13 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
             // data_manager.getShader("screen")->setInt("hdr", data_manager.getHDR());
             // data_manager.getShader("screen")->setInt("bloom", data_manager.getBloom());
 
-            data_manager.getShader("screen")->setTexture("depth_texture", 0);
-            data_manager.getShader("screen")->setTexture("screen_texture", 1);
-            data_manager.getShader("screen")->setFloat("near", data_manager.getNear());
-            data_manager.getShader("screen")->setFloat("far", data_manager.getFar());
-            // data_manager.getShader("screen")->setInt("render_depth", data_manager.getDepthRender());
+            data_manager.getShader("screen")->setTexture("screen_texture", 0);
             // data_manager.getShader("screen")->setTexture("bloom_texture", 2);
             // data_manager.getShader("screen")->setFloat("gamma", 2.2);
 
             glBindVertexArray(quadVAO);
-                
-                
 
                 glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, depth_map);
-
-                glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, texture_id);
 
                 // glActiveTexture(GL_TEXTURE1);
@@ -457,11 +426,8 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
                 
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, 0);
-
                 glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, 0);
+                glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
                 // if(data_manager.getBloom())
                 // {
@@ -475,27 +441,8 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
         glUseProgram(0);
     }
 
-    // this->renderDebugWindow(data_manager);
     data_manager.setDepthMapTexture(depth_map);
     
-}
-
-/***********************************************************************************************************************************************************************/
-/**************************************************************** renderDebugWindow ************************************************************************************/
-/***********************************************************************************************************************************************************************/
-void Framebuffer::renderDebugWindow(DataManager &data_manager)
-{
-    if(data_manager.getDepthRender())
-    {
-        ImGuiWindowFlags window_flags = 0;
-        
-        window_flags |= ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar;
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(ImVec2(data_manager.getWidth()/2 - 90, data_manager.getHeight()/2 - 90));
-        ImGui::Begin("Depth Map Render", nullptr, window_flags);
-        ImGui::Image((void*) texture_id, ImVec2(data_manager.getWidth()/2 - 90, data_manager.getHeight()/2 - 95), ImVec2(0, 1), ImVec2(1, 0));
-        ImGui::End();
-    }
 }
 
 /***********************************************************************************************************************************************************************/

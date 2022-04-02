@@ -21,7 +21,7 @@ Shader::Shader() : m_vertex_ID(0), m_fragment_ID(0), m_geometry_ID(0), m_program
 }
 
 Shader::Shader(std::string vertex_path, std::string fragment_path, std::string geometry_path) : 
-m_vertex_ID(0), m_fragment_ID(0), m_geometry_ID(0), m_program_ID(0), m_vertex_path(vertex_path), m_fragment_path(fragment_path)
+m_vertex_ID(0), m_fragment_ID(0), m_geometry_ID(0), m_program_ID(0), m_vertex_path(vertex_path), m_fragment_path(fragment_path), m_geometry_path(geometry_path)
 {
 
 }
@@ -52,8 +52,15 @@ Shader& Shader::operator=(Shader const &shader_to_copy)
 
 Shader::~Shader()
 {
-    deleteProgram();
+    
+}
 
+/***********************************************************************************************************************************************************************/
+/******************************************************************************* clean *********************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Shader::clean()
+{
+    deleteProgram();
 }
 
 /***********************************************************************************************************************************************************************/
@@ -223,7 +230,7 @@ bool Shader::compileShader(GLuint &shader, GLenum type, std::string const &file_
     const GLchar *string_src_code = src_code.c_str();
 
     //send source code to shader
-    glShaderSource(shader, 1, &string_src_code, 0);
+    glShaderSource(shader, 1, &string_src_code, NULL);
 
     //compile shader
     glCompileShader(shader);

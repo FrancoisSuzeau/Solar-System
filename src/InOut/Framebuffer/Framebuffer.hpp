@@ -53,7 +53,6 @@ PURPOSE : header of the Framebuffer class
                 unsigned int color_fb_id = 0;
                 unsigned int depth_fb_id = 0;
                 unsigned int render_buffer_id = 0;
-                unsigned int render_buffer_depth_id = 0;
                 unsigned int texture_id = 0;
                 unsigned int depth_map = 0;
                 
@@ -71,12 +70,11 @@ PURPOSE : header of the Framebuffer class
                 void manageFramebuffers(int width, int height);
                 void manageColorBuffer(int width, int height);
                 void manageDepthMap(int width, int height);
-                void manageRenderBuffer(int width, int height, unsigned int &redner_buffer_id);
+                void manageRenderBuffer(int width, int height);
                 // void managePinPongFBO(int width, int height);
 
                 // void drawBlur(DataManager &data_manager, bool &horizontal);
                 void drawScreenTexture(DataManager &data_manager, bool &horizontal);
-                void renderDebugWindow(DataManager &data_manager);
 
                 bool checkFramebufferStatus(std::string const framebuffer_type);
 

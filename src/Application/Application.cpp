@@ -147,6 +147,8 @@ void Application::cleanAll()
         delete ring_renderer;
         ring_renderer = nullptr;
     }
+
+    m_data_manager.clean();
 }
 
 /***********************************************************************************************************************************************************************/
@@ -244,8 +246,6 @@ void Application::loadAssets()
 
     ring_renderer = new RingRenderer();
     assert(ring_renderer);
-
-
 }
 
 /***********************************************************************************************************************************************************************/
@@ -266,39 +266,33 @@ void Application::mainLoop()
         //=====================================================================================================================================================
 
         /******************************************************************* RENDER AUDIO **********************************************************************/
-            // this->renderAudio();
+            this->renderAudio();
         //======================================================================================================================================================
 
-        if((camera != nullptr) && (m_input != nullptr))
-        {
-            camera->setDistFromShip(m_data_manager.getDistancteFromShip());
-            camera->move(m_input, render_menu);
-            m_data_manager.setViewMat(camera->getViewMatrix());
-            m_data_manager.setCamPos(camera->getPosition());
-        }
-
+        /******************************************************************* IMGUI PIPELINE ********************************************************************/
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplSDL2_NewFrame();
             ImGui::NewFrame();
+        //======================================================================================================================================================
 
-            glUseProgram(m_data_manager.getShader("depth_map")->getProgramID());
-                m_data_manager.getShader("depth_map")->setMat4("light_space_matrix", m_data_manager.getLightSpaceMatrix());
-            glUseProgram(0);
-
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        m_data_manager.setPass(DEPTH_FBO);
+        /******************************************************************* DEPTH MAP CALCULATION *************************************************************/
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            m_data_manager.setPass(DEPTH_FBO);
             this->renderIntoFramebuffer(DEPTH_FBO);
+        //======================================================================================================================================================
 
-        m_data_manager.setPass(COLOR_FBO);
+        /******************************************************************* RENDER SYSTEM *********************************************************************/
+            m_data_manager.setPass(COLOR_FBO);
             this->renderIntoFramebuffer(COLOR_FBO);
+        //======================================================================================================================================================
 
-        // /******************************************************************* RENDER FRAME OVERLAY **************************************************************/
+        /******************************************************************* RENDER FRAME OVERLAY **************************************************************/
             glm::mat4 save = m_data_manager.getViewMat();
             m_data_manager.lockView(glm::vec3(0.0f, 0.0f, -1.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             m_overlay.renderEdges(m_data_manager);
             m_data_manager.resetViewMat(save);
-        // //======================================================================================================================================================
+        //======================================================================================================================================================
 
         /******************************************************************* RENDER SETTINGS *******************************************************************/
             this->renderSettings();
@@ -327,15 +321,17 @@ void Application::mainLoop()
 void Application::renderIntoFramebuffer(int type)
 {
     m_framebuffer->bindFramebuffer(type);
-    glViewport(0, 0, m_data_manager.getWidth(), m_data_manager.getHeight());
+    
 
         if(m_data_manager.getPass() == DEPTH_FBO)
         {
+            glViewport(0, 0, m_data_manager.getWidth(), m_data_manager.getWidth());
             glClear(GL_DEPTH_BUFFER_BIT);
             glCullFace(GL_FRONT);
         }
         else
         {
+            glViewport(0, 0, m_data_manager.getWidth(), m_data_manager.getHeight());
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
@@ -377,7 +373,7 @@ void Application::makeAllChanges()
 
     if(mercury != nullptr)
     {
-        mercury->updatePosition(glm::vec3(20.f, 5.f, 0.f));
+        mercury->updatePosition(glm::vec3(20.f, 0.f, 1.5f));
         mercury->transform(-m_data_manager.getShipPos());
     } 
 
@@ -404,6 +400,24 @@ void Application::makeAllChanges()
         saturn_ring->updatePosition(glm::vec3(50.f, 0.f, 0.0f));
         saturn_ring->transform(-m_data_manager.getShipPos());
     }
+
+    if((camera != nullptr) && (m_input != nullptr))
+    {
+        camera->setDistFromShip(m_data_manager.getDistancteFromShip());
+        camera->move(m_input, render_menu);
+        m_data_manager.setViewMat(camera->getViewMatrix());
+        m_data_manager.setCamPos(camera->getPosition());
+    }
+
+    std::vector<glm::mat4> shadowTransforms = m_data_manager.getLightSpaceMatrix();
+    glUseProgram(m_data_manager.getShader("depth_map")->getProgramID());
+        for(int i = 0; i < 6; ++i)
+        {
+            m_data_manager.getShader("depth_map")->setMat4("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
+        }
+        m_data_manager.getShader("depth_map")->setFloat("far_plane", m_data_manager.getFar());
+        m_data_manager.getShader("depth_map")->setVec3("sunPos", m_data_manager.getSunPos());
+    glUseProgram(0);
 }
 
 /***********************************************************************************************************************************************************************/
