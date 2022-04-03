@@ -3,10 +3,10 @@
 
 // ============ In data ============
 in vec3 in_Vertex;
+in vec2 in_TexCoord0;
 uniform mat4 view;
 uniform mat4 model;
 uniform mat4 projection;
-// uniform mat4 light_space_matrix;
 // uniform vec3 viewPos;
 // uniform vec3 sunPos;
 
@@ -19,15 +19,6 @@ out VS_OUT {
 //     vec3 TangentViewPos;
 //     vec3 TangentFragPos;
 } vs_out;
-
-// out vec4 texCoords;
-// out vec3 FragPos;
-// out vec3 Normal;
-// out VS_OUT {
-//     vec3 TangentLightPos;
-//     vec3 TangentViewPos;
-//     vec3 TangentFragPos;
-// } vs_out;
 
 
 void main(void) {

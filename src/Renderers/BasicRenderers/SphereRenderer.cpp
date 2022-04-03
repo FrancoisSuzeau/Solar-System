@@ -140,21 +140,30 @@ void SphereRenderer::clean()
 /***********************************************************************************************************************************************************************/
 void SphereRenderer::load()
 {
-    GLfloat verts[longVerts][latVerts][VERT_NUM_FLOATS];
+    m_bytes_vertices_size = (longVerts * latVerts * 3) * sizeof(GLfloat);
+    m_bytes_normals_size = (longVerts * latVerts * 3) * sizeof(GLfloat);
+    m_bytes_texture_size = (longVerts * latVerts * 2) * sizeof(GLfloat);
+
+    GLfloat vertices[longVerts][latVerts][3];
+    GLfloat normals[longVerts][latVerts][3];
+    GLfloat textures_coord[longVerts][latVerts][2];
     for(unsigned int i(0); i < longVerts; i++)
     {
         for(unsigned int j(0); j < latVerts; j++)
         {
-            verts[i][j][0] = tmp[i][j][0];
-            verts[i][j][1] = tmp[i][j][1];
-            verts[i][j][2] = tmp[i][j][2];
-            verts[i][j][3] = tmp[i][j][3];
-            verts[i][j][4] = tmp[i][j][4];
-            verts[i][j][5] = tmp[i][j][5];
-            verts[i][j][6] = tmp[i][j][6];
-            verts[i][j][7] = tmp[i][j][7];
+            vertices[i][j][0] = tmp[i][j][0];
+            vertices[i][j][1] = tmp[i][j][1];
+            vertices[i][j][2] = tmp[i][j][2];
+
+            normals[i][j][3] = tmp[i][j][3];
+            normals[i][j][4] = tmp[i][j][4];
+            normals[i][j][5] = tmp[i][j][5];
+
+            textures_coord[i][j][6] = tmp[i][j][6];
+            textures_coord[i][j][7] = tmp[i][j][7];
         }
     }
+
     /************************************************* VBO management ********************************************************/
     //destroy a possible ancient VBO
     if(glIsBuffer(super::m_vboID) == GL_TRUE)
@@ -180,8 +189,24 @@ void SphereRenderer::load()
         there is 6 other possible values
         */
 
-       //vertices transfert$
-       glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * VERT_NUM_FLOATS * m_vertCount, verts);
+       //transfer vertices in video memory
+       glBufferSubData(GL_ARRAY_BUFFER, 0, m_bytes_vertices_size, vertices);
+       //transfer the normals in video memory
+       glBufferSubData(GL_ARRAY_BUFFER, m_bytes_vertices_size, m_bytes_normals_size, normals);
+       //transfer the textures coordinates in video memory
+       glBufferSubData(GL_ARRAY_BUFFER, m_bytes_vertices_size + m_bytes_normals_size, m_bytes_texture_size, textures_coord);
+
+            //acces to the vertices in video memory
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            glEnableVertexAttribArray(0);
+
+            //acces to the normals in video memory
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(m_bytes_vertices_size));
+            glEnableVertexAttribArray(1);
+
+            //acces to coordonates texture in video memory
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(m_bytes_vertices_size + m_bytes_normals_size));
+            glEnableVertexAttribArray(2);
 
 
     //unlock VBO
@@ -206,8 +231,6 @@ void SphereRenderer::load()
 
         //memory allocation
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * m_element_count, 0, GL_DYNAMIC_DRAW);
-
-
         /*
             - GL_STATIC_DRAW : data with few updating
             - GL_DYNAMIC_DRAW : data with frequently updating (many times per second but not each frame
@@ -242,22 +265,11 @@ void SphereRenderer::render(DataManager &data_manager, Object *sphere)
         /************************************************* bind VBO and IBO ********************************************************/
         glBindBuffer(GL_ARRAY_BUFFER,         super::m_vboID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glTexCoordPointer(2,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3 * 2));
-        glNormalPointer(      GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(sizeof(GLfloat) * 3));
-        glVertexPointer(  3,  GL_FLOAT, sizeof(GLfloat) * VERT_NUM_FLOATS, BUFFER_OFFSET(0));
         //===================================================================================================================================
-        
         glDrawElements(GL_TRIANGLES, m_element_count, GL_UNSIGNED_SHORT, BUFFER_OFFSET(0));
-
         /************************************************* unbind VBO and IBO ********************************************************/
         glBindBuffer(GL_ARRAY_BUFFER,         0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        glDisableClientState(GL_NORMAL_ARRAY);
-        glDisableClientState(GL_VERTEX_ARRAY);
         //===================================================================================================================================
 
         glUseProgram(0);

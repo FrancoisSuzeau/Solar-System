@@ -24,7 +24,6 @@ in VS_OUT {
     vec3 Normal;
     vec3 FragPos;
     vec4 texCoords;
-    // vec4 FragPosLightSpace;
 //     vec3 TangentLightPos;
 //     vec3 TangentViewPos;
 //     vec3 TangentFragPos;
@@ -33,12 +32,6 @@ in VS_OUT {
 // ============ Out data ============
 // layout (location = 1) out vec4 BrightColor;
 layout (location = 0) out vec4 FragColor;
-
-// in VS_OUT {
-//     vec3 TangentLightPos;
-//     vec3 TangentViewPos;
-//     vec3 TangentFragPos;
-// } fs_in; 
 
 
 // vec2 parallaxMapping(vec2 texCoord, vec3 viewDir)
@@ -133,8 +126,6 @@ void main(void) {
         // look up the color of the texture image specified by the uniform "texture0"
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
-
-    
 
     vec3 lightColor = vec3(1.0);
     vec3 lightPos = sunPos;

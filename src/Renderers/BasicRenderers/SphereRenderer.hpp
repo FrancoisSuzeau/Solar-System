@@ -31,8 +31,6 @@ PURPOSE : header of the SphereRenderer class
             
                 protected:
 
-                
-
                         GLuint                          m_ibo;
                         GLsizei                         m_element_count;
                         unsigned int                    m_vertCount;
@@ -41,6 +39,10 @@ PURPOSE : header of the SphereRenderer class
                         GLfloat                         ***tmp;
                         unsigned int                    longVerts;
                         unsigned int                    latVerts;
+
+                        int                             m_bytes_vertices_size;
+                        int                             m_bytes_normals_size;
+                        int                             m_bytes_texture_size;
 
                         void                            load() override;
         
