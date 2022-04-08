@@ -107,7 +107,6 @@ void Spaceship::sendToShader(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 void Spaceship::drawSpaceship(DataManager &data_manager)
 {
-    this->sendToShader(data_manager);
     if((m_spaceship_models != nullptr) && ((data_manager.getShader(super::m_type) != nullptr)))
     {   
         m_spaceship_models->draw(data_manager);

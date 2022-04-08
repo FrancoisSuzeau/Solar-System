@@ -148,6 +148,13 @@ void Application::cleanAll()
         ring_renderer = nullptr;
     }
 
+    if(asteroid_field != nullptr)
+    {
+        asteroid_field->clean();
+        delete asteroid_field;
+        asteroid_field = nullptr;
+    }
+
     m_data_manager.clean();
 }
 
@@ -246,6 +253,9 @@ void Application::loadAssets()
 
     ring_renderer = new RingRenderer();
     assert(ring_renderer);
+
+    asteroid_field = new AsteroidField("INSTmodel");
+    assert(asteroid_field);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -356,10 +366,17 @@ void Application::makeAllChanges()
         if((!render_menu) )
         {
             ship->transform(glm::vec3(0.f), m_input);
+            ship->sendToShader(m_data_manager);
             m_data_manager.setShipPos(ship->getPosition());
         }
         ship->loadModelShip(m_data_manager);
     }
+    if(asteroid_field != nullptr)
+    {
+        asteroid_field->transform(-m_data_manager.getShipPos());
+        asteroid_field->sendToShader(m_data_manager);
+    }
+
     if(m_skybox != nullptr)
     {
         m_skybox->sendToShader(m_data_manager);
@@ -379,25 +396,25 @@ void Application::makeAllChanges()
 
     if(earth != nullptr)
     {
-        earth->updatePosition(glm::vec3(-40.f, 0.f, 0.f));
+        earth->updatePosition(glm::vec3(-80.f, 0.f, 0.f));
         earth->transform(-m_data_manager.getShipPos());
     }
 
     if(moon != nullptr)
     {
-        moon->updatePosition(glm::vec3(-30.f, 0.f, 0.f));
+        moon->updatePosition(glm::vec3(-70.f, 0.f, 0.f));
         moon->transform(-m_data_manager.getShipPos());
     }
 
     if(saturn != nullptr)
     {
-        saturn->updatePosition(glm::vec3(50.f, 0.f, 0.f));
+        saturn->updatePosition(glm::vec3(100.f, 0.f, 0.f));
         saturn->transform(-m_data_manager.getShipPos());
     }
 
     if(saturn_ring != nullptr)
     {
-        saturn_ring->updatePosition(glm::vec3(50.f, 0.f, 0.0f));
+        saturn_ring->updatePosition(glm::vec3(100.f, 0.f, 0.0f));
         saturn_ring->transform(-m_data_manager.getShipPos());
     }
 
@@ -514,6 +531,11 @@ void Application::renderScene()
     if((saturn_ring != nullptr) && (ring_renderer != nullptr))
     {
         ring_renderer->render(m_data_manager, saturn_ring);
+    }
+
+    if((asteroid_field != nullptr) && m_data_manager.getPass() == COLOR_FBO)
+    {
+        asteroid_field->render(m_data_manager);
     }
 }
 

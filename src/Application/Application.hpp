@@ -39,6 +39,8 @@ PURPOSE : header of the Application class
         #include "../Renderers/TexturedRenderers/RingRenderer/RingRenderer.hpp"
         #include "../Objects/TexturedObjects/SquareTextured/Ring/Ring.hpp"
 
+        #include "../Objects/AsteroidField/AsteroidField.hpp"
+
         #include "../Skybox/Skybox.hpp"
         #include "../Objects/Spaceship/Spaceship.hpp"
 
@@ -91,6 +93,7 @@ PURPOSE : header of the Application class
                 Renderer                *planete_renderer = nullptr;
                 Renderer                *ring_renderer = nullptr;
                 Framebuffer             *m_framebuffer;
+                AsteroidField           *asteroid_field = nullptr;
 
 
 

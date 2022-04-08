@@ -41,6 +41,7 @@ SRC+=Application\Camera\Camera.cpp
 SRC+=Objects\TexturedObjects\Star\Star.cpp
 SRC+=Objects\TexturedObjects\Planete\Planete.cpp
 SRC+=Objects\TexturedObjects\SquareTextured\Ring\Ring.cpp
+SRC+=Objects\AsteroidField\AsteroidField.cpp
 SRC+=Renderers\TexturedRenderers\StarRenderer\StarRenderer.cpp
 SRC+=Renderers\TexturedRenderers\PlaneteRenderer\PlaneteRenderer.cpp
 SRC+=Renderers\TexturedRenderers\RingRenderer\RingRenderer.cpp

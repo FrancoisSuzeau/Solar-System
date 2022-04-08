@@ -17,7 +17,7 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height), hdr(true), exposure(0.8f),
-bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(10000), m_fps(60),
+bloom(true), bloom_strenght(10), render_normal(true), render_parallax(true), asteroid_count(100), m_fps(60),
 render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true), //for loading the skin at program launch
 far_plane(500.f), near_plane(0.1f)
 {
@@ -121,6 +121,7 @@ void DataManager::setShader()
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/uniqueTexturePlaneteShader.frag", "NONE", "simple_textured_planete"});
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/doubleTexturePlaneteShader.frag", "NONE", "double_textured_planete"});
     shader_init.push_back({"../../src/Shader/Shaders/ringShader.vert", "../../src/Shader/Shaders/ringShader.frag", "NONE", "ring"});
+    shader_init.push_back({"../../src/Shader/Shaders/modelInstanced.vert", "../../src/Shader/Shaders/modelInstanced.frag", "NONE", "INSTmodel"});
     
     // shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
 
@@ -332,7 +333,7 @@ std::vector<glm::mat4> DataManager::getLightSpaceMatrix()
     glm::vec3 lightPos = this->getSunPos();
     
     // glm::mat4 shadowProj = glm::perspective(glm::radians(90.f), (float) this->getWidth()/(float)this->getWidth(), (float)this->near_plane, (float)this->far_plane);
-    glm::mat4 shadowProj = glm::ortho(-50.f, 50.f, -50.f, 50.f, (float)this->near_plane, (float)this->far_plane);
+    glm::mat4 shadowProj = glm::ortho(-100.f, 100.f, -100.f, 100.f, (float)this->near_plane, (float)this->far_plane);
     std::vector<glm::mat4> shadowTransforms;
     shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
     shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
