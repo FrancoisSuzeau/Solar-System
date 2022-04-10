@@ -39,14 +39,13 @@ PURPOSE : header of the virtual PlanetarySystem class
 
                 std::vector<Planete*>                   m_moons;
                 Planete                                 *m_host;
-                // PlaneteRender                           *planete_render;
 
 
                 void            initDatas() override;
                 // void displayInfo(RenderData &render_data, Planete *planete, PlaneteInformation *planete_info);
             public:
 
-                PlanetarySystem(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer);
+                PlanetarySystem(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name);
                 ~PlanetarySystem();
 
 
@@ -56,7 +55,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 // void displayName(RenderData &render_data) override;
                 // void displayAtmo(RenderData &render_data) override;
                 // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
-                // void displayRing(RenderData &render_data) override;
+                void renderRing(DataManager &data_manager) override;
                 // void setMostGravInfluence(RenderData &render_data) override;
                 // void approchBody(Spaceship *ship) override;
 

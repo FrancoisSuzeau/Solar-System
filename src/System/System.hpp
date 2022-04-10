@@ -29,6 +29,7 @@ PURPOSE : header of the virtual System class
 
         #include "../Objects/TexturedObjects/Planete/Planete.hpp"
         #include "../Renderers/TexturedRenderers/PlaneteRenderer/PlaneteRenderer.hpp"
+        #include "../Renderers/TexturedRenderers/RingRenderer/RingRenderer.hpp"
 
         // #include "../../PlaneteInformation/PlaneteInformation.hpp"
         // #include "../../OpenGlSketch/RenderData.hpp"
@@ -36,28 +37,6 @@ PURPOSE : header of the virtual System class
         // #include "../../Spaceship/Spaceship.hpp"
 
         // #include "../../LensFlare/FlareManager.hpp"
-
-
-        typedef struct body_data {
-
-                float                           size;
-                std::vector<std::string>        textures_path;
-                std::string                     type;
-                int                             shininess;
-                float                           oppacity;
-                // std::vector<std::string> nom_disp_path;
-                // std::string name;
-                // float   inclinaison_angle;
-                // float   speed_rotation;
-
-        } body_data;
-
-        // typedef struct sys_init_data {
-
-        //         std::string     name_sys;
-        //         int     companion_count;
-
-        // } sys_init_data;
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -67,9 +46,9 @@ PURPOSE : header of the virtual System class
             protected:
 
                 Renderer                        *m_planete_renderer = nullptr;
+                Renderer                        *m_ring_renderer = nullptr;
 
-                // std::string                 m_system_name;
-                // int                         m_companion_count;
+                std::string                      m_system_name;
 
                 std::vector<body_data>          m_bodys_data;
                 // std::vector<sys_init_data>     sys_data;
@@ -89,7 +68,7 @@ PURPOSE : header of the virtual System class
                 // virtual void displayName(RenderData &render_data) = 0;
                 // virtual void displayAtmo(RenderData &render_data) = 0;
                 // virtual void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;
-                // virtual void displayRing(RenderData &render_data) = 0;
+                virtual void renderRing(DataManager &data_manager) = 0;
                 // virtual void setMostGravInfluence(RenderData &render_data) = 0;
                 // virtual void approchBody(Spaceship *ship) = 0;
                 // virtual void renderFlareSun(RenderData &render_data) = 0;

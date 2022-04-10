@@ -16,15 +16,13 @@ PURPOSE : header of the Planete class
 
 /********************************************************************* includes *********************************************************************/
 
-        // #include "../../Texture/Texture.hpp"
         // #include "../../Text/Text.hpp"
         // #include "../../Atmosphere/Atmosphere.hpp"
         // #include "../Ring/Ring.hpp"
-        // #include "../System/System.hpp"
-        // #include "../../OpenGlSketch/RenderData.hpp"
 
         #include "../../BasicObjects/Sphere.hpp"
         #include "../../../Loader/Loader.hpp"
+        #include "../SquareTextured/Ring/Ring.hpp"
 
         #include <string>
         #include <vector>
@@ -45,28 +43,16 @@ PURPOSE : header of the Planete class
 
                         typedef Sphere super;
                         float   m_oppacity;
+                        std::string     m_name;
+                        Ring            *m_ring = nullptr;
             
             protected:
 
-                // std::vector<Texture*>           m_textures;
                 // Texture                         *m_normal_surface;
                 // Texture                         *displacement_map;
-                // std::string                     m_name;
                 // Text                            *m_name_renderer;
                 // Atmosphere                      *m_atmosphere;
                 // Ring                            *m_ring;
-                // float                           m_real_size;
-                // float                           m_size;
-                // float                           m_inclinaison_angle;
-                // float                           m_rotation_angle;
-                // float                           m_speed_rotation;
-                // glm::vec3                       m_current_position;
-                // glm::vec3                       m_initial_pos;
-                // glm::mat4                       m_model_mat;
-
-                // std::string                     m_type_plan;
-
-                // float                           m_oppacity;
                 // bool                            is_near;
                 // float heighhtScale;
 
@@ -74,11 +60,14 @@ PURPOSE : header of the Planete class
             public:
 
                 // Planete(init_data data, TTF_Font *police);
-                Planete(float size, std::vector<std::string> surface_tex_paths, std::string const type, int shinniness, float const oppacity = 0.f);
+                Planete(body_data datas);
                 ~Planete();
 
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;
                 void sendToShader(DataManager &data_manager) override;
+
+                Ring*   getRing() const;
+                void    makeRingChanges(DataManager &data_manager);
                 
                 // std::string getName() const;
                 // float getRadiusFromCam(glm::vec3 camPos);

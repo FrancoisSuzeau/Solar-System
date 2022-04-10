@@ -39,6 +39,22 @@ PURPOSE : header of the DataManager class
 
         }shader_datas;
 
+        typedef struct body_data {
+
+                float                           size;
+                std::vector<std::string>        textures_path;
+                std::string                     type;
+                int                             shininess;
+                float                           oppacity;
+                glm::vec3                       initial_pos;
+                std::string                     name;
+                // std::vector<std::string> nom_disp_path;
+                // std::string name;
+                // float   inclinaison_angle;
+                // float   speed_rotation;
+
+        } body_data;
+
         class DataManager
         {
             

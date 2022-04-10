@@ -47,9 +47,6 @@ PURPOSE : header of the virtual SolarSystem class
                 std::vector<Planete*>           m_planetes;
                 AsteroidField                   *m_asteroid_field = nullptr;
 
-                // int                             m_planetarySYS_count;
-                // int                             m_simple_planete_count;
-
                 // FlareManager                    fm;
 
                 // PlaneteInformation              *m_planete_info;
@@ -61,7 +58,7 @@ PURPOSE : header of the virtual SolarSystem class
                 
             public:
 
-                SolarSystem(/*sys_init_data data, TTF_Font *police,*/Renderer *planete_renderer);
+                SolarSystem(/*sys_init_data data, TTF_Font *police,*/Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name);
                 ~SolarSystem();
 
 
@@ -71,7 +68,7 @@ PURPOSE : header of the virtual SolarSystem class
                 // void displayName(RenderData &render_data) override;
                 // void displayAtmo(RenderData &render_data) override;
                 // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
-                // void displayRing(RenderData &render_data) override;
+                void renderRing(DataManager &data_manager) override;
 
                 // void setMostGravInfluence(RenderData &render_data) override;
                 // void approchBody(Spaceship *ship) override;

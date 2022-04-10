@@ -47,12 +47,12 @@ PURPOSE : header of the virtual SolarSystemCreator class
                 }
 
 
-                System* FactoryMethod(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer) override
+                System* FactoryMethod(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name) override
                 {
                         // puts("");
                         // puts("");
                         // std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << data.name_sys << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                        return new SolarSystem(/*data, police,*/ planete_renderer);
+                        return new SolarSystem(/*data, police,*/ planete_renderer, ring_renderer, system_name);
                 }
 
 

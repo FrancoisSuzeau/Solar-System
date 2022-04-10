@@ -45,11 +45,11 @@ PURPOSE : header of the virtual SystemCreator class
                         // }
                 };
 
-                virtual System* FactoryMethod(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer) = 0;
+                virtual System* FactoryMethod(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name) = 0;
 
-                bool MakingSystem(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer) 
+                bool MakingSystem(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name) 
                 {
-                        m_system = this->FactoryMethod(/*data, police,*/planete_renderer);
+                        m_system = this->FactoryMethod(/*data, police,*/planete_renderer, ring_renderer, system_name);
                         return true;
                 }
 
@@ -94,10 +94,10 @@ PURPOSE : header of the virtual SystemCreator class
                 //         m_system->displayAsteroidField(render_data);
                 // }
 
-                // void drawRing(RenderData &render_data)
-                // {
-                //         m_system->displayRing(render_data);
-                // }
+                void renderRing(DataManager &data_manager)
+                {
+                        m_system->renderRing(data_manager);
+                }
 
                 // void setMostGravInfluence(RenderData &render_data)
                 // {

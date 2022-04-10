@@ -30,14 +30,6 @@ PURPOSE : header of the Application class
         #include "../Objects/BasicObjects/Square.hpp"
         #include "../Renderers/BasicRenderers/SquareRenderer.hpp"
 
-        #include "../Renderers/TexturedRenderers/PlaneteRenderer/PlaneteRenderer.hpp"
-        #include "../Objects/TexturedObjects/Planete/Planete.hpp"
-
-        #include "../Renderers/TexturedRenderers/RingRenderer/RingRenderer.hpp"
-        #include "../Objects/TexturedObjects/SquareTextured/Ring/Ring.hpp"
-
-        #include "../Objects/AsteroidField/AsteroidField.hpp"
-
         #include "../Skybox/Skybox.hpp"
         #include "../Objects/Spaceship/Spaceship.hpp"
 
@@ -73,9 +65,9 @@ PURPOSE : header of the Application class
                 // ParticuleManager *m_particule_manager;
                 // bool is_moving;
 
-                Planete*                 venus = nullptr;
-                Planete*                 saturn = nullptr;
-                Ring                    *saturn_ring = nullptr;
+                // Planete*                 venus = nullptr;
+                // Planete*                 saturn = nullptr;
+                // Ring                    *saturn_ring = nullptr;
                 Renderer                *planete_renderer = nullptr;
                 Renderer                *ring_renderer = nullptr;
 

@@ -126,41 +126,45 @@ PURPOSE : class Planete
 //     }
 // }
 
-Planete::Planete(float size, std::vector<std::string> surface_tex_paths, std::string const type, int shininess, float const oppacity) : super(size, type),
-m_oppacity(oppacity)
+Planete::Planete(body_data datas) : super(datas.size, datas.type),
+m_oppacity(datas.oppacity), m_name(datas.name)
 {
     int i = 0;
-    for(std::vector<std::string>::iterator it = surface_tex_paths.begin(); it != surface_tex_paths.end(); ++it)
+    for(std::vector<std::string>::iterator it = datas.textures_path.begin(); it != datas.textures_path.end(); ++it)
     {
         super::surface_tex_ids.push_back(Loader::loadTextureWithSDL(it[0]));
         assert(super::surface_tex_ids[i] != 0);
         i++;
     }
 
-    m_rotation_angle = 0.f;
-    m_speed_rotation = 0.1f;
-    m_shininess = shininess;
+    super::m_rotation_angle = 0.f;
+    super::m_speed_rotation = 0.1f;
+    super::m_shininess = datas.shininess;
+    super::m_position = datas.initial_pos;
+
+    if(m_name == "Saturn")
+    {
+        std::vector<std::string> texture_path;
+        texture_path.push_back("../../assets/textures/CelestialBody/SaturnRing.png");
+        m_ring = new Ring(25.f,  texture_path, "ring", 32);
+        assert(m_ring);
+    }
 }
 
 Planete::~Planete()
 {
-    // for (std::vector<Texture*>::iterator it = m_textures.begin(); it != m_textures.end(); ++it)
-    // {
-    //     if(it[0] != nullptr)
-    //     {
-    //         delete it[0];
-    //     }
-    // }
 
     // if(m_atmosphere != nullptr)
     // {
     //     delete m_atmosphere;
     // }
 
-    // if(m_ring != nullptr)
-    // {
-    //     delete m_ring;
-    // }
+    if(m_ring != nullptr)
+    {
+        m_ring->clean();
+        delete m_ring;
+        m_ring = nullptr;
+    }
     
 
     // if(m_name_renderer != nullptr)
@@ -228,6 +232,18 @@ void Planete::sendToShader(DataManager &data_manager)
 }
 
 /***********************************************************************************************************************************************************************/
+/****************************************************************************** makeRingChanges *************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Planete::makeRingChanges(DataManager &data_manager)
+{
+    if(m_ring != nullptr)
+    {
+        m_ring->updatePosition(super::getPosition());
+        m_ring->transform(-data_manager.getShipPos());
+    }
+}
+
+/***********************************************************************************************************************************************************************/
 /****************************************************************************** updatePosition *************************************************************************/
 /***********************************************************************************************************************************************************************/
 // void Planete::updatePosition(glm::vec3 shipPos)
@@ -252,6 +268,10 @@ void Planete::sendToShader(DataManager &data_manager)
 // /***********************************************************************************************************************************************************************/
 // /********************************************************************************** getters ****************************************************************************/
 // /***********************************************************************************************************************************************************************/
+Ring* Planete::getRing() const
+{
+    return m_ring;
+}
 // std::string Planete::getName() const
 // {
 //     return m_name;
