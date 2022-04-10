@@ -18,10 +18,6 @@ PURPOSE : header of the virtual PlanetarySystem class
 
         #include "System.hpp"
 
-        // #include "../Planete/PlaneteRender.hpp"
-        // #include "../Planete/Planete.hpp"
-        // #include "../../OpenGlSketch/RenderData.hpp"
-
         // #include "../../PlaneteInformation/PlaneteInformation.hpp"
 
         #include <string>
@@ -41,21 +37,20 @@ PURPOSE : header of the virtual PlanetarySystem class
             
             private:
 
-                // std::vector<Planete*>                   m_moons;
-                // Planete                                 *m_host;
+                std::vector<Planete*>                   m_moons;
+                Planete                                 *m_host;
                 // PlaneteRender                           *planete_render;
 
 
-                // void initData() override;
+                void            initDatas() override;
                 // void displayInfo(RenderData &render_data, Planete *planete, PlaneteInformation *planete_info);
             public:
 
-                // PlanetarySystem(sys_init_data data, TTF_Font *police);
-                PlanetarySystem();
+                PlanetarySystem(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer);
                 ~PlanetarySystem();
 
 
-                // void loadSystem(int count, TTF_Font *police) override;
+                void loadSystem(/*int count, TTF_Font *police*/) override;
                 void render(DataManager &data_manager) override;
                 void makeChanges(DataManager &data_manager) override;
                 // void displayName(RenderData &render_data) override;

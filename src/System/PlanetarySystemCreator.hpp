@@ -38,12 +38,12 @@ PURPOSE : header of the virtual PlanetarySystemCreator class
             public:
 
 
-                System* FactoryMethod(/*sys_init_data data, TTF_Font *police*/) override
+                System* FactoryMethod(/*sys_init_data data, TTF_Font *police, */ Renderer *planete_renderer) override
                 {
                         // puts("");
                         // puts("");
                         // std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << data.name_sys << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                        return new PlanetarySystem(/*data, police*/);
+                        return new PlanetarySystem(/*data, police,*/ planete_renderer);
                 }
 
 

@@ -73,15 +73,11 @@ PURPOSE : header of the Application class
                 // ParticuleManager *m_particule_manager;
                 // bool is_moving;
 
-                Planete*                 mercury = nullptr;
-                Planete*                 earth = nullptr;
                 Planete*                 venus = nullptr;
-                Planete*                 moon = nullptr;
                 Planete*                 saturn = nullptr;
                 Ring                    *saturn_ring = nullptr;
                 Renderer                *planete_renderer = nullptr;
                 Renderer                *ring_renderer = nullptr;
-                // AsteroidField           *asteroid_field = nullptr;
 
 
                 SystemCreator           *m_solar_system = nullptr;

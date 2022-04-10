@@ -45,19 +45,19 @@ PURPOSE : header of the virtual SystemCreator class
                         // }
                 };
 
-                virtual System* FactoryMethod(/*sys_init_data data, TTF_Font *police*/) = 0;
+                virtual System* FactoryMethod(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer) = 0;
 
-                bool MakingSystem(/*sys_init_data data, TTF_Font *police*/) 
+                bool MakingSystem(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer) 
                 {
-                        m_system = this->FactoryMethod(/*data, police*/);
+                        m_system = this->FactoryMethod(/*data, police,*/planete_renderer);
                         return true;
                 }
 
-                // int loadSystem(int count, TTF_Font *police)
-                // {
-                //         m_system->loadSystem(count, police);
-                //         return 1;
-                // }
+                int loadSystem(/*int count, TTF_Font *police*/)
+                {
+                        m_system->loadSystem(/*count, police*/);
+                        return 1;
+                }
 
                 // void drawName(RenderData &render_data)
                 // {

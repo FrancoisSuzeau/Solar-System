@@ -16,32 +16,29 @@ PURPOSE : class SolarSystem
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-SolarSystem::SolarSystem(/*sys_init_data data, TTF_Font *police*/)
+SolarSystem::SolarSystem(/*sys_init_data data, TTF_Font *police*/Renderer *planete_renderer)
 {
     m_sun = new Star(1.f, "../../assets/textures/CelestialBody/SunMap.jpg", "sun");
     assert(m_sun);
     m_sun->updateSize(glm::vec3(10.f));
+
     m_star_renderer = new StarRenderer(1.f, 70.f, 70.f);
     assert(m_star_renderer);
+
+    m_planete_renderer = planete_renderer;
 
     m_asteroid_field = new AsteroidField("INSTmodel");
     assert(m_asteroid_field);
 
+    this->initDatas();
+
     // m_planete_info = new PlaneteInformation();
     // assert(m_planete_info);
-
-    // planete_render = new PlaneteRender();
-    // assert(planete_render);
 
     // m_system_name = data.name_sys;
     // m_companion_count = data.companion_count;
     // m_planetarySYS_count = 3;
     // m_simple_planete_count = 5;
-
-    // m_asteroid_field = new AsteroidField();
-    // assert(m_asteroid_field);
-    
-    // this->initData();
 
     // mini_speed = false;
     // maxi_speed = true;
@@ -88,25 +85,41 @@ SolarSystem::~SolarSystem()
         m_asteroid_field = nullptr;
     }
 
+    for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            it[0]->clean();
+            delete it[0];
+            it[0] = nullptr;
+        }
+    }
+
+    for(std::vector<SystemCreator*>::iterator it = m_planetary_systems.begin(); it != m_planetary_systems.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            delete it[0];
+            it[0] = nullptr;
+        }
+    }
+
     // if(m_planete_info != nullptr)
     // {
     //     delete m_planete_info;
     // }
-
-    // if(planete_render != nullptr)
-    // {
-    //     delete planete_render;
-    // }
 }
 
 /***********************************************************************************************************************************************************************/
-/******************************************************************************** initData *****************************************************************************/
+/******************************************************************************** initDatas ****************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void SolarSystem::initData()
-// {
-//     std::string surface_path = "../../assets/textures/CelestialBody/";
+void SolarSystem::initDatas()
+{
+    std::string surface_path = "../../assets/textures/CelestialBody/";
 //     std::string norma_path = "../../assets/textures/normalMap/";
 //     std::string disp_paht = "../../assets/textures/displacementMap/";
+
+    m_bodys_data.push_back({1.f, {surface_path + "MercuryMap.jpg"}, "simple_textured_planete", 32, 0.f});
 
 //     m_data.push_back({{surface_path + "MercuryMap.jpg"}, {norma_path + "mercury_normalMap.jpg", disp_paht + "mercury_dispMap.jpg"}, "Mercury", "one_texture_p", 11.49f, 0.01f, 0.1f, glm::vec3(5790.0f, 0.0f, 0.0f)});
 //     m_data.push_back({{surface_path + "VenusMap.jpg", surface_path + "VenusCloud.jpg"}, {norma_path + "venus_normalMap.jpg", disp_paht + "venus_dispMap.jpg"}, "Venus", "multi_texture_p", 28.47f, 177.3f, 0.1f, glm::vec3(0.0f, -10820.0f, 0.0f)});
@@ -117,13 +130,21 @@ SolarSystem::~SolarSystem()
 //     sys_data.push_back({"Earth System", 1});
 //     sys_data.push_back({"Jovian System", 4});
 //     sys_data.push_back({"Saturnian System", 3});
-// }
+}
 
 // /***********************************************************************************************************************************************************************/
 // /******************************************************************************* loadSystem ****************************************************************************/
 // /***********************************************************************************************************************************************************************/
-// void SolarSystem::loadSystem(int count, TTF_Font *police)
-// {
+void SolarSystem::loadSystem(/*int count, TTF_Font *police*/)
+{
+    m_planetes.push_back(new Planete(m_bodys_data[0].size, m_bodys_data[0].textures_path, m_bodys_data[0].type, m_bodys_data[0].shininess, m_bodys_data[0].oppacity));
+    assert(m_planetes[0]);
+
+    m_planetary_systems.push_back(new PlanetarySystemCreator());
+    assert(m_planetary_systems[0]);
+    assert(m_planetary_systems[0]->MakingSystem(m_planete_renderer));
+    m_planetary_systems[0]->loadSystem();
+
 //     assert(police);
 //     /************************************************* loading planetary system ********************************************************/
 //     // Earth System
@@ -183,10 +204,8 @@ SolarSystem::~SolarSystem()
 //         m_planetes.push_back(new Planete(m_data[4], police));
 //         assert(m_planetes[4]);
 //     }
-//     //===================================================================================================================
-
-    
-// }
+//     //===================================================================================================================   
+}
 
 // /***********************************************************************************************************************************************************************/
 // /****************************************************************************** makeChanges ****************************************************************************/
@@ -204,6 +223,20 @@ void SolarSystem::makeChanges(DataManager &data_manager)
         m_asteroid_field->transform(-data_manager.getShipPos());
         m_asteroid_field->sendToShader(data_manager);
     }
+
+    if(m_planetes[0] != nullptr)
+    {
+        m_planetes[0]->updatePosition(glm::vec3(20.f, 0.f, 1.5f));
+        m_planetes[0]->transform(-data_manager.getShipPos());
+    }
+
+    for(std::vector<SystemCreator*>::iterator it = m_planetary_systems.begin(); it != m_planetary_systems.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            it[0]->makeChanges(data_manager);
+        }
+    }
 }
 
 // /***********************************************************************************************************************************************************************/
@@ -220,6 +253,22 @@ void SolarSystem::render(DataManager &data_manager)
     if((m_asteroid_field != nullptr) && (data_manager.getPass() == COLOR_FBO))
     {
         m_asteroid_field->render(data_manager);
+    }
+
+    for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
+    {
+        if((m_planete_renderer != nullptr) && (it[0] != nullptr))
+        {
+            m_planete_renderer->render(data_manager, it[0]);
+        }
+    }
+
+    for(std::vector<SystemCreator*>::iterator it = m_planetary_systems.begin(); it != m_planetary_systems.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            it[0]->render(data_manager);
+        }
     }
 
 //     for (std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)

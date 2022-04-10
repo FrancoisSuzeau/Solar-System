@@ -16,13 +16,15 @@ PURPOSE : header of the virtual SolarSystem class
 
 /********************************************************************* includes *********************************************************************/
 
-        #include "SystemCreator.hpp"
+        #include "System.hpp"
         #include "PlanetarySystemCreator.hpp"
 
         #include "../Objects/TexturedObjects/Star/Star.hpp"
         #include "../Renderers/TexturedRenderers/StarRenderer/StarRenderer.hpp"
 
         #include "../Objects/AsteroidField/AsteroidField.hpp"
+
+        
 
 
 
@@ -41,6 +43,8 @@ PURPOSE : header of the virtual SolarSystem class
 
                 Star                            *m_sun = nullptr;
                 Renderer                        *m_star_renderer = nullptr;
+                
+                std::vector<Planete*>           m_planetes;
                 AsteroidField                   *m_asteroid_field = nullptr;
 
                 // int                             m_planetarySYS_count;
@@ -50,19 +54,18 @@ PURPOSE : header of the virtual SolarSystem class
 
                 // PlaneteInformation              *m_planete_info;
 
-                // std::vector<SystemCreator*>    m_planetary_system;
+                std::vector<SystemCreator*>     m_planetary_systems;
 
-                // void initData() override;
+                void            initDatas() override;
                 
                 
             public:
 
-                // SolarSystem(sys_init_data data, TTF_Font *police);
-                SolarSystem();
+                SolarSystem(/*sys_init_data data, TTF_Font *police,*/Renderer *planete_renderer);
                 ~SolarSystem();
 
 
-                // void loadSystem(int count, TTF_Font *police) override;
+                void loadSystem(/*int count, TTF_Font *police*/) override;
                 void render(DataManager &data_manager) override;
                 void makeChanges(DataManager &data_manager) override;
                 // void displayName(RenderData &render_data) override;

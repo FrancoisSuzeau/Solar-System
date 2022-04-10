@@ -98,30 +98,13 @@ void Application::cleanAll()
         m_solar_system = nullptr;
     }
 
-    if(mercury != nullptr)
-    {
-        mercury->clean();
-        delete mercury;
-        mercury = nullptr;
-    }
-    if(earth != nullptr)
-    {
-        earth->clean();
-        delete earth;
-        earth = nullptr;
-    }
     if(venus != nullptr)
     {
         venus->clean();
         delete venus;
         venus = nullptr;
     }
-    if(moon != nullptr)
-    {
-        moon->clean();
-        delete moon;
-        moon = nullptr;
-    }
+
     if(saturn != nullptr)
     {
         saturn->clean();
@@ -189,6 +172,8 @@ void Application::loadAssets()
     assert(square_renderer);
     Square  *square = new Square(1.0, "square");
     assert(square);
+    planete_renderer = new PlaneteRenderer(1.f, 70.f, 70.f);
+    assert(planete_renderer);
 
     m_overlay.initOverlayAssets(square_renderer, square);
     m_skybox = new Skybox();
@@ -202,51 +187,26 @@ void Application::loadAssets()
 
     m_solar_system = new SolarSystemCreator();
     assert(m_solar_system);
-    assert(m_solar_system->MakingSystem());
+    assert(m_solar_system->MakingSystem(planete_renderer));
+    m_solar_system->loadSystem();
 
     std::vector<std::string> surface_paths;
 
     surface_paths.clear();
-    surface_paths.push_back("../../assets/textures/CelestialBody/MercuryMap.jpg");
-    mercury = new Planete(1.f, surface_paths, "simple_textured_planete", 32);
-    assert(mercury);
-    mercury->updateSize(glm::vec3(1.f));
-
-    surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/VenusMap.jpg");
     surface_paths.push_back("../../assets/textures/CelestialBody/VenusCloud.jpg");
-    venus = new Planete(1.f, surface_paths, "double_textured_planete", 128, 0.1f);
+    venus = new Planete(3.f, surface_paths, "double_textured_planete", 128, 0.1f);
     assert(venus);
-    venus->updateSize(glm::vec3(3.f));
 
     surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/SaturnCloud.jpg");
-    saturn = new Planete(1.f, surface_paths, "simple_textured_planete", 16);
+    saturn = new Planete(5.f, surface_paths, "simple_textured_planete", 16);
     assert(saturn);
-    saturn->updateSize(glm::vec3(5.f));
 
     surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/SaturnRing.png");
-    saturn_ring = new Ring(1.f, surface_paths, "ring", 32);
+    saturn_ring = new Ring(25.f, surface_paths, "ring", 32);
     assert(saturn_ring);
-    saturn_ring->updateSize(glm::vec3(25.f));
-
-    surface_paths.clear();
-    surface_paths.push_back("../../assets/textures/CelestialBody/EarthDayMap.jpg");
-    surface_paths.push_back("../../assets/textures/CelestialBody/CloudMap.jpg");
-    surface_paths.push_back("../../assets/textures/CelestialBody/EarthNightMap.jpg");
-    earth = new Planete(1.f, surface_paths, "earth", 128, 0.5f);
-    assert(earth);
-    earth->updateSize(glm::vec3(3.f));
-
-    surface_paths.clear();
-    surface_paths.push_back("../../assets/textures/CelestialBody/MoonMap.jpg");
-    moon = new Planete(1.f, surface_paths, "simple_textured_planete", 32);
-    assert(moon);
-    moon->updateSize(glm::vec3(1.f));
-
-    planete_renderer = new PlaneteRenderer(1.f, 70.f, 70.f);
-    assert(planete_renderer);
 
     ring_renderer = new RingRenderer();
     assert(ring_renderer);
@@ -376,28 +336,10 @@ void Application::makeAllChanges()
         m_solar_system->makeChanges(m_data_manager);
     }
 
-    if(mercury != nullptr)
-    {
-        mercury->updatePosition(glm::vec3(20.f, 0.f, 1.5f));
-        mercury->transform(-m_data_manager.getShipPos());
-    } 
-
-    if(earth != nullptr)
-    {
-        earth->updatePosition(glm::vec3(-80.f, 0.f, 0.f));
-        earth->transform(-m_data_manager.getShipPos());
-    }
-
     if(venus != nullptr)
     {
         venus->updatePosition(glm::vec3(0.f, -80.f, 0.f));
         venus->transform(-m_data_manager.getShipPos());
-    }
-
-    if(moon != nullptr)
-    {
-        moon->updatePosition(glm::vec3(-70.f, 0.f, 0.f));
-        moon->transform(-m_data_manager.getShipPos());
     }
 
     if(saturn != nullptr)
@@ -502,24 +444,9 @@ void Application::renderScene()
         m_solar_system->render(m_data_manager);
     }
 
-    if((mercury != nullptr) && (planete_renderer != nullptr))
-    {
-        planete_renderer->render(m_data_manager, mercury);
-    }
-
-    if((earth != nullptr) && (planete_renderer != nullptr))
-    {
-        planete_renderer->render(m_data_manager, earth);
-    }
-
     if((venus != nullptr) && (planete_renderer != nullptr))
     {
         planete_renderer->render(m_data_manager, venus);
-    }
-
-    if((moon != nullptr) && (planete_renderer != nullptr))
-    {
-        planete_renderer->render(m_data_manager, moon);
     }
 
     if((saturn != nullptr) && (planete_renderer != nullptr))

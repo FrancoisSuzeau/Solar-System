@@ -27,6 +27,9 @@ PURPOSE : header of the virtual System class
 
         #include "../Application/DataManager.hpp"
 
+        #include "../Objects/TexturedObjects/Planete/Planete.hpp"
+        #include "../Renderers/TexturedRenderers/PlaneteRenderer/PlaneteRenderer.hpp"
+
         // #include "../../PlaneteInformation/PlaneteInformation.hpp"
         // #include "../../OpenGlSketch/RenderData.hpp"
         // #include "../Physique/Physique.hpp"
@@ -35,18 +38,19 @@ PURPOSE : header of the virtual System class
         // #include "../../LensFlare/FlareManager.hpp"
 
 
-        // typedef struct init_data {
+        typedef struct body_data {
 
-        //         std::vector<std::string> texture_path;
-        //         std::vector<std::string> nom_disp_path;
-        //         std::string name;
-        //         std::string type_plan;
-        //         float   size;
-        //         float   inclinaison_angle;
-        //         float   speed_rotation;
-        //         glm::vec3 position;
+                float                           size;
+                std::vector<std::string>        textures_path;
+                std::string                     type;
+                int                             shininess;
+                float                           oppacity;
+                // std::vector<std::string> nom_disp_path;
+                // std::string name;
+                // float   inclinaison_angle;
+                // float   speed_rotation;
 
-        // } init_data;
+        } body_data;
 
         // typedef struct sys_init_data {
 
@@ -62,22 +66,24 @@ PURPOSE : header of the virtual System class
             
             protected:
 
+                Renderer                        *m_planete_renderer = nullptr;
+
                 // std::string                 m_system_name;
                 // int                         m_companion_count;
 
-                // std::vector<init_data>          m_data;
+                std::vector<body_data>          m_bodys_data;
                 // std::vector<sys_init_data>     sys_data;
                 // bool mini_speed;
                 // bool maxi_speed;
                 // float current_speed;
 
-                // virtual void initData() = 0;
+                virtual void    initDatas() = 0;
                 
             public:
 
                 
                 virtual ~System() {};
-                // virtual void loadSystem(int count, TTF_Font *police) = 0;
+                virtual void loadSystem(/*int count, TTF_Font *police*/) = 0;
                 virtual void makeChanges(DataManager &data_manager) = 0;
                 virtual void render(DataManager &data_manager) = 0;
                 // virtual void displayName(RenderData &render_data) = 0;
