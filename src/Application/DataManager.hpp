@@ -48,9 +48,9 @@ PURPOSE : header of the DataManager class
                 float                           oppacity;
                 glm::vec3                       initial_pos;
                 std::string                     name;
+                float                           inclinaison_angle;
                 // std::vector<std::string> nom_disp_path;
                 // std::string name;
-                // float   inclinaison_angle;
                 // float   speed_rotation;
 
         } body_data;
@@ -91,6 +91,7 @@ PURPOSE : header of the DataManager class
                 glm::vec3       ship_position;
                 glm::vec3       cam_pos;
                 
+                
 
             public:
 
@@ -98,6 +99,8 @@ PURPOSE : header of the DataManager class
                 ~DataManager();
 
                 void clean();
+
+                static std::vector<body_data>          m_bodys_data;
                 
                 void            setTerminate(bool const terminate);
                 int             getWidth() const;
@@ -156,6 +159,8 @@ PURPOSE : header of the DataManager class
                 unsigned int    getDepthMapTexture() const;
                 void            setPass(int const new_val);
                 int             getPass() const;
+                static void            initDatas();
+                static body_data       getBodyData(int index);
 
 
         };

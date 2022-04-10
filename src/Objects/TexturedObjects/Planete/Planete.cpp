@@ -141,12 +141,29 @@ m_oppacity(datas.oppacity), m_name(datas.name)
     super::m_speed_rotation = 0.1f;
     super::m_shininess = datas.shininess;
     super::m_position = datas.initial_pos;
+    super::m_inclinaison_angle = datas.inclinaison_angle;
 
     if(m_name == "Saturn")
     {
         std::vector<std::string> texture_path;
         texture_path.push_back("../../assets/textures/CelestialBody/SaturnRing.png");
-        m_ring = new Ring(25.f,  texture_path, "ring", 32);
+        m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
+        assert(m_ring);
+    }
+
+    if(m_name == "Uranus")
+    {
+        std::vector<std::string> texture_path;
+        texture_path.push_back("../../assets/textures/CelestialBody/UranusRing.png");
+        m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
+        assert(m_ring);
+    }
+
+    if(m_name == "Neptune")
+    {
+        std::vector<std::string> texture_path;
+        texture_path.push_back("../../assets/textures/CelestialBody/NeptuneRing.png");
+        m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
         assert(m_ring);
     }
 }
@@ -189,7 +206,8 @@ Planete::~Planete()
 void Planete::transform(glm::vec3 ship_pos, Input *input)
 {
     super::transform(ship_pos, input);
-    super::m_rotation_vector = glm::vec3(0.f, 0.f, 1.f);
+
+    super::inclineObject(super::m_model_mat, super::m_inclinaison_angle);
 
     super::m_rotation_angle += super::m_speed_rotation;
     if(super::m_rotation_angle >= 360)

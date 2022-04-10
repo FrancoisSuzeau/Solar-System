@@ -81,9 +81,10 @@ PURPOSE : class Ring
     
 // }
 
-Ring::Ring(float size, std::vector<std::string> textures_path, std::string const type, int shininess) : super(size, type)
+Ring::Ring(float size, std::vector<std::string> textures_path, std::string const type, int shininess, float inclinaison_angle) : super(size, type)
 {
     m_shininess = shininess;
+    m_inclinaison_angle = inclinaison_angle;
     int i = 0;
     for(std::vector<std::string>::iterator it = textures_path.begin(); it != textures_path.end(); ++it)
     {
@@ -115,6 +116,8 @@ void Ring::transform(glm::vec3 ship_pos, Input *input)
 
     super::translateObject(super::m_model_mat, (super::m_position + ship_pos));
     super::scaleObject(super::m_model_mat, super::m_size);
+
+    super::inclineObject(super::m_model_mat, super::m_inclinaison_angle);
 }
 
 /***********************************************************************************************************************************************************************/

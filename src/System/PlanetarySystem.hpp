@@ -40,8 +40,6 @@ PURPOSE : header of the virtual PlanetarySystem class
                 std::vector<Planete*>                   m_moons;
                 Planete                                 *m_host;
 
-
-                void            initDatas() override;
                 // void displayInfo(RenderData &render_data, Planete *planete, PlaneteInformation *planete_info);
             public:
 

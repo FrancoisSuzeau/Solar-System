@@ -167,6 +167,8 @@ void Application::loadAssets()
     camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
     assert(camera);
 
+    DataManager::initDatas();
+
     m_solar_system = new SolarSystemCreator();
     assert(m_solar_system);
     assert(m_solar_system->MakingSystem(planete_renderer, ring_renderer, "Solar System"));

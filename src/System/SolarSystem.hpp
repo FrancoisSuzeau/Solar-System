@@ -52,8 +52,6 @@ PURPOSE : header of the virtual SolarSystem class
                 // PlaneteInformation              *m_planete_info;
 
                 std::vector<SystemCreator*>     m_planetary_systems;
-
-                void            initDatas() override;
                 
                 
             public:

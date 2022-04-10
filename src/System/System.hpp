@@ -49,14 +49,10 @@ PURPOSE : header of the virtual System class
                 Renderer                        *m_ring_renderer = nullptr;
 
                 std::string                      m_system_name;
-
-                std::vector<body_data>          m_bodys_data;
                 // std::vector<sys_init_data>     sys_data;
                 // bool mini_speed;
                 // bool maxi_speed;
                 // float current_speed;
-
-                virtual void    initDatas() = 0;
                 
             public:
 

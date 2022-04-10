@@ -48,7 +48,7 @@ PURPOSE : header of the Ring class
                 // float heighhtScale;
 
             public:
-                Ring(float size, std::vector<std::string> textures_path, std::string const type, int shininess);
+                Ring(float size, std::vector<std::string> textures_path, std::string const type, int shininess, float inclinaison_angle);
                 ~Ring();
 
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;
