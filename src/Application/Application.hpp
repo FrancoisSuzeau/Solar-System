@@ -45,6 +45,8 @@ PURPOSE : header of the Application class
         #include "../Objects/Spaceship/Spaceship.hpp"
 
         #include "../InOut/Framebuffer/Framebuffer.hpp"
+
+        #include "../System/SolarSystemCreator.hpp"
         
 
         #include "Camera/Camera.hpp"
@@ -74,6 +76,19 @@ PURPOSE : header of the Application class
                 // ParticuleManager *m_particule_manager;
                 // bool is_moving;
 
+                Planete*                 mercury = nullptr;
+                Planete*                 earth = nullptr;
+                Planete*                 venus = nullptr;
+                Planete*                 moon = nullptr;
+                Planete*                 saturn = nullptr;
+                Ring                    *saturn_ring = nullptr;
+                Renderer                *planete_renderer = nullptr;
+                Renderer                *ring_renderer = nullptr;
+                AsteroidField           *asteroid_field = nullptr;
+
+
+                SystemCreator           *m_solar_system = nullptr;
+                Framebuffer             *m_framebuffer;
                 DataManager             m_data_manager;
                 Input                   *m_input;
                 Settings                m_setting;
@@ -83,30 +98,14 @@ PURPOSE : header of the Application class
                 Skybox                  *m_skybox;
                 Camera	                *camera;
                 Spaceship               *ship;
-                Star*                   sun = nullptr;
-                Renderer                *star_renderer = nullptr;
-                Planete*                 mercury = nullptr;
-                Planete*                 earth = nullptr;
-                Planete*                 venus = nullptr;
-                Planete*                 moon = nullptr;
-                Planete*                 saturn = nullptr;
-                Ring                    *saturn_ring = nullptr;
-                Renderer                *planete_renderer = nullptr;
-                Renderer                *ring_renderer = nullptr;
-                Framebuffer             *m_framebuffer;
-                AsteroidField           *asteroid_field = nullptr;
 
-
-
-                bool menu_app_key_pressed;
-                bool render_menu;
-
-                unsigned int frame_rate;
-                Uint32 start_loop, end_loop, time_past;
+                bool                    menu_app_key_pressed;
+                bool                    render_menu;
+                unsigned int            frame_rate;
+                Uint32                  start_loop, end_loop, time_past;
 
                 void    inputProcess();
                 void    fpsCalculation(int moment);
-
                 void    renderAudio();
                 void    renderSettings();
                 void    renderOverlay();

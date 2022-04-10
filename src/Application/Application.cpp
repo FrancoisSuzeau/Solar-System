@@ -92,17 +92,10 @@ void Application::cleanAll()
     m_setting.clean();
     m_overlay.clean();
 
-    if(sun != nullptr)
+    if(m_solar_system != nullptr)
     {
-        sun->clean();
-        delete sun;
-        sun = nullptr;
-    }
-    if(star_renderer != nullptr)
-    {
-        star_renderer->clean();
-        delete star_renderer;
-        star_renderer = nullptr;
+        delete m_solar_system;
+        m_solar_system = nullptr;
     }
 
     if(mercury != nullptr)
@@ -214,14 +207,11 @@ void Application::loadAssets()
     camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
     assert(camera);
 
-    std::vector<std::string> surface_paths;
-    surface_paths.push_back("../../assets/textures/CelestialBody/SunMap.jpg");
-    sun = new Star(1.f, surface_paths[0], "sun");
-    assert(sun);
-    sun->updateSize(glm::vec3(10.f));
+    m_solar_system = new SolarSystemCreator();
+    assert(m_solar_system);
+    assert(m_solar_system->MakingSystem());
 
-    star_renderer = new StarRenderer(1.f, 70.f, 70.f);
-    assert(star_renderer);
+    std::vector<std::string> surface_paths;
 
     surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/MercuryMap.jpg");
@@ -396,11 +386,10 @@ void Application::makeAllChanges()
         m_skybox->sendToShader(m_data_manager);
     }
 
-    if(sun != nullptr)
+    if(m_solar_system != nullptr)
     {
-        sun->updatePosition(glm::vec3(0.f, 0.f, 0.f));
-        sun->transform(-m_data_manager.getShipPos());
-    } 
+        m_solar_system->makeChanges(m_data_manager);
+    }
 
     if(mercury != nullptr)
     {
@@ -523,9 +512,9 @@ void Application::renderScene()
         m_skybox->render(m_data_manager);
     }
 
-    if((sun != nullptr) && (star_renderer != nullptr) && (m_data_manager.getPass() == COLOR_FBO))
+    if(m_solar_system != nullptr)
     {
-        star_renderer->render(m_data_manager, sun);
+        m_solar_system->render(m_data_manager);
     }
 
     if((mercury != nullptr) && (planete_renderer != nullptr))

@@ -21,6 +21,8 @@ PURPOSE : header of the DataManager class
         #include <vector>
 
         #include "../Shader/Shader.hpp"
+        
+        #include <SDL2/SDL_ttf.h>
 
         #define COLOR_FBO 0
         #define DEPTH_FBO 1
