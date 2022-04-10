@@ -120,6 +120,7 @@ void DataManager::setShader()
     shader_init.push_back({"../../src/Shader/Shaders/sunShader.vert", "../../src/Shader/Shaders/sunShader.frag", "NONE", "sun"});
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/uniqueTexturePlaneteShader.frag", "NONE", "simple_textured_planete"});
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/doubleTexturePlaneteShader.frag", "NONE", "double_textured_planete"});
+    shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/earthShader.frag", "NONE", "earth"});
     shader_init.push_back({"../../src/Shader/Shaders/ringShader.vert", "../../src/Shader/Shaders/ringShader.frag", "NONE", "ring"});
     shader_init.push_back({"../../src/Shader/Shaders/modelInstanced.vert", "../../src/Shader/Shaders/modelInstanced.frag", "NONE", "INSTmodel"});
     

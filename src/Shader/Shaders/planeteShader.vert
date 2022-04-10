@@ -25,7 +25,7 @@ void main(void) {
 
     vs_out.FragPos = vec3(model * vec4(in_Vertex, 1.0));
     mat3 normalMatrice = mat3(transpose(inverse(model)));
-    vs_out.Normal = normalMatrice * in_Vertex;  
+    vs_out.Normal = normalize(normalMatrice * in_Vertex);  
     vs_out.texCoords = vec4(in_Vertex, 1.0);
     gl_Position = projection * view * (model * vec4(in_Vertex, 1.0));
 

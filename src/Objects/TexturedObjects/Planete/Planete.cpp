@@ -211,7 +211,7 @@ void Planete::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setInt("shadows", true);
             data_manager.getShader(super::m_type)->setFloat("far_plane", data_manager.getFar());
                 
-            if(super::m_type == "double_textured_planete")
+            if((super::m_type == "double_textured_planete") || (super::m_type == "earth"))
             {
                 data_manager.getShader(super::m_type)->setTexture("material.texture1", 2);
                 data_manager.getShader(super::m_type)->setFloat("oppacity", m_oppacity);

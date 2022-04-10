@@ -117,6 +117,12 @@ void Application::cleanAll()
         delete earth;
         earth = nullptr;
     }
+    if(venus != nullptr)
+    {
+        venus->clean();
+        delete venus;
+        venus = nullptr;
+    }
     if(moon != nullptr)
     {
         moon->clean();
@@ -224,6 +230,13 @@ void Application::loadAssets()
     mercury->updateSize(glm::vec3(1.f));
 
     surface_paths.clear();
+    surface_paths.push_back("../../assets/textures/CelestialBody/VenusMap.jpg");
+    surface_paths.push_back("../../assets/textures/CelestialBody/VenusCloud.jpg");
+    venus = new Planete(1.f, surface_paths, "double_textured_planete", 128, 0.1f);
+    assert(venus);
+    venus->updateSize(glm::vec3(3.f));
+
+    surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/SaturnCloud.jpg");
     saturn = new Planete(1.f, surface_paths, "simple_textured_planete", 16);
     assert(saturn);
@@ -237,8 +250,8 @@ void Application::loadAssets()
 
     surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/EarthDayMap.jpg");
-    surface_paths.push_back("../../assets/textures/CelestialBody/CloudMap.jpg");
-    earth = new Planete(1.f, surface_paths, "double_textured_planete", 128, 0.3f);
+    surface_paths.push_back("../../assets/textures/CelestialBody/EarthNightMap.jpg");
+    earth = new Planete(1.f, surface_paths, "earth", 128, 0.3f);
     assert(earth);
     earth->updateSize(glm::vec3(3.f));
 
@@ -400,6 +413,12 @@ void Application::makeAllChanges()
         earth->transform(-m_data_manager.getShipPos());
     }
 
+    if(venus != nullptr)
+    {
+        venus->updatePosition(glm::vec3(0.f, -80.f, 0.f));
+        venus->transform(-m_data_manager.getShipPos());
+    }
+
     if(moon != nullptr)
     {
         moon->updatePosition(glm::vec3(-70.f, 0.f, 0.f));
@@ -516,6 +535,11 @@ void Application::renderScene()
     if((earth != nullptr) && (planete_renderer != nullptr))
     {
         planete_renderer->render(m_data_manager, earth);
+    }
+
+    if((venus != nullptr) && (planete_renderer != nullptr))
+    {
+        planete_renderer->render(m_data_manager, venus);
     }
 
     if((moon != nullptr) && (planete_renderer != nullptr))
