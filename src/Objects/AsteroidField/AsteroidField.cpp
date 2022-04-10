@@ -138,8 +138,8 @@ void AsteroidField::sendToShader(DataManager &data_manager)
             // data_manager.getShader(this->getType())->setInt("hdr", data_manager.getHDR());
             data_manager.getShader(this->getType())->setMat4("projection", data_manager.getProjMat());
             data_manager.getShader(this->getType())->setMat4("view", data_manager.getViewMat());
-            // data_manager.getShader(this->getType())->setVec3("viewPos", data_manager.getCamPos());
-            // data_manager.getShader(this->getType())->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(this->getType())->setVec3("viewPos", data_manager.getCamPos());
+            data_manager.getShader(this->getType())->setVec3("sunPos", data_manager.getSunPos());
 
         glUseProgram(0);
     }
