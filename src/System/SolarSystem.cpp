@@ -23,6 +23,10 @@ SolarSystem::SolarSystem(/*sys_init_data data, TTF_Font *police*/)
     m_sun->updateSize(glm::vec3(10.f));
     m_star_renderer = new StarRenderer(1.f, 70.f, 70.f);
     assert(m_star_renderer);
+
+    m_asteroid_field = new AsteroidField("INSTmodel");
+    assert(m_asteroid_field);
+
     // m_planete_info = new PlaneteInformation();
     // assert(m_planete_info);
 
@@ -33,11 +37,6 @@ SolarSystem::SolarSystem(/*sys_init_data data, TTF_Font *police*/)
     // m_companion_count = data.companion_count;
     // m_planetarySYS_count = 3;
     // m_simple_planete_count = 5;
-
-
-    // sun = new Star(1, 70, 70, "../../assets/textures/CelestialBody/SunMap.jpg", "Sun", 500);
-    // // sun = new Star(1, 70, 70, "../../assets/textures/CelestialBody/SunMap.jpg", "Sun", 3270);
-    // assert(sun);
 
     // m_asteroid_field = new AsteroidField();
     // assert(m_asteroid_field);
@@ -69,11 +68,6 @@ SolarSystem::~SolarSystem()
     //     }
     // }
     
-    // if(skybox != nullptr)
-    // {
-    //     delete skybox;
-    // }
-    
     if(m_sun != nullptr)
     {
         m_sun->clean();
@@ -87,11 +81,12 @@ SolarSystem::~SolarSystem()
         m_star_renderer = nullptr;
     }
 
-    // if(m_asteroid_field != nullptr)
-    // {
-    //     delete m_asteroid_field;
-    // }
-    
+    if(m_asteroid_field != nullptr)
+    {
+        m_asteroid_field->clean();
+        delete m_asteroid_field;
+        m_asteroid_field = nullptr;
+    }
 
     // if(m_planete_info != nullptr)
     // {
@@ -194,23 +189,6 @@ SolarSystem::~SolarSystem()
 // }
 
 // /***********************************************************************************************************************************************************************/
-// /******************************************************************************* displayAsteroidField ******************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void SolarSystem::displayAsteroidField(RenderData &render_data)
-// {
-//     glm::mat4 save = render_data.getViewMat();
-
-//     if(m_asteroid_field != nullptr)
-//     {
-//         m_asteroid_field->updateCount(render_data);
-//         m_asteroid_field->updatePostion(render_data.getShipPos());
-//         m_asteroid_field->drawAsteroidField(render_data);
-//     }
-        
-//     render_data.updateView(save);
-// }
-
-// /***********************************************************************************************************************************************************************/
 // /****************************************************************************** makeChanges ****************************************************************************/
 // /***********************************************************************************************************************************************************************/
 void SolarSystem::makeChanges(DataManager &data_manager)
@@ -219,6 +197,12 @@ void SolarSystem::makeChanges(DataManager &data_manager)
     {
         m_sun->updatePosition(glm::vec3(0.f, 0.f, 0.f));
         m_sun->transform(-data_manager.getShipPos());
+    }
+
+    if(m_asteroid_field != nullptr)
+    {
+        m_asteroid_field->transform(-data_manager.getShipPos());
+        m_asteroid_field->sendToShader(data_manager);
     }
 }
 
@@ -231,6 +215,11 @@ void SolarSystem::render(DataManager &data_manager)
     if((m_sun != nullptr) && (m_star_renderer != nullptr) && (data_manager.getPass() == COLOR_FBO))
     {
         m_star_renderer->render(data_manager, m_sun);
+    }
+
+    if((m_asteroid_field != nullptr) && (data_manager.getPass() == COLOR_FBO))
+    {
+        m_asteroid_field->render(data_manager);
     }
 
 //     for (std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)

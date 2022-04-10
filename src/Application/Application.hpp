@@ -30,9 +30,6 @@ PURPOSE : header of the Application class
         #include "../Objects/BasicObjects/Square.hpp"
         #include "../Renderers/BasicRenderers/SquareRenderer.hpp"
 
-        #include "../Renderers/TexturedRenderers/StarRenderer/StarRenderer.hpp"
-        #include "../Objects/TexturedObjects/Star/Star.hpp"
-
         #include "../Renderers/TexturedRenderers/PlaneteRenderer/PlaneteRenderer.hpp"
         #include "../Objects/TexturedObjects/Planete/Planete.hpp"
 
@@ -84,7 +81,7 @@ PURPOSE : header of the Application class
                 Ring                    *saturn_ring = nullptr;
                 Renderer                *planete_renderer = nullptr;
                 Renderer                *ring_renderer = nullptr;
-                AsteroidField           *asteroid_field = nullptr;
+                // AsteroidField           *asteroid_field = nullptr;
 
 
                 SystemCreator           *m_solar_system = nullptr;

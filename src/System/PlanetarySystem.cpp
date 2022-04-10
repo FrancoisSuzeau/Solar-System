@@ -346,11 +346,6 @@ void PlanetarySystem::render(DataManager &data_manager)
 // /******************************************************************************** NOT CONCERN **************************************************************************/
 // /***********************************************************************************************************************************************************************/
 
-// void PlanetarySystem::displayAsteroidField(RenderData &render_data)
-// {
-//     //do nothing and doesn't have
-// }
-
 // void PlanetarySystem::renderFlareSun(RenderData &render_data)
 // {
 //     //do nothing and doesn't have

@@ -70,12 +70,6 @@ PURPOSE : header of the AsteroidField class
                 void render(DataManager &data_manager);
 
                 // void updateCount(RenderData &render_data);
-
-                // void updatePostion(glm::vec3 shipPos);
-
-              
-
-                
         };
 
 

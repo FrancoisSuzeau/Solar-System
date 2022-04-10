@@ -22,6 +22,8 @@ PURPOSE : header of the virtual SolarSystem class
         #include "../Objects/TexturedObjects/Star/Star.hpp"
         #include "../Renderers/TexturedRenderers/StarRenderer/StarRenderer.hpp"
 
+        #include "../Objects/AsteroidField/AsteroidField.hpp"
+
 
 
         // #include "../../PlaneteInformation/PlaneteInformation.hpp"
@@ -39,6 +41,7 @@ PURPOSE : header of the virtual SolarSystem class
 
                 Star                            *m_sun = nullptr;
                 Renderer                        *m_star_renderer = nullptr;
+                AsteroidField                   *m_asteroid_field = nullptr;
 
                 // int                             m_planetarySYS_count;
                 // int                             m_simple_planete_count;
@@ -65,7 +68,6 @@ PURPOSE : header of the virtual SolarSystem class
                 // void displayName(RenderData &render_data) override;
                 // void displayAtmo(RenderData &render_data) override;
                 // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
-                // void displayAsteroidField(RenderData &render_data) override;
                 // void displayRing(RenderData &render_data) override;
 
                 // void setMostGravInfluence(RenderData &render_data) override;

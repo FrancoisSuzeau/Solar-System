@@ -147,13 +147,6 @@ void Application::cleanAll()
         ring_renderer = nullptr;
     }
 
-    if(asteroid_field != nullptr)
-    {
-        asteroid_field->clean();
-        delete asteroid_field;
-        asteroid_field = nullptr;
-    }
-
     m_data_manager.clean();
 }
 
@@ -257,9 +250,6 @@ void Application::loadAssets()
 
     ring_renderer = new RingRenderer();
     assert(ring_renderer);
-
-    asteroid_field = new AsteroidField("INSTmodel");
-    assert(asteroid_field);
 }
 
 /***********************************************************************************************************************************************************************/
@@ -374,11 +364,6 @@ void Application::makeAllChanges()
             m_data_manager.setShipPos(ship->getPosition());
         }
         ship->loadModelShip(m_data_manager);
-    }
-    if(asteroid_field != nullptr)
-    {
-        asteroid_field->transform(-m_data_manager.getShipPos());
-        asteroid_field->sendToShader(m_data_manager);
     }
 
     if(m_skybox != nullptr)
@@ -545,11 +530,6 @@ void Application::renderScene()
     if((saturn_ring != nullptr) && (ring_renderer != nullptr))
     {
         ring_renderer->render(m_data_manager, saturn_ring);
-    }
-
-    if((asteroid_field != nullptr) && m_data_manager.getPass() == COLOR_FBO)
-    {
-        asteroid_field->render(m_data_manager);
     }
 }
 
