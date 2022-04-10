@@ -47,25 +47,37 @@ void PlaneteRenderer::render(DataManager &data_manager, Object *planete)
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, t_id);
 
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, data_manager.getDepthMapTexture());
-
         if((planete->getType() == "double_textured_planete") || (planete->getType() == "earth"))
         {
-            glActiveTexture(GL_TEXTURE2);
+            glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, planete->getTextureID(1));
+        }
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, data_manager.getDepthMapTexture());
+
+        if(planete->getType() == "earth")
+        {
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, planete->getTextureID(2));
         }
 
         super::render(data_manager, planete);
 
-        if(planete->getType() == "double_textured_planete")
+        if(planete->getType() == "earth")
         {
-            glActiveTexture(GL_TEXTURE2);
+            glActiveTexture(GL_TEXTURE3);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
-        glActiveTexture(GL_TEXTURE1);
+        glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+        if((planete->getType() == "double_textured_planete") || (planete->getType() == "earth"))
+        {
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0);

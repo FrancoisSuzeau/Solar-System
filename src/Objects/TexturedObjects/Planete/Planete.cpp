@@ -205,17 +205,22 @@ void Planete::sendToShader(DataManager &data_manager)
         glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
             data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
             data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
-            data_manager.getShader(super::m_type)->setTexture("material.texture0", 0);
-            data_manager.getShader(super::m_type)->setTexture("material.depthMap", 1);
+            data_manager.getShader(super::m_type)->setTexture("material.surface", 0);
+            data_manager.getShader(super::m_type)->setTexture("material.depthMap", 2);
             data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
             data_manager.getShader(super::m_type)->setInt("shadows", true);
             data_manager.getShader(super::m_type)->setFloat("far_plane", data_manager.getFar());
                 
             if((super::m_type == "double_textured_planete") || (super::m_type == "earth"))
             {
-                data_manager.getShader(super::m_type)->setTexture("material.texture1", 2);
+                data_manager.getShader(super::m_type)->setTexture("material.cloud", 1);
                 data_manager.getShader(super::m_type)->setFloat("oppacity", m_oppacity);
             }
+
+            if(super::m_type == "earth")
+            {
+                data_manager.getShader(super::m_type)->setTexture("material.night", 3);
+            }   
 
         glUseProgram(0);
     }

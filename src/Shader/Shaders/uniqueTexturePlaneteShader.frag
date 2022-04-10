@@ -11,7 +11,7 @@ uniform bool shadows;
 // uniform bool has_disp;
 // uniform float heightScale;
 struct Material {
-    sampler2D texture0;
+    sampler2D surface;
     samplerCube depthMap;
     // sampler2D normalMap;
     // sampler2D dispMap;
@@ -122,7 +122,7 @@ void main(void) {
         // processing of the texture coordinates;
         // this is unnecessary if correct texture coordinates are specified by the application
 
-    // look up the color of the texture image specified by the uniform "texture0"
+    // look up the color of the texture image specified by the uniform "surface"
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
@@ -168,7 +168,7 @@ void main(void) {
     //     viewDir = normalize(viewPos - FragPos);
     // }
 
-    vec3 objectColor = texture(material.texture0, texCoord).rgb;
+    vec3 objectColor = texture(material.surface, texCoord).rgb;
     vec3 norm = normalize(fs_in.Normal);
     vec3 lightDir = normalize(lightPos - fs_in.FragPos);
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);

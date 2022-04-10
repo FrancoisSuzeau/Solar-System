@@ -250,8 +250,9 @@ void Application::loadAssets()
 
     surface_paths.clear();
     surface_paths.push_back("../../assets/textures/CelestialBody/EarthDayMap.jpg");
+    surface_paths.push_back("../../assets/textures/CelestialBody/CloudMap.jpg");
     surface_paths.push_back("../../assets/textures/CelestialBody/EarthNightMap.jpg");
-    earth = new Planete(1.f, surface_paths, "earth", 128, 0.3f);
+    earth = new Planete(1.f, surface_paths, "earth", 128, 0.5f);
     assert(earth);
     earth->updateSize(glm::vec3(3.f));
 

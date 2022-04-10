@@ -12,9 +12,9 @@ uniform bool shadows;
 // uniform bool has_disp;
 // uniform float heightScale;
 struct Material {
-    sampler2D texture0;
+    sampler2D surface;
     samplerCube depthMap;
-    sampler2D texture1;
+    sampler2D cloud;
     // sampler2D normalMap;
     // sampler2D dispMap;
     int shininess;
@@ -123,7 +123,7 @@ void main(void) {
         // processing of the texture coordinates;
         // this is unnecessary if correct texture coordinates are specified by the application
     
-        // look up the color of the texture image specified by the uniform "texture0"
+        // look up the color of the texture image specified by the uniform "surface"
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
@@ -158,8 +158,8 @@ void main(void) {
     //     viewDir = normalize(viewPos - FragPos);
     // }
 
-    vec4 cloud_text = texture(material.texture1, texCoord);
-    vec4 surface_text = texture(material.texture0, texCoord);
+    vec4 cloud_text = texture(material.cloud, texCoord);
+    vec4 surface_text = texture(material.surface, texCoord);
 
     vec3 objectColor = mix(cloud_text, surface_text, oppacity).rgb;
     vec3 norm = normalize(fs_in.Normal);
