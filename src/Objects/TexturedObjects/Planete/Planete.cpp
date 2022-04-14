@@ -130,7 +130,7 @@ Planete::Planete(body_data datas) : super(datas.size, datas.type),
 m_oppacity(datas.oppacity), m_name(datas.name)
 {
     int i = 0;
-    for(std::vector<std::string>::iterator it = datas.textures_path.begin(); it != datas.textures_path.end(); ++it)
+    for(std::vector<std::string>::iterator it = Loader::textures_path[datas.name].begin(); it != Loader::textures_path[datas.name].end(); ++it)
     {
         super::surface_tex_ids.push_back(Loader::loadTextureWithSDL(it[0]));
         assert(super::surface_tex_ids[i] != 0);
@@ -176,14 +176,6 @@ Planete::~Planete()
     //     delete m_atmosphere;
     // }
 
-    if(m_ring != nullptr)
-    {
-        m_ring->clean();
-        delete m_ring;
-        m_ring = nullptr;
-    }
-    
-
     // if(m_name_renderer != nullptr)
     // {
     //     delete m_name_renderer;
@@ -198,6 +190,21 @@ Planete::~Planete()
     // {
     //     delete displacement_map;
     // }
+}
+
+/***********************************************************************************************************************************************************************/
+/****************************************************************************** clean ******************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Planete::clean()
+{
+    if(m_ring != nullptr)
+    {
+        m_ring->clean();
+        delete m_ring;
+        m_ring = nullptr;
+    }
+
+    super::clean();
 }
 
 /***********************************************************************************************************************************************************************/

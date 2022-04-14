@@ -50,6 +50,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 void loadSystem(/*int count, TTF_Font *police*/) override;
                 void render(DataManager &data_manager) override;
                 void makeChanges(DataManager &data_manager) override;
+                void clean() override;
                 // void displayName(RenderData &render_data) override;
                 // void displayAtmo(RenderData &render_data) override;
                 // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;

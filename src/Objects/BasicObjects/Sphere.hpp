@@ -34,6 +34,7 @@ PURPOSE : header of the Sphere class
 
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;
                 void sendToShader(DataManager &data_manager) override;
+                void clean();
         };
 
 

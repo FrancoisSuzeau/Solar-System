@@ -68,6 +68,7 @@ PURPOSE : header of the Planete class
 
                 Ring*   getRing() const;
                 void    makeRingChanges(DataManager &data_manager);
+                void    clean();
                 
                 // std::string getName() const;
                 // float getRadiusFromCam(glm::vec3 camPos);

@@ -20,6 +20,7 @@ Spaceship::Spaceship(std::string const type) : super(type), m_yaw(0.0f), m_pitch
 {   
 
     file_paths.push_back("../../assets/model/spaceship/untitled.obj");
+    // file_paths.push_back("../../assets/model/ring/untitled.obj");
     file_paths.push_back("../../assets/model/donut/donut.obj");
     file_paths.push_back("../../assets/model/spaceshuttle/spaceshuttle.obj");
 

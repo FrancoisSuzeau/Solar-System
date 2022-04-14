@@ -99,6 +99,11 @@ PURPOSE : header of the virtual SystemCreator class
                         m_system->renderRing(data_manager);
                 }
 
+                void cleanSystem()
+                {
+                        m_system->clean();
+                }
+
                 // void setMostGravInfluence(RenderData &render_data)
                 // {
                 //         m_system->setMostGravInfluence(render_data);

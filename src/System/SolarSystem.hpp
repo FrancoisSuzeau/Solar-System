@@ -67,6 +67,7 @@ PURPOSE : header of the virtual SolarSystem class
                 // void displayAtmo(RenderData &render_data) override;
                 // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
                 void renderRing(DataManager &data_manager) override;
+                void clean() override;
 
                 // void setMostGravInfluence(RenderData &render_data) override;
                 // void approchBody(Spaceship *ship) override;

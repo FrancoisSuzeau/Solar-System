@@ -61,6 +61,7 @@ PURPOSE : header of the virtual System class
                 virtual void loadSystem(/*int count, TTF_Font *police*/) = 0;
                 virtual void makeChanges(DataManager &data_manager) = 0;
                 virtual void render(DataManager &data_manager) = 0;
+                virtual void clean() = 0;
                 // virtual void displayName(RenderData &render_data) = 0;
                 // virtual void displayAtmo(RenderData &render_data) = 0;
                 // virtual void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;

@@ -21,6 +21,7 @@ PURPOSE : header of the DataManager class
         #include <vector>
 
         #include "../Shader/Shader.hpp"
+        #include "../Loader/Loader.hpp"
         
         #include <SDL2/SDL_ttf.h>
 
@@ -42,7 +43,7 @@ PURPOSE : header of the DataManager class
         typedef struct body_data {
 
                 float                           size;
-                std::vector<std::string>        textures_path;
+                // std::vector<std::string>        textures_path;
                 std::string                     type;
                 int                             shininess;
                 float                           oppacity;

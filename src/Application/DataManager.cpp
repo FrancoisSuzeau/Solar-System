@@ -370,24 +370,24 @@ int DataManager::getPass() const
 
 void DataManager::initDatas()
 {
-    std::string surface_path = "../../assets/textures/CelestialBody/";
+    Loader::initializeMap();
    
-    m_bodys_data.push_back({1.f, {surface_path + "MercuryMap.jpg"}, "simple_textured_planete", 32, 0.f, glm::vec3(20.f, -30.f, 0.f), "Mercury", 0.035f});
+    m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(20.f, -30.f, 0.f), "Mercury", 0.035f});
 
-    m_bodys_data.push_back({3.f, {surface_path + "VenusMap.jpg", surface_path + "VenusCloud.jpg"}, "double_textured_planete", 128, 0.1f, glm::vec3(100.f, 0.f, 0.f), "Venus", 177.36f});
+    m_bodys_data.push_back({3.f, "double_textured_planete", 128, 0.1f, glm::vec3(100.f, 0.f, 0.f), "Venus", 177.36f});
 
-    m_bodys_data.push_back({1.f, {surface_path + "MoonMap.jpg"}, "simple_textured_planete", 32, 0.f, glm::vec3(-70.f, 0.f, 0.f), "Moon", 6.687f});
-    m_bodys_data.push_back({3.f, {surface_path + "EarthDayMap.jpg", surface_path + "CloudMap.jpg", surface_path + "EarthNightMap.jpg"}, "earth", 128, 0.5f, glm::vec3(-80.f, 0.f, 0.f), "Earth", 23.436f});
+    m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(-70.f, 0.f, 0.f), "Moon", 6.687f});
+    m_bodys_data.push_back({3.f, "earth", 128, 0.5f, glm::vec3(-80.f, 0.f, 0.f), "Earth", 23.436f});
 
-    m_bodys_data.push_back({3.f, {surface_path + "MarsMap.jpg", surface_path + "MarsCloud.png"}, "double_textured_planete", 128, 0.3f, glm::vec3(0.f, 80.f, 0.f), "Mars", 25.19f});
+    m_bodys_data.push_back({3.f, "double_textured_planete", 128, 0.3f, glm::vec3(0.f, 80.f, 0.f), "Mars", 25.19f});
 
-    m_bodys_data.push_back({5.f, {surface_path + "JupiterCloud.jpg"}, "simple_textured_planete", 16, 0.f, glm::vec3(80.f, 50.f, 0.f), "Jupiter", 3.12f});
+    m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(80.f, 50.f, 0.f), "Jupiter", 3.12f});
 
-    m_bodys_data.push_back({5.f, {surface_path + "SaturnCloud.jpg"}, "simple_textured_planete", 16, 0.f, glm::vec3(0.f, -80.f, 0.f), "Saturn", 26.73f});
+    m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, -50.f, 0.f), "Saturn", 26.73f});
     
-    m_bodys_data.push_back({5.f, {surface_path + "UranusCloud.jpg"}, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, 50.f, 0.f), "Uranus", 97.8f});
+    m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, 50.f, 0.f), "Uranus", 97.8f});
 
-    m_bodys_data.push_back({5.f, {surface_path + "NeptuneCloud.jpg"}, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, -50.f, 0.f), "Neptune", 28.32f});
+    m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(0.f, -80.f, 0.f), "Neptune", 28.32f});
 }
 
 body_data DataManager::getBodyData(int index)

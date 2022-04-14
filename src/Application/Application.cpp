@@ -94,6 +94,7 @@ void Application::cleanAll()
 
     if(m_solar_system != nullptr)
     {
+        m_solar_system->cleanSystem();
         delete m_solar_system;
         m_solar_system = nullptr;
     }

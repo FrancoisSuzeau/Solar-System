@@ -35,9 +35,11 @@ void Object::clean()
         if(glIsTexture(it[0]) == GL_TRUE)
         {
             glDeleteTextures(1, &it[0]);
-            std::cout << ">> " << m_type << " : DESTROY TEXTURE COMPLETE" << std::endl;
+            
         }
     }
+
+    std::cout << ">> " << m_type << " : DESTROY TEXTURE COMPLETE" << std::endl;
     
 }
 
