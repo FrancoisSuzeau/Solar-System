@@ -33,7 +33,18 @@ PURPOSE : header of the Planete class
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
-        
+
+        #if defined(IMGUI_IMPL_OPENGL_ES2)
+        #include <SDL_opengles2.h>
+        #else
+        #include <SDL2/SDL_opengl.h>
+        #endif
+
+
+        #include "../../../../lib/imgui/imgui.h"
+        #include "../../../../lib/imgui/imgui_impl_sdl.h"
+        #include "../../../../lib/imgui/imgui_impl_opengl3.h"
+
 
 /********************************************************************* class definition *********************************************************************/
 
@@ -45,6 +56,8 @@ PURPOSE : header of the Planete class
                         float   m_oppacity;
                         std::string     m_name;
                         Ring            *m_ring = nullptr;
+
+                        
             
             protected:
 
@@ -69,6 +82,7 @@ PURPOSE : header of the Planete class
                 Ring*   getRing() const;
                 void    makeRingChanges(DataManager &data_manager);
                 void    clean();
+                void renderName(DataManager &data_manager);
                 
                 // std::string getName() const;
                 // float getRadiusFromCam(glm::vec3 camPos);

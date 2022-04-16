@@ -59,6 +59,11 @@ PURPOSE : header of the virtual SystemCreator class
                         return 1;
                 }
 
+                void renderNameAndInfo(DataManager &data_manager)
+                {
+                        m_system->renderNameAndInfo(data_manager);
+                }
+
                 // void drawName(RenderData &render_data)
                 // {
                 //         m_system->displayName(render_data);

@@ -163,6 +163,8 @@ PURPOSE : header of the DataManager class
                 static void            initDatas();
                 static body_data       getBodyData(int index);
 
+                glm::vec2 convertToScreenSpace(glm::vec3 const body_pos);
+
 
         };
 

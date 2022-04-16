@@ -269,26 +269,30 @@ void Planete::makeRingChanges(DataManager &data_manager)
 }
 
 /***********************************************************************************************************************************************************************/
-/****************************************************************************** updatePosition *************************************************************************/
+/****************************************************************************** renderName *************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Planete::updatePosition(glm::vec3 shipPos)
-// {
-//     m_model_mat = glm::mat4(1.0f);
-//     m_model_mat = glm::translate(m_model_mat, (m_current_position - shipPos));
+void Planete::renderName(DataManager &data_manager)
+{
+    glm::vec2 planete_screen_position = data_manager.convertToScreenSpace(this->m_position - data_manager.getShipPos());
 
-//     m_model_mat = rotate(m_model_mat, glm::radians(m_inclinaison_angle), vec3(0.0, 1.0, 0.0));
+    ImGuiWindowFlags window_flags = 0;
+    ImGuiStyle& style = ImGui::GetStyle();
+    ImVec2 frame_padding_save = style.FramePadding;
+        
+    window_flags |= ImGuiWindowFlags_NoTitleBar;
+    window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoBackground;
+    window_flags |= ImGuiWindowFlags_NoScrollbar;
 
-//                     //making the planete rotation
-//     m_rotation_angle += m_speed_rotation;
-//     if(m_rotation_angle >= 360)
-//     {
-//         m_rotation_angle -= 360;
-//     }
+    ImGui::SetNextWindowPos(ImVec2((data_manager.getWidth() * planete_screen_position.x) - 30, 
+                                        (data_manager.getHeight() * planete_screen_position.y) - 70));
+    ImGui::SetNextWindowSize(ImVec2(100.f, 80.f));
 
-//     m_model_mat = rotate(m_model_mat, glm::radians(m_rotation_angle), vec3(0.0, 0.0, 1.0));
-
-//     m_model_mat = glm::scale(m_model_mat, vec3(m_real_size));
-// }
+    ImGui::Begin(this->m_name.c_str(), NULL, window_flags);
+    ImGui::Text(this->m_name.c_str());
+    ImGui::End();
+    
+}
 
 // /***********************************************************************************************************************************************************************/
 // /********************************************************************************** getters ****************************************************************************/
@@ -297,10 +301,7 @@ Ring* Planete::getRing() const
 {
     return m_ring;
 }
-// std::string Planete::getName() const
-// {
-//     return m_name;
-// }
+
 
 // float Planete::getRadiusFromCam(glm::vec3 camPos)
 // {
@@ -349,19 +350,9 @@ Ring* Planete::getRing() const
 //     return displacement_map;
 // }
 
-// glm::mat4 Planete::getModelMat() const
-// {
-//     return m_model_mat;
-// }
-
 // Text* Planete::getNameRender() const
 // {
 //     return m_name_renderer;
-// }
-
-// glm::vec3 Planete::getPosition() const
-// {
-//     return m_current_position;
 // }
 
 // float Planete::getOppacity() const
@@ -372,11 +363,6 @@ Ring* Planete::getRing() const
 // Atmosphere* Planete::getAtmosphere() const
 // {
 //     return m_atmosphere;
-// }
-
-// Ring* Planete::getRing() const
-// {
-//     return m_ring;
 // }
 
 // float Planete::getSize() const

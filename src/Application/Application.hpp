@@ -95,6 +95,7 @@ PURPOSE : header of the Application class
                 void    renderSettings();
                 void    renderOverlay();
                 void    renderScene();
+                void    renderNameAndInfo();
                 void    makeAllChanges();
                 void    renderIntoFramebuffer(int type);
                 

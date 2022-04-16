@@ -51,6 +51,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 void render(DataManager &data_manager) override;
                 void makeChanges(DataManager &data_manager) override;
                 void clean() override;
+                void renderNameAndInfo(DataManager &data_manager) override;
                 // void displayName(RenderData &render_data) override;
                 // void displayAtmo(RenderData &render_data) override;
                 // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
