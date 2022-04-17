@@ -66,19 +66,19 @@ void PlanetarySystem::loadSystem(/*int count, TTF_Font *police*/)
     /************************************************* loading companion ********************************************************/
     if(m_system_name == "Earth System")
     {
-        // m_moons.push_back(new Planete(DataManager::getBodyData(2)));
-        // assert(m_moons[0]);
+        m_moons.push_back(new Planete(DataManager::getBodyData(2)));
+        assert(m_moons[0]);
 
         m_host = new Planete(DataManager::getBodyData(3));
         assert(m_host);
     }
     else if(m_system_name == "Jovian System")
     {
-        // for (int i(2); i < 6; i++)
-        // {
-        //     m_moons.push_back(new Planete(m_data[i], police));
-        //     assert(m_moons[i-2]);
-        // }
+        for (int i(6); i < 10; i++)
+        {
+            m_moons.push_back(new Planete(DataManager::getBodyData(i)));
+            assert(m_moons[i - 6]);
+        }
         
         m_host = new Planete(DataManager::getBodyData(5));
         assert(m_host);
@@ -86,13 +86,13 @@ void PlanetarySystem::loadSystem(/*int count, TTF_Font *police*/)
     }
     else if(m_system_name == "Saturnian System")
     {
-        // for (int i(7); i < 10; i++)
-        // {
-        //     m_moons.push_back(new Planete(m_data[i], police));
-        //     assert(m_moons[i-7]);
-        // }
+        for (int i(11); i < 14; i++)
+        {
+            m_moons.push_back(new Planete(DataManager::getBodyData(i)));
+            assert(m_moons[i - 11]);
+        }
 
-        m_host = new Planete(DataManager::getBodyData(6));
+        m_host = new Planete(DataManager::getBodyData(10));
         assert(m_host);
     }
 }

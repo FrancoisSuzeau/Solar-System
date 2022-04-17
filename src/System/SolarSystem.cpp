@@ -126,10 +126,10 @@ void SolarSystem::loadSystem(/*int count, TTF_Font *police*/)
     assert(m_planetary_systems[2]->MakingSystem(m_planete_renderer, m_ring_renderer, "Saturnian System"));
     m_planetary_systems[2]->loadSystem();
 
-    m_planetes.push_back(new Planete(DataManager::getBodyData(7)));
+    m_planetes.push_back(new Planete(DataManager::getBodyData(14)));
     assert(m_planetes[3]);
 
-    m_planetes.push_back(new Planete(DataManager::getBodyData(8)));
+    m_planetes.push_back(new Planete(DataManager::getBodyData(15)));
     assert(m_planetes[4]);
 }
 

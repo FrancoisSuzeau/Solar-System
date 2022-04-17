@@ -38,12 +38,27 @@ void Loader::initializeMap()
 {
     std::string surface_path = "../../assets/textures/CelestialBody/";
     textures_path["Mercury"] = {surface_path + "MercuryMap.jpg"};
+
     textures_path["Venus"] = {surface_path + "VenusMap.jpg", surface_path + "VenusCloud.jpg"};
+
     textures_path["Earth"] = {surface_path + "EarthDayMap.jpg", surface_path + "CloudMap.jpg", surface_path + "EarthNightMap.jpg"};
+    textures_path["Moon"] = {surface_path + "MoonMap.jpg"};
+
     textures_path["Mars"] = {surface_path + "MarsMap.jpg", surface_path + "MarsCloud.png"};
+
     textures_path["Jupiter"] = {surface_path + "JupiterCloud.jpg"};
+    textures_path["Io"] = {surface_path + "IoMap.jpg"};
+    textures_path["Europa"] = {surface_path + "EuropaMap.jpg"};
+    textures_path["Callisto"] = {surface_path + "CallistoMap.jpg"};
+    textures_path["Ganymede"] = {surface_path + "GanymedeMap.jpg"};
+
     textures_path["Saturn"] = {surface_path + "SaturnCloud.jpg"};
+    textures_path["Mimas"] = {surface_path + "MimasMap.jpg"};
+    textures_path["Enceladus"] = {surface_path + "EnceladusMap.jpg"};
+    textures_path["Titan"] = {surface_path + "TitanMap.jpg", surface_path + "TitanCloud.jpg"};
+
     textures_path["Uranus"] = {surface_path + "UranusCloud.jpg"};
+
     textures_path["Neptune"] = {surface_path + "NeptuneCloud.jpg"};
 }
 
@@ -220,8 +235,9 @@ unsigned int Loader::loadSkyboxTextures(std::vector<std::string> faces)
 GLuint Loader::loadTextureWithSDL(std::string path)
 {
     /************************************************* load the file ********************************************************/
-    SDL_Surface *picture_SDL = IMG_Load(path.c_str());
-    if(picture_SDL == 0)
+    SDL_Surface *picture_SDL = NULL;
+    picture_SDL = IMG_Load(path.c_str());
+    if(picture_SDL == NULL)
     {
         std::string msg_err = ">> Loading file img : ERROR : ";
         msg_err.append(SDL_GetError());
