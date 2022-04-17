@@ -100,37 +100,54 @@ void SolarSystem::clean()
 // /***********************************************************************************************************************************************************************/
 // /******************************************************************************* loadSystem ****************************************************************************/
 // /***********************************************************************************************************************************************************************/
-void SolarSystem::loadSystem(/*int count, TTF_Font *police*/)
+void SolarSystem::loadSystem(int count)
 {
-    m_planetes.push_back(new Planete(DataManager::getBodyData(0)));
-    assert(m_planetes[0]);
-
-    m_planetes.push_back(new Planete(DataManager::getBodyData(1)));
-    assert(m_planetes[1]);
-
-    m_planetary_systems.push_back(new PlanetarySystemCreator());
-    assert(m_planetary_systems[0]);
-    assert(m_planetary_systems[0]->MakingSystem(m_planete_renderer, m_ring_renderer, "Earth System"));
-    m_planetary_systems[0]->loadSystem();
-
-    m_planetes.push_back(new Planete(DataManager::getBodyData(4)));
-    assert(m_planetes[2]);
-
-    m_planetary_systems.push_back(new PlanetarySystemCreator());
-    assert(m_planetary_systems[1]);
-    assert(m_planetary_systems[1]->MakingSystem(m_planete_renderer, m_ring_renderer, "Jovian System"));
-    m_planetary_systems[1]->loadSystem();
-
-    m_planetary_systems.push_back(new PlanetarySystemCreator());
-    assert(m_planetary_systems[2]);
-    assert(m_planetary_systems[2]->MakingSystem(m_planete_renderer, m_ring_renderer, "Saturnian System"));
-    m_planetary_systems[2]->loadSystem();
-
-    m_planetes.push_back(new Planete(DataManager::getBodyData(14)));
-    assert(m_planetes[3]);
-
-    m_planetes.push_back(new Planete(DataManager::getBodyData(15)));
-    assert(m_planetes[4]);
+    if(count == 0)
+    {
+        m_planetes.push_back(new Planete(DataManager::getBodyData(0)));
+        assert(m_planetes[0]);
+    }
+    else if(count == 1)
+    {
+        m_planetes.push_back(new Planete(DataManager::getBodyData(1)));
+        assert(m_planetes[1]);
+    }
+    else if(count == 2)
+    {
+        m_planetary_systems.push_back(new PlanetarySystemCreator());
+        assert(m_planetary_systems[0]);
+        assert(m_planetary_systems[0]->MakingSystem(m_planete_renderer, m_ring_renderer, "Earth System"));
+        m_planetary_systems[0]->loadSystem();
+    }
+    else if(count == 3)
+    {
+        m_planetes.push_back(new Planete(DataManager::getBodyData(4)));
+        assert(m_planetes[2]);
+    }
+    else if(count == 4)
+    {
+        m_planetary_systems.push_back(new PlanetarySystemCreator());
+        assert(m_planetary_systems[1]);
+        assert(m_planetary_systems[1]->MakingSystem(m_planete_renderer, m_ring_renderer, "Jovian System"));
+        m_planetary_systems[1]->loadSystem();
+    }
+    else if(count == 5)
+    {
+        m_planetary_systems.push_back(new PlanetarySystemCreator());
+        assert(m_planetary_systems[2]);
+        assert(m_planetary_systems[2]->MakingSystem(m_planete_renderer, m_ring_renderer, "Saturnian System"));
+        m_planetary_systems[2]->loadSystem();
+    }
+    else if(count == 6)
+    {
+        m_planetes.push_back(new Planete(DataManager::getBodyData(14)));
+        assert(m_planetes[3]);
+    }
+    else if(count == 7)
+    {
+        m_planetes.push_back(new Planete(DataManager::getBodyData(15)));
+        assert(m_planetes[4]);
+    }
 }
 
 // /***********************************************************************************************************************************************************************/

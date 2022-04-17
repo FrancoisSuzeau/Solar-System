@@ -53,9 +53,9 @@ PURPOSE : header of the virtual SystemCreator class
                         return true;
                 }
 
-                int loadSystem(/*int count, TTF_Font *police*/)
+                int loadSystem(int count = 0)
                 {
-                        m_system->loadSystem(/*count, police*/);
+                        m_system->loadSystem(count);
                         return 1;
                 }
 

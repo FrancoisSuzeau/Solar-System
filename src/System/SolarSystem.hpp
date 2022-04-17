@@ -60,7 +60,7 @@ PURPOSE : header of the virtual SolarSystem class
                 ~SolarSystem();
 
 
-                void loadSystem(/*int count, TTF_Font *police*/) override;
+                void loadSystem(int count = 0) override;
                 void render(DataManager &data_manager) override;
                 void makeChanges(DataManager &data_manager) override;
                 // void displayName(RenderData &render_data) override;

@@ -98,7 +98,6 @@ PURPOSE : header of the Application class
                 void    renderNameAndInfo();
                 void    makeAllChanges();
                 void    renderIntoFramebuffer(int type);
-                
 
             public:
 

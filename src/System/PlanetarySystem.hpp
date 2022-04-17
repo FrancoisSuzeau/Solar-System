@@ -47,7 +47,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 ~PlanetarySystem();
 
 
-                void loadSystem(/*int count, TTF_Font *police*/) override;
+                void loadSystem(int count = 0) override;
                 void render(DataManager &data_manager) override;
                 void makeChanges(DataManager &data_manager) override;
                 void clean() override;

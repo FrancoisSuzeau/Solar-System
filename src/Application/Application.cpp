@@ -149,31 +149,76 @@ void Application::loadConfig()
 /***********************************************************************************************************************************************************************/
 void Application::loadAssets()
 {
-    Renderer *square_renderer = new SquareRenderer(1.0);
-    assert(square_renderer);
-    Square  *square = new Square(1.0, "square");
-    assert(square);
-    planete_renderer = new PlaneteRenderer(1.f, 70.f, 70.f);
-    assert(planete_renderer);
-    ring_renderer = new RingRenderer();
-    assert(ring_renderer);
+    for(int assets_loads = -1; assets_loads < 11; assets_loads++)
+    {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+        ImGui::NewFrame();
 
-    m_overlay.initOverlayAssets(square_renderer, square);
-    m_skybox = new Skybox();
-    assert(m_skybox);
-    ship = new Spaceship("model");
-    assert(ship);
-    ship->loadModelShip(m_data_manager);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        if(assets_loads == 0)
+        {
+            Renderer *square_renderer = new SquareRenderer(1.0);
+            assert(square_renderer);
+            Square  *square = new Square(1.0, "square");
+            assert(square);
+            planete_renderer = new PlaneteRenderer(1.f, 70.f, 70.f);
+            assert(planete_renderer);
+            ring_renderer = new RingRenderer();
+            assert(ring_renderer);
+
+            m_overlay.initOverlayAssets(square_renderer, square);
+            m_skybox = new Skybox();
+            assert(m_skybox);
+            ship = new Spaceship("model");
+            assert(ship);
+            ship->loadModelShip(m_data_manager);
+            
+            camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
+            assert(camera);
+
+            DataManager::initDatas();
+
+            m_solar_system = new SolarSystemCreator();
+            assert(m_solar_system);
+            assert(m_solar_system->MakingSystem(planete_renderer, ring_renderer, "Solar System"));
+        }
+
+        if((assets_loads >= 0) && (assets_loads < 8)) { m_solar_system->loadSystem(assets_loads);}
+
+        ImGuiWindowFlags window_flags = 0;
+        ImGuiStyle& style = ImGui::GetStyle();
+        float save_frame = style.FrameRounding;
+        style.FrameRounding = 15;
+
+        window_flags |= ImGuiWindowFlags_NoTitleBar;
+        window_flags |= ImGuiWindowFlags_NoResize;
+        window_flags |= ImGuiWindowFlags_NoBackground;
+        window_flags |= ImGuiWindowFlags_NoScrollbar;
+
+        ImGui::SetNextWindowPos(ImVec2(m_data_manager.getWidth()/2 - 50.f, m_data_manager.getHeight()/2 - 25.f));
+        ImGui::SetNextWindowSize(ImVec2(100, 50.f));
+        ImGui::Begin("Solar System", NULL, window_flags);
+        ImGui::Text("Solar System", ImVec2(-1.f, -1.f));
+        ImGui::End();
     
-    camera = new Camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f), ship);
-    assert(camera);
+        ImGui::SetNextWindowPos(ImVec2((m_data_manager.getWidth()/2 - 300), (m_data_manager.getHeight()/2 - 25.f) + 300));
+        ImGui::SetNextWindowSize(ImVec2(600, 50.f));
+    
+        ImGui::Begin(" ", NULL, window_flags);
+        float progress = (float) (assets_loads + 1) * 0.1f;
+        ImGui::ProgressBar(progress, ImVec2(-1.f, -1.f));
+        ImGui::End();
 
-    DataManager::initDatas();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        SDL_GL_SwapWindow(m_window);
 
-    m_solar_system = new SolarSystemCreator();
-    assert(m_solar_system);
-    assert(m_solar_system->MakingSystem(planete_renderer, ring_renderer, "Solar System"));
-    m_solar_system->loadSystem();
+        if(assets_loads == 10) { SDL_Delay(1000);}
+
+        style.FrameRounding = save_frame;
+    }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -397,28 +442,7 @@ void Application::renderScene()
 }
 
 /***********************************************************************************************************************************************************************/
-/*********************************************************************************** renderInfo ***********************************************************************/
-/***********************************************************************************************************************************************************************/
-// void Application::renderInfo(RenderData &render_data)
-// {
-//     if((camera != nullptr) && (solar_system != nullptr) && (render_data.getShader("square") != nullptr))
-//     {
-//         if(render_data.getRenderInfo())
-//         {
-//             render_data.initSaveMat();
-
-//                 if(render_data.getShader("text") != nullptr)
-//                 {
-//                     solar_system->drawInfo(render_data);
-//                 }
-                
-//             render_data.saveViewMat();
-//         }
-//     }
-// }
-
-/***********************************************************************************************************************************************************************/
-/*********************************************************************************** windowProcess *********************************************************************/
+/*********************************************************************************** inputProcess *********************************************************************/
 /***********************************************************************************************************************************************************************/
 void Application::inputProcess()
 {

@@ -276,8 +276,6 @@ void Planete::renderName(DataManager &data_manager)
     glm::vec2 planete_screen_position = data_manager.convertToScreenSpace(this->m_position - data_manager.getShipPos());
 
     ImGuiWindowFlags window_flags = 0;
-    ImGuiStyle& style = ImGui::GetStyle();
-    ImVec2 frame_padding_save = style.FramePadding;
         
     window_flags |= ImGuiWindowFlags_NoTitleBar;
     window_flags |= ImGuiWindowFlags_NoResize;

@@ -58,7 +58,7 @@ PURPOSE : header of the virtual System class
 
                 
                 virtual ~System() {};
-                virtual void loadSystem(/*int count, TTF_Font *police*/) = 0;
+                virtual void loadSystem(int count = 0) = 0;
                 virtual void makeChanges(DataManager &data_manager) = 0;
                 virtual void render(DataManager &data_manager) = 0;
                 virtual void clean() = 0;
