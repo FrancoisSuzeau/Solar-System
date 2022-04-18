@@ -52,6 +52,10 @@ PURPOSE : Interface Object
                 int             m_shininess = 0;
 
                 std::vector<GLuint>          surface_tex_ids;
+                GLuint                          normal_texture_id = 0;
+                GLuint                          displacement_texture_id = 0;
+
+                float                   height_scale;
 
             public:
 
@@ -76,6 +80,8 @@ PURPOSE : Interface Object
                 std::string getType() const;
 
                 GLuint getTextureID(int index) const;
+                GLuint getNormalTextureID() const;
+                GLuint getDispTextureID()   const;
 
                 void clean();
             

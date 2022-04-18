@@ -110,3 +110,13 @@ GLuint Object::getTextureID(int index) const
 {
     return surface_tex_ids[index];
 }
+
+GLuint Object::getNormalTextureID() const
+{
+    return normal_texture_id;
+}
+
+GLuint Object::getDispTextureID() const
+{
+    return displacement_texture_id;
+}

@@ -37,6 +37,7 @@ Loader::~Loader()
 void Loader::initializeMap()
 {
     std::string surface_path = "../../assets/textures/CelestialBody/";
+    
     textures_path["Mercury"] = {surface_path + "MercuryMap.jpg"};
 
     textures_path["Venus"] = {surface_path + "VenusMap.jpg", surface_path + "VenusCloud.jpg"};

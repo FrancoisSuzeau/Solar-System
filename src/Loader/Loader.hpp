@@ -48,6 +48,7 @@ PURPOSE : header of the Loader class
             public:
 
                 static std::map<std::string, std::vector<std::string>> textures_path;
+                static std::map<std::string, std::string> normal_texture_path;
 
                 static bool loadWithStbi(std::string file_path, GLuint &id, int &w, int &h);
                 static unsigned int loadWithStbi(const char *path, const std::string &directory);

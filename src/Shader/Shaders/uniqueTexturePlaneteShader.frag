@@ -9,12 +9,12 @@ uniform bool shadows;
 // uniform bool hdr;
 // uniform bool has_normal;
 // uniform bool has_disp;
-// uniform float heightScale;
+uniform float heightScale;
 struct Material {
     sampler2D surface;
     samplerCube depthMap;
-    // sampler2D normalMap;
-    // sampler2D dispMap;
+    sampler2D normalMap;
+    sampler2D dispMap;
     int shininess;
 };
 uniform Material material;
@@ -22,9 +22,9 @@ in VS_OUT {
     vec3 Normal;
     vec3 FragPos;
     vec4 texCoords;
-//     vec3 TangentLightPos;
-//     vec3 TangentViewPos;
-//     vec3 TangentFragPos;
+    vec3 TangentLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
 } fs_in;
 
 // ============ Out data ============
@@ -32,57 +32,47 @@ layout (location = 0) out vec4 FragColor;
 // layout (location = 1) out vec4 BrightColor; 
 
 
-// vec2 parallaxMapping(vec2 texCoord, vec3 viewDir)
-// {
-//     // number of depth layers
-//     const float minLayers = 8;
-//     const float maxLayers = 32;
-//     float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));  
-//     // calculate the size of each layer
-//     float layerDepth = 1.0 / numLayers;
-//     // depth of current layer
-//     float currentLayerDepth = 0.0;
-//     // the amount to shift the texture coordinates per layer (from vector P)
-//     // vec2 P = vec2(0.0);
-//     // if(heightScale != 0.0)
-//     // {
-//     //     P = viewDir.xy / viewDir.z * heightScale; 
-//     // }
-//     vec2 P = viewDir.xy / viewDir.z * heightScale;
-//     vec2 deltaTexCoords = P / numLayers;
+vec2 parallaxMapping(vec2 texCoord, vec3 viewDir)
+{
+    // number of depth layers
+    const float minLayers = 8;
+    const float maxLayers = 32;
+    float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));  
+    // calculate the size of each layer
+    float layerDepth = 1.0 / numLayers;
+    // depth of current layer
+    float currentLayerDepth = 0.0;
+    // the amount to shift the texture coordinates per layer (from vector P)
+    vec2 P = viewDir.xy / viewDir.z * heightScale;
+    vec2 deltaTexCoords = P / numLayers;
   
-//     // get initial values
-//     vec2  currentTexCoords     = texCoord;
-//     float currentDepthMapValue = texture(material.dispMap, currentTexCoords).r;
+    // get initial values
+    vec2  currentTexCoords     = texCoord;
+    float currentDepthMapValue = texture(material.dispMap, currentTexCoords).r;
       
-//     while(currentLayerDepth < currentDepthMapValue)
-//     {
-//         // shift texture coordinates along direction of P
-//         currentTexCoords -= deltaTexCoords;
-//         // get depthmap value at current texture coordinates
-//         currentDepthMapValue = texture(material.dispMap, currentTexCoords).r;  
-//         // get depth of next layer
-//         currentLayerDepth += layerDepth;  
-//     }
+    while(currentLayerDepth < currentDepthMapValue)
+    {
+        // shift texture coordinates along direction of P
+        currentTexCoords -= deltaTexCoords;
+        // get depthmap value at current texture coordinates
+        currentDepthMapValue = texture(material.dispMap, currentTexCoords).r;  
+        // get depth of next layer
+        currentLayerDepth += layerDepth;  
+    }
     
-//     // get texture coordinates before collision (reverse operations)
-//     vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+    // get texture coordinates before collision (reverse operations)
+    vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
 
-//     // get depth after and before collision for linear interpolation
-//     float afterDepth  = currentDepthMapValue - currentLayerDepth;
-//     float beforeDepth = texture(material.dispMap, prevTexCoords).r - currentLayerDepth + layerDepth;
+    // get depth after and before collision for linear interpolation
+    float afterDepth  = currentDepthMapValue - currentLayerDepth;
+    float beforeDepth = texture(material.dispMap, prevTexCoords).r - currentLayerDepth + layerDepth;
  
-//     // interpolation of texture coordinates
-//     float weight = afterDepth / (afterDepth - beforeDepth);
-//     vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+    // interpolation of texture coordinates
+    float weight = afterDepth / (afterDepth - beforeDepth);
+    vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
 
-//     return finalTexCoords;  
-
-//     // float height =  texture(material.dispMap, texCoord).r;     
-//     // return texCoord - viewDir.xy * (height * heightScale);
-
-     
-// }
+    return finalTexCoords;       
+}
 
 // array of offset direction for sampling
 vec3 gridSamplingDisk[20] = vec3[]
@@ -139,10 +129,10 @@ void main(void) {
 
     
 
-    // vec3 objectColor;
-    // vec3 norm;
-    // vec3 lightDir;
-    // vec3 viewDir;
+    vec3 objectColor;
+    vec3 norm;
+    vec3 lightDir;
+    vec3 viewDir;
     vec2 texCoord = longitudeLatitude;
 
     // if(has_normal)
@@ -168,10 +158,13 @@ void main(void) {
     //     viewDir = normalize(viewPos - FragPos);
     // }
 
-    vec3 objectColor = texture(material.surface, texCoord).rgb;
-    vec3 norm = normalize(fs_in.Normal);
-    vec3 lightDir = normalize(lightPos - fs_in.FragPos);
-    vec3 viewDir = normalize(viewPos - fs_in.FragPos);
+    norm = texture(material.normalMap, longitudeLatitude).rgb;
+    norm = normalize(norm * 2.0 - 1.0);
+    lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
+    viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
+    texCoord = parallaxMapping(texCoord, viewDir);
+
+    objectColor = texture(material.surface, texCoord).rgb;
     
     // *********************************************** mitigation ***************************************************
     // float lightConst = 1.0f;
@@ -215,7 +208,6 @@ void main(void) {
     // specular *= mitigation;
 
     // // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    // vec3 result = (ambiant + diffuse + specular) * objectColor;
 
     // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     // if(brightness > 1.0)
@@ -223,9 +215,7 @@ void main(void) {
     // else
     //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     
-    // FragColor = vec4(result, 1.0);
     float shadow = shadows ? ShadowCalculation(fs_in.FragPos) : 0.0;
-    // vec3 result = (ambiant + diffuse + specular) * objectColor;
     vec3 result = (ambiant + (1.0 - shadow) * (diffuse + specular)) * objectColor;
     FragColor = vec4(result, 1.0);   
 }
