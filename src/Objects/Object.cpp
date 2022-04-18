@@ -38,6 +38,16 @@ void Object::clean()
             
         }
     }
+    if(glIsTexture(normal_texture_id) == GL_TRUE)
+    {
+        glDeleteTextures(1, &normal_texture_id);
+            
+    }
+    if(glIsTexture(displacement_texture_id) == GL_TRUE)
+    {
+        glDeleteTextures(1, &displacement_texture_id);
+            
+    }
 
     std::cout << ">> " << m_type << " : DESTROY TEXTURE COMPLETE" << std::endl;
     

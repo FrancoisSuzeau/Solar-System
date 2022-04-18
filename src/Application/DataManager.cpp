@@ -390,7 +390,7 @@ void DataManager::initDatas()
     m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, -50.f, 0.f), "Saturn", 26.73f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(-40.f, -35.f, 0.f), "Mimas", 0.f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(-60.f, -30.f, 0.f), "Enceladus", 0.f});
-    m_bodys_data.push_back({1.f, "double_textured_planete", 32, 0.2f, glm::vec3(-60.f, -70.f, 0.f), "Titan", 0.f});
+    m_bodys_data.push_back({1.f, "double_textured_planete", 32, 0.3f, glm::vec3(-60.f, -70.f, 0.f), "Titan", 0.f});
     
     m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, 50.f, 0.f), "Uranus", 97.8f});
 

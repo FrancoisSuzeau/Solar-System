@@ -142,9 +142,9 @@ m_oppacity(datas.oppacity), m_name(datas.name)
     super::normal_texture_id = Loader::loadTextureWithSDL(normals_path);
     assert(normal_texture_id != 0);
 
-    normals_path = "../../assets/textures/displacementMap/" + m_name + "_dispMap.jpg";
-    super::displacement_texture_id = Loader::loadTextureWithSDL(normals_path);
-    assert(displacement_texture_id != 0);
+    // normals_path = "../../assets/textures/displacementMap/" + m_name + "_dispMap.jpg";
+    // super::displacement_texture_id = Loader::loadTextureWithSDL(normals_path);
+    // assert(displacement_texture_id != 0);
 
     super::m_rotation_angle = 0.f;
     super::m_speed_rotation = 0.1f;
@@ -232,11 +232,11 @@ void Planete::transform(glm::vec3 ship_pos, Input *input)
     }
     super::rotateObject(super::m_model_mat, super::m_rotation_angle);
 
-    super::height_scale += 0.000001f;
-    if(super::height_scale >=  0.01f)
-    {
-        super::height_scale = 0.000001f;
-    }
+    // super::height_scale += 0.000001f;
+    // if(super::height_scale >=  0.01f)
+    // {
+    //     super::height_scale = 0.000001f;
+    // }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -252,11 +252,11 @@ void Planete::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setTexture("material.surface", 0);
             data_manager.getShader(super::m_type)->setTexture("material.depthMap", 1);
             data_manager.getShader(super::m_type)->setTexture("material.normalMap", 2);
-            data_manager.getShader(super::m_type)->setTexture("material.dispMap", 3);
+            // data_manager.getShader(super::m_type)->setTexture("material.dispMap", 3);
             data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
             data_manager.getShader(super::m_type)->setInt("shadows", true);
             data_manager.getShader(super::m_type)->setFloat("far_plane", data_manager.getFar());
-            data_manager.getShader(super::m_type)->setFloat("heightScale", super::height_scale);
+            // data_manager.getShader(super::m_type)->setFloat("heightScale", super::height_scale);
                 
             if((super::m_type == "double_textured_planete") || (super::m_type == "earth"))
             {

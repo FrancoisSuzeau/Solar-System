@@ -85,26 +85,13 @@ Ring::Ring(float size, std::vector<std::string> textures_path, std::string const
 {
     m_shininess = shininess;
     m_inclinaison_angle = inclinaison_angle;
-    int i = 0;
-    for(std::vector<std::string>::iterator it = textures_path.begin(); it != textures_path.end(); ++it)
-    {
-        super::surface_tex_ids.push_back(Loader::loadTextureWithSDL(it[0]));
-        assert(super::surface_tex_ids[i] != 0);
-        i++;
-    }
+    super::surface_tex_ids.push_back(Loader::loadTextureWithSDL(textures_path[0]));
+    assert(super::surface_tex_ids[0] != 0);
 }
 
 Ring::~Ring()
 {
-    // if(m_normal_surf != nullptr)
-    // {
-    //     delete m_normal_surf;
-    // }
-
-    // if(m_disp_surf != nullptr)
-    // {
-    //     delete m_disp_surf;
-    // }
+    
 }
 
 /***********************************************************************************************************************************************************************/

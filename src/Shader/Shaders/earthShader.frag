@@ -46,7 +46,11 @@ vec2 parallaxMapping(vec2 texCoord, vec3 viewDir)
     // depth of current layer
     float currentLayerDepth = 0.0;
     // the amount to shift the texture coordinates per layer (from vector P)
-    vec2 P = viewDir.xy / viewDir.z * heightScale;
+    vec2 P;
+    if(heightScale != 0)
+    {
+        P = viewDir.xy / viewDir.z * heightScale;   
+    }
     vec2 deltaTexCoords = P / numLayers;
   
     // get initial values
@@ -155,7 +159,7 @@ void main(void) {
     norm = normalize(norm * 2.0 - 1.0);
     lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
     viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
-    texCoord = parallaxMapping(texCoord, viewDir);
+    // texCoord = parallaxMapping(texCoord, viewDir);
 
     vec3 night_text = texture(material.night, texCoord).rgb;
     vec4 surf_text = texture(material.surface, texCoord);
