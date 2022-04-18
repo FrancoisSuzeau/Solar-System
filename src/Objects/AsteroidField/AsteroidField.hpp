@@ -47,13 +47,9 @@ PURPOSE : header of the AsteroidField class
                 glm::vec3                       *m_positions;
                 float                           *rotAngle;
                 float                           *scaleM;
-                // Texture                         *m_noramal_surface;
-                // Texture                         *m_disp_surface;
                 glm::vec3                       *m_rot_vector;
 
                 unsigned int                    vbo;
-
-                // float   heightScale;
  
                 void                            initTransformations();
                 void                            initInstances();
