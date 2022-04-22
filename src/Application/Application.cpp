@@ -337,6 +337,14 @@ void Application::makeAllChanges()
         ship->loadModelShip(m_data_manager);
     }
 
+    if((camera != nullptr) && (m_input != nullptr))
+    {
+        camera->setDistFromShip(m_data_manager.getDistancteFromShip());
+        camera->move(m_input, render_menu);
+        m_data_manager.setViewMat(camera->getViewMatrix());
+        m_data_manager.setCamPos(camera->getPosition());
+    }
+
     if(m_skybox != nullptr)
     {
         m_skybox->sendToShader(m_data_manager);
@@ -345,14 +353,6 @@ void Application::makeAllChanges()
     if(m_solar_system != nullptr)
     {
         m_solar_system->makeChanges(m_data_manager);
-    }
-
-    if((camera != nullptr) && (m_input != nullptr))
-    {
-        camera->setDistFromShip(m_data_manager.getDistancteFromShip());
-        camera->move(m_input, render_menu);
-        m_data_manager.setViewMat(camera->getViewMatrix());
-        m_data_manager.setCamPos(camera->getPosition());
     }
 
     std::vector<glm::mat4> shadowTransforms = m_data_manager.getLightSpaceMatrix();

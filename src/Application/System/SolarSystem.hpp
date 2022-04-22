@@ -24,10 +24,6 @@ PURPOSE : header of the virtual SolarSystem class
 
         #include "../../Objects/AsteroidField/AsteroidField.hpp"
 
-        
-
-
-
         // #include "../../PlaneteInformation/PlaneteInformation.hpp"
 
         #include <cassert>
@@ -63,9 +59,6 @@ PURPOSE : header of the virtual SolarSystem class
                 void loadSystem(int count = 0) override;
                 void render(DataManager &data_manager) override;
                 void makeChanges(DataManager &data_manager) override;
-                // void displayName(RenderData &render_data) override;
-                // void displayAtmo(RenderData &render_data) override;
-                // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
                 void renderRing(DataManager &data_manager) override;
                 void renderAtmosphere(DataManager &data_manager) override;
                 void clean() override;

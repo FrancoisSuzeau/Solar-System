@@ -260,126 +260,6 @@ void SolarSystem::render(DataManager &data_manager)
     }
 }
 
-// /***********************************************************************************************************************************************************************/
-// /******************************************************************************** displayName **************************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void SolarSystem::displayName(RenderData &render_data)
-// {
-    
-//     render_data.initSaveMat();
-
-
-//     for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
-//     {
-//         if(it[0] != nullptr)
-//         {
-//             if(render_data.getShader("text") != nullptr)
-//             {
-//                 it[0]->drawName(render_data);
-//                 render_data.saveViewMat();
-//             }
-//         }
-
-//         render_data.saveViewMat();
-//     }
-
-//     render_data.saveViewMat();
-
-//     for (std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
-//     {
-//        if(it[0] != nullptr)
-//        {
-//            if(render_data.getShader("text") != nullptr)
-//             {
-//                 planete_render->displayName(render_data, 30, it[0]);
-//                 render_data.saveViewMat();
-//             }
-//        }
-
-//         render_data.saveViewMat();
-//     }
-
-//     render_data.saveViewMat();
-
-// }
-
-// /***********************************************************************************************************************************************************************/
-// /******************************************************************************** displayAtmo **************************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void SolarSystem::displayAtmo(RenderData &render_data)
-// {
-//     render_data.initSaveMat();
-
-//     /************************************************* OTHER ATMO RENDER ********************************************************/
-
-//     for(std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
-//     {
-//         if(it[0] != nullptr)
-//         {
-//             if(render_data.getShader("atmosphere") != nullptr)
-//             {
-//                 it[0]->drawAtmo(render_data);
-
-//                 render_data.saveViewMat();
-//             }
-            
-//         }
-        
-//         render_data.saveViewMat();
-//     }
-
-//     render_data.saveViewMat();
-
-//     for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
-//     {
-//         if((render_data.getShader("atmosphere") != nullptr) && (it[0] != nullptr))
-//         {
-//             planete_render->displayAtmo(render_data, it[0]);
-
-//             render_data.saveViewMat();
-//         }
-
-//         render_data.saveViewMat();
-//     }
-
-//     render_data.saveViewMat();
-// }
-
-// /***********************************************************************************************************************************************************************/
-// /******************************************************************************** displayInfo **************************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void SolarSystem::renderInfos(RenderData &render_data, PlaneteInformation *plan_info)
-// {
-//     for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
-//     {
-
-//         if( (it[0] != nullptr) && (m_planete_info != nullptr))
-//         {
-//             float r = it[0]->getRadiusFromCam(render_data.getShipPos());
-//             float size_plan = it[0]->getSize();
-
-//             if(r <= 10 * size_plan)
-//             {
-               
-//                 std::string tmp_name = it[0]->getName();
-
-//                 m_planete_info->renderInfo(render_data, tmp_name);
-//             }
-//         }
-//     }
-
-//     // display information of planetof the planetary system
-//     for (std::vector<SystemCreator*>::iterator it = m_planetary_system.begin(); it != m_planetary_system.end(); ++it)
-//     {
-//         if(it[0] != nullptr)
-//         {
-//             it[0]->drawInfo(render_data, m_planete_info);
-//         }
-        
-//     }
-    
-// }
-
 // /************************************************************************************************************************************************************************/
 // /******************************************************************************* renderRing *****************************************************************************/
 // /************************************************************************************************************************************************************************/
@@ -413,10 +293,20 @@ void SolarSystem::renderAtmosphere(DataManager &data_manager)
     {
         if(it[0] != nullptr)
         {
-            if((m_sphere_renderer != nullptr) && (it[0]->getAmosphere() != nullptr) && (data_manager.getPass() == COLOR_FBO))
+            Sphere *atmo = it[0]->getAmosphere();
+            if((m_sphere_renderer != nullptr) && (atmo != nullptr) && (data_manager.getPass() == COLOR_FBO))
             {
-                m_sphere_renderer->render(data_manager, it[0]->getAmosphere());
+                atmo->sendToShader(data_manager);
+                m_sphere_renderer->render(data_manager, atmo);
             }
+        }
+    }
+
+    for(std::vector<SystemCreator*>::iterator it = m_planetary_systems.begin(); it != m_planetary_systems.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            it[0]->renderAtmosphere(data_manager);
         }
     }
 }

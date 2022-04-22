@@ -107,7 +107,6 @@ void PlanetarySystem::makeChanges(DataManager &data_manager)
     {
         m_host->updatePosition(m_host->getPosition());
         m_host->transform(-data_manager.getShipPos());
-
         m_host->makeOtherChanges(data_manager);
     }
 
@@ -117,9 +116,9 @@ void PlanetarySystem::makeChanges(DataManager &data_manager)
         {
             it[0]->updatePosition(it[0]->getPosition());
             it[0]->transform(-data_manager.getShipPos());
+            it[0]->makeOtherChanges(data_manager);
         }
-    }
-    
+    }   
 }
 
 // /***********************************************************************************************************************************************************************/
@@ -160,112 +159,17 @@ void PlanetarySystem::render(DataManager &data_manager)
     }
 }
 
-// /***********************************************************************************************************************************************************************/
-// /******************************************************************************** displayName **************************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void PlanetarySystem::displayName(RenderData &render_data)
-// {
-//     render_data.initSaveMat();
-
-//     if(m_host->getProximity())
-//     {
-//         for (std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
-//         {
-//             if(it[0] != nullptr)
-//             {
-//                 if(render_data.getShader("text") != nullptr)
-//                 {
-//                     planete_render->displayName(render_data, 10, it[0]);
-//                     render_data.saveViewMat();
-//                 }
-//             }
-
-//             render_data.saveViewMat();
-//         }
-
-//         render_data.saveViewMat();
-//     }
-    
-//     if(m_host != nullptr)
-//     {
-//         if(render_data.getShader("text") != nullptr)
-//         {
-//             planete_render->displayName(render_data, 30, m_host);
-//             render_data.saveViewMat();
-//         }
-//     }
-
-    
-    
-
-    
-
-//     render_data.saveViewMat();
-// }
-
-// /***********************************************************************************************************************************************************************/
-// /******************************************************************************** displayAtmo **************************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void PlanetarySystem::displayAtmo(RenderData &render_data)
-// {
-//     render_data.initSaveMat();
-
-//     if(m_host != nullptr)
-//     {
-//         if((m_host->getAtmosphere() != nullptr) && (render_data.getShader("atmosphere") != nullptr))
-//         {
-//             planete_render->displayAtmo(render_data, m_host);
-//         }
-//     }
-
-//     render_data.saveViewMat();
-    
-// }
-
-// /***********************************************************************************************************************************************************************/
-// /******************************************************************************** renderInfos **************************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void PlanetarySystem::renderInfos(RenderData &render_data, PlaneteInformation *planete_info)
-// {
-//     this->displayInfo(render_data, m_host, planete_info);
-
-//     for(std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
-//     {
-//         this->displayInfo(render_data, it[0], planete_info);
-//     }
-// }
-
-// /***********************************************************************************************************************************************************************/
-// /******************************************************************************** displayInfos *************************************************************************/
-// /***********************************************************************************************************************************************************************/
-// void PlanetarySystem::displayInfo(RenderData &render_data, Planete *planete, PlaneteInformation *planete_info)
-// {
-//     if(planete != nullptr)
-//     {
-//         float r = planete->getRadiusFromCam(render_data.getShipPos());
-//         float size_plan = planete->getSize();
-
-//             if(r <= 10 * size_plan)
-//             {
-                
-//                 if(planete_info != nullptr)
-//                 {
-//                     std::string tmp_name = planete->getName();
-//                     planete_info->renderInfo(render_data, tmp_name);
-//                 }
-                
-//             }
-//     }
-// }
-
 // /************************************************************************************************************************************************************************/
 // /******************************************************************************* renderRing *****************************************************************************/
 // /************************************************************************************************************************************************************************/
 void PlanetarySystem::renderRing(DataManager &data_manager)
 {
-    if((m_ring_renderer != nullptr) && (m_host->getRing() != nullptr))
+    if(m_host != nullptr)
     {
-        m_ring_renderer->render(data_manager, m_host->getRing());
+        if((m_ring_renderer != nullptr) && (m_host->getRing() != nullptr))
+        {
+            m_ring_renderer->render(data_manager, m_host->getRing());
+        }
     }
 }
 
@@ -274,7 +178,29 @@ void PlanetarySystem::renderRing(DataManager &data_manager)
 // /************************************************************************************************************************************************************************/
 void PlanetarySystem::renderAtmosphere(DataManager &data_manager)
 {
-    
+    if(m_host != nullptr)
+    {
+        Sphere *atmo = m_host->getAmosphere();
+        if((m_sphere_renderer != nullptr) && (atmo != nullptr) && (data_manager.getPass() == COLOR_FBO))
+        {
+            atmo->sendToShader(data_manager);
+            m_sphere_renderer->render(data_manager, atmo);
+        }
+    }
+
+    for(std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
+    {
+        if(it[0] != nullptr)
+        {
+            Sphere *atmo = it[0]->getAmosphere();
+            if((m_sphere_renderer != nullptr) && (atmo != nullptr) && (data_manager.getPass() == COLOR_FBO))
+            {
+                atmo->sendToShader(data_manager);
+                m_sphere_renderer->render(data_manager, atmo);
+            }
+        }
+    }
+
 }
 
 // /************************************************************************************************************************************************************************/

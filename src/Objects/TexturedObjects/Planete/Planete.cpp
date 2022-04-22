@@ -44,15 +44,18 @@ m_oppacity(datas.oppacity), m_name(datas.name)
     }
     if(m_name == "Earth")
     {
-        
+        m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        m_atmosphere->updateColor(glm::vec3(147.f/255.f, 188.f/255.f, 251.f/255.f));
     }
     if(m_name == "Mars")
     {
-        
+        m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        m_atmosphere->updateColor(glm::vec3(255.f/255.f, 160.f/255.f, 122.f/255.f));
     }
     if(m_name == "Jupiter")
     {
-        
+        m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        m_atmosphere->updateColor(glm::vec3(255.f/255.f, 228.f/255.f, 196.f/255.f));
     }
     if(m_name == "Saturn")
     {
@@ -60,10 +63,14 @@ m_oppacity(datas.oppacity), m_name(datas.name)
         texture_path.push_back("../../assets/textures/CelestialBody/SaturnRing.png");
         m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
         assert(m_ring);
+
+        m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        m_atmosphere->updateColor(glm::vec3(253.f/255.f, 241.0/255.f, 184.f/255.f));
     }
     if(m_name == "Titan")
     {
-        
+        // m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        // m_atmosphere->updateColor(glm::vec3(253.f/255.f, 241.0/255.f, 184.f/255.f));
     }
 
     if(m_name == "Uranus")
@@ -72,6 +79,9 @@ m_oppacity(datas.oppacity), m_name(datas.name)
         texture_path.push_back("../../assets/textures/CelestialBody/UranusRing.png");
         m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
         assert(m_ring);
+
+        m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        m_atmosphere->updateColor(glm::vec3(173.f/255.f, 216.f/255.f, 230.f/255.f));
     }
 
     if(m_name == "Neptune")
@@ -80,6 +90,9 @@ m_oppacity(datas.oppacity), m_name(datas.name)
         texture_path.push_back("../../assets/textures/CelestialBody/NeptuneRing.png");
         m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
         assert(m_ring);
+
+         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        m_atmosphere->updateColor(glm::vec3(65.f/255.f, 105.f/255.f, 255.f/255.f));
     }
 }
 
@@ -180,7 +193,6 @@ void Planete::makeOtherChanges(DataManager &data_manager)
     {
         m_atmosphere->updatePosition(super::getPosition());
         m_atmosphere->transform(-data_manager.getShipPos());
-        m_atmosphere->sendToShader(data_manager);
     }
 }
 
