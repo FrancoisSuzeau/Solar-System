@@ -35,22 +35,13 @@ void Object::clean()
         if(glIsTexture(it[0]) == GL_TRUE)
         {
             glDeleteTextures(1, &it[0]);
-            
         }
     }
     if(glIsTexture(normal_texture_id) == GL_TRUE)
     {
-        glDeleteTextures(1, &normal_texture_id);
-            
+        glDeleteTextures(1, &normal_texture_id);       
     }
-    if(glIsTexture(displacement_texture_id) == GL_TRUE)
-    {
-        glDeleteTextures(1, &displacement_texture_id);
-            
-    }
-
     std::cout << ">> " << m_type << " : DESTROY TEXTURE COMPLETE" << std::endl;
-    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -106,6 +97,11 @@ void Object::updateColor(float const new_color)
     m_color = new_color;
 }
 
+void Object::updateColor(glm::vec3 const new_color)
+{
+    m_color_vector = new_color;
+}
+
 float Object::getColor() const
 {
     return m_color;
@@ -124,9 +120,4 @@ GLuint Object::getTextureID(int index) const
 GLuint Object::getNormalTextureID() const
 {
     return normal_texture_id;
-}
-
-GLuint Object::getDispTextureID() const
-{
-    return displacement_texture_id;
 }

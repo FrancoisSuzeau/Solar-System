@@ -98,18 +98,6 @@ void Application::cleanAll()
         delete m_solar_system;
         m_solar_system = nullptr;
     }
-    if(planete_renderer != nullptr)
-    {
-        planete_renderer->clean();
-        delete planete_renderer;
-        planete_renderer = nullptr;
-    }
-    if(ring_renderer != nullptr)
-    {
-        ring_renderer->clean();
-        delete ring_renderer;
-        ring_renderer = nullptr;
-    }
 
     m_data_manager.clean();
 }
@@ -149,6 +137,11 @@ void Application::loadConfig()
 /***********************************************************************************************************************************************************************/
 void Application::loadAssets()
 {
+    Renderer                *planete_renderer = nullptr;
+    Renderer                *ring_renderer = nullptr;
+    Renderer                *sphere_renderer = nullptr;
+    Renderer                *square_renderer = nullptr;
+    Square                  *square = nullptr;
     for(int assets_loads = -1; assets_loads < 11; assets_loads++)
     {
         ImGui_ImplOpenGL3_NewFrame();
@@ -159,14 +152,16 @@ void Application::loadAssets()
 
         if(assets_loads == 0)
         {
-            Renderer *square_renderer = new SquareRenderer(1.0);
+            square_renderer = new SquareRenderer(1.0);
             assert(square_renderer);
-            Square  *square = new Square(1.0, "square");
+            square = new Square(1.0, "square");
             assert(square);
             planete_renderer = new PlaneteRenderer(1.f, 70.f, 70.f);
             assert(planete_renderer);
             ring_renderer = new RingRenderer();
             assert(ring_renderer);
+            sphere_renderer = new SphereRenderer(1.f, 70.f, 70.f);
+            assert(sphere_renderer);
 
             m_overlay.initOverlayAssets(square_renderer, square);
             m_skybox = new Skybox();
@@ -182,7 +177,7 @@ void Application::loadAssets()
 
             m_solar_system = new SolarSystemCreator();
             assert(m_solar_system);
-            assert(m_solar_system->MakingSystem(planete_renderer, ring_renderer, "Solar System"));
+            assert(m_solar_system->MakingSystem(planete_renderer, ring_renderer, sphere_renderer, "Solar System"));
         }
 
         if((assets_loads >= 0) && (assets_loads < 8)) { m_solar_system->loadSystem(assets_loads);}
@@ -251,6 +246,9 @@ void Application::mainLoop()
         /******************************************************************* DEPTH MAP CALCULATION *************************************************************/
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            
             m_data_manager.setPass(DEPTH_FBO);
             this->renderIntoFramebuffer(DEPTH_FBO);
         //======================================================================================================================================================
@@ -438,6 +436,7 @@ void Application::renderScene()
     {
         m_solar_system->render(m_data_manager);
         m_solar_system->renderRing(m_data_manager);
+        m_solar_system->renderAtmosphere(m_data_manager);
     }
 }
 

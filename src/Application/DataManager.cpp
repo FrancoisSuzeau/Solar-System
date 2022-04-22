@@ -124,8 +124,7 @@ void DataManager::setShader()
     shader_init.push_back({"../../src/Shader/Shaders/planeteShader.vert", "../../src/Shader/Shaders/earthShader.frag", "NONE", "earth"});
     shader_init.push_back({"../../src/Shader/Shaders/ringShader.vert", "../../src/Shader/Shaders/ringShader.frag", "NONE", "ring"});
     shader_init.push_back({"../../src/Shader/Shaders/modelInstanced.vert", "../../src/Shader/Shaders/modelInstanced.frag", "NONE", "INSTmodel"});
-    
-    // shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "atmosphere"});            
+    shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "NONE", "atmosphere"});            
 
     for(std::vector<shader_datas>::iterator it = shader_init.begin(); it != shader_init.end(); ++it)
     {

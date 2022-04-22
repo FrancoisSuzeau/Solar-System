@@ -25,18 +25,12 @@ PURPOSE : header of the virtual System class
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
 
-        #include "../Application/DataManager.hpp"
+        #include "../DataManager.hpp"
 
-        #include "../Objects/TexturedObjects/Planete/Planete.hpp"
-        #include "../Renderers/TexturedRenderers/PlaneteRenderer/PlaneteRenderer.hpp"
-        #include "../Renderers/TexturedRenderers/RingRenderer/RingRenderer.hpp"
-
-        // #include "../../PlaneteInformation/PlaneteInformation.hpp"
-        // #include "../../OpenGlSketch/RenderData.hpp"
-        // #include "../Physique/Physique.hpp"
-        // #include "../../Spaceship/Spaceship.hpp"
-
-        // #include "../../LensFlare/FlareManager.hpp"
+        #include "../../Objects/TexturedObjects/Planete/Planete.hpp"
+        #include "../../Renderers/TexturedRenderers/PlaneteRenderer/PlaneteRenderer.hpp"
+        #include "../../Renderers/TexturedRenderers/RingRenderer/RingRenderer.hpp"
+        #include "../../Renderers/BasicRenderers/SphereRenderer.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
@@ -47,6 +41,7 @@ PURPOSE : header of the virtual System class
 
                 Renderer                        *m_planete_renderer = nullptr;
                 Renderer                        *m_ring_renderer = nullptr;
+                Renderer                        *m_sphere_renderer = nullptr;
 
                 std::string                      m_system_name;
                 // std::vector<sys_init_data>     sys_data;
@@ -67,6 +62,7 @@ PURPOSE : header of the virtual System class
                 // virtual void displayAtmo(RenderData &render_data) = 0;
                 // virtual void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) = 0;
                 virtual void renderRing(DataManager &data_manager) = 0;
+                virtual void renderAtmosphere(DataManager &data_manager) = 0;
                 // virtual void setMostGravInfluence(RenderData &render_data) = 0;
                 // virtual void approchBody(Spaceship *ship) = 0;
                 // virtual void renderFlareSun(RenderData &render_data) = 0;

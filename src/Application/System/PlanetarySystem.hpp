@@ -18,8 +18,6 @@ PURPOSE : header of the virtual PlanetarySystem class
 
         #include "System.hpp"
 
-        // #include "../../PlaneteInformation/PlaneteInformation.hpp"
-
         #include <string>
         #include <vector>
         #include <iostream>
@@ -43,7 +41,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 // void displayInfo(RenderData &render_data, Planete *planete, PlaneteInformation *planete_info);
             public:
 
-                PlanetarySystem(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name);
+                PlanetarySystem(Renderer *planete_renderer, Renderer *ring_renderer,  Renderer *sphere_renderer, std::string const system_name);
                 ~PlanetarySystem();
 
 
@@ -56,6 +54,7 @@ PURPOSE : header of the virtual PlanetarySystem class
                 // void displayAtmo(RenderData &render_data) override;
                 // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
                 void renderRing(DataManager &data_manager) override;
+                void renderAtmosphere(DataManager &data_manager) override;
                 // void setMostGravInfluence(RenderData &render_data) override;
                 // void approchBody(Spaceship *ship) override;
 

@@ -53,18 +53,15 @@ void PlaneteRenderer::render(DataManager &data_manager, Object *planete)
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, planete->getNormalTextureID());
 
-        // glActiveTexture(GL_TEXTURE3);
-        // glBindTexture(GL_TEXTURE_2D, planete->getDispTextureID());
-
         if((planete->getType() == "double_textured_planete") || (planete->getType() == "earth"))
         {
-            glActiveTexture(GL_TEXTURE4);
+            glActiveTexture(GL_TEXTURE3);
             glBindTexture(GL_TEXTURE_2D, planete->getTextureID(1));
         }
 
         if(planete->getType() == "earth")
         {
-            glActiveTexture(GL_TEXTURE5);
+            glActiveTexture(GL_TEXTURE4);
             glBindTexture(GL_TEXTURE_2D, planete->getTextureID(2));
         }
 
@@ -72,18 +69,15 @@ void PlaneteRenderer::render(DataManager &data_manager, Object *planete)
 
         if(planete->getType() == "earth")
         {
-            glActiveTexture(GL_TEXTURE5);
+            glActiveTexture(GL_TEXTURE4);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
         if((planete->getType() == "double_textured_planete") || (planete->getType() == "earth"))
         {
-            glActiveTexture(GL_TEXTURE4);
+            glActiveTexture(GL_TEXTURE3);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
-
-        // glActiveTexture(GL_TEXTURE3);
-        // glBindTexture(GL_TEXTURE_2D, 0);
 
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, 0);

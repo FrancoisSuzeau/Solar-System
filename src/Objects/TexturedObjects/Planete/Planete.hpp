@@ -16,10 +16,6 @@ PURPOSE : header of the Planete class
 
 /********************************************************************* includes *********************************************************************/
 
-        // #include "../../Text/Text.hpp"
-        // #include "../../Atmosphere/Atmosphere.hpp"
-        // #include "../Ring/Ring.hpp"
-
         #include "../../BasicObjects/Sphere.hpp"
         #include "../../../Loader/Loader.hpp"
         #include "../SquareTextured/Ring/Ring.hpp"
@@ -56,58 +52,48 @@ PURPOSE : header of the Planete class
                         float   m_oppacity;
                         std::string     m_name;
                         Ring            *m_ring = nullptr;
-
+                        Sphere          *m_atmosphere = nullptr;
                         
             
-            protected:
+                protected:
 
-                // Texture                         *m_normal_surface;
-                // Texture                         *displacement_map;
-                // Text                            *m_name_renderer;
-                // Atmosphere                      *m_atmosphere;
-                // Ring                            *m_ring;
-                // bool                            is_near;
-                // float heighhtScale;
+                        
+                public:
 
-                
-            public:
+                        Planete(body_data datas);
+                        ~Planete();
 
-                // Planete(init_data data, TTF_Font *police);
-                Planete(body_data datas);
-                ~Planete();
+                        void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;
+                        void sendToShader(DataManager &data_manager) override;
 
-                void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;
-                void sendToShader(DataManager &data_manager) override;
+                        Ring*   getRing() const;
+                        Sphere  *getAmosphere() const;
+                        void    makeOtherChanges(DataManager &data_manager);
+                        void    clean();
+                        void renderName(DataManager &data_manager);
+                        
+                        // std::string getName() const;
+                        // float getRadiusFromCam(glm::vec3 camPos);
+                        // float getPhiFromCam(glm::vec3 camPos);
+                        // float getThetaFromCam(glm::vec3 camPos, float r);
+                        // std::string getTypePlan() const;
+                        // std::vector<Texture*> getPlanTexture() const;
+                        // Texture* getNormalTexture() const;
+                        // Texture* getDispTexture() const;
 
-                Ring*   getRing() const;
-                void    makeRingChanges(DataManager &data_manager);
-                void    clean();
-                void renderName(DataManager &data_manager);
-                
-                // std::string getName() const;
-                // float getRadiusFromCam(glm::vec3 camPos);
-                // float getPhiFromCam(glm::vec3 camPos);
-                // float getThetaFromCam(glm::vec3 camPos, float r);
-                // std::string getTypePlan() const;
-                // std::vector<Texture*> getPlanTexture() const;
-                // Texture* getNormalTexture() const;
-                // Texture* getDispTexture() const;
+                        // glm::mat4 getModelMat() const;
+                        // Text *getNameRender() const;
+                        // glm::vec3 getPosition() const;
+                        // float getOppacity() const;
+                        // float getSize() const;
 
-                // glm::mat4 getModelMat() const;
-                // Text *getNameRender() const;
-                // glm::vec3 getPosition() const;
-                // float getOppacity() const;
-                // float getSize() const;
+                        // Atmosphere *getAtmosphere() const;
+                        // bool getProximity() const;
+                        // void setProximity(bool change);
 
-                // Ring *getRing() const;
-
-                // Atmosphere *getAtmosphere() const;
-                // bool getProximity() const;
-                // void setProximity(bool change);
-
-                // void updatePosition(glm::vec3 shipPos = glm::vec3(0.0f));
-                // void updateHeightScale();
-                // float getHeightScale() const;
+                        // void updatePosition(glm::vec3 shipPos = glm::vec3(0.0f));
+                        // void updateHeightScale();
+                        // float getHeightScale() const;
                 
         };
 

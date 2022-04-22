@@ -17,10 +17,11 @@ PURPOSE : class PlanetarySystem
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-PlanetarySystem::PlanetarySystem(/*sys_init_data data, TTF_Font *police,*/Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name)
+PlanetarySystem::PlanetarySystem(Renderer *planete_renderer, Renderer *ring_renderer, Renderer *sphere_renderer, std::string const system_name)
 {
     m_planete_renderer = planete_renderer;
     m_ring_renderer = ring_renderer;
+    m_sphere_renderer = sphere_renderer;
     m_system_name = system_name;
 
 //     mini_speed = false;
@@ -107,7 +108,7 @@ void PlanetarySystem::makeChanges(DataManager &data_manager)
         m_host->updatePosition(m_host->getPosition());
         m_host->transform(-data_manager.getShipPos());
 
-        m_host->makeRingChanges(data_manager);
+        m_host->makeOtherChanges(data_manager);
     }
 
     for(std::vector<Planete*>::iterator it = m_moons.begin(); it != m_moons.end(); ++it)
@@ -266,6 +267,14 @@ void PlanetarySystem::renderRing(DataManager &data_manager)
     {
         m_ring_renderer->render(data_manager, m_host->getRing());
     }
+}
+
+// /************************************************************************************************************************************************************************/
+// /******************************************************************************* renderAtmosphere *****************************************************************************/
+// /************************************************************************************************************************************************************************/
+void PlanetarySystem::renderAtmosphere(DataManager &data_manager)
+{
+    
 }
 
 // /************************************************************************************************************************************************************************/

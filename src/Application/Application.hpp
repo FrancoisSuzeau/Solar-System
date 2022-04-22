@@ -35,7 +35,7 @@ PURPOSE : header of the Application class
 
         #include "../InOut/Framebuffer/Framebuffer.hpp"
 
-        #include "../System/SolarSystemCreator.hpp"
+        #include "System/SolarSystemCreator.hpp"
         
 
         #include "Camera/Camera.hpp"
@@ -64,12 +64,7 @@ PURPOSE : header of the Application class
                 
                 // ParticuleManager *m_particule_manager;
                 // bool is_moving;
-
-                // Planete*                 venus = nullptr;
-                // Planete*                 saturn = nullptr;
-                // Ring                    *saturn_ring = nullptr;
-                Renderer                *planete_renderer = nullptr;
-                Renderer                *ring_renderer = nullptr;
+               
 
 
                 SystemCreator           *m_solar_system = nullptr;

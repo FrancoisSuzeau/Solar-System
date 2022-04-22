@@ -87,20 +87,14 @@ void main()
     // // *********************************************** diffuse light ***************************************************
     
     lightDir = normalize(lightPos - fs_in.FragPos);
-    
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
 
     // // *********************************************** specular light ***************************************************
-    // float specularStrength = 0.5;
     vec3 reflectDir = reflect(-lightDir, norm);
     viewDir = normalize(viewPos - fs_in.FragPos);
     vec3 halfwayDir = normalize(lightDir + viewDir);
     float spec = 0.0;
     spec = pow(max(dot(norm, halfwayDir), 0.0), shininess);
     vec3 specular = spec * lightColor;
-    // float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    // vec3 specular = specularStrength * spec * lightColor;
 
     // // *********************************************** ambiant light ***************************************************
     float ambiantStrength = 0.6;
@@ -120,7 +114,6 @@ void main()
     // // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     
     // ambiant *= mitigation;
-    // diffuse *= mitigation;
     // specular *= mitigation;
 
     vec2 texCoord = fs_in.coordTexture;
@@ -129,8 +122,6 @@ void main()
     float shadow = shadows ? ShadowCalculation(fs_in.FragPos) : 0.0;
     vec3 result = ambiant - shadow;
     result *= objectColor;
-    FragColor = vec4(result, 1.0);
-    // vec3 result = (ambiant + diffuse + specular) * objectColor;
 
     // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     // if(brightness > 1.0)
@@ -138,6 +129,6 @@ void main()
     // else
     //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     
-    // FragColor = vec4(result, 1.0);
+    FragColor = vec4(result, 1.0);
     
 }

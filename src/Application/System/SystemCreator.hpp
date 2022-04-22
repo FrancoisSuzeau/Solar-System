@@ -36,20 +36,13 @@ PURPOSE : header of the virtual SystemCreator class
                 
             public:
 
-                virtual ~SystemCreator() {
-                        // if(m_system != nullptr)
-                        // {
-                        //         delete m_system;
-                        //         m_system = nullptr;
-                        //         std::cout << "SYSTEM : DESTROY COMPLETE" << std::endl;
-                        // }
-                };
+                virtual ~SystemCreator() {};
 
-                virtual System* FactoryMethod(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name) = 0;
+                virtual System* FactoryMethod(Renderer *planete_renderer, Renderer *ring_renderer, Renderer *sphere_renderer, std::string const system_name) = 0;
 
-                bool MakingSystem(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name) 
+                bool MakingSystem(Renderer *planete_renderer, Renderer *ring_renderer, Renderer *sphere_renderer, std::string const system_name) 
                 {
-                        m_system = this->FactoryMethod(/*data, police,*/planete_renderer, ring_renderer, system_name);
+                        m_system = this->FactoryMethod(planete_renderer, ring_renderer, sphere_renderer, system_name);
                         return true;
                 }
 
@@ -102,6 +95,11 @@ PURPOSE : header of the virtual SystemCreator class
                 void renderRing(DataManager &data_manager)
                 {
                         m_system->renderRing(data_manager);
+                }
+
+                void renderAtmosphere(DataManager &data_manager)
+                {
+                        m_system->renderAtmosphere(data_manager);
                 }
 
                 void cleanSystem()

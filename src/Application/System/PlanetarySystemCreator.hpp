@@ -5,13 +5,13 @@ DATE : 17/06/2021
 
 MODULE : System
 
-NAMEFILE : SolarSystemCreator.hpp
+NAMEFILE : PlanetarySystemCreator.hpp
 
-PURPOSE : header of the virtual SolarSystemCreator class
+PURPOSE : header of the virtual PlanetarySystemCreator class
 */
 
-#ifndef SSSYSTEMCREATOR_H
-#define SSSYSTEMCREATOR_H
+#ifndef PLSYSTEMCREATOR_H
+#define PLSYSTEMCREATOR_H
 
 
 /********************************************************************* includes *********************************************************************/
@@ -24,11 +24,11 @@ PURPOSE : header of the virtual SolarSystemCreator class
         #include <glm/gtc/type_ptr.hpp>
 
         #include "SystemCreator.hpp"
-        #include "SolarSystem.hpp"
+        #include "PlanetarySystem.hpp"
        
 /********************************************************************* class definition *********************************************************************/
 
-        class SolarSystemCreator : public SystemCreator 
+        class PlanetarySystemCreator : public SystemCreator 
         {
             
             private:
@@ -37,22 +37,13 @@ PURPOSE : header of the virtual SolarSystemCreator class
                 
             public:
 
-                ~SolarSystemCreator() override {
-                        if(m_system != nullptr)
-                        {
-                                delete m_system;
-                                m_system = nullptr;
-                                std::cout << ">> SOLAR SYSTEM : DESTROY COMPLETE" << std::endl;
-                        }
-                }
 
-
-                System* FactoryMethod(/*sys_init_data data, TTF_Font *police,*/ Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name) override
+                System* FactoryMethod(Renderer *planete_renderer, Renderer *ring_renderer, Renderer *sphere_renderer, std::string const system_name) override
                 {
                         // puts("");
                         // puts("");
                         // std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> System Creator : " << data.name_sys << " <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
-                        return new SolarSystem(/*data, police,*/ planete_renderer, ring_renderer, system_name);
+                        return new PlanetarySystem(planete_renderer, ring_renderer, sphere_renderer, system_name);
                 }
 
 

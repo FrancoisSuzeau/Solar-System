@@ -16,120 +16,9 @@ PURPOSE : class Planete
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-// Planete::Planete(init_data data, TTF_Font *police) :
-// m_name(data.name)
-// {
-//     heighhtScale = 0.000001f;
-
-//     for (size_t i = 0; i < data.texture_path.size(); i++)
-//     {
-//         m_textures.push_back(new Texture(data.texture_path[i]));
-//         assert(m_textures[i]);
-//         assert(m_textures[i]->loadTexture());
-//         RenderData::renderLog(data.texture_path[i]);
-//     }
-    
-//     assert(police);
-//     m_name_renderer = new Text(3.0f, 0.2f, 6.0f, "../assets/font/aAtmospheric.ttf", police);
-//     assert(m_name_renderer);
-//     assert(m_name_renderer->loadTTF(m_name));
-//     // RenderData::renderLog("../assets/font/aAtmospheric.ttf");
-
-
-//     m_normal_surface = new Texture(data.nom_disp_path[0]);
-//     assert(m_normal_surface);
-//     assert(m_normal_surface->loadTexture());
-//     // RenderData::renderLog(data.nom_disp_path[0]);
-
-//     displacement_map = new Texture(data.nom_disp_path[1]);
-//     assert(displacement_map);
-//     assert(displacement_map->loadTexture());
-//     // RenderData::renderLog(data.nom_disp_path[1]);
-    
-//     //TODO : changing it to a special method
-//     m_inclinaison_angle = data.inclinaison_angle;
-//     m_real_size = data.size;
-//     m_initial_pos = data.position;
-//     m_current_position = m_initial_pos;
-//     m_rotation_angle = 0.0f;
-//     m_inclinaison_angle = data.inclinaison_angle;
-//     m_speed_rotation = data.speed_rotation;
-//     m_type_plan = data.type_plan;
-//     is_near = false;
-
-//     if(m_name == "Mars")
-//     {
-//         m_atmosphere = new Atmosphere(1.05f, m_name);
-//         assert(m_atmosphere);
-
-//         m_oppacity = 0.3f;
-
-//         m_ring = nullptr;
-//     }
-//     else if(m_name == "Earth")
-//     {
-//         m_atmosphere = new Atmosphere(1.05f, m_name);
-//         assert(m_atmosphere);
-
-//         m_oppacity = 0.3f;
-
-//         m_ring = nullptr;
-
-//     }
-//     else if(m_name == "Venus")
-//     {
-//         m_atmosphere = new Atmosphere(1.05f, m_name);
-//         assert(m_atmosphere);
-
-//         m_oppacity = 0.115f;
-
-//         m_ring = nullptr;
-
-//     }
-//     else if(m_name == "Jupiter")
-//     {
-//         m_atmosphere = new Atmosphere(1.05f, m_name);
-//         assert(m_atmosphere);
-
-//         m_ring = nullptr;
-
-//     }
-//     else if(m_name == "Saturn")
-//     {
-//         m_atmosphere = new Atmosphere(1.05f, m_name);
-//         assert(m_atmosphere);
-
-//         m_ring = new Ring(4, "../../assets/textures/CelestialBody/SaturnRing.png", data);
-//         assert(m_ring);
-
-//     }
-//     else if(m_name == "Uranus")
-//     {
-//         m_atmosphere = new Atmosphere(1.05f, m_name);
-//         assert(m_atmosphere);
-
-//         m_ring = new Ring(4, "../../assets/textures/CelestialBody/UranusRing.png", data);
-//         assert(m_ring);
-//     }
-//     else if(m_name == "Neptune")
-//     {
-//         m_atmosphere = new Atmosphere(1.05f, m_name);
-//         assert(m_atmosphere);
-
-//         m_ring = new Ring(4, "../../assets/textures/CelestialBody/NeptuneRing.png", data);
-//         assert(m_ring);
-//     }
-//     else
-//     {
-//         m_atmosphere = nullptr;
-//         m_ring = nullptr;
-//     }
-// }
-
 Planete::Planete(body_data datas) : super(datas.size, datas.type),
 m_oppacity(datas.oppacity), m_name(datas.name)
 {
-    super::height_scale = 0.000001f;
     int i = 0;
     for(std::vector<std::string>::iterator it = Loader::textures_path[datas.name].begin(); it != Loader::textures_path[datas.name].end(); ++it)
     {
@@ -142,22 +31,39 @@ m_oppacity(datas.oppacity), m_name(datas.name)
     super::normal_texture_id = Loader::loadTextureWithSDL(normals_path);
     assert(normal_texture_id != 0);
 
-    // normals_path = "../../assets/textures/displacementMap/" + m_name + "_dispMap.jpg";
-    // super::displacement_texture_id = Loader::loadTextureWithSDL(normals_path);
-    // assert(displacement_texture_id != 0);
-
     super::m_rotation_angle = 0.f;
     super::m_speed_rotation = 0.1f;
     super::m_shininess = datas.shininess;
     super::m_position = datas.initial_pos;
     super::m_inclinaison_angle = datas.inclinaison_angle;
 
+    if(m_name == "Venus")
+    {
+        m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        m_atmosphere->updateColor(glm::vec3(1.f, 1.f, 224.f/255.f));
+    }
+    if(m_name == "Earth")
+    {
+        
+    }
+    if(m_name == "Mars")
+    {
+        
+    }
+    if(m_name == "Jupiter")
+    {
+        
+    }
     if(m_name == "Saturn")
     {
         std::vector<std::string> texture_path;
         texture_path.push_back("../../assets/textures/CelestialBody/SaturnRing.png");
         m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
         assert(m_ring);
+    }
+    if(m_name == "Titan")
+    {
+        
     }
 
     if(m_name == "Uranus")
@@ -180,25 +86,6 @@ m_oppacity(datas.oppacity), m_name(datas.name)
 Planete::~Planete()
 {
 
-    // if(m_atmosphere != nullptr)
-    // {
-    //     delete m_atmosphere;
-    // }
-
-    // if(m_name_renderer != nullptr)
-    // {
-    //     delete m_name_renderer;
-    // }
-
-    // if(m_normal_surface != nullptr)
-    // {
-    //     delete m_normal_surface;
-    // }
-
-    // if(displacement_map != nullptr)
-    // {
-    //     delete displacement_map;
-    // }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -211,6 +98,12 @@ void Planete::clean()
         m_ring->clean();
         delete m_ring;
         m_ring = nullptr;
+    }
+    if(m_atmosphere != nullptr)
+    {
+        m_atmosphere->clean();
+        delete m_atmosphere;
+        m_atmosphere = nullptr;
     }
 
     super::clean();
@@ -231,12 +124,6 @@ void Planete::transform(glm::vec3 ship_pos, Input *input)
         super::m_rotation_angle -= 360;
     }
     super::rotateObject(super::m_model_mat, super::m_rotation_angle);
-
-    // super::height_scale += 0.000001f;
-    // if(super::height_scale >=  0.01f)
-    // {
-    //     super::height_scale = 0.000001f;
-    // }
 }
 
 /***********************************************************************************************************************************************************************/
@@ -244,6 +131,12 @@ void Planete::transform(glm::vec3 ship_pos, Input *input)
 /***********************************************************************************************************************************************************************/
 void Planete::sendToShader(DataManager &data_manager)
 {
+    if((data_manager.getShader("depth_map") != nullptr) && (data_manager.getPass() == DEPTH_FBO))
+    {
+        glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+                data_manager.getShader("depth_map")->setMat4("model", super::getModelMat());
+        glUseProgram(0);
+    }
     if((data_manager.getShader(super::m_type) != nullptr) && (data_manager.getPass() == COLOR_FBO))
     {
         glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
@@ -252,21 +145,19 @@ void Planete::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setTexture("material.surface", 0);
             data_manager.getShader(super::m_type)->setTexture("material.depthMap", 1);
             data_manager.getShader(super::m_type)->setTexture("material.normalMap", 2);
-            // data_manager.getShader(super::m_type)->setTexture("material.dispMap", 3);
             data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
             data_manager.getShader(super::m_type)->setInt("shadows", true);
             data_manager.getShader(super::m_type)->setFloat("far_plane", data_manager.getFar());
-            // data_manager.getShader(super::m_type)->setFloat("heightScale", super::height_scale);
                 
             if((super::m_type == "double_textured_planete") || (super::m_type == "earth"))
             {
-                data_manager.getShader(super::m_type)->setTexture("material.cloud", 4);
+                data_manager.getShader(super::m_type)->setTexture("material.cloud", 3);
                 data_manager.getShader(super::m_type)->setFloat("oppacity", m_oppacity);
             }
 
             if(super::m_type == "earth")
             {
-                data_manager.getShader(super::m_type)->setTexture("material.night", 5);
+                data_manager.getShader(super::m_type)->setTexture("material.night", 4);
             }   
 
         glUseProgram(0);
@@ -275,14 +166,21 @@ void Planete::sendToShader(DataManager &data_manager)
 }
 
 /***********************************************************************************************************************************************************************/
-/****************************************************************************** makeRingChanges *************************************************************************/
+/****************************************************************************** makeOtherChanges *************************************************************************/
 /***********************************************************************************************************************************************************************/
-void Planete::makeRingChanges(DataManager &data_manager)
+void Planete::makeOtherChanges(DataManager &data_manager)
 {
     if(m_ring != nullptr)
     {
         m_ring->updatePosition(super::getPosition());
         m_ring->transform(-data_manager.getShipPos());
+    }
+
+    if(m_atmosphere != nullptr)
+    {
+        m_atmosphere->updatePosition(super::getPosition());
+        m_atmosphere->transform(-data_manager.getShipPos());
+        m_atmosphere->sendToShader(data_manager);
     }
 }
 
@@ -318,6 +216,10 @@ Ring* Planete::getRing() const
     return m_ring;
 }
 
+Sphere* Planete::getAmosphere() const
+{
+    return m_atmosphere;
+}
 
 // float Planete::getRadiusFromCam(glm::vec3 camPos)
 // {

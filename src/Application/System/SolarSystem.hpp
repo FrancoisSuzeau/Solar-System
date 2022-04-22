@@ -19,10 +19,10 @@ PURPOSE : header of the virtual SolarSystem class
         #include "System.hpp"
         #include "PlanetarySystemCreator.hpp"
 
-        #include "../Objects/TexturedObjects/Star/Star.hpp"
-        #include "../Renderers/TexturedRenderers/StarRenderer/StarRenderer.hpp"
+        #include "../../Objects/TexturedObjects/Star/Star.hpp"
+        #include "../../Renderers/TexturedRenderers/StarRenderer/StarRenderer.hpp"
 
-        #include "../Objects/AsteroidField/AsteroidField.hpp"
+        #include "../../Objects/AsteroidField/AsteroidField.hpp"
 
         
 
@@ -56,7 +56,7 @@ PURPOSE : header of the virtual SolarSystem class
                 
             public:
 
-                SolarSystem(/*sys_init_data data, TTF_Font *police,*/Renderer *planete_renderer, Renderer *ring_renderer, std::string const system_name);
+                SolarSystem(Renderer *planete_renderer, Renderer *ring_renderer,  Renderer *sphere_renderer, std::string const system_name);
                 ~SolarSystem();
 
 
@@ -67,6 +67,7 @@ PURPOSE : header of the virtual SolarSystem class
                 // void displayAtmo(RenderData &render_data) override;
                 // void renderInfos(RenderData &render_data, PlaneteInformation *planete_info = nullptr) override;
                 void renderRing(DataManager &data_manager) override;
+                void renderAtmosphere(DataManager &data_manager) override;
                 void clean() override;
                 void renderNameAndInfo(DataManager &data_manager) override;
 

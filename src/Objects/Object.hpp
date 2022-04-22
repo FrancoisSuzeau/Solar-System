@@ -44,6 +44,7 @@ PURPOSE : Interface Object
                 glm::vec3   m_inclinaison_vector;
                 glm::vec3   m_rotation_vector;
                 float           m_color;
+                glm::vec3       m_color_vector;
                 float           m_inclinaison_angle;
                 float           m_speed_rotation;
                 float           m_rotation_angle;
@@ -53,9 +54,6 @@ PURPOSE : Interface Object
 
                 std::vector<GLuint>          surface_tex_ids;
                 GLuint                          normal_texture_id = 0;
-                GLuint                          displacement_texture_id = 0;
-
-                float                   height_scale;
 
             public:
 
@@ -71,6 +69,7 @@ PURPOSE : Interface Object
                 void translateObject(glm::mat4 &model, glm::vec3 pos);
                 void scaleObject(glm::mat4 &model, glm::vec3 size);
                 void updateColor(float const color);
+                void updateColor(glm::vec3 const new_color);
                 void updateSize(glm::vec3 const new_size);
 
                 glm::vec3 getSize() const;
