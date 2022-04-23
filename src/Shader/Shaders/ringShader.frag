@@ -15,11 +15,10 @@ uniform vec3 sunPos;
 uniform float far_plane;
 uniform bool shadows;
 uniform int shininess;
-// uniform bool hdr;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
-// layout (location = 1) out vec4 BrightColor;
+layout (location = 1) out vec4 BrightColor;
 
 // array of offset direction for sampling
 vec3 gridSamplingDisk[20] = vec3[]
@@ -98,17 +97,6 @@ void main()
 
     // // *********************************************** ambiant light ***************************************************
     float ambiantStrength = 0.6;
-    
-
-    // if(hdr)
-    // {
-    //     ambiantStrength = 0.008;
-    // }
-    // else
-    // {
-    //     ambiantStrength = 0.01;
-    // }
-
     vec3 ambiant = ambiantStrength * lightColor;
 
     // // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
@@ -123,12 +111,11 @@ void main()
     vec3 result = ambiant - shadow;
     result *= objectColor;
 
-    // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
-    // if(brightness > 1.0)
-    //     BrightColor = vec4(result, 1.0);
-    // else
-    //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-    
     FragColor = vec4(result, 1.0);
-    
+
+    float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0)
+        BrightColor = vec4(result, 1.0);
+    else
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0); 
 }

@@ -43,13 +43,13 @@ PURPOSE : header of the DataManager class
         typedef struct body_data {
 
                 float                           size;
-                // std::vector<std::string>        textures_path;
                 std::string                     type;
                 int                             shininess;
                 float                           oppacity;
                 glm::vec3                       initial_pos;
                 std::string                     name;
                 float                           inclinaison_angle;
+                float                           light_strength;
                 // std::vector<std::string> nom_disp_path;
                 // std::string name;
                 // float   speed_rotation;
@@ -68,12 +68,9 @@ PURPOSE : header of the DataManager class
                 int             m_volume;
                 bool            m_pause_music;
                 int             m_track;
-                bool            hdr;
-                float           exposure;
                 bool            bloom;
                 int             bloom_strenght;
                 bool            render_normal;
-                bool            render_parallax;
                 int             asteroid_count;
                 bool            render_overlay;
                 bool            render_name;
@@ -122,18 +119,12 @@ PURPOSE : header of the DataManager class
                 void            resetViewMat(glm::mat4 const new_mat);
                 glm::mat4       getProjMat() const;
                 void            lockView(glm::vec3 position, glm::vec3 target, glm::vec3 up);
-                void            setHDR(bool const new_val);
-                bool            getHDR() const;
-                void            setExposure(float const new_value);
-                float           getExposure() const;
                 void            setBloom(bool const new_val);
                 bool            getBloom() const;
                 void            setBloomStrength(int const new_val);
                 int             getBloomStrength() const;
                 void            setRenderNormal(bool const new_val);
                 bool            getRenderNormal() const;
-                void            setRenderParallax(bool const new_val);
-                bool            getRenderParallax() const;
                 void            setAsteroidCount(int const new_val);
                 int             getAsteroidCount() const;
                 void            setRenderOverlay(bool const new_val);

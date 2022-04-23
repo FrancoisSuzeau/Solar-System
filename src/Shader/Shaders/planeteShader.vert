@@ -35,8 +35,8 @@ void main(void) {
     vec3 k = vs_out.Normal * v;
     vec3 Tangent = v - k * vs_out.Normal;
 
-    vec3 T = normalize(normalMatrice * Tangent);
-    vec3 N = normalize(normalMatrice * in_Vertex);
+    vec3 T = normalize(vec3(model * vec4(Tangent, 0.0)));
+    vec3 N = normalize(vec3(model * vec4(in_Vertex, 0.0)));
     T = normalize(T - dot(T, N) * N);
     vec3 B = cross(N, T);
     

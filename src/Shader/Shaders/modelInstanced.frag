@@ -9,29 +9,18 @@ in VS_OUT {
     vec3 TangentViewPos;
     vec3 TangentFragPos;
 } vs_in;
-// uniform bool hdr;
-
 uniform vec3 viewPos;
 uniform vec3 sunPos;
-
 uniform sampler2D texture_diffuse1;
 uniform sampler2D normalMap;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
-// layout (location = 1) out vec4 BrightColor;
+layout (location = 1) out vec4 BrightColor;
 
 void main()
 {
     vec3 lightColor = vec3(1.0);
-    // if(hdr)
-    // {
-    //     lightColor = vec3(0.4, 0.4, 0.4);
-    // }
-    // else
-    // {
-    //     lightColor = vec3(1.0, 1.0, 1.0);
-    // }
 
     vec3 lightPos = sunPos;
 
@@ -83,14 +72,6 @@ void main()
 
     // // *********************************************** ambiant light ***************************************************
     float ambiantStrength = 0.01;
-    // if(hdr)
-    // {
-    //     ambiantStrength = 0.008;
-    // }
-    // else
-    // {
-    //     ambiantStrength = 0.1;
-    // }
 
     vec3 ambiant = ambiantStrength * lightColor;
 
@@ -100,12 +81,10 @@ void main()
     // specular *= mitigation;
     
     vec3 result = (ambiant + diffuse + specular) * objectColor;
-    
-    // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
-    // if(brightness > 1.0)
-    //     BrightColor = vec4(result, 1.0);
-    // else
-    //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-    
     FragColor = vec4(result, 1.0);
+    float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0)
+        BrightColor = vec4(result, 1.0);
+    else
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
 }

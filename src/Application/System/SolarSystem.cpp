@@ -289,11 +289,12 @@ void SolarSystem::renderRing(DataManager &data_manager)
 // /************************************************************************************************************************************************************************/
 void SolarSystem::renderAtmosphere(DataManager &data_manager)
 {
+    Sphere *atmo = nullptr;
     for(std::vector<Planete*>::iterator it = m_planetes.begin(); it != m_planetes.end(); ++it)
     {
         if(it[0] != nullptr)
         {
-            Sphere *atmo = it[0]->getAmosphere();
+            atmo = it[0]->getAmosphere();
             if((m_sphere_renderer != nullptr) && (atmo != nullptr) && (data_manager.getPass() == COLOR_FBO))
             {
                 atmo->sendToShader(data_manager);
@@ -309,6 +310,8 @@ void SolarSystem::renderAtmosphere(DataManager &data_manager)
             it[0]->renderAtmosphere(data_manager);
         }
     }
+
+    atmo = nullptr;
 }
 
 // /************************************************************************************************************************************************************************/

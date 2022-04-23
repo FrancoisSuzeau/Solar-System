@@ -178,9 +178,10 @@ void PlanetarySystem::renderRing(DataManager &data_manager)
 // /************************************************************************************************************************************************************************/
 void PlanetarySystem::renderAtmosphere(DataManager &data_manager)
 {
+    Sphere *atmo = nullptr;
     if(m_host != nullptr)
     {
-        Sphere *atmo = m_host->getAmosphere();
+        atmo = m_host->getAmosphere();
         if((m_sphere_renderer != nullptr) && (atmo != nullptr) && (data_manager.getPass() == COLOR_FBO))
         {
             atmo->sendToShader(data_manager);
@@ -192,7 +193,7 @@ void PlanetarySystem::renderAtmosphere(DataManager &data_manager)
     {
         if(it[0] != nullptr)
         {
-            Sphere *atmo = it[0]->getAmosphere();
+            atmo = it[0]->getAmosphere();
             if((m_sphere_renderer != nullptr) && (atmo != nullptr) && (data_manager.getPass() == COLOR_FBO))
             {
                 atmo->sendToShader(data_manager);
@@ -200,7 +201,7 @@ void PlanetarySystem::renderAtmosphere(DataManager &data_manager)
             }
         }
     }
-
+    atmo = nullptr;
 }
 
 // /************************************************************************************************************************************************************************/

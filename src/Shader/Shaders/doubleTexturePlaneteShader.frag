@@ -15,6 +15,7 @@ struct Material {
     sampler2D cloud;
     sampler2D normalMap;
     int shininess;
+    float light_strength;
 };
 uniform Material material;
 in VS_OUT {
@@ -27,7 +28,7 @@ in VS_OUT {
 } fs_in;
 
 // ============ Out data ============
-// layout (location = 1) out vec4 BrightColor;
+layout (location = 1) out vec4 BrightColor;
 layout (location = 0) out vec4 FragColor;
 
 // array of offset direction for sampling
@@ -73,7 +74,7 @@ void main(void) {
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
-    vec3 lightColor = vec3(1.0);
+    vec3 lightColor = vec3(material.light_strength);
     vec3 lightPos = sunPos;
 
     vec3 objectColor;
@@ -147,16 +148,14 @@ void main(void) {
     // specular *= mitigation;
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
-    
-    // vec3 result = (ambiant + diffuse + specular) * objectColor;
-    // FragColor = vec4(result, 1.0);
-    // float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
-    // if(brightness > 1.0)
-    //     BrightColor = vec4(result, 1.0);
-    // else
-    //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
     float shadow = shadows ? ShadowCalculation(fs_in.FragPos) : 0.0;
-    // vec3 result = (ambiant + diffuse + specular) * objectColor;
     vec3 result = (ambiant + (1.0 - shadow) * (diffuse + specular)) * objectColor;
     FragColor = vec4(result, 1.0);
+
+    float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 1.0)
+        BrightColor = vec4(result, 1.0);
+    else
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    
 }

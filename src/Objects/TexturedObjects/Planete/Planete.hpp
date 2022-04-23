@@ -53,6 +53,7 @@ PURPOSE : header of the Planete class
                         std::string     m_name;
                         Ring            *m_ring = nullptr;
                         Sphere          *m_atmosphere = nullptr;
+                        float           light_strength;
                         
             
                 protected:

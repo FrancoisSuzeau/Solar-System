@@ -156,37 +156,6 @@ void Settings::managePerformance(DataManager &data_manager)
 {
     ImGui::Text("Rendering");
 
-    ImGui::BulletText("Set HDR");
-    ImGui::SameLine();
-    if(ImGui::Button("Enabled"))
-    {
-        data_manager.setHDR(true);
-        // if(data_manager.getExposure() <= 0.5f)
-        // {
-        //     data_manager.setExposure(0.8f);
-        // }
-    }
-    ImGui::SameLine();
-    if(ImGui::Button("Disabled"))
-    {
-        data_manager.setHDR(false);
-        // data_manager.setExposure(0.5f);
-    }
-
-    ImGui::BulletText("Set Exposure");
-    ImGui::SameLine();
-    float exposure = data_manager.getExposure();
-    ImGui::SliderFloat(" ", &exposure, 0.5f, 0.8f);
-    // if(exposure == 0.5f)
-    // {
-    //     data_manager.setHDR(false);
-    // }
-    // if(exposure == 0.8f)
-    // {
-    //     data_manager.setHDR(true);
-    // }
-    data_manager.setExposure(exposure);
-
     bool bloom = data_manager.getBloom();
     int bloom_str = data_manager.getBloomStrength();
     if (ImGui::Button("Set Bloom"))
@@ -215,13 +184,6 @@ void Settings::managePerformance(DataManager &data_manager)
     ImGui::SameLine();
     ImGui::Checkbox("Activated/Disabled", &normal_render);
     data_manager.setRenderNormal(normal_render);
-
-    bool parallax_render = data_manager.getRenderParallax();
-    ImGui::BulletText("Set Parallax");
-    ImGui::SameLine();
-    ImGui::Checkbox("Activate/Deactivate", &parallax_render);
-    data_manager.setRenderParallax(parallax_render);
-    ImGui::Separator();
 
     ImGui::Text("Asteroid Quantity");
     ImGui::SameLine();

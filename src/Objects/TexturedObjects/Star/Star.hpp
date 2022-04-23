@@ -16,12 +16,6 @@ PURPOSE : header of the Star class
 
 /********************************************************************* includes *********************************************************************/
 
-        // #include "../Geometry/Sphere.hpp"
-
-        // #include "../../OpenGlSketch/RenderData.hpp"
-
-        // #include "../../LensFlare/FlareTexture.hpp"
-
         #include <glm/glm.hpp>
         #include <glm/gtx/transform.hpp>
         #include <glm/gtc/type_ptr.hpp>
@@ -35,7 +29,6 @@ PURPOSE : header of the Star class
 
         #include "../../BasicObjects/Sphere.hpp"
         #include "../../../Loader/Loader.hpp"
-        // #include "../../../Application/Texture/Texture.hpp"
 
         // typedef struct flare_data {
 
@@ -54,10 +47,9 @@ PURPOSE : header of the Star class
             
             private:
 
-                // Texture         m_texure_surface;
                 typedef         Sphere super;
+                Sphere          *m_atmosphere = nullptr;
                 // std::vector<flare_data>      m_flares;
-                // std::string     m_name;
 
                 // void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, flare_data f_d);
 
@@ -72,11 +64,6 @@ PURPOSE : header of the Star class
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;
                 void sendToShader(DataManager &data_manager) override;
                 void    clean();
-
-                
-
-
-                // void display(RenderData &render_data);
                 
                 // void renderFlare(RenderData &render_data);
                 

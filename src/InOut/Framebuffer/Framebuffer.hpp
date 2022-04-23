@@ -23,9 +23,6 @@ PURPOSE : header of the Framebuffer class
         #include <math.h>
         #include <cassert>
 
-        // #include "../Shader/Shader.hpp"
-        // #include "../OpenGlSketch/RenderData.hpp"
-
         #include "../../Application/DataManager.hpp"
 
         #if defined(IMGUI_IMPL_OPENGL_ES2)
@@ -56,9 +53,9 @@ PURPOSE : header of the Framebuffer class
                 unsigned int texture_id = 0;
                 unsigned int depth_map = 0;
                 
-                // unsigned int colorBuffers[2];
-                // unsigned int ping_pongFBO[2];
-                // unsigned int ping_pong_text[2];
+                unsigned int colorBuffers[2] = {0, 0};
+                unsigned int ping_pongFBO[2] = {0, 0};
+                unsigned int ping_pong_text[2] = {0, 0};
 
                 float quadVertices[18];
                 float tex_coord[12];
@@ -71,9 +68,9 @@ PURPOSE : header of the Framebuffer class
                 void manageColorBuffer(int width, int height);
                 void manageDepthMap(int width, int height);
                 void manageRenderBuffer(int width, int height);
-                // void managePinPongFBO(int width, int height);
+                void managePinPongFBO(int width, int height);
 
-                // void drawBlur(DataManager &data_manager, bool &horizontal);
+                void drawBlur(DataManager &data_manager, bool &horizontal);
                 void drawScreenTexture(DataManager &data_manager, bool &horizontal);
 
                 bool checkFramebufferStatus(std::string const framebuffer_type);

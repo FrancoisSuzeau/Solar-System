@@ -4,24 +4,10 @@
 // ============ In data ============
 in vec4 texCoords;
 uniform sampler2D texture0;
-uniform float near; 
-uniform float far;
-uniform bool render_depth;
-// uniform bool displayText;
-// in vec3 Normal;
-// in vec3 FragPos;
-// uniform vec3 viewPos;
-// uniform vec3 sunPos;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
-// layout (location = 1) out vec4 BrightColor;
-  
-float LinearizeDepth(float depth) 
-{
-    float z = depth * 2.0 - 1.0; // back to NDC 
-    return (2.0 * near * far) / (far + near - z * (far - near));	
-}
+layout (location = 1) out vec4 BrightColor;
 
 void main(void) {
 
@@ -35,51 +21,21 @@ void main(void) {
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
-    // vec3 lightColor = vec3(5.0, 5.0, 5.0);
-    // vec3 lightPos = sunPos;
+    vec3 lightColor = vec3(3.0, 3.0, 3.0);
 
     vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
-    // vec3 objectColor = vec3(1.0);
+    objectColor *= lightColor;
 
-    // vec3 norm = normalize(Normal);
-    // vec3 lightDir = normalize(lightPos - FragPos);
-    // float diff = max(dot(norm, lightDir), 0.0);
-    // vec3 diffuse = diff * lightColor * objectColor;
-   
-    // if(displayText)
-    // {
-    //     FragColor = vec4(diffuse, 1.0);
-    //     if(FragColor.r > 0.05f)
-    //     {
-    //         FragColor.r *= 1.5f;
-    //     }
-    // }
-    // else
-    // {
-    //     FragColor = vec4((lightColor * diff), 1.0);
-    // }
-
-    if(render_depth)
-    {
-        float depth = LinearizeDepth(gl_FragCoord.z) / far; // divide by far for demonstration
-        FragColor = vec4(vec3(depth), 1.0);
-    }
-    else
-    {
-        FragColor = vec4(objectColor, 1.0);
-    }
-
-    
+    FragColor = vec4(objectColor, 1.0);
 
     // *********************************************** for bloom effect ***************************************************
-    // float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-    // if(brightness > 0.8f)
-    // {   
-    //     BrightColor = FragColor;
-    // }  
-	// else
-    // {
-    //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-    // }
-		
+    float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 0.0)
+    {   
+        BrightColor = FragColor;
+    }  
+	else
+    {
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
 }

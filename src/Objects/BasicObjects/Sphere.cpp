@@ -82,7 +82,6 @@ void Sphere::sendToShader(DataManager &data_manager)
                     data_manager.getShader(super::m_type)->setVec3("atmoColor", super::m_color_vector);
                     data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
                     data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
-                    data_manager.getShader(super::m_type)->setFloat("trans_strenght", 0.3f);
                     // data_manager.getShader(super::super::m_type)->setInt("hdr", data_manager.getHDR());
                 glUseProgram(0);
             }

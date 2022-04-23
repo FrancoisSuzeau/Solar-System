@@ -17,7 +17,7 @@ PURPOSE : class Planete
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
 Planete::Planete(body_data datas) : super(datas.size, datas.type),
-m_oppacity(datas.oppacity), m_name(datas.name)
+m_oppacity(datas.oppacity), m_name(datas.name), light_strength(datas.light_strength)
 {
     int i = 0;
     for(std::vector<std::string>::iterator it = Loader::textures_path[datas.name].begin(); it != Loader::textures_path[datas.name].end(); ++it)
@@ -40,21 +40,25 @@ m_oppacity(datas.oppacity), m_name(datas.name)
     if(m_name == "Venus")
     {
         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        assert(m_atmosphere);
         m_atmosphere->updateColor(glm::vec3(1.f, 1.f, 224.f/255.f));
     }
     if(m_name == "Earth")
     {
         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        assert(m_atmosphere);
         m_atmosphere->updateColor(glm::vec3(147.f/255.f, 188.f/255.f, 251.f/255.f));
     }
     if(m_name == "Mars")
     {
         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        assert(m_atmosphere);
         m_atmosphere->updateColor(glm::vec3(255.f/255.f, 160.f/255.f, 122.f/255.f));
     }
     if(m_name == "Jupiter")
     {
         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        assert(m_atmosphere);
         m_atmosphere->updateColor(glm::vec3(255.f/255.f, 228.f/255.f, 196.f/255.f));
     }
     if(m_name == "Saturn")
@@ -65,12 +69,14 @@ m_oppacity(datas.oppacity), m_name(datas.name)
         assert(m_ring);
 
         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        assert(m_atmosphere);
         m_atmosphere->updateColor(glm::vec3(253.f/255.f, 241.0/255.f, 184.f/255.f));
     }
     if(m_name == "Titan")
     {
-        // m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
-        // m_atmosphere->updateColor(glm::vec3(253.f/255.f, 241.0/255.f, 184.f/255.f));
+        m_atmosphere = new Sphere(datas.size + 0.04f, "atmosphere");
+        assert(m_atmosphere);
+        m_atmosphere->updateColor(glm::vec3(253.f/255.f, 241.0/255.f, 184.f/255.f));
     }
 
     if(m_name == "Uranus")
@@ -81,6 +87,7 @@ m_oppacity(datas.oppacity), m_name(datas.name)
         assert(m_ring);
 
         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        assert(m_atmosphere);
         m_atmosphere->updateColor(glm::vec3(173.f/255.f, 216.f/255.f, 230.f/255.f));
     }
 
@@ -91,7 +98,8 @@ m_oppacity(datas.oppacity), m_name(datas.name)
         m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
         assert(m_ring);
 
-         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
+        assert(m_atmosphere);
         m_atmosphere->updateColor(glm::vec3(65.f/255.f, 105.f/255.f, 255.f/255.f));
     }
 }
@@ -161,6 +169,7 @@ void Planete::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
             data_manager.getShader(super::m_type)->setInt("shadows", true);
             data_manager.getShader(super::m_type)->setFloat("far_plane", data_manager.getFar());
+            data_manager.getShader(super::m_type)->setFloat("material.light_strength", this->light_strength);
                 
             if((super::m_type == "double_textured_planete") || (super::m_type == "earth"))
             {

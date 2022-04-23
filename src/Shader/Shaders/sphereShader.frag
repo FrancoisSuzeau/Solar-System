@@ -5,20 +5,18 @@
 uniform vec3 viewPos;
 uniform vec3 sunPos;
 uniform vec3 atmoColor;
-// uniform bool hdr;
-uniform float trans_strenght;
 in vec3 Normal;
 in vec3 FragPos;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
-// layout (location = 1) out vec4 BrightColor;
+layout (location = 1) out vec4 BrightColor;
 
 void main()
 {
     vec3 objectColor = atmoColor;
 
-    vec3 lightColor = vec3(1.0);
+    vec3 lightColor = vec3(0.5);
 
     vec3 lightPos = sunPos;
 
@@ -43,16 +41,7 @@ void main()
     // vec3 specular = specularStrength * spec * lightColor;
 
     // *********************************************** ambiant light ***************************************************
-    float ambiantStrength = 0.005;
-
-    // if(hdr)
-    // {
-    //     ambiantStrength = 0.2;
-    // }
-    // else
-    // {
-    //     ambiantStrength = 0.005;
-    // }
+    float ambiantStrength = 0.2;
 
     vec3 ambiant = ambiantStrength * lightColor;
 
@@ -63,13 +52,17 @@ void main()
 
     // *********************************************** adding diffuse/ambiant light to fragment ***************************************************
     vec3 result = (ambiant + diffuse) * objectColor;
-    FragColor = vec4(result, trans_strenght);
 
-    // vec3 result2 = vec3(trans.x, trans.y, trans.z);
+    float min_Transparency = 0.1;
 
-    // float brightness = dot(result2, vec3(0.2126, 0.7152, 0.0722));
-    // if(brightness > 0.0)
-    //     BrightColor = vec4(result2, 1.0);
-    // else
-    //     BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    vec4 trans = max(vec4(0.0), ((vec4(result, 0.2)) - min_Transparency));
+
+    vec3 result2 = vec3(trans.x, trans.y, trans.z);
+    FragColor = trans;
+
+    float brightness = dot(result2, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 0.0)
+        BrightColor = vec4(result2, 1.0);
+    else
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
 }
