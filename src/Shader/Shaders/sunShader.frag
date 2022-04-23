@@ -4,6 +4,7 @@
 // ============ In data ============
 in vec4 texCoords;
 uniform sampler2D texture0;
+uniform bool highlight;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
@@ -21,7 +22,16 @@ void main(void) {
         // at the position specified by "longitudeLatitude.x" and
         // "longitudeLatitude.y" and return it in "gl_FragColor"
 
-    vec3 lightColor = vec3(3.0, 3.0, 3.0);
+    vec3 lightColor;
+    if(highlight)
+    {
+        lightColor = vec3(3.0);
+    }
+    else
+    {
+        lightColor = vec3(1.0);
+    }
+    
 
     vec3 objectColor = texture(texture0, longitudeLatitude).rgb;
     objectColor *= lightColor;

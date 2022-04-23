@@ -341,7 +341,7 @@ void Framebuffer::drawBlur(DataManager &data_manager, bool &horizontal)
 {
     bool first_it = true;
     
-    unsigned int amount = 10;
+    unsigned int amount = data_manager.getBloomStrength();
 
         glUseProgram(data_manager.getShader("blur")->getProgramID());
 
@@ -371,13 +371,10 @@ void Framebuffer::drawBlur(DataManager &data_manager, bool &horizontal)
                     glDrawArrays(GL_TRIANGLES, 0, 6);
 
                     glActiveTexture(GL_TEXTURE0);
-                    glBindTexture(GL_TEXTURE_2D, 0);
-                    
+                    glBindTexture(GL_TEXTURE_2D, 0);        
 
                 glBindVertexArray(0);
-                
                 horizontal = !horizontal;
-                
             }
         }
 
@@ -385,7 +382,6 @@ void Framebuffer::drawBlur(DataManager &data_manager, bool &horizontal)
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 }
 
 /***********************************************************************************************************************************************************************/
@@ -397,41 +393,32 @@ void Framebuffer::drawScreenTexture(DataManager &data_manager, bool &horizontal)
     {
         glUseProgram(data_manager.getShader("screen")->getProgramID());
 
-            // data_manager.getShader("screen")->setInt("bloom", data_manager.getBloom());
+            data_manager.getShader("screen")->setInt("bloom", data_manager.getBloom());
 
             data_manager.getShader("screen")->setTexture("screen_texture", 0);
             data_manager.getShader("screen")->setTexture("bloom_texture", 1);
 
             glBindVertexArray(quadVAO);
 
-                // glActiveTexture(GL_TEXTURE0);
-                // glBindTexture(GL_TEXTURE_2D, texture_id);
-
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
 
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, ping_pong_text[!horizontal]);
-
-                // if(data_manager.getBloom())
-                // {
-                //     glActiveTexture(GL_TEXTURE2);
-                //     glBindTexture(GL_TEXTURE_2D, ping_pong_text[!horizontal]);
-                // }  
+                if(data_manager.getBloom())
+                {
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, ping_pong_text[!horizontal]);
+                }  
                 
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, 0);
 
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, 0);
-
-                // if(data_manager.getBloom())
-                // {
-                //     glActiveTexture(GL_TEXTURE2);
-                //     glBindTexture(GL_TEXTURE_2D, 0);
-                // }
+                if(data_manager.getBloom())
+                {
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                }
 
             glBindVertexArray(0);
 

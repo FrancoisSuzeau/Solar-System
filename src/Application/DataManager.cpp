@@ -20,7 +20,7 @@ std::vector<body_data> DataManager::m_bodys_data;
 DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height),
 bloom(true), bloom_strenght(10), render_normal(true), asteroid_count(100), m_fps(60),
 render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true), //for loading the skin at program launch
-far_plane(500.f), near_plane(0.1f)
+far_plane(500.f), near_plane(0.1f), hilight_sun(true), render_shadow(true)
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, (double)near_plane, (double)far_plane);
     view_mat = glm::mat4(1.0f);
@@ -335,6 +335,26 @@ void DataManager::setPass(int const new_val)
 int DataManager::getPass() const
 {
     return pass;
+}
+
+void DataManager::setHilightSun(bool const new_val)
+{
+    hilight_sun = new_val;
+}
+
+bool DataManager::getHilightSun() const
+{
+    return hilight_sun;
+}
+
+void DataManager::setRenderShadow(bool const new_val)
+{
+    render_shadow = new_val;
+}
+
+bool DataManager::getRenderShadow() const
+{
+    return render_shadow;
 }
 
 void DataManager::initDatas()

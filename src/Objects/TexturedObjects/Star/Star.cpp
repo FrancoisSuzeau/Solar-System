@@ -60,6 +60,7 @@ void Star::sendToShader(DataManager &data_manager)
     {
         glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
             data_manager.getShader(super::m_type)->setTexture("texture0", 0);
+            data_manager.getShader(super::m_type)->setInt("highlight", data_manager.getHilightSun());
         glUseProgram(0);
     }
     

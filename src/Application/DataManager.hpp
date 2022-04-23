@@ -82,12 +82,15 @@ PURPOSE : header of the DataManager class
                 float           far_plane;
                 unsigned int    depth_map;
                 int             pass;
+                bool            render_shadow;
 
                 glm::mat4       proj_mat;
                 glm::mat4       view_mat;
                 std::map<std::string, Shader*> map_shader;
                 glm::vec3       ship_position;
                 glm::vec3       cam_pos;
+
+                bool            hilight_sun;
                 
                 
 
@@ -151,8 +154,13 @@ PURPOSE : header of the DataManager class
                 unsigned int    getDepthMapTexture() const;
                 void            setPass(int const new_val);
                 int             getPass() const;
+                void            setHilightSun(bool const new_val);
+                bool            getHilightSun() const;
+                void            setRenderShadow(bool const new_val);
+                bool            getRenderShadow() const;
                 static void            initDatas();
                 static body_data       getBodyData(int index);
+
 
                 glm::vec2 convertToScreenSpace(glm::vec3 const body_pos);
 

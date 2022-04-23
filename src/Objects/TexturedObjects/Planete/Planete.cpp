@@ -167,7 +167,8 @@ void Planete::sendToShader(DataManager &data_manager)
             data_manager.getShader(super::m_type)->setTexture("material.depthMap", 1);
             data_manager.getShader(super::m_type)->setTexture("material.normalMap", 2);
             data_manager.getShader(super::m_type)->setInt("material.shininess", m_shininess);
-            data_manager.getShader(super::m_type)->setInt("shadows", true);
+            data_manager.getShader(super::m_type)->setInt("render_normal", data_manager.getRenderNormal());
+            data_manager.getShader(super::m_type)->setInt("shadows", data_manager.getRenderShadow());
             data_manager.getShader(super::m_type)->setFloat("far_plane", data_manager.getFar());
             data_manager.getShader(super::m_type)->setFloat("material.light_strength", this->light_strength);
                 
@@ -210,22 +211,26 @@ void Planete::makeOtherChanges(DataManager &data_manager)
 /***********************************************************************************************************************************************************************/
 void Planete::renderName(DataManager &data_manager)
 {
-    glm::vec2 planete_screen_position = data_manager.convertToScreenSpace(this->m_position - data_manager.getShipPos());
+    if(data_manager.getRenderName())
+    {
+        glm::vec2 planete_screen_position = data_manager.convertToScreenSpace(this->m_position - data_manager.getShipPos());
 
-    ImGuiWindowFlags window_flags = 0;
-        
-    window_flags |= ImGuiWindowFlags_NoTitleBar;
-    window_flags |= ImGuiWindowFlags_NoResize;
-    window_flags |= ImGuiWindowFlags_NoBackground;
-    window_flags |= ImGuiWindowFlags_NoScrollbar;
+        ImGuiWindowFlags window_flags = 0;
+            
+        window_flags |= ImGuiWindowFlags_NoTitleBar;
+        window_flags |= ImGuiWindowFlags_NoResize;
+        window_flags |= ImGuiWindowFlags_NoBackground;
+        window_flags |= ImGuiWindowFlags_NoScrollbar;
 
-    ImGui::SetNextWindowPos(ImVec2((data_manager.getWidth() * planete_screen_position.x) - 30, 
-                                        (data_manager.getHeight() * planete_screen_position.y) - 70));
-    ImGui::SetNextWindowSize(ImVec2(100.f, 80.f));
+        ImGui::SetNextWindowPos(ImVec2((data_manager.getWidth() * planete_screen_position.x) - 30, 
+                                            (data_manager.getHeight() * planete_screen_position.y) - 70));
+        ImGui::SetNextWindowSize(ImVec2(100.f, 80.f));
 
-    ImGui::Begin(this->m_name.c_str(), NULL, window_flags);
-    ImGui::Text(this->m_name.c_str());
-    ImGui::End();
+        ImGui::Begin(this->m_name.c_str(), NULL, window_flags);
+        ImGui::Text(this->m_name.c_str());
+        ImGui::End();
+    }
+    
     
 }
 

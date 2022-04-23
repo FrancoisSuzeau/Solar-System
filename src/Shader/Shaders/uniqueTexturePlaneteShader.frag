@@ -6,8 +6,7 @@ uniform vec3 viewPos;
 uniform vec3 sunPos;
 uniform float far_plane;
 uniform bool shadows;
-// uniform bool hdr;
-// uniform bool has_normal;
+uniform bool render_normal;
 struct Material {
     sampler2D surface;
     samplerCube depthMap;
@@ -78,29 +77,23 @@ void main(void) {
     vec3 norm;
     vec3 lightDir;
     vec3 viewDir;
-    vec2 texCoord = longitudeLatitude;
 
-    // if(has_normal)
-    // {
-    //     norm = texture(material.normalMap, longitudeLatitude).rgb;
-    //     norm = normalize(norm * 2.0 - 1.0);
-    //     lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
-    //     viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
+    if(render_normal)
+    {
+        norm = texture(material.normalMap, longitudeLatitude).rgb;
+        norm = normalize(norm * 2.0 - 1.0);
+        lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
+        viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
         
-    // }
-    // else
-    // {
-    //     norm = normalize(Normal);
-    //     lightDir = normalize(lightPos - FragPos);
-    //     viewDir = normalize(viewPos - FragPos);
-    // }
+    }
+    else
+    {
+        norm = normalize(fs_in.Normal);
+        lightDir = normalize(lightPos - fs_in.FragPos);
+        viewDir = normalize(viewPos - fs_in.FragPos);
+    }
 
-    norm = texture(material.normalMap, longitudeLatitude).rgb;
-    norm = normalize(norm * 2.0 - 1.0);
-    lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
-    viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
-
-    objectColor = texture(material.surface, texCoord).rgb;
+    objectColor = texture(material.surface, longitudeLatitude).rgb;
     
     // *********************************************** mitigation ***************************************************
     // float lightConst = 1.0f;

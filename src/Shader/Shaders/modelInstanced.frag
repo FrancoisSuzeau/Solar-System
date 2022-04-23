@@ -13,6 +13,7 @@ uniform vec3 viewPos;
 uniform vec3 sunPos;
 uniform sampler2D texture_diffuse1;
 uniform sampler2D normalMap;
+uniform bool render_normal;
 
 // ============ Out data ============
 layout (location = 0) out vec4 FragColor;
@@ -29,26 +30,19 @@ void main()
     vec3 viewDir;
     vec2 texCoord = vs_in.TexCoords;
 
-    // if(has_normal)
-    // {
-    //     norm = texture(normalMap, TexCoords).rgb;
-    //     norm = normalize(norm * 2.0 - 1.0);
-    //     lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
-    //     viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
-        
-        
-    // }
-    // else
-    // {
-    //     norm = normalize(Normal);
-    //     lightDir = normalize(lightPos - FragPos);
-    //     viewDir = normalize(viewPos - FragPos);
-    // }
-
-    norm = texture(normalMap, texCoord).rgb;
-    norm = normalize(norm * 2.0 - 1.0);
-    lightDir = normalize(vs_in.TangentLightPos - vs_in.TangentFragPos);
-    viewDir = normalize(vs_in.TangentViewPos - vs_in.TangentFragPos);
+    if(render_normal)
+    {
+        norm = texture(normalMap, texCoord).rgb;
+        norm = normalize(norm * 2.0 - 1.0);
+        lightDir = normalize(vs_in.TangentLightPos - vs_in.TangentFragPos);
+        viewDir = normalize(vs_in.TangentViewPos - vs_in.TangentFragPos);
+    }
+    else
+    {
+        norm = normalize(vs_in.Normal);
+        lightDir = normalize(lightPos - vs_in.FragPos);
+        viewDir = normalize(viewPos - vs_in.FragPos);
+    }
 
     vec3 objectColor = texture(texture_diffuse1, texCoord).rgb;
 

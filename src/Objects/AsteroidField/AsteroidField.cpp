@@ -109,17 +109,17 @@ void AsteroidField::transform(glm::vec3 ship_pos, Input *input)
 /***********************************************************************************************************************************************************************/
 void AsteroidField::sendToShader(DataManager &data_manager)
 {
-    if((data_manager.getShader(this->getType()) != nullptr) && (data_manager.getPass() == COLOR_FBO) )
+    if((data_manager.getShader(super::m_type) != nullptr) && (data_manager.getPass() == COLOR_FBO) )
     {
-        glUseProgram(data_manager.getShader(this->getType())->getProgramID());
+        glUseProgram(data_manager.getShader(super::m_type)->getProgramID());
 
-            data_manager.getShader(this->getType())->setTexture("texture_diffuse1", 0);
-            data_manager.getShader(this->getType())->setTexture("normalMap", 1);
-            // data_manager.getShader(this->getType())->setInt("hdr", data_manager.getHDR());
-            data_manager.getShader(this->getType())->setMat4("projection", data_manager.getProjMat());
-            data_manager.getShader(this->getType())->setMat4("view", data_manager.getViewMat());
-            data_manager.getShader(this->getType())->setVec3("viewPos", data_manager.getCamPos());
-            data_manager.getShader(this->getType())->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(super::m_type)->setTexture("texture_diffuse1", 0);
+            data_manager.getShader(super::m_type)->setTexture("normalMap", 1);
+            data_manager.getShader(super::m_type)->setMat4("projection", data_manager.getProjMat());
+            data_manager.getShader(super::m_type)->setMat4("view", data_manager.getViewMat());
+            data_manager.getShader(super::m_type)->setVec3("viewPos", data_manager.getCamPos());
+            data_manager.getShader(super::m_type)->setVec3("sunPos", data_manager.getSunPos());
+            data_manager.getShader(super::m_type)->setInt("render_normal", data_manager.getRenderNormal());
 
         glUseProgram(0);
     }

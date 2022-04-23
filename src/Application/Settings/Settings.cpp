@@ -156,13 +156,24 @@ void Settings::managePerformance(DataManager &data_manager)
 {
     ImGui::Text("Rendering");
 
+    ImGui::BulletText("Highlight Sun");
+    ImGui::SameLine();
+    if(ImGui::Button("Enabled"))
+    {
+        data_manager.setHilightSun(true);
+    }
+    ImGui::SameLine();
+    if(ImGui::Button("Disabled"))
+    {
+        data_manager.setHilightSun(false);
+    }
+
     bool bloom = data_manager.getBloom();
     int bloom_str = data_manager.getBloomStrength();
     if (ImGui::Button("Set Bloom"))
         ImGui::OpenPopup("my_bloom_popup");
     if (ImGui::BeginPopup("my_bloom_popup"))
     {
-        
         ImGui::Text("Set Bloom");
         ImGui::Checkbox("Enabled/Disabled", &bloom);
         data_manager.setBloom(bloom);
@@ -176,6 +187,11 @@ void Settings::managePerformance(DataManager &data_manager)
             ImGui::CloseCurrentPopup();
         ImGui::EndPopup();
     }
+
+    bool render_shadow = data_manager.getRenderShadow();
+    ImGui::Checkbox("Render shadow", &render_shadow);
+    data_manager.setRenderShadow(render_shadow);
+
     ImGui::Separator();
 
     ImGui::Text("Textures");
