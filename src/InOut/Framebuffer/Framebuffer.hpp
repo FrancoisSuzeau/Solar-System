@@ -50,7 +50,6 @@ PURPOSE : header of the Framebuffer class
                 unsigned int color_fb_id = 0;
                 unsigned int depth_fb_id = 0;
                 unsigned int render_buffer_id = 0;
-                unsigned int texture_id = 0;
                 unsigned int depth_map = 0;
                 
                 unsigned int colorBuffers[2] = {0, 0};

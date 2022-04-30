@@ -361,9 +361,9 @@ void DataManager::initDatas()
 {
     Loader::initializeMap();
    
-    m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(20.f, -30.f, 0.f), "Mercury", 0.035f, 1.f});
+    m_bodys_data.push_back({3.f, "simple_textured_planete", 32, 0.f, glm::vec3(20.f, -30.f, 0.f), "Mercury", 0.035f, 0.9f});
 
-    m_bodys_data.push_back({3.f, "double_textured_planete", 32, 0.1f, glm::vec3(100.f, 0.f, 0.f), "Venus", 177.36f, 0.4f});
+    m_bodys_data.push_back({3.f, "double_textured_planete", 32, 0.15f, glm::vec3(100.f, 0.f, 0.f), "Venus", 177.36f, 0.4f});
 
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(-70.f, 0.f, 0.f), "Moon", 6.687f, 0.7f});
     m_bodys_data.push_back({3.f, "earth", 128, 0.5f, glm::vec3(-80.f, 0.f, 0.f), "Earth", 23.436f, 1.f});
@@ -373,13 +373,13 @@ void DataManager::initDatas()
     m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(80.f, 50.f, 0.f), "Jupiter", 3.12f, 0.4f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(80.f, 60.f, 0.f), "Io", 0.f, 0.7f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(70.f, 50.f, 0.f), "Europa", 0.f, 0.7f});
-    m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(80.f, 40.f, 0.f), "Callisto", 0.f, 1.f});
+    m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(80.f, 40.f, 0.f), "Callisto", 0.f, 0.9f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(80.f, 30.f, 0.f), "Ganymede", 0.f, 1.f});
 
     m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, -50.f, 0.f), "Saturn", 26.73f, 0.4f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(-40.f, -35.f, 0.f), "Mimas", 0.f, 0.8f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(-60.f, -30.f, 0.f), "Enceladus", 0.f, 0.7f});
-    m_bodys_data.push_back({1.f, "double_textured_planete", 32, 0.3f, glm::vec3(-60.f, -70.f, 0.f), "Titan", 0.f, 1.f});
+    m_bodys_data.push_back({1.f, "double_textured_planete", 32, 0.1f, glm::vec3(-60.f, -70.f, 0.f), "Titan", 0.f, 0.6f});
     
     m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, 50.f, 0.f), "Uranus", 97.8f, 0.4f});
 

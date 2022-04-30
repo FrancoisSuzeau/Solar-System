@@ -27,7 +27,7 @@ m_oppacity(datas.oppacity), m_name(datas.name), light_strength(datas.light_stren
         i++;
     }
 
-    std::string normals_path = "../../assets/textures/normalMap/" + m_name + "_normalMap.jpg";
+    std::string normals_path = "../../assets/textures/normalMap/" + m_name + "_normalMap.png";
     super::normal_texture_id = Loader::loadTextureWithSDL(normals_path);
     assert(normal_texture_id != 0);
 
@@ -53,7 +53,7 @@ m_oppacity(datas.oppacity), m_name(datas.name), light_strength(datas.light_stren
     {
         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
         assert(m_atmosphere);
-        m_atmosphere->updateColor(glm::vec3(255.f/255.f, 160.f/255.f, 122.f/255.f));
+        m_atmosphere->updateColor(glm::vec3(255.f/255.f, 228.f/255.f, 225.f/255.f));
     }
     if(m_name == "Jupiter")
     {

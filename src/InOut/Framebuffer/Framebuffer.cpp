@@ -46,8 +46,6 @@ void Framebuffer::clean()
     glDeleteFramebuffers(2, ping_pongFBO);
     glDeleteRenderbuffers(1, &render_buffer_id);
     render_buffer_id = 0;
-    glDeleteTextures(1, &texture_id);
-    texture_id = 0;
     glDeleteTextures(1, &depth_map);
     depth_map = 0;
     glDeleteTextures(2, colorBuffers);
@@ -151,22 +149,6 @@ void Framebuffer::initFramebuffers(int width, int height)
 // /***********************************************************************************************************************************************************************/
 void Framebuffer::manageColorBuffer(int width, int height)
 {   
-    // glGenTextures(1, &texture_id);
-    // assert(texture_id != 0);
-
-    // glBindTexture(GL_TEXTURE_2D, texture_id);
-
-    //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    //     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
-
-    // glBindTexture(GL_TEXTURE_2D, 0);
-
-
     glGenTextures(2, colorBuffers);
     assert(colorBuffers[0] != 0);
     assert(colorBuffers[1] != 0);

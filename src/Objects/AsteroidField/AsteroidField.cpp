@@ -24,7 +24,7 @@ AsteroidField::AsteroidField(std::string const type) : super(type)
     this->initTransformations();
     this->initInstances();
 
-    super::normal_texture_id = Loader::loadTextureWithSDL("../../assets/textures/normalMap/Rock_normalMap.jpg");
+    super::normal_texture_id = Loader::loadTextureWithSDL("../../assets/textures/normalMap/Rock_normalMap.png");
     assert(super::normal_texture_id != 0);
 }
 
