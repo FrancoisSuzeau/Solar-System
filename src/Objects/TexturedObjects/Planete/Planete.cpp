@@ -70,7 +70,7 @@ m_oppacity(datas.oppacity), m_name(datas.name), light_strength(datas.light_stren
 
         m_atmosphere = new Sphere(datas.size + 0.2f, "atmosphere");
         assert(m_atmosphere);
-        m_atmosphere->updateColor(glm::vec3(253.f/255.f, 241.0/255.f, 184.f/255.f));
+        m_atmosphere->updateColor(glm::vec3(255.f/255.f, 235.0/255.f, 205.f/255.f));
     }
     if(m_name == "Titan")
     {
@@ -94,7 +94,7 @@ m_oppacity(datas.oppacity), m_name(datas.name), light_strength(datas.light_stren
     if(m_name == "Neptune")
     {
         std::vector<std::string> texture_path;
-        texture_path.push_back("../../assets/textures/CelestialBody/NeptuneRing.png");
+        texture_path.push_back("../../assets/textures/CelestialBody/UranusRing.png");
         m_ring = new Ring(25.f,  texture_path, "ring", 32, super::m_inclinaison_angle);
         assert(m_ring);
 
