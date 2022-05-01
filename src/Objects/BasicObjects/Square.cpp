@@ -19,7 +19,6 @@ Square::Square(float size, std::string const type) : super(type)
 {
     super::m_size = glm::vec3(size);
     super::m_model_mat = glm::mat4(1.0);
-    // super::m_type = "square";
 }
 
 Square::~Square()

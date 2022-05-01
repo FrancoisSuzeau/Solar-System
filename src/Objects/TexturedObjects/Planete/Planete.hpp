@@ -72,6 +72,8 @@ PURPOSE : header of the Planete class
                         void    makeOtherChanges(DataManager &data_manager);
                         void    clean();
                         void renderName(DataManager &data_manager);
+                        void loadDiffuseTexture();
+                        void loadNormalTexture();
                         
                         // std::string getName() const;
                         // float getRadiusFromCam(glm::vec3 camPos);

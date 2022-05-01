@@ -19,6 +19,10 @@ PURPOSE : class Planete
 Planete::Planete(body_data datas) : super(datas.size, datas.type),
 m_oppacity(datas.oppacity), m_name(datas.name), light_strength(datas.light_strength)
 {
+    std::string normals_path = "../../assets/textures/normalMap/" + m_name + "_normalMap.png";
+    super::normal_texture_id = Loader::loadTextureWithSDL(normals_path);
+    assert(normal_texture_id != 0);
+
     int i = 0;
     for(std::vector<std::string>::iterator it = Loader::textures_path[datas.name].begin(); it != Loader::textures_path[datas.name].end(); ++it)
     {
@@ -26,10 +30,6 @@ m_oppacity(datas.oppacity), m_name(datas.name), light_strength(datas.light_stren
         assert(super::surface_tex_ids[i] != 0);
         i++;
     }
-
-    std::string normals_path = "../../assets/textures/normalMap/" + m_name + "_normalMap.png";
-    super::normal_texture_id = Loader::loadTextureWithSDL(normals_path);
-    assert(normal_texture_id != 0);
 
     super::m_rotation_angle = 0.f;
     super::m_speed_rotation = 0.1f;

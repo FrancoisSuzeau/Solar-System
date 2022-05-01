@@ -13,17 +13,22 @@ PURPOSE :   - Manage data transfert between all module of the application progra
 
 #include "DataManager.hpp"
 std::vector<body_data> DataManager::m_bodys_data;
+int DataManager::m_width;
+int DataManager::m_height;
 
 /***********************************************************************************************************************************************************************/
 /*********************************************************************** Constructor and Destructor ********************************************************************/
 /***********************************************************************************************************************************************************************/
-DataManager::DataManager(int width, int height, double angle) : m_width(width), m_height(height),
+DataManager::DataManager(int width, int height, double angle) :
 bloom(true), bloom_strenght(10), render_normal(true), asteroid_count(100), m_fps(60),
 render_overlay(true), render_name(true), render_info(false), distance_from_ship(3.f), index_ship(0), change_skin(true), //for loading the skin at program launch
 far_plane(500.f), near_plane(0.1f), hilight_sun(true), render_shadow(true)
 {
     proj_mat = glm::perspective(glm::radians(angle), (double)width / height, (double)near_plane, (double)far_plane);
     view_mat = glm::mat4(1.0f);
+
+    m_width = width;
+    m_height = height; 
 }
 
 DataManager::~DataManager()
@@ -60,12 +65,12 @@ bool DataManager::getTerminate() const
     return m_terminate;
 }
 
-int DataManager::getWidth() const
+int DataManager::getWidth()
 {
     return m_width;
 }
 
-int DataManager::getHeight() const
+int DataManager::getHeight()
 {
     return m_height;
 }
@@ -126,6 +131,7 @@ void DataManager::setShader()
     shader_init.push_back({"../../src/Shader/Shaders/ringShader.vert", "../../src/Shader/Shaders/ringShader.frag", "NONE", "ring"});
     shader_init.push_back({"../../src/Shader/Shaders/modelInstanced.vert", "../../src/Shader/Shaders/modelInstanced.frag", "NONE", "INSTmodel"});
     shader_init.push_back({"../../src/Shader/Shaders/sphereShader.vert", "../../src/Shader/Shaders/sphereShader.frag", "NONE", "atmosphere"});            
+    shader_init.push_back({"../../src/Shader/Shaders/flareShader.vert", "../../src/Shader/Shaders/flareShader.frag", "NONE", "flare_texture"});            
 
     for(std::vector<shader_datas>::iterator it = shader_init.begin(); it != shader_init.end(); ++it)
     {
@@ -379,7 +385,7 @@ void DataManager::initDatas()
     m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, -50.f, 0.f), "Saturn", 26.73f, 0.4f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(-40.f, -35.f, 0.f), "Mimas", 0.f, 0.8f});
     m_bodys_data.push_back({1.f, "simple_textured_planete", 32, 0.f, glm::vec3(-60.f, -30.f, 0.f), "Enceladus", 0.f, 0.7f});
-    m_bodys_data.push_back({1.f, "double_textured_planete", 32, 0.1f, glm::vec3(-60.f, -70.f, 0.f), "Titan", 0.f, 0.6f});
+    m_bodys_data.push_back({1.f, "double_textured_planete", 32, 1.2f, glm::vec3(-60.f, -70.f, 0.f), "Titan", 0.f, 0.6f});
     
     m_bodys_data.push_back({5.f, "simple_textured_planete", 16, 0.f, glm::vec3(-60.f, 50.f, 0.f), "Uranus", 97.8f, 0.4f});
 

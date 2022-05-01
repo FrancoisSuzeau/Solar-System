@@ -195,13 +195,13 @@ void Application::loadAssets()
         ImGui::SetNextWindowPos(ImVec2(m_data_manager.getWidth()/2 - 50.f, m_data_manager.getHeight()/2 - 25.f));
         ImGui::SetNextWindowSize(ImVec2(100, 50.f));
         ImGui::Begin("Solar System", NULL, window_flags);
-        ImGui::Text("Solar System", ImVec2(-1.f, -1.f));
+        ImGui::Text("Solar System");
         ImGui::End();
     
         ImGui::SetNextWindowPos(ImVec2((m_data_manager.getWidth()/2 - 300), (m_data_manager.getHeight()/2 - 25.f) + 300));
         ImGui::SetNextWindowSize(ImVec2(600, 50.f));
     
-        ImGui::Begin(" ", NULL, window_flags);
+        ImGui::Begin("Progress Bar", NULL, window_flags);
         float progress = (float) (assets_loads + 1) * 0.1f;
         ImGui::ProgressBar(progress, ImVec2(-1.f, -1.f));
         ImGui::End();

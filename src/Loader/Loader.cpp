@@ -68,6 +68,7 @@ void Loader::initializeMap()
 /***********************************************************************************************************************************************************************/
 bool Loader::loadWithStbi(std::string file_path, GLuint &id, int &w, int &h)
 {
+    // renderLogTextureLoaded(file_path);
     unsigned char* image_data = stbi_load(file_path.c_str(), &w, &h, NULL, 4);
     if (image_data == NULL)
         return false;
@@ -108,6 +109,8 @@ unsigned int Loader::loadWithStbi(const char *path, const std::string &directory
 {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
+
+    // renderLogTextureLoaded(filename);
 
     int width, height, nrComponents;
     unsigned int textureID = 0;
@@ -246,6 +249,7 @@ GLuint Loader::loadTextureWithSDL(std::string path)
         return 0;
     }
     std::cout << ">> Loading file " << path << " : SUCCESS" << std::endl;
+    renderLogTextureLoaded(path);
     //===================================================================================================================
 
     /************************************************* invert img ********************************************************/
@@ -354,4 +358,60 @@ SDL_Surface* Loader::pixelsInverter(SDL_Surface *src_img)
     //==============================================================================================================================
 
     return img_inverted;
+}
+
+/***********************************************************************************************************************************************************************/
+/******************************************************************** loadFlareTexture ******************************************************************************/
+/***********************************************************************************************************************************************************************/
+GLuint Loader::loadFlareTexture(std::string text_path, int &img_w, int &img_h)
+{
+//     stbi_set_flip_vertically_on_load(true);
+//     unsigned char* image_data = stbi_load(text_path.c_str(), &texture_w, &texture_h, NULL, 4);
+//     if (image_data == NULL)
+//         return false;
+
+//     // Create a OpenGL texture identifier
+//     glGenTextures(1, &texture_id);
+
+//     glActiveTexture(GL_TEXTURE0);
+//     glBindTexture(GL_TEXTURE_2D, texture_id);
+
+//     // // Setup filtering parameters for display
+//     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+//     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
+
+//         // Upload pixels into texture
+//     #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+//         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+//     #endif
+//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+//     stbi_image_free(image_data);
+
+//     glActiveTexture(GL_TEXTURE0);
+//     glBindTexture(GL_TEXTURE_2D, 0);
+
+//     stbi_set_flip_vertically_on_load(false);
+
+//     return true;
+}
+
+/***********************************************************************************************************************************************************************/
+/********************************************************************************* renderLogTextureLoaded *************************************************************************/
+/***********************************************************************************************************************************************************************/
+void renderLogTextureLoaded(std::string const texture_path)
+{
+    ImGuiWindowFlags window_flags = 0;
+    window_flags |= ImGuiWindowFlags_NoTitleBar;
+    window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoScrollbar;
+    window_flags |= ImGuiWindowFlags_NoBackground;
+
+    ImGui::SetNextWindowPos(ImVec2(DataManager::getWidth()/2 - 200.f, (DataManager::getHeight()/2) + 350));
+    ImGui::SetNextWindowSize(ImVec2(500, 200.f));
+    ImGui::Begin("Log", NULL, window_flags);
+    ImGui::Text(texture_path.c_str());
+    ImGui::End();
 }

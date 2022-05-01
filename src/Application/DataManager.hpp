@@ -61,8 +61,8 @@ PURPOSE : header of the DataManager class
             
             private:
                 
-                int             m_width;
-                int             m_height;
+                static int             m_width;
+                static int             m_height;
                 bool            m_terminate;
                 unsigned int    m_fps;
                 int             m_volume;
@@ -104,8 +104,8 @@ PURPOSE : header of the DataManager class
                 static std::vector<body_data>          m_bodys_data;
                 
                 void            setTerminate(bool const terminate);
-                int             getWidth() const;
-                int             getHeight() const; 
+                static int             getWidth();
+                static int             getHeight(); 
                 bool            getTerminate() const;
                 void            setFps(unsigned int const fps);
                 unsigned int    getFps() const;
