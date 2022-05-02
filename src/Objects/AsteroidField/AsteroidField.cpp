@@ -17,7 +17,7 @@ PURPOSE : class AsteroidField
 /***********************************************************************************************************************************************************************/
 AsteroidField::AsteroidField(std::string const type) : super(type)
 {
-    m_amount = 100;
+    m_amount = 1000;
     vbo = 0;
     asteroid = new Model("../../assets/model/rock/rock.obj");
     assert(asteroid);
@@ -176,8 +176,8 @@ void AsteroidField::initTransformations()
     scaleM = new float[m_amount];
     m_rot_vector = new glm::vec3[m_amount];
 
-    float radius = 50.0f;
-    float offset = 2.0f;
+    float radius = 190.0f;
+    float offset = 10.0f;
 
     for (unsigned int i = 0; i < m_amount; i++)
     {

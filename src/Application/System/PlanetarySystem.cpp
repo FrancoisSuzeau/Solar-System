@@ -96,6 +96,28 @@ void PlanetarySystem::loadSystem(int count)
         m_host = new Planete(DataManager::getBodyData(10));
         assert(m_host);
     }
+    else if(m_system_name == "Uranian System")
+    {
+        // for (int i(11); i < 14; i++)
+        // {
+        //     m_moons.push_back(new Planete(DataManager::getBodyData(i)));
+        //     assert(m_moons[i - 11]);
+        // }
+
+        m_host = new Planete(DataManager::getBodyData(14));
+        assert(m_host);
+    }
+    else if(m_system_name == "Neptunian System")
+    {
+        // for (int i(11); i < 14; i++)
+        // {
+        //     m_moons.push_back(new Planete(DataManager::getBodyData(i)));
+        //     assert(m_moons[i - 11]);
+        // }
+
+        m_host = new Planete(DataManager::getBodyData(15));
+        assert(m_host);
+    }
 }
 
 // /***********************************************************************************************************************************************************************/

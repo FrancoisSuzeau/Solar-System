@@ -158,13 +158,17 @@ void SolarSystem::loadSystem(int count)
     }
     else if(count == 6)
     {
-        m_planetes.push_back(new Planete(DataManager::getBodyData(14)));
-        assert(m_planetes[3]);
+        m_planetary_systems.push_back(new PlanetarySystemCreator());
+        assert(m_planetary_systems[3]);
+        assert(m_planetary_systems[3]->MakingSystem(m_planete_renderer, m_ring_renderer, m_sphere_renderer, "Uranian System"));
+        m_planetary_systems[3]->loadSystem();
     }
     else if(count == 7)
     {
-        m_planetes.push_back(new Planete(DataManager::getBodyData(15)));
-        assert(m_planetes[4]);
+        m_planetary_systems.push_back(new PlanetarySystemCreator());
+        assert(m_planetary_systems[4]);
+        assert(m_planetary_systems[4]->MakingSystem(m_planete_renderer, m_ring_renderer, m_sphere_renderer, "Neptunian System"));
+        m_planetary_systems[4]->loadSystem();
     }
 }
 
