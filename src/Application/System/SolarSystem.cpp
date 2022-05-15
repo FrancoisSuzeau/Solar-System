@@ -181,6 +181,7 @@ void SolarSystem::makeChanges(DataManager &data_manager)
     {
         m_sun->updatePosition(glm::vec3(0.f, 0.f, 0.f));
         m_sun->transform(-data_manager.getShipPos());
+        m_sun->makeOtherChanges(data_manager);
     }
 
     if(m_asteroid_field != nullptr)
@@ -402,12 +403,12 @@ void SolarSystem::renderAtmosphere(DataManager &data_manager)
 // /************************************************************************************************************************************************************************/
 // /*************************************************************************** renderFlareSun *****************************************************************************/
 // /************************************************************************************************************************************************************************/
-// void SolarSystem::renderFlareSun(RenderData &render_data)
-// {
+void SolarSystem::renderFlareSun(DataManager &data_manager)
+{
 //     fm.renderLensFlare(render_data);
 
-//     if(sun != nullptr)
-//     {
-//         sun->renderFlare(render_data);
-//     }
-// }
+    if(m_sun != nullptr)
+    {
+        m_sun->renderFlares(data_manager);
+    }
+}

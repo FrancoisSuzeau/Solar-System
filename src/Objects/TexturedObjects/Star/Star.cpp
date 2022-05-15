@@ -22,17 +22,19 @@ Star::Star(float size, std::string surface_path, std::string const type) : super
 {
     super::surface_tex_ids.push_back(Loader::loadTextureWithSDL(surface_path));
     assert(super::surface_tex_ids[0] != 0);
+
+    SquareTexturedRenderer  *square_textured_renderer = new SquareTexturedRenderer();
+    assert(square_textured_renderer);
+
+    m_flare_manager_cam_dirt = new FlareManager(square_textured_renderer, "cam_dirt");
+    assert(m_flare_manager_cam_dirt);
+    m_flare_manager_sun_ray = new FlareManager(square_textured_renderer, "sun_rays");
+    assert(m_flare_manager_sun_ray);
 }
 
 Star::~Star()
 {
-    // for(std::vector<flare_data>::iterator it = m_flares.begin(); it != m_flares.end(); ++it)
-    // {
-    //     if(it[0].flare != nullptr)
-    //     {
-    //         delete it[0].flare;
-    //     }
-    // }
+    
 }
 
 /***********************************************************************************************************************************************************************/
@@ -40,6 +42,20 @@ Star::~Star()
 /***********************************************************************************************************************************************************************/
 void Star::clean()
 {
+    if(m_flare_manager_cam_dirt != nullptr)
+    {
+        m_flare_manager_cam_dirt->clean();
+        delete m_flare_manager_cam_dirt;
+        m_flare_manager_cam_dirt = nullptr;
+    }
+
+    if(m_flare_manager_sun_ray != nullptr)
+    {
+        m_flare_manager_sun_ray->clean();
+        delete m_flare_manager_sun_ray;
+        m_flare_manager_sun_ray = nullptr;
+    }
+
     super::clean();
 }
 
@@ -68,85 +84,34 @@ void Star::sendToShader(DataManager &data_manager)
 }
 
 /***********************************************************************************************************************************************************************/
+/************************************************************************** makeOtherChanges ***************************************************************************/
+/***********************************************************************************************************************************************************************/
+void Star::makeOtherChanges(DataManager &data_manager)
+{
+    if(m_flare_manager_cam_dirt != nullptr)
+    {
+        m_flare_manager_cam_dirt->makeChanges(data_manager);
+    }
+
+    if(m_flare_manager_sun_ray != nullptr)
+    {
+        m_flare_manager_sun_ray->makeChanges(data_manager);
+    }
+}
+
+/***********************************************************************************************************************************************************************/
 /************************************************************************ renderFlare *******************************************************************************/
 /***********************************************************************************************************************************************************************/
-// void Star::renderFlare(RenderData &render_data)
-// {
+void Star::renderFlares(DataManager &data_manager)
+{
 
-//         glm::mat4 tmp_view_mat = render_data.getViewMat();
-//         render_data.initSaveMat();
+    if(m_flare_manager_cam_dirt != nullptr)
+    {
+        m_flare_manager_cam_dirt->renderLensFlare(data_manager);
+    }
 
-//         render_data.lockViewMat(glm::vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-
-//         //calculate sun position on the screen
-//         glm::vec2 sunScreenCoords = convertToScreenSpace(render_data.getSunPos(), tmp_view_mat, render_data.getProjectionMat());
-
-//         if(sunScreenCoords == glm::vec2(-100))
-//         {
-//             return;
-//         }
-
-//         //calculate line form sun through center screen
-//         glm::vec2 sunToCenter = sunScreenCoords;
-
-//         float brightness = 1 - (glm::length(sunToCenter) / 1.0f);
-        
-//         if(brightness > 0)
-//         {
-//             for(std::vector<flare_data>::iterator it = m_flares.begin(); it != m_flares.end(); ++it)
-//             {
-//                 if(it[0].flare != nullptr)
-//                 {
-//                     calculateFlarePos(sunToCenter, sunScreenCoords, it[0]);
-//                     it[0].flare->display(render_data, brightness * it[0].strenght);
-//                 }
-//             }
-            
-//         }
-
-//         render_data.saveViewMat();
-// }
-
-/***********************************************************************************************************************************************************************/
-/**************************************************************************** calculateFlarePos **************************************************************************/
-/***********************************************************************************************************************************************************************/
-// void Star::calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, flare_data f_d)
-// {
-//     if(f_d.flare != nullptr)
-//     {
-//         glm::vec2 flarePos = glm::vec2(sunCoords);
-
-//         // if(sunToCenter.x > 0)
-//         // {
-//         //     flarePos.x = flarePos.x - 0.01;
-//         // }
-
-//         // if(sunToCenter.x < 0)
-//         // {
-//         //     flarePos.x = flarePos.x + 0.01;
-//         // }
-
-//         f_d.flare->setPositionFlareText(glm::vec3(flarePos, f_d.depth_size));
-//         f_d.flare->transformMat(true, f_d.size);
-        
-//     }
-// }
-
-/***********************************************************************************************************************************************************************/
-/*********************************************************************** convertToScreenSpace **************************************************************************/
-/***********************************************************************************************************************************************************************/
-// glm::vec2 Star::convertToScreenSpace(glm::vec3 sunPos, glm::mat4 viewMat, glm::mat4 projMat)
-// {
-
-//     glm::vec4 clipSpacePos = projMat * (viewMat * glm::vec4(sunPos, 1.0f));
-
-//     if(clipSpacePos.w <= 0)
-//     {
-//         return glm::vec2(-100); // NULL
-//     }
-
-//     float x = (float) clipSpacePos.x / (float) clipSpacePos.w;
-//     float y = ((float) clipSpacePos.y / (float) clipSpacePos.w) / (float) 2.0;
-
-//     return glm::vec2(x, y);
-// }
+    if(m_flare_manager_sun_ray != nullptr)
+    {
+        m_flare_manager_sun_ray->renderLensFlare(data_manager);
+    }
+}

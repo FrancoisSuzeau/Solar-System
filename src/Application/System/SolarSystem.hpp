@@ -63,13 +63,10 @@ PURPOSE : header of the virtual SolarSystem class
                 void renderAtmosphere(DataManager &data_manager) override;
                 void clean() override;
                 void renderNameAndInfo(DataManager &data_manager) override;
+                void renderFlareSun(DataManager &data_manager) override;
 
                 // void setMostGravInfluence(RenderData &render_data) override;
                 // void approchBody(Spaceship *ship) override;
-
-                // void renderFlareSun(RenderData &render_data) override;
-
-
         };
 
         

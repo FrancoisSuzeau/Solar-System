@@ -51,12 +51,9 @@ PURPOSE : header of the virtual PlanetarySystem class
                 void renderNameAndInfo(DataManager &data_manager) override;
                 void renderRing(DataManager &data_manager) override;
                 void renderAtmosphere(DataManager &data_manager) override;
+                void renderFlareSun(DataManager &data_manager) override;
                 // void setMostGravInfluence(RenderData &render_data) override;
                 // void approchBody(Spaceship *ship) override;
-
-                // void renderFlareSun(RenderData &render_data) override;
-
-
         };
 
 

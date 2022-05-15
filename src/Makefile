@@ -40,6 +40,7 @@ SRC+=Application\System\SolarSystem.cpp Application\System\PlanetarySystem.cpp
 SRC+=Model\Mesh.cpp Model\Model.cpp
 SRC+=Application\Camera\Camera.cpp
 SRC+=Objects\TexturedObjects\Star\Star.cpp
+SRC+=Objects\TexturedObjects\Star\FlareManager\FlareManager.cpp
 SRC+=Objects\TexturedObjects\Planete\Planete.cpp
 SRC+=Objects\TexturedObjects\SquareTextured\Ring\Ring.cpp
 SRC+=Objects\TexturedObjects\SquareTextured\LensFlare\FlareTexture.cpp
@@ -47,6 +48,7 @@ SRC+=Objects\AsteroidField\AsteroidField.cpp
 SRC+=Renderers\TexturedRenderers\StarRenderer\StarRenderer.cpp
 SRC+=Renderers\TexturedRenderers\PlaneteRenderer\PlaneteRenderer.cpp
 SRC+=Renderers\TexturedRenderers\RingRenderer\RingRenderer.cpp
+SRC+=Renderers\TexturedRenderers\SquareTexturedRenderer\SquareTexturedRenderer.cpp
 SRC+=Application\Application.cpp Application\DataManager.cpp Application\Settings\Settings.cpp Application\Overlay\Overlay.cpp
 SRC+=..\lib\imgui\imgui_demo.cpp ..\lib\imgui\imgui_draw.cpp ..\lib\imgui\imgui_impl_opengl3.cpp ..\lib\imgui\imgui_impl_sdl.cpp ..\lib\imgui\imgui_tables.cpp ..\lib\imgui\imgui_widgets.cpp ..\lib\imgui\imgui.cpp
 

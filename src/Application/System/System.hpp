@@ -65,7 +65,7 @@ PURPOSE : header of the virtual System class
                 virtual void renderAtmosphere(DataManager &data_manager) = 0;
                 // virtual void setMostGravInfluence(RenderData &render_data) = 0;
                 // virtual void approchBody(Spaceship *ship) = 0;
-                // virtual void renderFlareSun(RenderData &render_data) = 0;
+                virtual void renderFlareSun(DataManager &data_manager) = 0;
                 
         };
 

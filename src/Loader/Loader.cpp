@@ -365,37 +365,40 @@ SDL_Surface* Loader::pixelsInverter(SDL_Surface *src_img)
 /***********************************************************************************************************************************************************************/
 GLuint Loader::loadFlareTexture(std::string text_path, int &img_w, int &img_h)
 {
-//     stbi_set_flip_vertically_on_load(true);
-//     unsigned char* image_data = stbi_load(text_path.c_str(), &texture_w, &texture_h, NULL, 4);
-//     if (image_data == NULL)
-//         return false;
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char* image_data = stbi_load(text_path.c_str(), &img_w, &img_h, NULL, 4);
+    if (image_data == NULL)
+        return 0;
 
-//     // Create a OpenGL texture identifier
-//     glGenTextures(1, &texture_id);
+    // Create a OpenGL texture identifier
+    GLuint texture_id = 0;
+    glGenTextures(1, &texture_id);
+    assert(texture_id != 0);
 
-//     glActiveTexture(GL_TEXTURE0);
-//     glBindTexture(GL_TEXTURE_2D, texture_id);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
 
-//     // // Setup filtering parameters for display
-//     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
-//     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // // Setup filtering parameters for display
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
 
-//         // Upload pixels into texture
-//     #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
-//         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-//     #endif
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_w, texture_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-//     stbi_image_free(image_data);
+        // Upload pixels into texture
+    #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    #endif
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img_w, img_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+    stbi_image_free(image_data);
 
-//     glActiveTexture(GL_TEXTURE0);
-//     glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
-//     stbi_set_flip_vertically_on_load(false);
+    stbi_set_flip_vertically_on_load(false);
 
-//     return true;
+    std::cout << ">> Loading File " << text_path << " : SUCCESS" << std::endl;
+    return texture_id;
 }
 
 /***********************************************************************************************************************************************************************/

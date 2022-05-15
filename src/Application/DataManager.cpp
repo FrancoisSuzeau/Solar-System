@@ -399,12 +399,11 @@ body_data DataManager::getBodyData(int index)
 
 glm::vec2 DataManager::convertToScreenSpace(glm::vec3 const body_pos)
 {
-
     glm::vec4 clipSpacePos = this->proj_mat * (this->view_mat * glm::vec4(body_pos, 1.0f));
 
     if(clipSpacePos.w <= 0)
     {
-        return glm::vec2(0.f); // NULL
+        return glm::vec2(-100.f); // NULL
     }
 
     float x = (clipSpacePos.x / clipSpacePos.w + 1) / 2.0f; 

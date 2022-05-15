@@ -32,7 +32,7 @@ Spaceship::Spaceship(std::string const type) : super(type), m_yaw(0.0f), m_pitch
 
     super::m_model_mat = glm::mat4(1.f);
 
-    super::m_position = glm::vec3(0.f, 35.f, 0.f);
+    super::m_position = glm::vec3(0.f, 100.f, 0.f);
     directions[0] = false;
     directions[1] = false;
     directions[2] = false;

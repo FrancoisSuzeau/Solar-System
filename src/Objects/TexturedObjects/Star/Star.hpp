@@ -29,6 +29,7 @@ PURPOSE : header of the Star class
 
         #include "../../BasicObjects/Sphere.hpp"
         #include "../../../Loader/Loader.hpp"
+        #include "FlareManager/FlareManager.hpp"
 
         // typedef struct flare_data {
 
@@ -48,7 +49,8 @@ PURPOSE : header of the Star class
             private:
 
                 typedef         Sphere super;
-                Sphere          *m_atmosphere = nullptr;
+                FlareManager    *m_flare_manager_cam_dirt = nullptr;
+                FlareManager    *m_flare_manager_sun_ray = nullptr;
                 // std::vector<flare_data>      m_flares;
 
                 // void calculateFlarePos(glm::vec2 sunToCenter, glm::vec2 sunCoords, flare_data f_d);
@@ -64,8 +66,9 @@ PURPOSE : header of the Star class
                 void transform(glm::vec3 ship_pos = glm::vec3(0.f), Input *input = nullptr) override;
                 void sendToShader(DataManager &data_manager) override;
                 void    clean();
+                void    makeOtherChanges(DataManager &data_manager);
                 
-                // void renderFlare(RenderData &render_data);
+                void renderFlares(DataManager &data_manager);
                 
         };
 

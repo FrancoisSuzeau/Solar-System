@@ -167,25 +167,25 @@ void SquareRenderer::render(DataManager &data_manager, Object *square)
 {
     if(data_manager.getShader(square->getType()) != nullptr)
     {
-       if(data_manager.getPass() == DEPTH_FBO)
-       {
-           glUseProgram(data_manager.getShader("depth_map")->getProgramID());
+        if(data_manager.getPass() == DEPTH_FBO)
+        {
+            glUseProgram(data_manager.getShader("depth_map")->getProgramID());
         }
-        else
+        if(data_manager.getPass() == COLOR_FBO)
         {
             glUseProgram(data_manager.getShader(square->getType())->getProgramID());
         }
 
-            //lock vao
-            glBindVertexArray(super::m_vaoID);
+                //lock vao
+                glBindVertexArray(super::m_vaoID);
 
-            //display the form
-            glDrawArrays(GL_TRIANGLES, 0, 6);
+                //display the form
+                glDrawArrays(GL_TRIANGLES, 0, 6);
 
-            //unlock vao
-            glBindVertexArray(0);
+                //unlock vao
+                glBindVertexArray(0);
 
-        glUseProgram(0);
+            glUseProgram(0);
     }
     
 }
